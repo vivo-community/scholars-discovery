@@ -1,0 +1,1 @@
+{{name}}{{#if organizationWithin}} - {{#each organizationWithin}}{{label}}{{#if @last}}{{else}}, {{/if}}{{/each}};{{/if}} {{#if geographicLocation}} - {{label}}{{/if}}

@@ -1,0 +1,22 @@
+{{#if publisherOf}}
+<ul>
+  {{#each publisherOf}}
+  <li>
+    <div class="comma-seperated">
+      <span><a href="display/documents/{{id}}">{{label}}</a></span>
+      <span>{{formalize type}}</span>
+      <span>{{toYear date}}</span>
+    </div>
+  </li>
+  {{/each}}
+</ul>
+<style>
+  .comma-seperated span:after {
+    content: ", ";
+  }
+
+  .comma-seperated span:last-child:after {
+    content: "";
+  }
+</style>
+{{/if}}

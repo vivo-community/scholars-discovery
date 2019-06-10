@@ -1,0 +1,49 @@
+= Scholars Middleware REST Service API Documentation
+:doctype: book
+:compat-mode:
+:toc: left
+:toclevels: 3
+:sectanchors:
+:sectlinks:
+:sectnums:
+:linkattrs:
+:source-highlighter: highlightjs
+
+= Introduction
+
+Scholars@TAMU is a profile system that hosts searchable expertise for faculty and TAMU organizations by gathering data from institution-level/enterprise systems, publicly available research data (e.g., grants and publications), and other authoritative sources.
+The data is compiled into a profile that you can edit to best represent your scholarship and expertise.
+
+.This system helps to:
+ * Improve the discoverability of scholarly expertise
+ * Enhance the scholarly identity of researchers
+ * Facilitate new research collaborations.
+
+[%hardbreaks]
+
+== Discovery
+
+include::collections.adoc[]
+include::concepts.adoc[]
+include::documents.adoc[]
+include::organizations.adoc[]
+include::persons.adoc[]
+include::processes.adoc[]
+include::relationships.adoc[]
+
+[%hardbreaks]
+
+include::registration.adoc[]
+include::login.adoc[]
+include::logout.adoc[]
+include::user.adoc[]
+
+[%hardbreaks]
+
+== Administration
+
+include::directoryViews.adoc[]
+include::discoveryViews.adoc[]
+include::displayViews.adoc[]
+include::themes.adoc[]
+include::users.adoc[]

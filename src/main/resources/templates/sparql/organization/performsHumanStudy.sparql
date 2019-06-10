@@ -1,0 +1,10 @@
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT {
+    ?humanStudy rdfs:label ?labelWithId .
+} WHERE {
+    <[(${uri})]> obo:ERO_0001520 ?humanStudy .
+    ?humanStudy rdfs:label ?label .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?humanStudy), "(^.*/)", "::") ) AS ?labelWithId ) .
+}

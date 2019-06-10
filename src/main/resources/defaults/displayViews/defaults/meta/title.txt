@@ -1,0 +1,7 @@
+{{#if name}}
+{{name}}
+{{else}}
+  {{#if title}}
+  {{title}}
+  {{/if}}
+{{/if}}

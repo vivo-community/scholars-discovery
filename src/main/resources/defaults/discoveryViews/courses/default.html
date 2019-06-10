@@ -1,0 +1,18 @@
+<span><a href="display/{{collection}}/{{id}}">{{title}}</a></span>
+
+{{#if participants}}
+<div>
+  <span class="label">Instructors:</span>
+  <ul>
+    {{#each participants}}
+    <li><span><a href="display/persons/{{id}}">{{label}}</a></span></li>
+    {{/each}}
+  </ul>
+</div>
+{{/if}}
+<style>
+  .label {
+    font-weight: 550;
+    margin-right: 2px;
+  }
+</style>

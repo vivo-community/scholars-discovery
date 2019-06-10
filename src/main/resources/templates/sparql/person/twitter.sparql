@@ -1,0 +1,7 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    <[(${uri})]> tamu:twitterID ?twitterId .
+} WHERE {
+    <[(${uri})]> tamu:twitterID ?twitterId .
+}
