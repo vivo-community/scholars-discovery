@@ -130,7 +130,7 @@
   - name: Year
     field: publicationDate
     type: DATE_YEAR
-    sort: COUNT
+    sort: INDEX
     direction: DESC
     limit: 10
     collapsed: true
