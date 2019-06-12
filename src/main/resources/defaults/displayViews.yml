@@ -253,7 +253,7 @@
       template: "defaults/displayViews/people/grantsAwards/researchOverview.html"
       requiredFields:
       - researchOverview
-    - name: principal investigator
+    - name: principal investigator on
       hidden: false
       template: "defaults/displayViews/people/grantsAwards/principalInvestigator.html"
       requiredFields:

@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -245,7 +247,8 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
 
     @SuppressWarnings("unchecked")
     private void lookupSyncIds(D document) {
-        document.getSyncIds().add(document.getId());
+        Set<String> syncIds = new HashSet<String>();
+        syncIds.add(document.getId());
         FieldUtils.getFieldsListWithAnnotation(type(), Indexed.class).stream().filter(field -> {
             field.setAccessible(true);
             return field.getAnnotation(Indexed.class).type().contains(NESTED);
@@ -254,9 +257,9 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
                 Object value = field.get(document);
                 if (value != null) {
                     if (Collection.class.isAssignableFrom(field.getType())) {
-                        ((Collection<String>) value).forEach(v -> addSyncId(document, v));
+                        ((Collection<String>) value).forEach(v -> addSyncId(syncIds, v));
                     } else {
-                        addSyncId(document, (String) value);
+                        addSyncId(syncIds, (String) value);
                     }
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -267,12 +270,13 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
                 }
             }
         });
+        document.setSyncIds(syncIds);
     }
 
-    private void addSyncId(D document, String value) {
+    private void addSyncId(Set<String> syncIds, String value) {
         String[] vParts = value.split(NESTED_DELIMITER);
         for (int i = 1; i < vParts.length; i++) {
-            document.getSyncIds().add(vParts[i]);
+            syncIds.add(vParts[i]);
         }
     }
 

@@ -1,1 +1,7 @@
-<span>Work In Progress</span>
+<ul class="list-unstyled">
+  {{#each administeredBy}}
+  <li>
+    <span><a href="display/organizations/{{id}}">{{label}}</a></span>
+  </li>
+  {{/each}}
+</ul>
