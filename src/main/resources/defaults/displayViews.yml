@@ -253,7 +253,7 @@
       template: "defaults/displayViews/people/grantsAwards/researchOverview.html"
       requiredFields:
       - researchOverview
-    - name: principal investigator
+    - name: principal investigator on
       hidden: false
       template: "defaults/displayViews/people/grantsAwards/principalInvestigator.html"
       requiredFields:
@@ -1224,16 +1224,36 @@
       template: "defaults/displayViews/grants/overview/awardedBy.html"
       requiredFields:
       - awardedBy
-    - name: subcontracted through
+    - name: awarded by (preferred label)
       hidden: false
-      template: "defaults/displayViews/grants/overview/subcontractedThrough.html"
+      template: "defaults/displayViews/grants/overview/awardedByPreferredLabel.html"
       requiredFields:
-      - grantSubcontractedThrough
+      - awardedByPreferredLabel
+    - name: award conferreded by
+      hidden: false
+      template: "defaults/displayViews/grants/overview/awardConferredBy.html"
+      requiredFields:
+      - awardConferredBy
+    - name: award conferreded by (preferred label)
+      hidden: false
+      template: "defaults/displayViews/grants/overview/awardConferredByPreferredLabel.html"
+      requiredFields:
+      - awardConferredByPreferredLabel
     - name: administered by
       hidden: false
       template: "defaults/displayViews/grants/overview/administeredBy.html"
       requiredFields:
       - administeredBy
+    - name: administered by (preferred label)
+      hidden: false
+      template: "defaults/displayViews/grants/overview/administeredByPreferredLabel.html"
+      requiredFields:
+      - administeredByPreferredLabel
+    - name: subcontracted through
+      hidden: false
+      template: "defaults/displayViews/grants/overview/subcontractedThrough.html"
+      requiredFields:
+      - grantSubcontractedThrough
     - name: geographic focus
       hidden: false
       template: "defaults/displayViews/grants/overview/geographicFocus.html"

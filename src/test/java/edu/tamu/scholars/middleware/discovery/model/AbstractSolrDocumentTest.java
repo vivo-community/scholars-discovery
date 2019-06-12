@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -37,14 +38,19 @@ public abstract class AbstractSolrDocumentTest<D extends AbstractSolrDocument> {
         D document = (D) clazz.getConstructor().newInstance();
 
         String single = "Test";
-        List<String> multiple = Arrays.asList(new String[] { "Hello", "World" });
+        List<String> list = Arrays.asList(new String[] { "Hello", "World" });
+
+        Set<String> set = new HashSet<String>(list);
 
         // NOTE: only gets field annotated with @Indexed, which is all fields of a AbstractSolrDocument
         for (Field field : FieldUtils.getFieldsListWithAnnotation(clazz, Indexed.class)) {
             String property = field.getName();
-            if (Collection.class.isAssignableFrom(field.getType())) {
-                MethodUtils.invokeMethod(document, true, setter(property), multiple);
-                assertEquals(multiple, MethodUtils.invokeMethod(document, true, getter(property)));
+            if (List.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), list);
+                assertEquals(list, MethodUtils.invokeMethod(document, true, getter(property)));
+            } else if (Set.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), set);
+                assertEquals(set, MethodUtils.invokeMethod(document, true, getter(property)));
             } else {
                 MethodUtils.invokeMethod(document, true, setter(property), single);
                 assertEquals(single, MethodUtils.invokeMethod(document, true, getter(property)));
