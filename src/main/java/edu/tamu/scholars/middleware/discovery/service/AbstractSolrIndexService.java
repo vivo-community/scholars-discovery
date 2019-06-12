@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.repository.SolrCrudRepository;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
@@ -42,6 +43,10 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
     private final static String FORWARD_SLASH = "/";
 
     private final static String HASH_TAG = "#";
+
+    private final static String NESTED = "nested";
+
+    private final static String NESTED_DELIMITER = "::";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -100,6 +105,25 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         }
     }
 
+    public void index(String subject) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Indexing %s %s", type().getSimpleName(), subject));
+        }
+        try {
+            repo.save(createDocument(subject));
+        } catch (DataAccessResourceFailureException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            logger.error(String.format("Unable to index %s: %s", name(), parse(subject)));
+            logger.error(String.format("Error: %s", e.getMessage()));
+            if (logger.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        } catch (NullPointerException e) {
+            if (logger.isDebugEnabled()) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private synchronized void batchSave(ConcurrentLinkedDeque<D> documents) {
         try {
             repo.saveAll(documents);
@@ -131,6 +155,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         Field field = FieldUtils.getField(type(), ID_PROPERTY_NAME, true);
         field.set(document, parse(subject));
         lookupProperties(document, subject);
+        lookupSyncIds(document);
         return document;
     }
 
@@ -171,12 +196,12 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         ResIterator resources = model.listSubjects();
         while (resources.hasNext()) {
             Resource resource = resources.next();
-            values.addAll(lookupProperty(property, source, model, resource));
+            values.addAll(queryForProperty(property, source, model, resource));
         }
         return values;
     }
 
-    public List<String> lookupProperty(String property, PropertySource source, Model model, Resource resource) {
+    private List<String> queryForProperty(String property, PropertySource source, Model model, Resource resource) {
         List<String> values = new ArrayList<String>();
         StmtIterator statements;
         try {
@@ -210,11 +235,44 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
             }
         } else {
             field.setAccessible(true);
-            if (Collection.class.isAssignableFrom(field.getType())) {
+            if (List.class.isAssignableFrom(field.getType())) {
                 field.set(document, values);
             } else {
                 field.set(document, values.get(0));
             }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void lookupSyncIds(D document) {
+        document.getSyncIds().add(document.getId());
+        FieldUtils.getFieldsListWithAnnotation(type(), Indexed.class).stream().filter(field -> {
+            field.setAccessible(true);
+            return field.getAnnotation(Indexed.class).type().contains(NESTED);
+        }).forEach(field -> {
+            try {
+                Object value = field.get(document);
+                if (value != null) {
+                    if (Collection.class.isAssignableFrom(field.getType())) {
+                        ((Collection<String>) value).forEach(v -> addSyncId(document, v));
+                    } else {
+                        addSyncId(document, (String) value);
+                    }
+                }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                logger.error(String.format("Unable to get value of %s %s", name(), field.getName()));
+                logger.error(String.format("Error: %s", e.getMessage()));
+                if (logger.isDebugEnabled()) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void addSyncId(D document, String value) {
+        String[] vParts = value.split(NESTED_DELIMITER);
+        for (int i = 1; i < vParts.length; i++) {
+            document.getSyncIds().add(vParts[i]);
         }
     }
 

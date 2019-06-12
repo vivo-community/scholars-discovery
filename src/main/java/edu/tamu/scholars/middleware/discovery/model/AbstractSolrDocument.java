@@ -1,5 +1,8 @@
 package edu.tamu.scholars.middleware.discovery.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 
@@ -9,12 +12,23 @@ public abstract class AbstractSolrDocument {
     @Indexed
     private String id;
 
+    @Indexed
+    private Set<String> syncIds = new HashSet<String>();
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Set<String> getSyncIds() {
+        return syncIds;
+    }
+
+    public void setSyncIds(Set<String> syncIds) {
+        this.syncIds = syncIds;
     }
 
 }
