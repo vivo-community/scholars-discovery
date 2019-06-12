@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MapKeyColumn;
@@ -42,6 +43,11 @@ public abstract class CollectionView extends ResourceView {
 
     @ElementCollection
     private List<Sort> sort;
+
+    // TODO: add new ElementCollection of new Embeddable representing a export field
+    // two required properties are column header and field path
+    // column header maps to the csv header
+    // field path is to extract value from a nested document, using reflection
 
     public CollectionView() {
         super();

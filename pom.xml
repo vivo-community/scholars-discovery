@@ -178,6 +178,12 @@
       <artifactId>commons-compress</artifactId>
       <version>1.18</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.7</version>
+    </dependency>
 
     <dependency>
       <groupId>com.github.jsonld-java</groupId>

@@ -3,10 +3,13 @@ package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.Criteria.OperationKey;
@@ -19,6 +22,7 @@ import org.springframework.data.solr.core.query.SimpleFacetQuery;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
+import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.util.MultiValueMap;
 
@@ -29,6 +33,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     private static final String INDEX_QUERY_PARAM_DELIMETER = ",";
     private static final String FILTER_TEMPLATE = "%s.filter";
+
+    private static final String ID_FIELD = "id";
 
     private static final int LIMIT = Integer.MAX_VALUE;
     private static final int OFFSET = 0;
@@ -52,15 +58,9 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             facetQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
         }
 
-        if (index != null) {
-            String[] indexParts = index.split(INDEX_QUERY_PARAM_DELIMETER);
-            // NOTE: to support all operation keys additional values will have to be included in the index query parameter
-            // TODO: if invalid index query parameter, consider an argument resolver into Indexable class
-            if (indexParts.length == 3) {
-                Criteria criteria = buildCriteria(indexParts);
-                FilterQuery filterQuery = new SimpleFilterQuery(criteria);
-                facetQuery.addFilterQuery(filterQuery);
-            }
+        Optional<FilterQuery> filterQuery = getIndexFilterQuery(index);
+        if (filterQuery.isPresent()) {
+            facetQuery.addFilterQuery(filterQuery.get());
         }
 
         if (facets != null) {
@@ -82,8 +82,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
                 List<String> filters = params.get(String.format(FILTER_TEMPLATE, facet));
                 if (filters != null) {
                     for (String filter : filters) {
-                        FilterQuery filterQuery = new SimpleFilterQuery(new Criteria(facet).is(filter));
-                        facetQuery.addFilterQuery(filterQuery);
+                        facetQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(facet).is(filter)));
                     }
                 }
 
@@ -102,7 +101,41 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
+    public Cursor<D> stream(String query, String index, String[] fields, MultiValueMap<String, String> params) {
+        SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
+        Optional<FilterQuery> filterQuery = getIndexFilterQuery(index);
+        if (filterQuery.isPresent()) {
+            simpleQuery.addFilterQuery(filterQuery.get());
+        }
+        // TODO: add sort from request before static id sort
+        simpleQuery.addSort(Sort.by(Direction.ASC, ID_FIELD));
+        return solrTemplate.queryForCursor(collection(), simpleQuery, type());
+    }
+
+    @Override
     public long count(String query, String[] fields, MultiValueMap<String, String> params) {
+        SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
+        return solrTemplate.count(collection(), simpleQuery, type());
+    }
+
+    public abstract String collection();
+
+    public abstract Class<D> type();
+
+    private Optional<FilterQuery> getIndexFilterQuery(String index) {
+        if (index != null) {
+            String[] indexParts = index.split(INDEX_QUERY_PARAM_DELIMETER);
+            // NOTE: to support all operation keys additional values will have to be included in the index query parameter
+            // TODO: if invalid index query parameter, consider an argument resolver into Indexable class
+            if (indexParts.length == 3) {
+                Criteria criteria = buildCriteria(indexParts);
+                return Optional.of(new SimpleFilterQuery(criteria));
+            }
+        }
+        return Optional.empty();
+    }
+
+    private SimpleQuery buildSimpleQuery(String query, String[] fields, MultiValueMap<String, String> params) {
         SimpleQuery simpleQuery = new SimpleQuery();
 
         if (query != null) {
@@ -127,12 +160,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
         simpleQuery.setDefType(queryParser);
 
-        return solrTemplate.count(collection(), simpleQuery, type());
+        return simpleQuery;
     }
-
-    public abstract String collection();
-
-    public abstract Class<D> type();
 
     private Criteria buildCriteria(String[] indexParts) {
         String field = indexParts[0];
