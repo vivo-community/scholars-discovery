@@ -101,14 +101,13 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public Cursor<D> stream(String query, String index, String[] fields, MultiValueMap<String, String> params) {
+    public Cursor<D> stream(String query, String index, String[] fields, MultiValueMap<String, String> params, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
         Optional<FilterQuery> filterQuery = getIndexFilterQuery(index);
         if (filterQuery.isPresent()) {
             simpleQuery.addFilterQuery(filterQuery.get());
         }
-        // TODO: add sort from request before static id sort
-        simpleQuery.addSort(Sort.by(Direction.ASC, ID_FIELD));
+        simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID_FIELD)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 

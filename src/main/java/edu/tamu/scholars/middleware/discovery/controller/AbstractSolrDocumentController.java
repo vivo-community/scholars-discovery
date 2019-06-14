@@ -2,8 +2,10 @@ package edu.tamu.scholars.middleware.discovery.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -52,13 +54,13 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         @RequestParam(value = "index", required = false) String index,
         @RequestParam(value = "fields", required = false) String[] fields,
         @RequestParam MultiValueMap<String, String> params,
+        @SortDefault Sort sort,
         Exporter exporter
     ) {
-        // TODO: add parameter to request for sort, add sort to stream function call
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
             .contentType(exporter.mediaType())
-            .body(exporter.streamSolrResponse(repo.stream(query, index, fields, params)));
+            .body(exporter.streamSolrResponse(repo.stream(query, index, fields, params, sort)));
     }
     // @formatter:on
 
