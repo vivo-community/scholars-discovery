@@ -38,6 +38,8 @@ import edu.tamu.scholars.middleware.service.Triplestore;
 
 public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R extends SolrCrudRepository<D, String>> implements SolrIndexService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final static String COLLECTION_SPARQL_TEMPLATE = "collection";
 
     private final static String ID_PROPERTY_NAME = "id";
@@ -49,8 +51,6 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
     private final static String NESTED = "nested";
 
     private final static String NESTED_DELIMITER = "::";
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${middleware.index.batchSize:10000}")
     public int indexBatchSize;

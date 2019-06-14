@@ -1,16 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.logging.log4j.core.util.ReflectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedResources;
@@ -25,10 +16,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import edu.tamu.scholars.middleware.discovery.assembler.AbstractSolrDocumentResourceAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.FacetPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.Concept;
-import edu.tamu.scholars.middleware.discovery.model.Person;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.resource.AbstractSolrDocumentResource;
+import edu.tamu.scholars.middleware.discovery.service.Exporter;
 
 public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>, R extends AbstractSolrDocumentResource<D>, SDA extends AbstractSolrDocumentResourceAssembler<D, R>> {
 
@@ -61,51 +51,14 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         @RequestParam(value = "query", required = false) String query,
         @RequestParam(value = "index", required = false) String index,
         @RequestParam(value = "fields", required = false) String[] fields,
-        @RequestParam MultiValueMap<String, String> params
+        @RequestParam MultiValueMap<String, String> params,
+        Exporter exporter
     ) {
+        // TODO: add parameter to request for sort, add sort to stream function call
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=results.csv")
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .body(outputStream -> {
-                // TODO: add parameter to request for sort, add sort to stream function call
-                Cursor<D> cursor = repo.stream(query, index, fields, params);
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-                // TODO: add parameter to request to identify CollectionView
-                // TODO: create CSVPrinter with array of headers defined by the newly created exportFields CollectionView property
-                try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.DEFAULT.withHeader("id", "name"))) {
-                    while(cursor.hasNext()) {
-                        D document = cursor.next();
-
-                        // TODO: remove these as they are just to test casting and calling getters!!
-                        try {
-                            Concept concept = (Concept) document;
-                            System.out.println(String.format("%s,%s", concept.getId(), concept.getName()));
-                        } catch(Exception e) { }
-                        try {
-                            Person person = (Person) document;
-                            System.out.println(String.format("%s,%s", person.getId(), person.getName()));
-                        } catch(Exception e) { }
-
-                        // TODO: write utility to extract field from a document providing the field path, e.g. name or position.organization.label
-
-                        // TODO: iterate over CollectionView exportFields and extract values accordingly
-                        List<Object> values = new ArrayList<Object>();
-
-                        Field idField = findField(document.getClass(), "id");
-
-                        Object idValue = ReflectionUtil.getFieldValue(idField, document);
-                        values.add(idValue);
-
-                        Field nameField = findField(document.getClass(), "name");
-                        Object nameValue = ReflectionUtil.getFieldValue(nameField, document);
-                        values.add(nameValue);
-
-                        printer.printRecord(values.toArray(new Object[values.size()]));
-                    }
-                } finally {
-                    cursor.close();
-                }
-            });
+            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
+            .contentType(exporter.mediaType())
+            .body(exporter.streamSolrResponse(repo.stream(query, index, fields, params)));
     }
     // @formatter:on
 
@@ -113,14 +66,15 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     // @formatter:off
     public ResponseEntity<Count> count(
         @RequestParam(value = "query", required = false) String query,
-        @RequestParam(value = "fields", required = false) String[] facets,
+        @RequestParam(value = "fields", required = false) String[] fields,
         @RequestParam MultiValueMap<String, String> params
     ) {
     // @formatter:on
-        return ResponseEntity.ok(new Count(repo.count(query, facets, params)));
+        return ResponseEntity.ok(new Count(repo.count(query, fields, params)));
     }
 
     class Count {
+
         private final long value;
 
         public Count(long value) {
@@ -131,20 +85,6 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
             return value;
         }
 
-    }
-
-    // TODO; move to utility
-    public static Field findField(Class<?> clazz, String property) {
-        Field field = null;
-        try {
-            field = clazz.getDeclaredField(property);
-        } catch (NoSuchFieldException | SecurityException e) {
-            Class<?> superClazz = clazz.getSuperclass();
-            if (superClazz != null) {
-                field = findField(superClazz, property);
-            }
-        }
-        return field;
     }
 
 }
