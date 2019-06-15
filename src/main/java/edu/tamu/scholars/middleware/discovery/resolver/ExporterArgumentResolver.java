@@ -12,7 +12,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import edu.tamu.scholars.middleware.discovery.exception.UnknownExporterTypeException;
-import edu.tamu.scholars.middleware.discovery.service.Exporter;
+import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 
 public final class ExporterArgumentResolver implements HandlerMethodArgumentResolver {
 

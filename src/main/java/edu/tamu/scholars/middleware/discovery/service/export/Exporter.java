@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.service;
+package edu.tamu.scholars.middleware.discovery.service.export;
 
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.http.MediaType;
@@ -14,6 +14,6 @@ public interface Exporter {
 
     public MediaType mediaType();
 
-    public <D extends AbstractSolrDocument> StreamingResponseBody streamSolrResponse(Cursor<D> cursor);
+    public <D extends AbstractSolrDocument> StreamingResponseBody streamSolrResponse(Cursor<D> cursor, String[] exports);
 
 }

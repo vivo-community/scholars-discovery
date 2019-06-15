@@ -1,7 +1,11 @@
 package edu.tamu.scholars.middleware.discovery.utility;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.LABEL;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -12,7 +16,10 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
+import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
+import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 
 public class DiscoveryUtility {
 
@@ -58,6 +65,37 @@ public class DiscoveryUtility {
             }
         }
         return false;
+    }
+
+    public static Field findField(Class<?> clazz, String[] path) throws InvalidValuePathException {
+        if (path.length == 1 || path[1].equals(LABEL) || path[1].equals(ID)) {
+            return findField(clazz, path[0]);
+        }
+        Field field = findField(clazz, path[0]);
+        return getReferenceField(field, Arrays.copyOfRange(path, 1, path.length));
+    }
+
+    public static Field getReferenceField(Field field, String[] path) throws InvalidValuePathException {
+        NestedObject nested = field.getAnnotation(NestedObject.class);
+        for (Reference reference : nested.value()) {
+            if (reference.key().contentEquals(path[0])) {
+                Field refField = findField(field.getDeclaringClass(), reference.value());
+                return path.length > 1 ? getReferenceField(refField, Arrays.copyOfRange(path, 1, path.length)) : refField;
+            }
+        }
+        throw new InvalidValuePathException(String.format("Unable to resolve %s reference %s", field.getName(), String.join(".", path)));
+    }
+
+    public static Field findField(Class<?> clazz, String property) throws InvalidValuePathException {
+        try {
+            return clazz.getDeclaredField(property);
+        } catch (NoSuchFieldException | SecurityException e) {
+            Class<?> superClazz = clazz.getSuperclass();
+            if (superClazz != null) {
+                return findField(superClazz, property);
+            }
+        }
+        throw new InvalidValuePathException(String.format("Unable to resolve %s of %s", property, clazz.getSimpleName()));
     }
 
     private static Set<BeanDefinition> getSolrDocumentBeanDefinitions() {

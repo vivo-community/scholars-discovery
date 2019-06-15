@@ -14,7 +14,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
 import edu.tamu.scholars.middleware.discovery.resolver.ExporterArgumentResolver;
-import edu.tamu.scholars.middleware.discovery.service.Exporter;
+import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
 
 @Configuration

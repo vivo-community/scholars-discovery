@@ -43,10 +43,8 @@ public abstract class CollectionView extends ResourceView {
     @ElementCollection
     private List<Sort> sort;
 
-    // TODO: add new ElementCollection of new Embeddable representing a export field
-    // two required properties are column header and field path
-    // column header maps to the csv header
-    // field path is to extract value from a nested document, using reflection
+    @ElementCollection
+    private List<ExportField> exportFields;
 
     public CollectionView() {
         super();
@@ -55,6 +53,7 @@ public abstract class CollectionView extends ResourceView {
         facets = new ArrayList<Facet>();
         filters = new ArrayList<Filter>();
         sort = new ArrayList<Sort>();
+        exportFields = new ArrayList<ExportField>();
     }
 
     public Layout getLayout() {
@@ -103,6 +102,14 @@ public abstract class CollectionView extends ResourceView {
 
     public void setSort(List<Sort> sort) {
         this.sort = sort;
+    }
+
+    public List<ExportField> getExportFields() {
+        return exportFields;
+    }
+
+    public void setExportFields(List<ExportField> exportFields) {
+        this.exportFields = exportFields;
     }
 
 }

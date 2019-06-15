@@ -20,10 +20,10 @@ import edu.tamu.scholars.middleware.discovery.assembler.FacetPagedResourcesAssem
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.resource.AbstractSolrDocumentResource;
-import edu.tamu.scholars.middleware.discovery.service.Exporter;
+import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 
 public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>, R extends AbstractSolrDocumentResource<D>, SDA extends AbstractSolrDocumentResourceAssembler<D, R>> {
-
+    
     @Autowired
     private SDR repo;
 
@@ -53,6 +53,7 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         @RequestParam(value = "query", required = false) String query,
         @RequestParam(value = "index", required = false) String index,
         @RequestParam(value = "fields", required = false) String[] fields,
+        @RequestParam(value = "export", required = true) String[] exports,
         @RequestParam MultiValueMap<String, String> params,
         @SortDefault Sort sort,
         Exporter exporter
@@ -60,7 +61,7 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
             .contentType(exporter.mediaType())
-            .body(exporter.streamSolrResponse(repo.stream(query, index, fields, params, sort)));
+            .body(exporter.streamSolrResponse(repo.stream(query, index, fields, params, sort), exports));
     }
     // @formatter:on
 

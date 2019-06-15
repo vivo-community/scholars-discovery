@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.REQUEST_PARAM_DELIMETER;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.List;
@@ -31,12 +33,10 @@ import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepo
 
 public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocument> implements SolrDocumentRepoCustom<D> {
 
-    private static final String INDEX_QUERY_PARAM_DELIMETER = ",";
     private static final String FILTER_TEMPLATE = "%s.filter";
 
-    private static final String ID_FIELD = "id";
-
     private static final int LIMIT = Integer.MAX_VALUE;
+
     private static final int OFFSET = 0;
 
     @Value("${spring.data.solr.parser:edismax}")
@@ -107,7 +107,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         if (filterQuery.isPresent()) {
             simpleQuery.addFilterQuery(filterQuery.get());
         }
-        simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID_FIELD)));
+        simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     private Optional<FilterQuery> getIndexFilterQuery(String index) {
         if (index != null) {
-            String[] indexParts = index.split(INDEX_QUERY_PARAM_DELIMETER);
+            String[] indexParts = index.split(REQUEST_PARAM_DELIMETER);
             // NOTE: to support all operation keys additional values will have to be included in the index query parameter
             // TODO: if invalid index query parameter, consider an argument resolver into Indexable class
             if (indexParts.length == 3) {
