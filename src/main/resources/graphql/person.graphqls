@@ -1,0 +1,46 @@
+type Concept {
+  id: ID!
+}
+
+type Document {
+  id: ID!
+  title: String!
+  abstractText: String
+  authorList: [String]
+  doi: String
+  issn: String
+  pageStart: String
+  pageEnd: String
+  volume: String
+  issue: String
+}
+
+type Person {
+  id: ID!
+  name: String!
+  preferredTitle: String
+  primaryEmail: String
+  additionalEmails: [String]
+  overview: String
+  image: String
+  thumbnail: String
+  documents: [Document]
+}
+
+input Paging {
+  page: Int
+  pageSize: Int
+}
+
+type Query {
+    people(search: String, paging: Paging!): [Person]!
+}
+
+input CreatePersonInput {
+  id: ID!
+  name: String!
+}
+
+type Mutation {
+    createPerson(input: CreatePersonInput!): Person!
+}
