@@ -219,8 +219,11 @@
       requiredFields:
       - editorOf
       subsections:
-      - name: Editor Of
+      - name: Books
         field: editorOf
+        filters:
+        - field: type
+          value: Book
         sort:
         - field: label
           direction: ASC
