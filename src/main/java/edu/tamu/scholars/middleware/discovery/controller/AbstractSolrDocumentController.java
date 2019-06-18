@@ -23,7 +23,7 @@ import edu.tamu.scholars.middleware.discovery.resource.AbstractSolrDocumentResou
 import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 
 public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>, R extends AbstractSolrDocumentResource<D>, SDA extends AbstractSolrDocumentResourceAssembler<D, R>> {
-    
+
     @Autowired
     private SDR repo;
 
