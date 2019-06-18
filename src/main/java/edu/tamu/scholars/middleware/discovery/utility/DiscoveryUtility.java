@@ -25,8 +25,9 @@ public class DiscoveryUtility {
 
     private static final String DISCOVERY_MODEL_PACKAGE = "edu.tamu.scholars.middleware.discovery.model";
 
-    public static List<String> getFields(String collection) {
+    public static List<String> getFieldNames(String collection) {
         List<String> fields = new ArrayList<String>();
+        fields.add(ID);
         for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
             try {
                 Class<?> type = Class.forName(beanDefinition.getBeanClassName());
@@ -50,6 +51,21 @@ public class DiscoveryUtility {
             }
         }
         return false;
+    }
+
+    public static Optional<Class<?>> getCollectionType(String collection) {
+        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
+            try {
+                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
+                SolrDocument solrDocument = type.getAnnotation(SolrDocument.class);
+                if (collection.equals(solrDocument.collection())) {
+                    return Optional.of(type);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return Optional.empty();
     }
 
     public static boolean isCollection(String collection) {
@@ -102,21 +118,6 @@ public class DiscoveryUtility {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AnnotationTypeFilter(SolrDocument.class));
         return provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
-    }
-
-    private static Optional<Class<?>> getCollectionType(String collection) {
-        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
-            try {
-                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                SolrDocument solrDocument = type.getAnnotation(SolrDocument.class);
-                if (collection.equals(solrDocument.collection())) {
-                    return Optional.of(type);
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return Optional.empty();
     }
 
 }

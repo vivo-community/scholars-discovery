@@ -17,8 +17,8 @@ public abstract class CollectionFieldValidator<A extends Annotation> implements 
         if (collection == null || collection.isEmpty()) {
             return false;
         }
-        List<String> fields = DiscoveryUtility.getFields(collection);
-        return isValidField(collectionView, fields);
+        List<String> fieldNames = DiscoveryUtility.getFieldNames(collection);
+        return isValidField(collectionView, fieldNames);
     }
 
     protected abstract boolean isValidField(CollectionView collectionView, List<String> fields);

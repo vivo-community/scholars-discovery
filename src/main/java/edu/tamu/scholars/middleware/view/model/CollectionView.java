@@ -12,12 +12,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MappedSuperclass;
 
+import edu.tamu.scholars.middleware.view.annotation.ValidCollectionExport;
 import edu.tamu.scholars.middleware.view.annotation.ValidCollectionFacets;
 import edu.tamu.scholars.middleware.view.annotation.ValidCollectionFilters;
 
 @MappedSuperclass
 @ValidCollectionFacets(message = "{CollectionView.validCollectionFacets}")
 @ValidCollectionFilters(message = "{CollectionView.validCollectionFilters}")
+@ValidCollectionExport(message = "{CollectionView.validCollectionExport}")
 public abstract class CollectionView extends ResourceView {
 
     private static final long serialVersionUID = 6875458024293994230L;
