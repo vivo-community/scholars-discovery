@@ -136,7 +136,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .expressionHandler(securityExpressionHandler)
 
-                .antMatchers("/connect/**")
+                .antMatchers("/connect/**", "/subscriptions")
                     .permitAll()
 
                 .antMatchers(PATCH,
@@ -148,7 +148,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     )
                     .hasRole("ADMIN")
 
-                .antMatchers(POST, "/registration")
+                .antMatchers(POST, "/registration", "/graphql")
                     .permitAll()
                 .antMatchers(POST,
                         "/directoryViews/{id}",
@@ -179,13 +179,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn",
-                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/count",
                         "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/count",
                         "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/count",
+                        "/graphiql",
                         "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/count",
                         "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/count",
                         "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/count",
-                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/count"
+                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/count",
+                        "/vendor/**"
                     )
                     .permitAll()
                 .antMatchers(GET,
@@ -267,3 +268,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+

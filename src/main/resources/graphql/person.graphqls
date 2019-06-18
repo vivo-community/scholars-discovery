@@ -1,7 +1,3 @@
-type Concept {
-  id: ID!
-}
-
 type Document {
   id: ID!
   title: String!
@@ -34,13 +30,4 @@ input Paging {
 
 type Query {
     people(search: String, paging: Paging!): [Person]!
-}
-
-input CreatePersonInput {
-  id: ID!
-  name: String!
-}
-
-type Mutation {
-    createPerson(input: CreatePersonInput!): Person!
 }

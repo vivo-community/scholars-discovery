@@ -1,4 +1,4 @@
-package edu.duke.scholars.middleware.graphql.resolver;
+package edu.tamu.scholars.middleware.graphql.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.tamu.scholars.middleware.discovery.model.Person;
 import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
+
 import edu.tamu.scholars.middleware.graphql.inputmodel.CreatePersonInput;
 
 // stole from here:

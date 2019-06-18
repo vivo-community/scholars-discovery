@@ -1,4 +1,4 @@
-package edu.duke.scholars.middleware.graphql.resolver;
+package edu.tamu.scholars.middleware.graphql.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 

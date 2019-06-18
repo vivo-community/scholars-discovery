@@ -7,4 +7,6 @@ import edu.tamu.scholars.middleware.discovery.model.Document;
 @RepositoryRestResource
 public interface DocumentRepo extends SolrDocumentRepo<Document> {
 
+    public Iterable<Document> findAllByAuthors(String authors);
+
 }

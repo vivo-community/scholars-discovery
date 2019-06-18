@@ -1,4 +1,4 @@
-package edu.duke.scholars.middleware.graphql.inputmodel;
+package edu.tamu.scholars.middleware.graphql.inputmodel;
 
 public class Paging {
 

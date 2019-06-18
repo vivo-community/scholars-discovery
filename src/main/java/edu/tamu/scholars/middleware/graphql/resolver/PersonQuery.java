@@ -1,4 +1,4 @@
-package edu.duke.scholars.middleware.graphql.resolver;
+package edu.tamu.scholars.middleware.graphql.resolver;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import edu.tamu.scholars.middleware.discovery.model.Person;
 import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
+
 import edu.tamu.scholars.middleware.graphql.inputmodel.Paging;
 
 @Component
