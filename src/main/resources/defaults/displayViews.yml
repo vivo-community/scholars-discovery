@@ -614,6 +614,13 @@
       template: "defaults/displayViews/organizations/affiliation/organizationForTraining.html"
       requiredFields:
       - organizationForTraining
+      subsections:
+      - name: Organization For Training
+        field: organizationForTraining
+        sort:
+        - field: label
+          direction: ASC
+        template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
     - name: people
       hidden: false
       template: "defaults/displayViews/organizations/affiliation/people.html"
@@ -1439,7 +1446,7 @@
       template: "defaults/displayViews/awards/other/dateTimeValue.html"
       requiredFields:
       - dateTimeValue
-  
+
 - name: Courses
   types:
   - Course
