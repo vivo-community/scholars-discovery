@@ -29,4 +29,4 @@ Existing frontend applications include:
 ```bash
       mvn spring-boot:run -Dspring-boot.run.config.location=/some/directory/ -Dspring-boot.run.profiles=dev
 ```
-      - Where an `application-dev.yml` exists in the `/some/location/` directory
+   - ..where an `application-dev.yml` exists in the `/some/location/` directory
