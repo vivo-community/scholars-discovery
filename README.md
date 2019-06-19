@@ -25,3 +25,8 @@ Existing frontend applications include:
    mvn clean install
    mvn spring-boot:run -Dspring-boot.run.config.location=src/main/resources/
 ```
+   - Note: Custom application configuration can be achieved by providing a location and an optional profile, such as:
+```bash
+      mvn spring-boot:run -Dspring-boot.run.config.location=/some/directory/ -Dspring-boot.run.profiles=dev
+```
+      - Where an `application-dev.yml` exists in the `/some/location/` directory
