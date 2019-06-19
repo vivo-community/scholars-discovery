@@ -23,7 +23,7 @@ Existing frontend applications include:
 1. Build and Run the application
 ```bash
    mvn clean install
-   mvn spring-boot:run -Dspring-boot.run.config.location=src/main/resources/
+   mvn spring-boot:run 
 ```
    - Note: Custom application configuration can be achieved by providing a location and an optional profile, such as:
 ```bash
