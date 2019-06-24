@@ -1,10 +1,12 @@
 PREFIX vivo: <http://vivoweb.org/ontology/core#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT {
     ?publicationVenue rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:hasPublicationVenue ?hasPublicationVenue .
-    ?hasPublicationVenue rdfs:label ?label .
-    BIND( CONCAT( STR(?label), REPLACE(STR(?hasPublicationVenue), "(^.*/)", "::") ) AS ?labelWithId ) .
+    <[(${uri})]> a obo:IAO_0000030 .
+    <[(${uri})]> vivo:hasPublicationVenue ?publicationVenue .
+    ?publicationVenue rdfs:label ?label .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?publicationVenue), "(^.*/)", "::") ) AS ?labelWithId ) .
 }
