@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
@@ -51,6 +52,11 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     ) {
     // @formatter:on
         return ResponseEntity.ok(new Count(repo.count(query, facets, params)));
+    }
+
+    @GetMapping(value = "/recently-updated", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<PagedResources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
+        return ResponseEntity.ok(pagedResourcesAssembler.toResource(repo.findAllByOrderByModTimeDesc(PageRequest.of(0, limit)),assembler));
     }
 
     class Count {
