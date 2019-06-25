@@ -25,6 +25,8 @@ public class DiscoveryViewTest {
         assertNotNull(discoveryView.getFilters());
         assertTrue(discoveryView.getFacets().isEmpty());
         assertTrue(discoveryView.getFilters().isEmpty());
+        assertTrue(discoveryView.getSort().isEmpty());
+        assertTrue(discoveryView.getExport().isEmpty());
     }
 
     @Test
@@ -60,6 +62,14 @@ public class DiscoveryViewTest {
         assertEquals(1, discoveryView.getSort().size());
         assertEquals("name", discoveryView.getSort().get(0).getField());
         assertEquals(Direction.ASC, discoveryView.getSort().get(0).getDirection());
+
+        assertEquals(2, discoveryView.getExport().size());
+        assertEquals("Id", discoveryView.getExport().get(0).getColumnHeader());
+        assertEquals("id", discoveryView.getExport().get(0).getValuePath());
+        assertEquals("||", discoveryView.getExport().get(0).getDelimiter());
+        assertEquals("Name", discoveryView.getExport().get(1).getColumnHeader());
+        assertEquals("name", discoveryView.getExport().get(1).getValuePath());
+        assertEquals("||", discoveryView.getExport().get(1).getDelimiter());
     }
 
 }

@@ -15,6 +15,7 @@ import edu.tamu.scholars.middleware.view.model.DisplayTabSectionSubsectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabSectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabView;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
+import edu.tamu.scholars.middleware.view.model.Export;
 import edu.tamu.scholars.middleware.view.model.Facet;
 import edu.tamu.scholars.middleware.view.model.FacetType;
 import edu.tamu.scholars.middleware.view.model.Filter;
@@ -89,6 +90,24 @@ public class ViewTestUtility {
 
         directoryView.setIndex(index);
 
+        List<Export> exporting = new ArrayList<Export>();
+
+        Export idExport = new Export();
+
+        idExport.setColumnHeader("Id");
+        idExport.setValuePath("id");
+
+        exporting.add(idExport);
+
+        Export nameExport = new Export();
+
+        nameExport.setColumnHeader("Name");
+        nameExport.setValuePath("name");
+
+        exporting.add(nameExport);
+
+        directoryView.setExport(exporting);
+
         return directoryView;
     }
 
@@ -145,6 +164,24 @@ public class ViewTestUtility {
         sorting.add(sort);
 
         discoveryView.setSort(sorting);
+
+        List<Export> exporting = new ArrayList<Export>();
+
+        Export idExport = new Export();
+
+        idExport.setColumnHeader("Id");
+        idExport.setValuePath("id");
+
+        exporting.add(idExport);
+
+        Export nameExport = new Export();
+
+        nameExport.setColumnHeader("Name");
+        nameExport.setValuePath("name");
+
+        exporting.add(nameExport);
+
+        discoveryView.setExport(exporting);
 
         return discoveryView;
     }

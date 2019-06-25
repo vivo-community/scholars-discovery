@@ -1,6 +1,9 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
@@ -18,9 +21,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +40,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -145,6 +155,39 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                     )
                 );
         // @formatter:on
+    }
+    
+    @Test
+    public void testSearchSolrDocumentsExport() throws Exception {
+        // @formatter:off
+        MvcResult result = mockMvc.perform(get(getPath() + "/search/export")
+            .param("query", "*")
+            .param("type", "csv")
+            .param("export", "id,Id")
+            .param("export", "type,Type"))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+        result = mockMvc.perform(asyncDispatch(result))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM))
+            .andDo(
+                document(
+                    getPath().substring(1) + "/export-search",
+                    requestParameters(
+                        parameterWithName("query").description("The search query"),
+                        parameterWithName("type").description("The search export format type"),
+                        parameterWithName("export").description("The search export fields")
+                    )
+                )
+            )
+            .andReturn();
+        // @formatter:on
+        InputStream csvByteStream = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
+        CSVParser csvParser = CSVFormat.DEFAULT.parse(new InputStreamReader(csvByteStream));
+        List<CSVRecord> records = csvParser.getRecords();
+        assertEquals(4, records.size());
+        assertEquals("Id", records.get(0).get(0));
+        assertEquals("Type", records.get(0).get(1));
     }
 
     @Test

@@ -179,13 +179,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn",
-                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/count",
-                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/count",
-                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/count",
-                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/count",
-                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/count",
-                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/count",
-                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/count"
+                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/export", "/collections/search/count",
+                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/export", "/concepts/search/count",
+                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/export", "/documents/search/count",
+                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count",
+                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count",
+                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count",
+                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count"
                     )
                     .permitAll()
                 .antMatchers(GET,
