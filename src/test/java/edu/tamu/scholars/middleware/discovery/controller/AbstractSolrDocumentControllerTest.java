@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
@@ -161,15 +160,9 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                     requestParameters(
                         parameterWithName("query").description("The search query")
                     ),
-                    links(
-                            linkWithRel("self").description("Canonical link for this resource")
-                        ),
-                        responseFields(
-                            subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", getPath().substring(1, getPath().length() - 1))),
-                            subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
-                        )
+                    responseFields(
+                        subsectionWithPath("value").description("The resulting count.")
+                    )
                 )
             );
         // @formatter:on
@@ -181,7 +174,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
         mockMvc.perform(get(getPath() + "/recently-updated").param("limit", "3"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("persons", arrayWithSize(3)))
+            .andExpect(jsonPath("$.page.size", equalTo(3)))
             .andDo(
                 document(
                     getPath().substring(1) + "/recently-updated",
@@ -189,7 +182,10 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                         parameterWithName("limit").description("The number of recently updated documents to return.")
                     ),
                     responseFields(
-                        subsectionWithPath("value").description("The resulting count.")
+                        subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
+                        subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", getPath().substring(1, getPath().length() - 1))),
+                        subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
+                        subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
                     )
                 )
             );
