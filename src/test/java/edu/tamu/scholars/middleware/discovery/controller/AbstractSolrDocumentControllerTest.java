@@ -178,10 +178,10 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     @Test
     public void testRecentlyUpdated() throws Exception {
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/recently-updated").param("limit", "5"))
+        mockMvc.perform(get(getPath() + "/recently-updated").param("limit", "3"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("persons", arrayWithSize(5)))
+            .andExpect(jsonPath("persons", arrayWithSize(3)))
             .andDo(
                 document(
                     getPath().substring(1) + "/recently-updated",
