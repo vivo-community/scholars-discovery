@@ -54,7 +54,7 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         return ResponseEntity.ok(new Count(repo.count(query, facets, params)));
     }
 
-    @GetMapping(value = "/recently-updated", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping("/search/recently-updated")
     public ResponseEntity<PagedResources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
         return ResponseEntity.ok(pagedResourcesAssembler.toResource(repo.findAllByOrderByModTimeDesc(PageRequest.of(0, limit)),assembler));
     }

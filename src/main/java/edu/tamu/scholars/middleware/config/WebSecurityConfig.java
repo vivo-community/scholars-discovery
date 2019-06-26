@@ -179,13 +179,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn",
-                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/count", "/collections/recently-updated",
-                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/count", "/concepts/recently-updated",
-                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/count", "/documents/recently-updated",
-                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/count", "/organizations/recently-updated",
-                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/count", "/persons/recently-updated",
-                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/count", "/processes/recently-updated",
-                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/count", "/relationships/recently-updated"
+                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/count", "/collections/search/recently-updated",
+                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/count", "/concepts/search/recently-updated",
+                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/count", "/documents/search/recently-updated",
+                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/count", "/organizations/search/recently-updated",
+                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/count", "/persons/search/recently-updated",
+                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/count", "/processes/search/recently-updated",
+                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/count", "/relationships/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,
