@@ -15,6 +15,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
+import edu.tamu.scholars.middleware.discovery.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.ExporterArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
@@ -38,6 +39,7 @@ public class RepositoryRestConfig extends RepositoryRestMvcConfiguration {
     @Override
     protected List<HandlerMethodArgumentResolver> defaultMethodArgumentResolvers() {
         List<HandlerMethodArgumentResolver> resolvers = new ArrayList<>(super.defaultMethodArgumentResolvers());
+        resolvers.add(new ExportArgumentResolver());
         resolvers.add(new ExporterArgumentResolver(exporters));
         return resolvers;
     }

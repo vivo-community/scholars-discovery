@@ -169,7 +169,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                 .andReturn();
         result = mockMvc.perform(asyncDispatch(result))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM))
+            .andExpect(content().contentType("text/csv"))
             .andDo(
                 document(
                     getPath().substring(1) + "/export-search",

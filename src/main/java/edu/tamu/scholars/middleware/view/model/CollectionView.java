@@ -46,7 +46,7 @@ public abstract class CollectionView extends ResourceView {
     private List<Sort> sort;
 
     @ElementCollection
-    private List<Export> export;
+    private List<ExportField> export;
 
     public CollectionView() {
         super();
@@ -55,7 +55,7 @@ public abstract class CollectionView extends ResourceView {
         facets = new ArrayList<Facet>();
         filters = new ArrayList<Filter>();
         sort = new ArrayList<Sort>();
-        export = new ArrayList<Export>();
+        export = new ArrayList<ExportField>();
     }
 
     public Layout getLayout() {
@@ -106,11 +106,11 @@ public abstract class CollectionView extends ResourceView {
         this.sort = sort;
     }
 
-    public List<Export> getExport() {
+    public List<ExportField> getExport() {
         return export;
     }
 
-    public void setExport(List<Export> export) {
+    public void setExport(List<ExportField> export) {
         this.export = export;
     }
 

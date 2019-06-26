@@ -11,7 +11,7 @@ import java.util.Optional;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.view.annotation.ValidCollectionExport;
 import edu.tamu.scholars.middleware.view.model.CollectionView;
-import edu.tamu.scholars.middleware.view.model.Export;
+import edu.tamu.scholars.middleware.view.model.ExportField;
 
 public class CollectionExportValidator extends CollectionFieldValidator<ValidCollectionExport> {
 
@@ -19,7 +19,7 @@ public class CollectionExportValidator extends CollectionFieldValidator<ValidCol
     protected boolean isValidField(CollectionView collectionView, List<String> fieldNames) {
         Optional<Class<?>> type = getCollectionType(collectionView.getCollection());
         if (type.isPresent()) {
-            for (Export export : collectionView.getExport()) {
+            for (ExportField export : collectionView.getExport()) {
                 String[] path = export.getValuePath().split(PATH_DELIMETER_REGEX);
                 boolean exportValid = false;
                 for (String fieldName : fieldNames) {

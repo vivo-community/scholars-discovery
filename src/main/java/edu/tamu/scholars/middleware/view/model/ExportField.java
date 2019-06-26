@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Export {
+public class ExportField {
 
     @Column(nullable = false)
     private String columnHeader;
@@ -15,7 +15,7 @@ public class Export {
     @Column(nullable = false)
     private String delimiter;
 
-    public Export() {
+    public ExportField() {
         this.delimiter = "||";
     }
 

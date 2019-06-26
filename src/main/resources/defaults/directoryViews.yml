@@ -33,6 +33,19 @@
     hidden: false
   filters: []
   sort: []
+  export:
+    - columnHeader: First name
+      valuePath: firstName
+    - columnHeader: Last name
+      valuePath: lastName
+    - columnHeader: Preferred title
+      valuePath: preferredTitle
+    - columnHeader: Overview
+      valuePath: overview
+    - columnHeader: Position
+      valuePath: positions
+    - columnHeader: Department
+      valuePath: positions.organizations
   index:
     field: name
     operationKey: STARTS_WITH
@@ -145,6 +158,29 @@
     hidden: false
   filters: []
   sort: []
+  export:
+    - columnHeader: Publication type
+      valuePath: type
+    - columnHeader: Publication title
+      valuePath: title
+    - columnHeader: Publication date
+      valuePath: publicationDate
+    - columnHeader: Journal title
+      valuePath: publicationVenue
+    - columnHeader: Book title
+      valuePath: bookTitle
+    - columnHeader: Author
+      valuePath: authors
+    - columnHeader: Author's department
+      valuePath: authors.organizations
+    - columnHeader: DOI
+      valuePath: doi
+    - columnHeader: PubMed ID
+      valuePath: pmcid
+    - columnHeader: Open Access Link
+      valuePath: uri
+    - columnHeader: Publisher
+      valuePath: publisher
   index:
     field: title
     operationKey: STARTS_WITH

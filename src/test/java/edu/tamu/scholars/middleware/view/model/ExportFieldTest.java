@@ -8,18 +8,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class ExportTest {
+public class ExportFieldTest {
 
     @Test
     public void testDefaultConstructor() {
-        Export export = new Export();
+        ExportField export = new ExportField();
         assertNotNull(export);
         assertEquals("||", export.getDelimiter());
     }
 
     @Test
     public void testGettersAndSetters() {
-        Export export = new Export();
+        ExportField export = new ExportField();
 
         export.setColumnHeader("Test");
         export.setValuePath("test");
