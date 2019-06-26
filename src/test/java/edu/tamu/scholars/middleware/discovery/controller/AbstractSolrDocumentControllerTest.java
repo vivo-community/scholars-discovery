@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
@@ -160,6 +161,33 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                     requestParameters(
                         parameterWithName("query").description("The search query")
                     ),
+                    links(
+                            linkWithRel("self").description("Canonical link for this resource")
+                        ),
+                        responseFields(
+                            subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
+                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", getPath().substring(1, getPath().length() - 1))),
+                            subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
+                        )
+                )
+            );
+        // @formatter:on
+    }
+
+    @Test
+    public void testRecentlyUpdated() throws Exception {
+        // @formatter:off
+        mockMvc.perform(get(getPath() + "/recently-updated").param("limit", "5"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("persons", arrayWithSize(5)))
+            .andDo(
+                document(
+                    getPath().substring(1) + "/recently-updated",
+                    requestParameters(
+                        parameterWithName("limit").description("The number of recently updated documents to return.")
+                    ),
                     responseFields(
                         subsectionWithPath("value").description("The resulting count.")
                     )
@@ -176,7 +204,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
         }
         ConstraintDescriptionsHelper describeDocument = new ConstraintDescriptionsHelper(getType());
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/findByIdIn").param("ids", String.join(",", ids)))            
+        mockMvc.perform(get(getPath() + "/search/findByIdIn").param("ids", String.join(",", ids)))
             .andExpect(status().isOk())
             .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
             .andDo(
