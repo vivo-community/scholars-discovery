@@ -318,8 +318,9 @@
       - name: Documents
         field: etdChairOf
         sort:
-        - field: label
-          direction: ASC
+        - field: publicationDate
+          direction: DESC
+          date: true
         template: "defaults/displayViews/people/worksByStudents/chairedThesesAndDissertations/default.html"
   - name: Service
     hidden: false
