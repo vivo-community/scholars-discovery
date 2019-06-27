@@ -1,24 +1,30 @@
 {
-  "id": "ndcac0c82_bc8951b7_730827c3",
-  "type": [
+  "id" : "ndcac0c82_bc8951b7_730827c3",
+  "syncIds" : [
+    "ndcac0c82_bc8951b7_730827c3",
+    "ndcac0c82",
+    "ndcac0c82_730827c3",
+    "nbc8951b7"
+  ],
+  "type" : [
     "EducationalProcess"
   ],
-  "dateTimeIntervalEnd": "1992-01-01T00:00:00",
-  "outputPublicationOrOtherWork": [
+  "dateTimeIntervalEnd" : "Tue Dec 31 18:00:00 CST 1991",
+  "outputPublicationOrOtherWork" : [
     "Ahmed, Anwer: Ph.D. Doctor of Philosophy::ndcac0c82_730827c3"
   ],
-  "outputPublicationOrOtherWorkType": [
+  "outputPublicationOrOtherWorkType" : [
     "AwardedDegree::ndcac0c82_730827c3"
   ],
-  "hasOutput": [
+  "hasOutput" : [
     "Ahmed, Anwer: Ph.D. Doctor of Philosophy::ndcac0c82_730827c3"
   ],
-  "hasParticipant": [
-    "University of Rochester::nbc8951b7",
-    "Ahmed, Anwer::ndcac0c82"
+  "hasParticipant" : [
+    "Ahmed, Anwer::ndcac0c82",
+    "University of Rochester::nbc8951b7"
   ],
-  "hasParticipantType": [
-    "otherUniversity::nbc8951b7",
-    "FacultyMember::ndcac0c82"
+  "hasParticipantType" : [
+    "FacultyMember::ndcac0c82",
+    "otherUniversity::nbc8951b7"
   ]
 }

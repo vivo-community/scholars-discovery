@@ -80,6 +80,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/positionOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> positionOrganization;
 
+    @NestedObject
     @NestedMultiValuedProperty
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
@@ -201,6 +202,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/educationAndTraining", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTraining;
 
+    @NestedObject
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "person/educationAndTrainingOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTrainingOrganization;

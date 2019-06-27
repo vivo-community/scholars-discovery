@@ -59,6 +59,7 @@ public class Concept extends AbstractSolrDocument {
     @PropertySource(template = "concept/researchAreaOfTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOfTitle;
 
+    @NestedObject
     @NestedMultiValuedProperty
     @Indexed(type = "nested_strings")
     @PropertySource(template = "concept/researchAreaOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")

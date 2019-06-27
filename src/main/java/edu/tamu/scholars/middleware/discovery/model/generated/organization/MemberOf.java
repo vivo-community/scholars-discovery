@@ -1,0 +1,11 @@
+package edu.tamu.scholars.middleware.discovery.model.generated.organization;
+
+import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+
+public class MemberOf extends AbstractNestedDocument {
+  private static final long serialVersionUID = 5538405908922460780L;
+
+  public MemberOf() {
+    super();
+  }
+}

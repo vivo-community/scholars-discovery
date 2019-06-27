@@ -1,14 +1,29 @@
 {
-  "id": "nf32a4434",
-  "title": "Metadata design award (test) (Lee, Dong Joon)",
-  "type": [
+  "id" : "nf32a4434",
+  "syncIds" : [
+    "nf32a4434",
+    "nc7b1101c",
+    "na420643f",
+    "n545e2322"
+  ],
+  "title" : "Metadata design award (test) (Lee, Dong Joon)",
+  "type" : [
     "AwardReceipt"
   ],
-  "receiptOf": [
+  "receiptOf" : [
     "Metadata design award (test)::nc7b1101c"
   ],
-  "receiptOfType": [
+  "receiptOfType" : [
     "Award::nc7b1101c"
   ],
-  "yearAwarded": "2010-01-01T00:00:00"
+  "awardConferredBy" : [
+    "Accounting::n545e2322",
+    "ABB (Finland)::na420643f"
+  ],
+  "awardConferredByType" : [
+    "Organization::n545e2322",
+    "AcademicDepartment::n545e2322",
+    "otherUniversity::na420643f"
+  ],
+  "yearAwarded" : "Thu Dec 31 18:00:00 CST 2009"
 }
