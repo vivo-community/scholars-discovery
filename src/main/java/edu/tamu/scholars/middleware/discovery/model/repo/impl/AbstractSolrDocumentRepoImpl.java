@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.Criteria.OperationKey;
@@ -44,10 +46,16 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     @Override
     public FacetPage<D> search(String query, String index, String[] facets, MultiValueMap<String, String> params, Pageable page) {
+
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query != null) {
-            facetQuery.addCriteria(new SimpleStringCriteria(query));
+
+            Criteria criteria = getBoostCriteria(query);
+            facetQuery.addCriteria(criteria);
+
+            Sort scoreSort = Sort.by("score").descending().and(page.getSort());
+            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), scoreSort);
         } else {
             facetQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
         }
@@ -95,8 +103,9 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         facetQuery.setDefaultOperator(queryOperator);
 
         facetQuery.setDefType(queryParser);
-
         facetQuery.setPageRequest(page);
+
+
 
         return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
     }
@@ -133,6 +142,10 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     public abstract String collection();
 
     public abstract Class<D> type();
+
+    protected Criteria getBoostCriteria(String query) {
+        return new SimpleStringCriteria(query);
+    }
 
     private Criteria buildCriteria(String[] indexParts) {
         String field = indexParts[0];
