@@ -1,11 +1,28 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.process;
+package edu.tamu.scholars.middleware.discovery.model.generated;
 
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.Website;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.OfferedBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.OccursWithinEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.IncludesEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.InEventSery;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.Participant;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.SubjectArea;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.HasPrerequisite;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.PrerequisiteFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.GeographicFocus;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.OutputPublicationOrOtherWork;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.RelatedDocument;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.HeldInFacility;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.HeldInGeographicLocation;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.HasOutput;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.HasParticipant;
+import edu.tamu.scholars.middleware.discovery.model.generated.process.SameAs;
+
 import java.lang.String;
 import java.util.List;
 
 public class Process extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1031628238L;
+  private static final long serialVersionUID = -736834383L;
 
   private List<Website> websites;
 

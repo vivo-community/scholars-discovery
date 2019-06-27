@@ -1,11 +1,48 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.organization;
+package edu.tamu.scholars.middleware.discovery.model.generated;
 
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.Website;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.Degree;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.SponsorsAwardOrHonor;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AwardOrHonorGiven;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AwardOrHonorReceived;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationForTraining;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationForTrainingTrainee;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.People;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.HasSubOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationWithin;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.LeadOrganizationOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.HasCollaboratingOrganizationOrGroup;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.HasAffiliatedOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.MemberOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.ClinicalActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.ConvenerOfEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AttendedEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.Publication;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.PublisherOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.Presentation;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.FeaturedIn;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AssigneeForPatent;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.TranslatorOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AwardsGrant;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AdministersGrant;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.SubcontractsGrant;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.PerformsHumanStudy;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.ContractOrProviderForService;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.OutreachAndCommunityServiceActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.HasEquipment;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.Course;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.SameAs;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.LocatedAtFacility;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.PredecessorOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.SuccessorOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.GoverningAuthorityFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.AffiliatedResearchArea;
+
 import java.lang.String;
 import java.util.List;
 
 public class Organization extends AbstractNestedDocument {
-  private static final long serialVersionUID = -740439024L;
+  private static final long serialVersionUID = -1208362959L;
 
   private List<Website> websites;
 

@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Process;
 import edu.tamu.scholars.middleware.discovery.model.doa.ProcessService;
 import edu.tamu.scholars.middleware.discovery.model.repo.ProcessRepo;
 
-public class ProcessServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.process.Process, Process, ProcessRepo, ProcessService> {
+public class ProcessServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Process, Process, ProcessRepo, ProcessService> {
 
     @Value("classpath:mock/discovery/process")
     private Resource mocksDirectory;

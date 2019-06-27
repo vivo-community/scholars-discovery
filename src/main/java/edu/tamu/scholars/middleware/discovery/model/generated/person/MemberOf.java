@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.model.generated.person;
 
+import edu.tamu.scholars.middleware.discovery.model.generated.person.MemberOfOrganization;
+
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 

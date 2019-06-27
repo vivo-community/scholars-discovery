@@ -75,6 +75,7 @@ public class Collection extends AbstractSolrDocument {
     @PropertySource(template = "collection/authorRank", predicate = "http://vivoweb.org/ontology/core#rank")
     private List<String> authorRank;
 
+    @NestedObject
     @NestedMultiValuedProperty
     @Indexed(type = "nested_strings")
     @PropertySource(template = "collection/authorOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")

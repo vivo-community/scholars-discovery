@@ -1,12 +1,45 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.document;
+package edu.tamu.scholars.middleware.discovery.model.generated;
+
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Website;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.PublicationVenue;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.PublicationVenueFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.EtdChairedBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.EtdChairedByOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Author;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.AuthorOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Editor;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Translator;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Publisher;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.SubjectArea;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.DocumentPart;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Feature;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.GeographicFocus;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.DocumentationForProjectOrResource;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.OutputOfProcessOrEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.PresentedAt;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.CitedBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Citation;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.CitesAsDataSource;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Translation;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.TranslationOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.GlobalCitationFrequency;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Assignee;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.ReproducedIn;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Reproduce;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.IsAbout;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.SpecifiedOutputOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Mention;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.ParticipatesIn;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.SupportedBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.Receipt;
+import edu.tamu.scholars.middleware.discovery.model.generated.document.SameAs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 import java.util.List;
 
 public class Document extends AbstractNestedDocument {
-  private static final long serialVersionUID = -63412080L;
+  private static final long serialVersionUID = 499837721L;
 
   private List<Website> websites;
 

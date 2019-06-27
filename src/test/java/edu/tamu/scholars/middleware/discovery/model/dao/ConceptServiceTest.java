@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Concept;
 import edu.tamu.scholars.middleware.discovery.model.doa.ConceptService;
 import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
 
-public class ConceptServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.concept.Concept, Concept, ConceptRepo, ConceptService> {
+public class ConceptServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Concept, Concept, ConceptRepo, ConceptService> {
 
     @Value("classpath:mock/discovery/concept")
     private Resource mocksDirectory;

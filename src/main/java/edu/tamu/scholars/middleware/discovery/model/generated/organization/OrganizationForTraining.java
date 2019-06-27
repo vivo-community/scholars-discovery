@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.model.generated.organization;
 
+import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationForTrainingTrainee;
+
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 

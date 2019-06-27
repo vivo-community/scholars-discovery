@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Collection;
 import edu.tamu.scholars.middleware.discovery.model.doa.CollectionService;
 import edu.tamu.scholars.middleware.discovery.model.repo.CollectionRepo;
 
-public class CollectionServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.collection.Collection, Collection, CollectionRepo, CollectionService> {
+public class CollectionServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Collection, Collection, CollectionRepo, CollectionService> {
 
     @Value("classpath:mock/discovery/collection")
     private Resource mocksDirectory;

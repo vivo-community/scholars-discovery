@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.model.generated.collection;
 
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.AuthorOrganization;
+
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Author extends AbstractNestedDocument {
 
   private String rank;
 
-  private List<String> organizations;
+  private List<AuthorOrganization> organizations;
 
   public Author() {
     super();
@@ -33,11 +35,11 @@ public class Author extends AbstractNestedDocument {
     this.rank = rank;
   }
 
-  public List<String> getOrganizations() {
+  public List<AuthorOrganization> getOrganizations() {
     return organizations;
   }
 
-  public void setOrganizations(List<String> organizations) {
+  public void setOrganizations(List<AuthorOrganization> organizations) {
     this.organizations = organizations;
   }
 }

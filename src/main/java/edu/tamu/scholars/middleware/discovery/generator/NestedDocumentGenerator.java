@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -55,23 +57,31 @@ public class NestedDocumentGenerator {
 
     private static final ClassName STRING = ClassName.get("java.lang", "String");
 
-    private static File sourcePath;
-
     public static void main(String[] args) {
         generate();
     }
 
     public static void generate() {
-
         FileSystemUtils.deleteRecursively(new File(String.format("src/main/java/%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH.replace(".", "/"))));
-
-        sourcePath = new File("src/main/java");
-
         buildAbstractNestedDocument();
-
         for (Class<?> docType : getIndexDocuments()) {
             buildNestedDocumentClass(docType);
         }
+    }
+
+    private static Set<Class<?>> getIndexDocuments() {
+        Set<Class<?>> documents = new HashSet<Class<?>>();
+        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
+        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE_PATH);
+        for (BeanDefinition beanDefinition : beanDefinitions) {
+            try {
+                documents.add(Class.forName(beanDefinition.getBeanClassName()));
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Unable to find class for " + beanDefinition.getBeanClassName(), e);
+            }
+        }
+        return documents;
     }
 
     private static void buildAbstractNestedDocument() {
@@ -91,16 +101,20 @@ public class NestedDocumentGenerator {
 
         JavaFile nestedDocumentFile = JavaFile.builder(packagePath, abstractNestedDocumentClass).build();
 
+        File sourceDirectory = new File("src/main/java");
+
         try {
-            nestedDocumentFile.writeTo(sourcePath);
+            nestedDocumentFile.writeTo(sourceDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void buildNestedDocumentClass(Class<?> docType) {
-        String packagePath = String.format("%s.%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, docType.getSimpleName().toLowerCase());
-        
+        String packagePath = DISCOVERY_GENERATED_MODEL_PACKAGE_PATH;
+
+        String nestedPackagePath = String.format("%s.%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, docType.getSimpleName().toLowerCase());
+
         String className = docType.getSimpleName();
 
         List<Field> basicFields = FieldUtils.getAllFieldsList(docType)
@@ -108,21 +122,25 @@ public class NestedDocumentGenerator {
                 .filter(field -> !field.getName().equals("id"))
                 .filter(field -> !field.getName().equals("syncIds"))
                 .collect(Collectors.toList());
-        
+
         List<Field> nestedObjectFields = FieldUtils.getFieldsListWithAnnotation(docType, NestedObject.class)
                 .stream()
                 .filter(field -> !field.getName().equals("id"))
                 .filter(field -> !field.getName().equals("syncIds"))
                 .collect(Collectors.toList());
-        
+
         List<FieldSpec> fields = new ArrayList<FieldSpec>();
         List<MethodSpec> methods = new ArrayList<MethodSpec>();
+        
+        List<String> imports = new ArrayList<String>();
 
         for(Field field : nestedObjectFields) {
             NestedObject nestedObject = field.getAnnotation(NestedObject.class);
 
             if (nestedObject.root()) {
                 String nestedClassName = buildNestedClass(field, field.getName());
+                
+                imports.add(String.format("%s.%s", nestedPackagePath, nestedClassName));
 
                 ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
 
@@ -173,7 +191,7 @@ public class NestedDocumentGenerator {
         
         methods.forEach(m -> builder.addMethod(m));
 
-        createFile(builder, packagePath);
+        createFile(builder, packagePath, className, imports);
     }
 
     private static String buildNestedClass(Field field, String baseName) {
@@ -185,6 +203,8 @@ public class NestedDocumentGenerator {
 
         List<FieldSpec> fields = new ArrayList<FieldSpec>();
         List<MethodSpec> methods = new ArrayList<MethodSpec>();
+
+        List<String> imports = new ArrayList<String>();
 
         Optional<NestedObject> parentNestedObject = Optional.ofNullable(field.getAnnotation(NestedObject.class));
 
@@ -200,6 +220,8 @@ public class NestedDocumentGenerator {
 
                 if(childNestedObject.isPresent()) {
                     String nestedClassName = buildNestedClass(nestedField, reference.value());
+                    
+                    imports.add(String.format("%s.%s", packagePath, nestedClassName));
     
                     ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
     
@@ -235,14 +257,14 @@ public class NestedDocumentGenerator {
         fields.forEach(f -> builder.addField(f));
 
         builder.addMethod(constructor());
-        
+
         methods.forEach(m -> builder.addMethod(m));
 
-        createFile(builder, packagePath);
+        createFile(builder, packagePath, className, imports);
 
         return className;
     }
-    
+
     private static FieldSpec serializeVersionUID(String fullClassName) {
         return FieldSpec
                 .builder(long.class, "serialVersionUID", Modifier.PRIVATE, Modifier.STATIC,Modifier.FINAL)
@@ -250,15 +272,58 @@ public class NestedDocumentGenerator {
                 .build();
     }
 
-    private static void createFile(Builder builder, String packageName) {        
+    // NOTE: hack to manually add reference imports to allow top level nested documents in parent package
+    private static void createFile(Builder builder, String packagePath, String className, List<String> imports) {
         ClassName abstractNestedDocumentClass = ClassName.get(DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
 
         TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
 
-        JavaFile nestedDocumentFile = JavaFile.builder(packageName, nestedDocumentClass).build();
+        JavaFile nestedDocumentFile = JavaFile.builder(packagePath, nestedDocumentClass).build();
+        
+        String[] lines = nestedDocumentFile.toString().split("\\r?\\n");
+        
+        StringBuilder fileAsString = new StringBuilder();
+        
+        for (int l = 0; l < lines.length; l++) {
+            fileAsString.append(String.format("%s\n", lines[l]));
+            if(l == 0 && imports.size() > 0) {
+                fileAsString.append("\n");
+                imports.forEach(i -> {
+                    fileAsString.append(String.format("import %s;\n", i));
+                });
+            }
+        }
+
+        String directoryPath = String.format("%s%s%s", "src/main/java", File.separator, packagePath.replace(".", File.separator));
+
+        File directory = new File(directoryPath);
+
+        directory.mkdirs();
+
+        String filePath = String.format("%s%s%s.java", directoryPath, File.separator, className);
 
         try {
-            nestedDocumentFile.writeTo(sourcePath);
+            Files.write(Paths.get(filePath), fileAsString.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // TODO: figure out why reference imports not working, tried $T
+    // if and when field types import properly, use this method
+    // https://github.com/square/javapoet#t-for-types
+    @SuppressWarnings("unused")
+    private static void createFile(Builder builder, String packagePath) {
+        ClassName abstractNestedDocumentClass = ClassName.get(DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
+
+        TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
+
+        JavaFile nestedDocumentFile = JavaFile.builder(packagePath, nestedDocumentClass).build();
+
+        File sourceDirectory = new File("src/main/java");
+
+        try {
+             nestedDocumentFile.writeTo(sourceDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -304,21 +369,6 @@ public class NestedDocumentGenerator {
                 .addParameter(type, name)
                 .addStatement("this.$N = $N", name, name)
                 .build();
-    }
-
-    private static Set<Class<?>> getIndexDocuments() {
-        Set<Class<?>> documents = new HashSet<Class<?>>();
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
-        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE_PATH);
-        for (BeanDefinition beanDefinition : beanDefinitions) {
-            try {
-                documents.add(Class.forName(beanDefinition.getBeanClassName()));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to find class for " + beanDefinition.getBeanClassName(), e);
-            }
-        }
-        return documents;
     }
 
 }

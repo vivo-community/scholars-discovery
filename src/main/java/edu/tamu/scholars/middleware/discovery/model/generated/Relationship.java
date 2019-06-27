@@ -1,12 +1,32 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.relationship;
+package edu.tamu.scholars.middleware.discovery.model.generated;
+
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.ReceiptOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.AwardOrHonorFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.AwardConferredBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.AwardedBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.GrantSubcontractedThrough;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.AdministeredBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.GeographicFocus;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.SubGrant;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.SubGrantOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.ProvidesFundingFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.Contributor;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.PrincipalInvestigator;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.CoPrincipalInvestigator;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.SupportedPublicationOrOtherWork;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.SubjectArea;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.SameAs;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.InheresIn;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.SpecifiedOutputOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.OutputOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.relationship.ParticipatesIn;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 import java.util.List;
 
 public class Relationship extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1736877008L;
+  private static final long serialVersionUID = 1645830454L;
 
   private List<ReceiptOf> receiptOf;
 

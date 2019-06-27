@@ -1,11 +1,19 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.concept;
+package edu.tamu.scholars.middleware.discovery.model.generated;
 
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.Website;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.AssociatedDepartment;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.ResearchAreaOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.ResearchAreaOfOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.BroaderConcept;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.NarrowerConcept;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.RelatedConcept;
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.SameAs;
+
 import java.lang.String;
 import java.util.List;
 
 public class Concept extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1597224668L;
+  private static final long serialVersionUID = 523708586L;
 
   private List<Website> websites;
 

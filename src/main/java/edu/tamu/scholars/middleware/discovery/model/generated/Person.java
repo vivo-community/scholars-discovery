@@ -1,11 +1,51 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.person;
+package edu.tamu.scholars.middleware.discovery.model.generated;
 
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.Website;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.Position;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.PositionOrganizationParent;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.ResearchArea;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.GeographicFocus;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.HeadOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.HeadOfOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.MemberOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.MemberOfOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.HasCollaborator;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.ClinicalActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.AttendedEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.EducationAndTraining;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.EducationAndTrainingOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.Credential;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.CredentialEligibilityAttained;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.AwardsAndHonors;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.AdviseeOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.Publication;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.CollectionOrSeriesEditorFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.EditorOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.Presentation;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.FeaturedIn;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.AssigneeForPatent;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.TranslatorOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.PrincipalInvestigatorOn;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.CoPrincipalInvestigatorOn;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.InvestigatorOn;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.OtherResearchActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.TeachingActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.Advisee;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.ReviewerOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.ContactOrProvidorForService;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.OrganizerOfEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.ProfessionalServiceActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.OutreachAndCommunityServiceActivity;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.PerformsTechnique;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.HasExpertiseInTechnique;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.SameAs;
+import edu.tamu.scholars.middleware.discovery.model.generated.person.EtdChairOf;
+
 import java.lang.String;
 import java.util.List;
 
 public class Person extends AbstractNestedDocument {
-  private static final long serialVersionUID = -23306992L;
+  private static final long serialVersionUID = 795614419L;
 
   private List<Website> websites;
 

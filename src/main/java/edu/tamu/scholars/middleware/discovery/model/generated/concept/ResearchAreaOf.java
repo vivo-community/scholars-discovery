@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.model.generated.concept;
 
+import edu.tamu.scholars.middleware.discovery.model.generated.concept.ResearchAreaOfOrganization;
+
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 import java.util.List;

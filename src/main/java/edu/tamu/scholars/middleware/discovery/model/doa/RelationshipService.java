@@ -6,11 +6,11 @@ import edu.tamu.scholars.middleware.discovery.model.Relationship;
 import edu.tamu.scholars.middleware.discovery.model.repo.RelationshipRepo;
 
 @Service
-public class RelationshipService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.relationship.Relationship, Relationship, RelationshipRepo> {
+public class RelationshipService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Relationship, Relationship, RelationshipRepo> {
 
     @Override
     protected Class<?> getNestedDocumentClass() {
-        return edu.tamu.scholars.middleware.discovery.model.generated.relationship.Relationship.class;
+        return edu.tamu.scholars.middleware.discovery.model.generated.Relationship.class;
     }
 
 }

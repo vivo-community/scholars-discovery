@@ -1,18 +1,37 @@
-package edu.tamu.scholars.middleware.discovery.model.generated.collection;
+package edu.tamu.scholars.middleware.discovery.model.generated;
+
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Website;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.PublicationVenueFor;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Author;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.AuthorOrganization;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Editor;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Translator;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Publisher;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.SubjectArea;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Feature;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.GeographicFocus;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.OutputOfProcessOrEvent;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.IsAbout;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.SpecifiedOutputOf;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.Mention;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.ParticipatesIn;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.SupportedBy;
+import edu.tamu.scholars.middleware.discovery.model.generated.collection.SameAs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import java.lang.String;
 import java.util.List;
 
 public class Collection extends AbstractNestedDocument {
-  private static final long serialVersionUID = 1090817776L;
+  private static final long serialVersionUID = -1618656996L;
 
   private List<Website> websites;
 
   private List<PublicationVenueFor> publicationVenueFor;
 
   private List<Author> authors;
+
+  private List<AuthorOrganization> authorOrganization;
 
   private List<Editor> editors;
 
@@ -93,6 +112,14 @@ public class Collection extends AbstractNestedDocument {
 
   public void setAuthors(List<Author> authors) {
     this.authors = authors;
+  }
+
+  public List<AuthorOrganization> getAuthorOrganization() {
+    return authorOrganization;
+  }
+
+  public void setAuthorOrganization(List<AuthorOrganization> authorOrganization) {
+    this.authorOrganization = authorOrganization;
   }
 
   public List<Editor> getEditors() {
