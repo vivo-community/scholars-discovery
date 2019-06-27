@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Organization extends AbstractNestedDocument {
-  private static final long serialVersionUID = 734896585109149513L;
+  private static final long serialVersionUID = -740439024L;
 
   private List<Website> websites;
 

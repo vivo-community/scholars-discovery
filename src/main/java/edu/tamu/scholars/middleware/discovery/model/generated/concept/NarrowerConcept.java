@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class NarrowerConcept extends AbstractNestedDocument {
-  private static final long serialVersionUID = -4321604532878911975L;
+  private static final long serialVersionUID = -823076420L;
 
   private String type;
 

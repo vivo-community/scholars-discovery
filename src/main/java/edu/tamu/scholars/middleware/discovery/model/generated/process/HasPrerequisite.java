@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class HasPrerequisite extends AbstractNestedDocument {
-  private static final long serialVersionUID = -8818996089059444041L;
+  private static final long serialVersionUID = 1549613875L;
 
   private String type;
 

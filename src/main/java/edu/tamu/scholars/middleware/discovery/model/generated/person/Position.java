@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Position extends AbstractNestedDocument {
-  private static final long serialVersionUID = -8003794572799689830L;
+  private static final long serialVersionUID = -618538972L;
 
   private String type;
 

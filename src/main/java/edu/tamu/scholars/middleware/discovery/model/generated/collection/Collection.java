@@ -6,7 +6,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Collection extends AbstractNestedDocument {
-  private static final long serialVersionUID = -2137496190213020791L;
+  private static final long serialVersionUID = 1090817776L;
 
   private List<Website> websites;
 

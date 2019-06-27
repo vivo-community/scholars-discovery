@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class EtdChairOf extends AbstractNestedDocument {
-  private static final long serialVersionUID = 4749547663382177219L;
+  private static final long serialVersionUID = -85017502L;
 
   private String url;
 

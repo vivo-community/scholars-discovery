@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class SupportedPublicationOrOtherWork extends AbstractNestedDocument {
-  private static final long serialVersionUID = 5945025919226025945L;
+  private static final long serialVersionUID = -1237108952L;
 
   private String type;
 

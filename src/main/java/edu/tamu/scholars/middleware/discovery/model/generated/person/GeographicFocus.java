@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class GeographicFocus extends AbstractNestedDocument {
-  private static final long serialVersionUID = -4594486050232955300L;
+  private static final long serialVersionUID = 449470790L;
 
   private String type;
 

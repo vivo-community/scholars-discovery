@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Concept extends AbstractNestedDocument {
-  private static final long serialVersionUID = -88888876514335165L;
+  private static final long serialVersionUID = -1597224668L;
 
   private List<Website> websites;
 

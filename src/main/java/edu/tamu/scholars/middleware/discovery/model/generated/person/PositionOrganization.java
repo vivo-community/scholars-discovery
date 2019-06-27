@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.util.List;
 
 public class PositionOrganization extends AbstractNestedDocument {
-  private static final long serialVersionUID = -8350228804164300609L;
+  private static final long serialVersionUID = -1717894281L;
 
   private List<PositionOrganizationParent> parent;
 

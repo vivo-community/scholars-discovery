@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class ConvenerOfEvent extends AbstractNestedDocument {
-  private static final long serialVersionUID = 4635235769435322330L;
+  private static final long serialVersionUID = 68641628L;
 
   private String date;
 

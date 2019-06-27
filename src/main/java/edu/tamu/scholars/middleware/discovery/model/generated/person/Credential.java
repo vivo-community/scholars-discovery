@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class Credential extends AbstractNestedDocument {
-  private static final long serialVersionUID = -130376771381474063L;
+  private static final long serialVersionUID = 520049810L;
 
   private String dateIssued;
 

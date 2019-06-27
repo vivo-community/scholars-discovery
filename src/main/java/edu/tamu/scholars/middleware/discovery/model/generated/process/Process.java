@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Process extends AbstractNestedDocument {
-  private static final long serialVersionUID = 6998132437676604039L;
+  private static final long serialVersionUID = -1031628238L;
 
   private List<Website> websites;
 

@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class EditorOf extends AbstractNestedDocument {
-  private static final long serialVersionUID = 313957220127103529L;
+  private static final long serialVersionUID = 236503839L;
 
   private String type;
 

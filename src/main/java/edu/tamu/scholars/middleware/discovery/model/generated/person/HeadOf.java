@@ -4,11 +4,11 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class HeadOf extends AbstractNestedDocument {
-  private static final long serialVersionUID = 7392933754614200434L;
+  private static final long serialVersionUID = -252862062L;
 
   private String type;
 
-  private String organization;
+  private HeadOfOrganization organization;
 
   private String startDate;
 
@@ -26,11 +26,11 @@ public class HeadOf extends AbstractNestedDocument {
     this.type = type;
   }
 
-  public String getOrganization() {
+  public HeadOfOrganization getOrganization() {
     return organization;
   }
 
-  public void setOrganization(String organization) {
+  public void setOrganization(HeadOfOrganization organization) {
     this.organization = organization;
   }
 

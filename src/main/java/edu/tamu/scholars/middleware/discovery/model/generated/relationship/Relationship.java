@@ -6,7 +6,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Relationship extends AbstractNestedDocument {
-  private static final long serialVersionUID = -7598903696491693339L;
+  private static final long serialVersionUID = -1736877008L;
 
   private List<ReceiptOf> receiptOf;
 

@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class CitesAsDataSource extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1770394729142024524L;
+  private static final long serialVersionUID = 1033762430L;
 
   private String type;
 

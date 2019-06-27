@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class AwardConferredBy extends AbstractNestedDocument {
-  private static final long serialVersionUID = 4972280739706475643L;
+  private static final long serialVersionUID = -713972750L;
 
   private String type;
 

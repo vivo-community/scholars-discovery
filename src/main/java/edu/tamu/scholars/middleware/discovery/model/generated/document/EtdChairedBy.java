@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class EtdChairedBy extends AbstractNestedDocument {
-  private static final long serialVersionUID = -3233763516666976957L;
+  private static final long serialVersionUID = -313345925L;
 
   private String email;
 

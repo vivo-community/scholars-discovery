@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,42 +56,40 @@ public class NestedDocumentGenerator {
     private static final ClassName STRING = ClassName.get("java.lang", "String");
 
     private static File sourcePath;
-    
-    private static Random random = new Random();
 
     public static void main(String[] args) {
         generate();
     }
 
     public static void generate() {
-        
+
         FileSystemUtils.deleteRecursively(new File(String.format("src/main/java/%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH.replace(".", "/"))));
-        
+
         sourcePath = new File("src/main/java");
-        
+
         buildAbstractNestedDocument();
-        
+
         for (Class<?> docType : getIndexDocuments()) {
             buildNestedDocumentClass(docType);
         }
     }
-    
+
     private static void buildAbstractNestedDocument() {
-        String packageName = DISCOVERY_GENERATED_MODEL_PACKAGE_PATH;
+        String packagePath = DISCOVERY_GENERATED_MODEL_PACKAGE_PATH;
         String className = DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME;
 
         TypeSpec abstractNestedDocumentClass = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addSuperinterface(Serializable.class)
                 .superclass(AbstractSolrDocument.class)
-                .addField(serializeVersionUID())
+                .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)))
+                .addMethod(constructor())
                 .addField(STRING, "label", Modifier.PRIVATE)
                 .addMethod(getter(STRING, "label"))
                 .addMethod(setter(STRING, "label"))
-                .addMethod(constructor())
                 .build();
 
-        JavaFile nestedDocumentFile = JavaFile.builder(packageName, abstractNestedDocumentClass).build();
+        JavaFile nestedDocumentFile = JavaFile.builder(packagePath, abstractNestedDocumentClass).build();
 
         try {
             nestedDocumentFile.writeTo(sourcePath);
@@ -105,11 +103,7 @@ public class NestedDocumentGenerator {
         
         String className = docType.getSimpleName();
 
-        Builder builder = TypeSpec.classBuilder(className)
-                .addModifiers(Modifier.PUBLIC)
-                .addField(serializeVersionUID());
-
-        List<Field> fields = FieldUtils.getAllFieldsList(docType)
+        List<Field> basicFields = FieldUtils.getAllFieldsList(docType)
                 .stream()
                 .filter(field -> !field.getName().equals("id"))
                 .filter(field -> !field.getName().equals("syncIds"))
@@ -120,6 +114,9 @@ public class NestedDocumentGenerator {
                 .filter(field -> !field.getName().equals("id"))
                 .filter(field -> !field.getName().equals("syncIds"))
                 .collect(Collectors.toList());
+        
+        List<FieldSpec> fields = new ArrayList<FieldSpec>();
+        List<MethodSpec> methods = new ArrayList<MethodSpec>();
 
         for(Field field : nestedObjectFields) {
             NestedObject nestedObject = field.getAnnotation(NestedObject.class);
@@ -132,29 +129,26 @@ public class NestedDocumentGenerator {
                 if (List.class.isAssignableFrom(field.getType())) {
                     TypeName listOfNestedClass = ParameterizedTypeName.get(LIST, nestedClass);
 
-                    builder
-                        .addField(listOfNestedClass, field.getName(), Modifier.PRIVATE)
-                        .addMethod(getter(listOfNestedClass, field.getName()))
-                        .addMethod(setter(listOfNestedClass, field.getName()));
+                    fields.add(field(listOfNestedClass, field.getName(), Modifier.PRIVATE));
+                    methods.add(getter(listOfNestedClass, field.getName()));
+                    methods.add(setter(listOfNestedClass, field.getName()));
                 } else {
-                    builder
-                        .addField(nestedClass, field.getName(), Modifier.PRIVATE)
-                        .addMethod(getter(nestedClass, field.getName()))
-                        .addMethod(setter(nestedClass, field.getName()));
+                    
+                    fields.add(field(nestedClass, field.getName(), Modifier.PRIVATE));
+                    methods.add(getter(nestedClass, field.getName()));
+                    methods.add(setter(nestedClass, field.getName()));
                 }
-
             }
 
             for (Reference reference : nestedObject.value()) {
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);
-                
-                fields = fields.stream().filter(f -> !f.getName().equals(nestedField.getName())).collect(Collectors.toList());
+                basicFields = basicFields.stream().filter(f -> !f.getName().equals(nestedField.getName())).collect(Collectors.toList());
             }
 
-            fields = fields.stream().filter(f -> !f.getName().equals(field.getName())).collect(Collectors.toList());
+            basicFields = basicFields.stream().filter(f -> !f.getName().equals(field.getName())).collect(Collectors.toList());
         }
 
-        for (Field field : fields) {
+        for (Field field : basicFields) {
             TypeName type = TypeName.get(field.getGenericType());
             FieldSpec.Builder fieldBuilder = FieldSpec.builder(type, field.getName(), Modifier.PRIVATE);
 
@@ -163,12 +157,21 @@ public class NestedDocumentGenerator {
                 AnnotationSpec annotation = AnnotationSpec.builder(JsonProperty.class).addMember("value", "$S", jsonProperty.get().value()).build();
                 fieldBuilder.addAnnotation(annotation);
             }
-
-            builder
-                .addField(fieldBuilder.build())
-                .addMethod(getter(type, field.getName()))
-                .addMethod(setter(type, field.getName()));
+            
+            fields.add(fieldBuilder.build());
+            methods.add(getter(type, field.getName()));
+            methods.add(setter(type, field.getName()));
         }
+        
+        Builder builder = TypeSpec.classBuilder(className)
+                .addModifiers(Modifier.PUBLIC)
+                .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
+
+        fields.forEach(f -> builder.addField(f));
+
+        builder.addMethod(constructor());
+        
+        methods.forEach(m -> builder.addMethod(m));
 
         createFile(builder, packagePath);
     }
@@ -180,9 +183,8 @@ public class NestedDocumentGenerator {
 
         String className = buildClassName(baseName);
 
-        Builder builder = TypeSpec.classBuilder(className)
-                .addModifiers(Modifier.PUBLIC)
-                .addField(serializeVersionUID());
+        List<FieldSpec> fields = new ArrayList<FieldSpec>();
+        List<MethodSpec> methods = new ArrayList<MethodSpec>();
 
         Optional<NestedObject> parentNestedObject = Optional.ofNullable(field.getAnnotation(NestedObject.class));
 
@@ -203,58 +205,60 @@ public class NestedDocumentGenerator {
     
                     if(nestedMultiValuedProperty.isPresent()) {
                         TypeName listOfNestedClass = ParameterizedTypeName.get(LIST, nestedClass);
-    
-                        builder
-                            .addField(listOfNestedClass, fieldName, Modifier.PRIVATE)
-                            .addMethod(getter(listOfNestedClass, fieldName))
-                            .addMethod(setter(listOfNestedClass, fieldName));
+                        fields.add(field(listOfNestedClass, fieldName, Modifier.PRIVATE));
+                        methods.add(getter(listOfNestedClass, fieldName));
+                        methods.add(setter(listOfNestedClass, fieldName));
                     } else {
-                        builder
-                            .addField(nestedClass, fieldName, Modifier.PRIVATE)
-                            .addMethod(getter(nestedClass, fieldName))
-                            .addMethod(setter(nestedClass, fieldName));
+                        fields.add(field(nestedClass, fieldName, Modifier.PRIVATE));
+                        methods.add(getter(nestedClass, fieldName));
+                        methods.add(setter(nestedClass, fieldName));
                     }
                 } else {
                     if(nestedMultiValuedProperty.isPresent()) {
                         TypeName listOfStrings = ParameterizedTypeName.get(LIST, STRING);
-                        
-                        builder
-                            .addField(listOfStrings, fieldName, Modifier.PRIVATE)
-                            .addMethod(getter(listOfStrings, fieldName))
-                            .addMethod(setter(listOfStrings, fieldName));
+                        fields.add(field(listOfStrings, fieldName, Modifier.PRIVATE));
+                        methods.add(getter(listOfStrings, fieldName));
+                        methods.add(setter(listOfStrings, fieldName));
                     } else {
-                        builder
-                            .addField(STRING, fieldName, Modifier.PRIVATE)
-                            .addMethod(getter(STRING, fieldName))
-                            .addMethod(setter(STRING, fieldName));
+                        fields.add(field(STRING, fieldName, Modifier.PRIVATE));
+                        methods.add(getter(STRING, fieldName));
+                        methods.add(setter(STRING, fieldName));
                     }
                 }
             }
         }
+
+        Builder builder = TypeSpec.classBuilder(className)
+                .addModifiers(Modifier.PUBLIC)
+                .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
+
+        fields.forEach(f -> builder.addField(f));
+
+        builder.addMethod(constructor());
+        
+        methods.forEach(m -> builder.addMethod(m));
 
         createFile(builder, packagePath);
 
         return className;
     }
     
-    private static FieldSpec serializeVersionUID() {
+    private static FieldSpec serializeVersionUID(String fullClassName) {
         return FieldSpec
                 .builder(long.class, "serialVersionUID", Modifier.PRIVATE, Modifier.STATIC,Modifier.FINAL)
-                .initializer("$LL", random.nextLong())
+                .initializer("$LL", Long.valueOf(fullClassName.hashCode()))
                 .build();
     }
 
     private static void createFile(Builder builder, String packageName) {        
-        builder.addMethod(constructor());
-
         ClassName abstractNestedDocumentClass = ClassName.get(DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
 
         TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
 
-        JavaFile docFile = JavaFile.builder(packageName, nestedDocumentClass).build();
+        JavaFile nestedDocumentFile = JavaFile.builder(packageName, nestedDocumentClass).build();
 
         try {
-            docFile.writeTo(sourcePath);
+            nestedDocumentFile.writeTo(sourcePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -269,6 +273,10 @@ public class NestedDocumentGenerator {
             className = className.substring(0, className.length() - 1);
         }
         return className;
+    }
+
+    private static FieldSpec field(TypeName type, String name, Modifier...modifiers) {
+        return FieldSpec.builder(type, name, modifiers).build();
     }
 
     private static MethodSpec constructor() {

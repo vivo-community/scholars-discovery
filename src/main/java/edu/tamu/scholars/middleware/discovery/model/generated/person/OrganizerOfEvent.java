@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class OrganizerOfEvent extends AbstractNestedDocument {
-  private static final long serialVersionUID = -2121652580056597573L;
+  private static final long serialVersionUID = 1155946703L;
 
   private String type;
 

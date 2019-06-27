@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.lang.String;
 
 public abstract class AbstractNestedDocument extends AbstractSolrDocument implements Serializable {
-  private static final long serialVersionUID = -6742176553037076125L;
+  private static final long serialVersionUID = 401296754L;
 
   private String label;
 

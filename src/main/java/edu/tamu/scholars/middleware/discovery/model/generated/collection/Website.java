@@ -4,7 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocu
 import java.lang.String;
 
 public class Website extends AbstractNestedDocument {
-  private static final long serialVersionUID = -2268081482043907116L;
+  private static final long serialVersionUID = -887803511L;
 
   private String url;
 

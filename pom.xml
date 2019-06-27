@@ -329,6 +329,7 @@
           <excludes>
             <exclude>edu/tamu/scholars/middleware/discovery/model/doa/*</exclude>
             <exclude>edu/tamu/scholars/middleware/discovery/model/generated/*</exclude>
+            <exclude>edu/tamu/scholars/middleware/discovery/model/generated/**/*</exclude>
           </excludes>
           -->
         </configuration>

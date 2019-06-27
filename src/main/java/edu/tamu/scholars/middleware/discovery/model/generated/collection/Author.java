@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Author extends AbstractNestedDocument {
-  private static final long serialVersionUID = 1097193475585445321L;
+  private static final long serialVersionUID = 1712126685L;
 
   private String type;
 

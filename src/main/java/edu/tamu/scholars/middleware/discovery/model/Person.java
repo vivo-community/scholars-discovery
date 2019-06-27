@@ -121,6 +121,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/headOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> headOfType;
 
+    @NestedObject
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/headOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> headOfOrganization;
@@ -142,6 +143,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/memberOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> memberOfType;
 
+    @NestedObject
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/memberOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> memberOfOrganization;

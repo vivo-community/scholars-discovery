@@ -5,7 +5,7 @@ import java.lang.String;
 import java.util.List;
 
 public class Person extends AbstractNestedDocument {
-  private static final long serialVersionUID = 3418752814429031195L;
+  private static final long serialVersionUID = -23306992L;
 
   private List<Website> websites;
 
@@ -19,7 +19,11 @@ public class Person extends AbstractNestedDocument {
 
   private List<HeadOf> headOf;
 
+  private List<HeadOfOrganization> headOfOrganization;
+
   private List<MemberOf> memberOf;
+
+  private List<MemberOfOrganization> memberOfOrganization;
 
   private List<HasCollaborator> hasCollaborator;
 
@@ -214,12 +218,28 @@ public class Person extends AbstractNestedDocument {
     this.headOf = headOf;
   }
 
+  public List<HeadOfOrganization> getHeadOfOrganization() {
+    return headOfOrganization;
+  }
+
+  public void setHeadOfOrganization(List<HeadOfOrganization> headOfOrganization) {
+    this.headOfOrganization = headOfOrganization;
+  }
+
   public List<MemberOf> getMemberOf() {
     return memberOf;
   }
 
   public void setMemberOf(List<MemberOf> memberOf) {
     this.memberOf = memberOf;
+  }
+
+  public List<MemberOfOrganization> getMemberOfOrganization() {
+    return memberOfOrganization;
+  }
+
+  public void setMemberOfOrganization(List<MemberOfOrganization> memberOfOrganization) {
+    this.memberOfOrganization = memberOfOrganization;
   }
 
   public List<HasCollaborator> getHasCollaborator() {
