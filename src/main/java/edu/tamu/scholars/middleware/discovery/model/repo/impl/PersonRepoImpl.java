@@ -17,7 +17,7 @@ public class PersonRepoImpl extends AbstractSolrDocumentRepoImpl<Person> {
     }
 
     @Override
-    protected Criteria getBoostCriteria(String query) {
-        return Criteria.where("firstName").is(query).boost(2).or("lastName").is(query).boost(2).or(super.getBoostCriteria(query));
+    protected Criteria getCriteria(String query) {
+        return Criteria.where("firstName").is(query).boost(2).or("lastName").is(query).boost(2).or(super.getCriteria(query));
     }
 }

@@ -50,8 +50,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query != null) {
-
-            Criteria criteria = getBoostCriteria(query);
+            Criteria criteria = getCriteria(query);
             facetQuery.addCriteria(criteria);
 
             Sort scoreSort = Sort.by("score").descending().and(page.getSort());
@@ -143,7 +142,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     public abstract Class<D> type();
 
-    protected Criteria getBoostCriteria(String query) {
+    protected Criteria getCriteria(String query) {
         return new SimpleStringCriteria(query);
     }
 
