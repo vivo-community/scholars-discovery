@@ -2091,5 +2091,4 @@ public class Person extends AbstractSolrDocument {
     public void setModTime(String modTime) {
         this.modTime = modTime;
     }
-
 }
