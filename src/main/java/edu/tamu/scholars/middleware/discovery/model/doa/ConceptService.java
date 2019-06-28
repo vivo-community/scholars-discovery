@@ -9,7 +9,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
 public class ConceptService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Concept, Concept, ConceptRepo> {
 
     @Override
-    protected Class<?> getNestedDocumentClass() {
+    protected Class<?> getNestedDocumentType() {
         return edu.tamu.scholars.middleware.discovery.model.generated.Concept.class;
     }
 

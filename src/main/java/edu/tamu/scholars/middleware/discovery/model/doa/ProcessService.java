@@ -9,7 +9,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.ProcessRepo;
 public class ProcessService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Process, Process, ProcessRepo> {
 
     @Override
-    protected Class<?> getNestedDocumentClass() {
+    protected Class<?> getNestedDocumentType() {
         return edu.tamu.scholars.middleware.discovery.model.generated.Process.class;
     }
 

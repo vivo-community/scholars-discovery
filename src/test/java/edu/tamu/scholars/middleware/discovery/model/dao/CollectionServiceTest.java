@@ -21,5 +21,10 @@ public class CollectionServiceTest extends AbstractSolrDocumentServiceTest<edu.t
     protected Class<?> getType() {
         return Collection.class;
     }
+    
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Collection.class;
+    }
 
 }

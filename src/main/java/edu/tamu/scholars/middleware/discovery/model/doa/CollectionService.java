@@ -9,7 +9,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.CollectionRepo;
 public class CollectionService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Collection, Collection, CollectionRepo> {
 
     @Override
-    protected Class<?> getNestedDocumentClass() {
+    protected Class<?> getNestedDocumentType() {
         return edu.tamu.scholars.middleware.discovery.model.generated.Collection.class;
     }
 

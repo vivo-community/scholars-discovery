@@ -1,12 +1,15 @@
 package edu.tamu.scholars.middleware.discovery.model.dao;
 
-import static edu.tamu.scholars.middleware.discovery.generator.NestedDocumentGenerator.DISCOVERY_GENERATED_MODEL_PACKAGE_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -20,11 +23,10 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -40,10 +42,18 @@ public abstract class AbstractSolrDocumentServiceTest<ND extends AbstractNestedD
     private DAO service;
 
     @Test
+    public void testGeneratedDocumentDefaultConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        Class<?> clazz = getNestedDocumentType();
+
+        @SuppressWarnings("unchecked")
+        ND document = (ND) clazz.getConstructor().newInstance();
+
+        assertNotNull(document);
+    }
+
+    @Test
     public void testGeneratedDocuments() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        for (Class<?> clazz : getGeneratedNestedDocuments()) {
-            testGeneratedDocument(clazz);
-        }
+        testGeneratedDocument(getNestedDocumentType());
     }
 
     @Test
@@ -60,50 +70,56 @@ public abstract class AbstractSolrDocumentServiceTest<ND extends AbstractNestedD
         List<ND> documents = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
         assertEquals(3, documents.size());
     }
+    
+    protected abstract Class<?> getNestedDocumentType();
 
-    private Set<Class<?>> getGeneratedNestedDocuments() {
-        Set<Class<?>> documents = new HashSet<Class<?>>();
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AssignableTypeFilter(AbstractNestedDocument.class));
-        String packagePath = String.format("%s.%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, getType().getSimpleName().toLowerCase());
-        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(packagePath);
-        for (BeanDefinition beanDefinition : beanDefinitions) {
-            try {
-                documents.add(Class.forName(beanDefinition.getBeanClassName()));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to find class for " + beanDefinition.getBeanClassName(), e);
-            }
-        }
-        return documents;
-    }
+    private AbstractNestedDocument testGeneratedDocument(Class<?> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        AbstractNestedDocument document = (AbstractNestedDocument) type.getConstructor().newInstance();
 
-    private void testGeneratedDocument(Class<?> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        @SuppressWarnings("unchecked")
-        D document = (D) clazz.getConstructor().newInstance();
+        List<String> listOfStrings = Arrays.asList(new String[] { "Hello", "World" });
 
-        String single = "Test";
+        Set<String> setOfStrings = new HashSet<String>(listOfStrings);
 
-        List<String> list = Arrays.asList(new String[] { "Hello", "World" });
-
-        Set<String> set = new HashSet<String>(list);
-
-        List<Field> fields = FieldUtils.getAllFieldsList(clazz).stream().filter(field -> !field.getName().equals("serialVersionUID")).filter(field -> !field.getName().contains("$")).collect(Collectors.toList());
+        List<Field> fields = FieldUtils.getAllFieldsList(type).stream()
+                .filter(field -> !field.getName().equals("serialVersionUID"))
+                .filter(field -> !field.getName().startsWith("$"))
+                .collect(Collectors.toList());
 
         for (Field field : fields) {
             String property = field.getName();
             if (AbstractNestedDocument.class.isAssignableFrom(field.getType())) {
-                testGeneratedDocument(field.getType());
+                AbstractNestedDocument nestedDocument = testGeneratedDocument(field.getType());
+                MethodUtils.invokeMethod(document, true, setter(property), nestedDocument);
+                assertEquals(nestedDocument, MethodUtils.invokeMethod(document, true, getter(property)));
             } else if (List.class.isAssignableFrom(field.getType())) {
-                MethodUtils.invokeMethod(document, true, setter(property), list);
-                assertEquals(list, MethodUtils.invokeMethod(document, true, getter(property)));
+                Type genericType = field.getGenericType();
+                if (genericType instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) genericType;
+                    Type actualType = parameterizedType.getActualTypeArguments()[0];
+                    Class<?> actualClass = TypeFactory.rawClass(actualType);
+                    if (AbstractNestedDocument.class.isAssignableFrom(actualClass)) {
+                        List<AbstractNestedDocument> listOfNestedDocuments = new ArrayList<AbstractNestedDocument>();
+                        AbstractNestedDocument nestedDocument = testGeneratedDocument(actualClass);
+                        listOfNestedDocuments.add(nestedDocument);
+                        MethodUtils.invokeMethod(document, true, setter(property), listOfNestedDocuments);
+                        assertEquals(listOfNestedDocuments, MethodUtils.invokeMethod(document, true, getter(property)));
+                    } else if (String.class.isAssignableFrom(actualClass)) {
+                        MethodUtils.invokeMethod(document, true, setter(property), listOfStrings);
+                        assertEquals(listOfStrings, MethodUtils.invokeMethod(document, true, getter(property)));
+                    }
+                }
             } else if (Set.class.isAssignableFrom(field.getType())) {
-                MethodUtils.invokeMethod(document, true, setter(property), set);
-                assertEquals(set, MethodUtils.invokeMethod(document, true, getter(property)));
+                MethodUtils.invokeMethod(document, true, setter(property), setOfStrings);
+                assertEquals(setOfStrings, MethodUtils.invokeMethod(document, true, getter(property)));
+            } else if (String.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), "Test");
+                assertEquals("Test", MethodUtils.invokeMethod(document, true, getter(property)));
             } else {
-                MethodUtils.invokeMethod(document, true, setter(property), single);
-                assertEquals(single, MethodUtils.invokeMethod(document, true, getter(property)));
+                throw new RuntimeException("Unexpected generated type");
             }
         }
+
+        return document;
     }
 
     private String getter(String property) {

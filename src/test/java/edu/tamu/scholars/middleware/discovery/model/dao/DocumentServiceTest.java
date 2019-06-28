@@ -22,4 +22,9 @@ public class DocumentServiceTest extends AbstractSolrDocumentServiceTest<edu.tam
         return Document.class;
     }
 
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Document.class;
+    }
+
 }

@@ -22,4 +22,9 @@ public class ConceptServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu
         return Concept.class;
     }
 
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Concept.class;
+    }
+
 }

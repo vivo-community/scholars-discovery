@@ -9,7 +9,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.RelationshipRepo;
 public class RelationshipService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Relationship, Relationship, RelationshipRepo> {
 
     @Override
-    protected Class<?> getNestedDocumentClass() {
+    protected Class<?> getNestedDocumentType() {
         return edu.tamu.scholars.middleware.discovery.model.generated.Relationship.class;
     }
 

@@ -22,4 +22,9 @@ public class PersonServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.
         return Person.class;
     }
 
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Person.class;
+    }
+
 }

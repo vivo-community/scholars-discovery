@@ -22,4 +22,9 @@ public class OrganizationServiceTest extends AbstractSolrDocumentServiceTest<edu
         return Organization.class;
     }
 
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Organization.class;
+    }
+
 }

@@ -134,13 +134,13 @@ public abstract class AbstractSolrDocumentService<ND extends AbstractSolrDocumen
         return repo.findBySyncIdsIn(syncIds).stream().map(this::map).collect(Collectors.toList());
     }
 
-    protected abstract Class<?> getNestedDocumentClass();
+    protected abstract Class<?> getNestedDocumentType();
 
     @SuppressWarnings("unchecked")
     private ND map(D document) {
         try {
             String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(document);
-            return (ND) mapper.readValue(json, getNestedDocumentClass());
+            return (ND) mapper.readValue(json, getNestedDocumentType());
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Something went wrong");

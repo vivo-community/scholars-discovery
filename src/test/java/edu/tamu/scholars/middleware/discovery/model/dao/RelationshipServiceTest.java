@@ -22,4 +22,9 @@ public class RelationshipServiceTest extends AbstractSolrDocumentServiceTest<edu
         return Relationship.class;
     }
 
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Relationship.class;
+    }
+
 }

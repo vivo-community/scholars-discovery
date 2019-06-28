@@ -22,4 +22,9 @@ public class ProcessServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu
         return Process.class;
     }
 
+    @Override
+    protected Class<?> getNestedDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.generated.Process.class;
+    }
+
 }

@@ -9,7 +9,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 public class OrganizationService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Organization, Organization, OrganizationRepo> {
 
     @Override
-    protected Class<?> getNestedDocumentClass() {
+    protected Class<?> getNestedDocumentType() {
         return edu.tamu.scholars.middleware.discovery.model.generated.Organization.class;
     }
 
