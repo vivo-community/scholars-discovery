@@ -104,8 +104,6 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         facetQuery.setDefType(queryParser);
         facetQuery.setPageRequest(page);
 
-
-
         return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
     }
 
