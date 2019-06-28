@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Concept;
-import edu.tamu.scholars.middleware.discovery.model.doa.ConceptService;
+import edu.tamu.scholars.middleware.discovery.model.dao.ConceptService;
 import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
 
 public class ConceptServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Concept, Concept, ConceptRepo, ConceptService> {

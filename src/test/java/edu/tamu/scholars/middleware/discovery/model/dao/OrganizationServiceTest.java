@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Organization;
-import edu.tamu.scholars.middleware.discovery.model.doa.OrganizationService;
+import edu.tamu.scholars.middleware.discovery.model.dao.OrganizationService;
 import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 
 public class OrganizationServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Organization, Organization, OrganizationRepo, OrganizationService> {

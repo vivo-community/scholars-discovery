@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.model.doa;
+package edu.tamu.scholars.middleware.discovery.model.dao;
 
 import java.io.IOException;
 import java.time.Duration;

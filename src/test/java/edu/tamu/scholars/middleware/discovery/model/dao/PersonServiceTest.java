@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Person;
-import edu.tamu.scholars.middleware.discovery.model.doa.PersonService;
+import edu.tamu.scholars.middleware.discovery.model.dao.PersonService;
 import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
 
 public class PersonServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Person, Person, PersonRepo, PersonService> {

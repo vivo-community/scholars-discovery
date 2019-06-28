@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.model.doa;
+package edu.tamu.scholars.middleware.discovery.model.dao;
 
 import org.springframework.stereotype.Service;
 

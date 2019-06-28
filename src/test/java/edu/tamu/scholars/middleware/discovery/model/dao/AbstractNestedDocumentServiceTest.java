@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.doa.AbstractNestedDocumentService;
+import edu.tamu.scholars.middleware.discovery.model.dao.AbstractNestedDocumentService;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 
