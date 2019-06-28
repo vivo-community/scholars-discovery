@@ -30,3 +30,41 @@ Existing frontend applications include:
       mvn spring-boot:run -Dspring-boot.run.config.location=/some/directory/ -Dspring-boot.run.profiles=dev
 ```
    - ..where an `application-dev.yml` exists in the `/some/location/` directory
+
+
+
+*** just for graphql-spqr branch:
+
+was able to get to this sort of work at this url:
+http://localhost:9001/gui
+
+had to:
+
+```yaml
+graphql:
+  spqr:
+    gui:
+      enabled: true     
+```
+
+and:
+
+```yaml
+spring:
+  data:
+    rest:
+      # CAUTION: leaving this on will permit all requests from localhost, breaks various UI requests and SSR
+      authorize-hal-browser: true
+```
+
+and also
+
+```yaml
+vivo:
+  ...
+  triplestore:
+    type: TDB
+    directory: triplestore
+```
+
+with a binary TDB folder of openvivo data
