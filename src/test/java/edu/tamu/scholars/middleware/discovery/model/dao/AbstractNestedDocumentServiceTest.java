@@ -2,6 +2,7 @@ package edu.tamu.scholars.middleware.discovery.model.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -30,13 +31,13 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.doa.AbstractSolrDocumentService;
+import edu.tamu.scholars.middleware.discovery.model.doa.AbstractNestedDocumentService;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractSolrDocumentServiceTest<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>, DAO extends AbstractSolrDocumentService<ND, D, R>> extends AbstractSolrDocumentIntegrationTest<D, R> {
+public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>, DAO extends AbstractNestedDocumentService<ND, D, R>> extends AbstractSolrDocumentIntegrationTest<D, R> {
 
     @Autowired
     private DAO service;
@@ -57,20 +58,56 @@ public abstract class AbstractSolrDocumentServiceTest<ND extends AbstractNestedD
     }
 
     @Test
-    public void testDAOFindById() throws IOException {
+    public void testFindById() throws IOException {
         mockDocuments.forEach(mockDocument -> {
             String id = mockDocument.getId();
-            Optional<ND> document = service.findById(id);
-            assertTrue(document.isPresent());
+            Optional<ND> nestedDocument = service.findById(id);
+            assertTrue(nestedDocument.isPresent());
+            assertTrue(nestedDocument.get() instanceof AbstractNestedDocument);
         });
     }
 
     @Test
-    public void testDAOFindAll() throws IOException {
-        List<ND> documents = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
-        assertEquals(3, documents.size());
+    public void testSave() throws IOException {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            mockDocuments.forEach(mockDocument -> {
+                String id = mockDocument.getId();
+                ND nestedDocument = service.findById(id).get();
+                String newLabel = String.format("%s Updated", nestedDocument.getLabel());
+                nestedDocument.setLabel(newLabel);
+                nestedDocument = service.save(nestedDocument);
+                assertEquals(newLabel, nestedDocument.getLabel());
+                assertTrue(nestedDocument instanceof AbstractNestedDocument);
+            });
+        });
     }
-    
+
+    @Test
+    public void testFindAll() throws IOException {
+        List<ND> nestedDocuments = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
+        assertEquals(3, nestedDocuments.size());
+        nestedDocuments.forEach(nestedDocument -> {
+            assertTrue(nestedDocument instanceof AbstractNestedDocument);
+        });
+    }
+
+    @Test
+    public void testSaveAll() throws IOException {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            List<ND> nestedDocuments = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
+            nestedDocuments.forEach(nestedDocument -> {
+                nestedDocument.setLabel(String.format("%s Updated", nestedDocument.getLabel()));
+            });
+            nestedDocuments = StreamSupport.stream(service.saveAll(nestedDocuments).spliterator(), false).collect(Collectors.toList());
+            nestedDocuments.forEach(nestedDocument -> {
+                assertTrue(nestedDocument.getLabel().endsWith("Updated"));
+                assertTrue(nestedDocument instanceof AbstractNestedDocument);
+            });
+        });
+    }
+
+    // TODO: test other methods of AbstractNestedDocumentService
+
     protected abstract Class<?> getNestedDocumentType();
 
     private AbstractNestedDocument testGeneratedDocument(Class<?> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -80,10 +117,7 @@ public abstract class AbstractSolrDocumentServiceTest<ND extends AbstractNestedD
 
         Set<String> setOfStrings = new HashSet<String>(listOfStrings);
 
-        List<Field> fields = FieldUtils.getAllFieldsList(type).stream()
-                .filter(field -> !field.getName().equals("serialVersionUID"))
-                .filter(field -> !field.getName().startsWith("$"))
-                .collect(Collectors.toList());
+        List<Field> fields = FieldUtils.getAllFieldsList(type).stream().filter(field -> !field.getName().equals("serialVersionUID")).filter(field -> !field.getName().startsWith("$")).collect(Collectors.toList());
 
         for (Field field : fields) {
             String property = field.getName();

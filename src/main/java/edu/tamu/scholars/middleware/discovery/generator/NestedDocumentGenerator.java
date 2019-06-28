@@ -192,6 +192,9 @@ public class NestedDocumentGenerator {
         methods.forEach(m -> builder.addMethod(m));
 
         createFile(builder, packagePath, className, imports);
+
+        // TODO: if and when property types are imported, remove imports list and use this
+        // createFile(builder, packagePath);
     }
 
     private static String buildNestedClass(Field field, String baseName) {
@@ -262,6 +265,9 @@ public class NestedDocumentGenerator {
 
         createFile(builder, packagePath, className, imports);
 
+        // TODO: if and when property types are imported, remove imports list and use this
+        // createFile(builder, packagePath);
+
         return className;
     }
 
@@ -272,6 +278,7 @@ public class NestedDocumentGenerator {
                 .build();
     }
 
+    // TODO: if and when property types are imported, remove this method
     // NOTE: hack to manually add reference imports to allow top level nested documents in parent package
     private static void createFile(Builder builder, String packagePath, String className, List<String> imports) {
         ClassName abstractNestedDocumentClass = ClassName.get(DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
@@ -310,7 +317,7 @@ public class NestedDocumentGenerator {
     }
 
     // TODO: figure out why reference imports not working, tried $T
-    // if and when field types import properly, use this method
+    // if and when property types import properly, use this method
     // https://github.com/square/javapoet#t-for-types
     @SuppressWarnings("unused")
     private static void createFile(Builder builder, String packagePath) {
@@ -329,7 +336,7 @@ public class NestedDocumentGenerator {
         }
     }
 
-    // NOTE: not cool, but makes for friendlier class names
+    // NOTE: not good, but makes for friendlier class names
     private static String buildClassName(String baseName) {
         String className = String.format("%s%s", baseName.substring(0, 1).toUpperCase(), baseName.substring(1));
         if (className.endsWith("ies")) {

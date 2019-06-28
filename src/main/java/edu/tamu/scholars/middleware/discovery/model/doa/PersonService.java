@@ -6,7 +6,7 @@ import edu.tamu.scholars.middleware.discovery.model.Person;
 import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
 
 @Service
-public class PersonService extends AbstractSolrDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Person, Person, PersonRepo> {
+public class PersonService extends AbstractNestedDocumentService<edu.tamu.scholars.middleware.discovery.model.generated.Person, Person, PersonRepo> {
 
     @Override
     protected Class<?> getNestedDocumentType() {

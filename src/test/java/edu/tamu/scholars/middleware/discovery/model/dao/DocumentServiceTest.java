@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Document;
 import edu.tamu.scholars.middleware.discovery.model.doa.DocumentService;
 import edu.tamu.scholars.middleware.discovery.model.repo.DocumentRepo;
 
-public class DocumentServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Document, Document, DocumentRepo, DocumentService> {
+public class DocumentServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Document, Document, DocumentRepo, DocumentService> {
 
     @Value("classpath:mock/discovery/document")
     private Resource mocksDirectory;

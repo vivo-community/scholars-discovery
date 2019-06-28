@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Relationship;
 import edu.tamu.scholars.middleware.discovery.model.doa.RelationshipService;
 import edu.tamu.scholars.middleware.discovery.model.repo.RelationshipRepo;
 
-public class RelationshipServiceTest extends AbstractSolrDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Relationship, Relationship, RelationshipRepo, RelationshipService> {
+public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Relationship, Relationship, RelationshipRepo, RelationshipService> {
 
     @Value("classpath:mock/discovery/relationship")
     private Resource mocksDirectory;
