@@ -44,6 +44,12 @@ vivo:
     username:
     password:
 
+graphql:
+  spqr:
+    base-packages: edu.tamu.scholars.middleware.discovery.model
+    gui:
+      enabled: false
+
 logging:
   file: scholars.log
   level:
