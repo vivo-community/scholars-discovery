@@ -12,59 +12,21 @@ Existing frontend applications include:
 ## Installation instructions
 
 1. [Install](https://maven.apache.org/install.html) Maven
-1. [Install](https://docs.docker.com/install/) Docker
-1. Clone this project
-1. Build and Run the provided Solr application
+2. [Install](https://docs.docker.com/install/) Docker
+3. Clone this project
+4. Build and Run the provided Solr application
 ```bash
    cd scholars-discovery/solr
    docker build --tag=scholars-solr .
    docker run -p 8983:8983 scholars-solr
 ```
-1. Build and Run the application
+5. Build and Run the application
 ```bash
    mvn clean install
-   mvn spring-boot:run 
+   mvn spring-boot:run
 ```
    - Note: Custom application configuration can be achieved by providing a location and an optional profile, such as:
 ```bash
       mvn spring-boot:run -Dspring-boot.run.config.location=/some/directory/ -Dspring-boot.run.profiles=dev
 ```
    - ..where an `application-dev.yml` exists in the `/some/location/` directory
-
-
-
-*** just for graphql-spqr branch:
-
-was able to get to this sort of work at this url:
-http://localhost:9001/gui
-
-had to:
-
-```yaml
-graphql:
-  spqr:
-    gui:
-      enabled: true     
-```
-
-and:
-
-```yaml
-spring:
-  data:
-    rest:
-      # CAUTION: leaving this on will permit all requests from localhost, breaks various UI requests and SSR
-      authorize-hal-browser: true
-```
-
-and also
-
-```yaml
-vivo:
-  ...
-  triplestore:
-    type: TDB
-    directory: triplestore
-```
-
-with a binary TDB folder of openvivo data
