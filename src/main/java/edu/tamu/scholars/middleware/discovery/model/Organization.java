@@ -12,8 +12,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 
+@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "organizations")
 @CollectionSource(predicate = "http://xmlns.com/foaf/0.1/Organization")

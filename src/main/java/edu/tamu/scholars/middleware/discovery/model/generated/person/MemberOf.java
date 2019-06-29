@@ -2,7 +2,11 @@ package edu.tamu.scholars.middleware.discovery.model.generated.person;
 
 import edu.tamu.scholars.middleware.discovery.model.generated.person.MemberOfOrganization;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 
 /**
@@ -10,6 +14,10 @@ import java.lang.String;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "PersonMemberOf"
+)
+@JsonInclude(NON_EMPTY)
 public class MemberOf extends AbstractNestedDocument {
   private static final long serialVersionUID = -2015783668L;
 

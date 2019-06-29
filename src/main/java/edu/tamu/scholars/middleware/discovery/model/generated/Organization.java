@@ -38,6 +38,10 @@ import edu.tamu.scholars.middleware.discovery.model.generated.organization.Succe
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.GoverningAuthorityFor;
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.AffiliatedResearchArea;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
 
@@ -46,6 +50,10 @@ import java.util.List;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "Organization"
+)
+@JsonInclude(NON_EMPTY)
 public class Organization extends AbstractNestedDocument {
   private static final long serialVersionUID = -1208362959L;
 

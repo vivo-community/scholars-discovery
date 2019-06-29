@@ -18,6 +18,10 @@ import edu.tamu.scholars.middleware.discovery.model.generated.process.HasOutput;
 import edu.tamu.scholars.middleware.discovery.model.generated.process.HasParticipant;
 import edu.tamu.scholars.middleware.discovery.model.generated.process.SameAs;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
 
@@ -26,6 +30,10 @@ import java.util.List;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "Process"
+)
+@JsonInclude(NON_EMPTY)
 public class Process extends AbstractNestedDocument {
   private static final long serialVersionUID = -736834383L;
 

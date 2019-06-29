@@ -1,10 +1,17 @@
 package edu.tamu.scholars.middleware.discovery.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 
+import io.leangen.graphql.annotations.types.GraphQLInterface;
+
+@GraphQLInterface(
+    name = "AbstractSolrDocument",
+    implementationAutoDiscovery = true
+)
 public abstract class AbstractSolrDocument {
 
     @Id
@@ -12,7 +19,7 @@ public abstract class AbstractSolrDocument {
     private String id;
 
     @Indexed
-    private Set<String> syncIds;
+    private Set<String> syncIds = new HashSet<String>();
 
     public String getId() {
         return id;

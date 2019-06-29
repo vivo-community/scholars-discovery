@@ -46,7 +46,7 @@ vivo:
 
 graphql:
   spqr:
-    base-packages: edu.tamu.scholars.middleware.discovery.model.generated
+    base-packages: edu.tamu.scholars.middleware.discovery.model
     gui:
       # NOTE: should be false for production
       enabled: true

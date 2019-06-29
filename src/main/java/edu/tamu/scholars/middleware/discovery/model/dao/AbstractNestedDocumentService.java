@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.util.MultiValueMap;
 
@@ -20,8 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
-@NoRepositoryBean
+@GraphQLApi
 public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> implements SolrDocumentRepo<ND> {
 
     @Autowired

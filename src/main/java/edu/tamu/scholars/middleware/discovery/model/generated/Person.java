@@ -41,6 +41,10 @@ import edu.tamu.scholars.middleware.discovery.model.generated.person.HasExpertis
 import edu.tamu.scholars.middleware.discovery.model.generated.person.SameAs;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.EtdChairOf;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
 
@@ -49,6 +53,10 @@ import java.util.List;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "Person"
+)
+@JsonInclude(NON_EMPTY)
 public class Person extends AbstractNestedDocument {
   private static final long serialVersionUID = 795614419L;
 

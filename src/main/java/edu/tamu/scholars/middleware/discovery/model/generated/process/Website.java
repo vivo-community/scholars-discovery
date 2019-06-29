@@ -1,6 +1,10 @@
 package edu.tamu.scholars.middleware.discovery.model.generated.process;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 
 /**
@@ -8,6 +12,10 @@ import java.lang.String;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "ProcessWebsite"
+)
+@JsonInclude(NON_EMPTY)
 public class Website extends AbstractNestedDocument {
   private static final long serialVersionUID = 502226014L;
 

@@ -2,7 +2,11 @@ package edu.tamu.scholars.middleware.discovery.model.generated.concept;
 
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.ResearchAreaOfOrganization;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
 
@@ -11,6 +15,10 @@ import java.util.List;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "ConceptResearchAreaOf"
+)
+@JsonInclude(NON_EMPTY)
 public class ResearchAreaOf extends AbstractNestedDocument {
   private static final long serialVersionUID = -1834738045L;
 

@@ -1,6 +1,10 @@
 package edu.tamu.scholars.middleware.discovery.model.generated.collection;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.model.generated.AbstractNestedDocument;
+import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 
 /**
@@ -8,6 +12,10 @@ import java.lang.String;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
+@GraphQLType(
+    name = "CollectionPublisher"
+)
+@JsonInclude(NON_EMPTY)
 public class Publisher extends AbstractNestedDocument {
   private static final long serialVersionUID = -1093636246L;
 

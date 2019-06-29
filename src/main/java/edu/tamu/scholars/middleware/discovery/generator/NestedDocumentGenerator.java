@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.generator;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.FileSystemUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
@@ -38,6 +42,8 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import io.leangen.graphql.annotations.types.GraphQLInterface;
+import io.leangen.graphql.annotations.types.GraphQLType;
 
 public class NestedDocumentGenerator {
 
@@ -94,6 +100,11 @@ public class NestedDocumentGenerator {
         TypeSpec abstractNestedDocumentClass = builder(className, Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addSuperinterface(Serializable.class)
                 .superclass(AbstractSolrDocument.class)
+                .addAnnotation(AnnotationSpec
+                        .builder(GraphQLInterface.class)
+                        .addMember("name", "$S", "AbstractNestedDocument")
+                        .addMember("implementationAutoDiscovery", "$L", true)
+                        .build())
                 .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)))
                 .addMethod(constructor())
                 .addField(STRING, "label", Modifier.PRIVATE)
@@ -133,7 +144,7 @@ public class NestedDocumentGenerator {
 
         List<FieldSpec> fields = new ArrayList<FieldSpec>();
         List<MethodSpec> methods = new ArrayList<MethodSpec>();
-        
+
         List<String> imports = new ArrayList<String>();
 
         for(Field field : nestedObjectFields) {
@@ -153,7 +164,6 @@ public class NestedDocumentGenerator {
                     methods.add(getter(listOfNestedClass, field.getName()));
                     methods.add(setter(listOfNestedClass, field.getName()));
                 } else {
-                    
                     fields.add(field(nestedClass, field.getName(), Modifier.PRIVATE));
                     methods.add(getter(nestedClass, field.getName()));
                     methods.add(setter(nestedClass, field.getName()));
@@ -174,16 +184,25 @@ public class NestedDocumentGenerator {
 
             Optional<JsonProperty> jsonProperty = Optional.ofNullable(field.getAnnotation(JsonProperty.class));
             if (jsonProperty.isPresent()) {
-                AnnotationSpec annotation = AnnotationSpec.builder(JsonProperty.class).addMember("value", "$S", jsonProperty.get().value()).build();
-                fieldBuilder.addAnnotation(annotation);
+                fieldBuilder.addAnnotation(AnnotationSpec.builder(JsonProperty.class)
+                        .addMember("value", "$S", jsonProperty.get().value())
+                        .build());
             }
-            
+
             fields.add(fieldBuilder.build());
             methods.add(getter(type, field.getName()));
             methods.add(setter(type, field.getName()));
         }
-        
+
         Builder builder = builder(className, Modifier.PUBLIC)
+                .addAnnotation(AnnotationSpec
+                        .builder(GraphQLType.class)
+                        .addMember("name", "$S", className)
+                        .build())
+                .addAnnotation(AnnotationSpec
+                        .builder(JsonInclude.class)
+                        .addMember("value", "$L", NON_EMPTY)
+                        .build())
                 .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
 
         fields.forEach(f -> builder.addField(f));
@@ -215,20 +234,20 @@ public class NestedDocumentGenerator {
         if (parentNestedObject.isPresent()) {
             for (Reference reference : parentNestedObject.get().value()) {
                 String fieldName = reference.key();
-    
+
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);
                 
                 Optional<NestedObject> childNestedObject = Optional.ofNullable(nestedField.getAnnotation(NestedObject.class));
-    
+
                 Optional<NestedMultiValuedProperty> nestedMultiValuedProperty = Optional.ofNullable(nestedField.getAnnotation(NestedMultiValuedProperty.class));
 
                 if(childNestedObject.isPresent()) {
                     String nestedClassName = buildNestedClass(nestedField, reference.value());
-                    
+
                     imports.add(String.format("%s.%s", packagePath, nestedClassName));
-    
+
                     ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
-    
+
                     if(nestedMultiValuedProperty.isPresent()) {
                         TypeName listOfNestedClass = ParameterizedTypeName.get(LIST, nestedClass);
                         fields.add(field(listOfNestedClass, fieldName, Modifier.PRIVATE));
@@ -255,6 +274,14 @@ public class NestedDocumentGenerator {
         }
 
         Builder builder = builder(className, Modifier.PUBLIC)
+                .addAnnotation(AnnotationSpec
+                        .builder(GraphQLType.class)
+                        .addMember("name", "$S", String.format("%s%s", docType.getSimpleName(), className))
+                        .build())
+                .addAnnotation(AnnotationSpec
+                        .builder(JsonInclude.class)
+                        .addMember("value", "$L", NON_EMPTY)
+                        .build())
                 .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
 
         fields.forEach(f -> builder.addField(f));
@@ -285,12 +312,14 @@ public class NestedDocumentGenerator {
 
         TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
 
-        JavaFile nestedDocumentFile = JavaFile.builder(packagePath, nestedDocumentClass).build();
-        
+        JavaFile nestedDocumentFile = JavaFile.builder(packagePath, nestedDocumentClass)
+                .addStaticImport(Include.class, "NON_EMPTY")
+                .build();
+
         String[] lines = nestedDocumentFile.toString().split("\\r?\\n");
-        
+
         StringBuilder fileAsString = new StringBuilder();
-        
+
         for (int l = 0; l < lines.length; l++) {
             fileAsString.append(String.format("%s\n", lines[l]));
             if(l == 0 && imports.size() > 0) {

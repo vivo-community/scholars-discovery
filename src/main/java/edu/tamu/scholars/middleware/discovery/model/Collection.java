@@ -16,7 +16,9 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
+@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "collections")
 @CollectionSource(predicate = "http://purl.org/ontology/bibo/Collection")
