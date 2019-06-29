@@ -99,7 +99,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/organizationForTraining", predicate = "http://vivoweb.org/ontology/core#majorField")
     private List<String> organizationForTraining;
 
-    @NestedObject
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/organizationForTrainingTrainee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> organizationForTrainingTrainee;

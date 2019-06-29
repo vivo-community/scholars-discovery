@@ -82,8 +82,8 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/positionOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> positionOrganization;
 
-    @NestedObject
     @NestedMultiValuedProperty
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> positionOrganizationParent;
@@ -123,7 +123,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/headOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> headOfType;
 
-    @NestedObject
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/headOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> headOfOrganization;
@@ -145,7 +145,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/memberOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> memberOfType;
 
-    @NestedObject
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/memberOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> memberOfOrganization;
@@ -206,7 +206,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/educationAndTraining", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTraining;
 
-    @NestedObject
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "person/educationAndTrainingOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTrainingOrganization;

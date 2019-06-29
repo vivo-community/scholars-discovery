@@ -4,9 +4,7 @@ import edu.tamu.scholars.middleware.discovery.model.generated.document.Website;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.PublicationVenue;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.PublicationVenueFor;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.EtdChairedBy;
-import edu.tamu.scholars.middleware.discovery.model.generated.document.EtdChairedByOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.Author;
-import edu.tamu.scholars.middleware.discovery.model.generated.document.AuthorOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.Editor;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.Translator;
 import edu.tamu.scholars.middleware.discovery.model.generated.document.Publisher;
@@ -62,11 +60,7 @@ public class Document extends AbstractNestedDocument {
 
   private List<EtdChairedBy> etdChairedBy;
 
-  private List<EtdChairedByOrganization> etdChairedByOrganization;
-
   private List<Author> authors;
-
-  private List<AuthorOrganization> authorOrganization;
 
   private List<Editor> editors;
 
@@ -237,28 +231,12 @@ public class Document extends AbstractNestedDocument {
     this.etdChairedBy = etdChairedBy;
   }
 
-  public List<EtdChairedByOrganization> getEtdChairedByOrganization() {
-    return etdChairedByOrganization;
-  }
-
-  public void setEtdChairedByOrganization(List<EtdChairedByOrganization> etdChairedByOrganization) {
-    this.etdChairedByOrganization = etdChairedByOrganization;
-  }
-
   public List<Author> getAuthors() {
     return authors;
   }
 
   public void setAuthors(List<Author> authors) {
     this.authors = authors;
-  }
-
-  public List<AuthorOrganization> getAuthorOrganization() {
-    return authorOrganization;
-  }
-
-  public void setAuthorOrganization(List<AuthorOrganization> authorOrganization) {
-    this.authorOrganization = authorOrganization;
   }
 
   public List<Editor> getEditors() {

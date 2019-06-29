@@ -6,7 +6,6 @@ import edu.tamu.scholars.middleware.discovery.model.generated.organization.Spons
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.AwardOrHonorGiven;
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.AwardOrHonorReceived;
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationForTraining;
-import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationForTrainingTrainee;
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.People;
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.HasSubOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.organization.OrganizationWithin;
@@ -68,8 +67,6 @@ public class Organization extends AbstractNestedDocument {
   private List<AwardOrHonorReceived> awardOrHonorReceived;
 
   private List<OrganizationForTraining> organizationForTraining;
-
-  private List<OrganizationForTrainingTrainee> organizationForTrainingTrainee;
 
   private List<People> people;
 
@@ -219,15 +216,6 @@ public class Organization extends AbstractNestedDocument {
 
   public void setOrganizationForTraining(List<OrganizationForTraining> organizationForTraining) {
     this.organizationForTraining = organizationForTraining;
-  }
-
-  public List<OrganizationForTrainingTrainee> getOrganizationForTrainingTrainee() {
-    return organizationForTrainingTrainee;
-  }
-
-  public void setOrganizationForTrainingTrainee(
-      List<OrganizationForTrainingTrainee> organizationForTrainingTrainee) {
-    this.organizationForTrainingTrainee = organizationForTrainingTrainee;
   }
 
   public List<People> getPeople() {

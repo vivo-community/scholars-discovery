@@ -82,8 +82,8 @@ public class Document extends AbstractSolrDocument {
     @PropertySource(template = "document/etdChairedByEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private List<String> etdChairedByEmail;
 
-    @NestedObject
     @NestedMultiValuedProperty
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "document/etdChairedByOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairedByOrganization;
@@ -101,8 +101,8 @@ public class Document extends AbstractSolrDocument {
     @PropertySource(template = "document/authorRank", predicate = "http://vivoweb.org/ontology/core#rank")
     private List<String> authorRank;
 
-    @NestedObject
     @NestedMultiValuedProperty
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "document/authorOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authorOrganization;

@@ -2,18 +2,14 @@ package edu.tamu.scholars.middleware.discovery.model.generated;
 
 import edu.tamu.scholars.middleware.discovery.model.generated.person.Website;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.Position;
-import edu.tamu.scholars.middleware.discovery.model.generated.person.PositionOrganizationParent;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.ResearchArea;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.GeographicFocus;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.HeadOf;
-import edu.tamu.scholars.middleware.discovery.model.generated.person.HeadOfOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.MemberOf;
-import edu.tamu.scholars.middleware.discovery.model.generated.person.MemberOfOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.HasCollaborator;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.ClinicalActivity;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.AttendedEvent;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.EducationAndTraining;
-import edu.tamu.scholars.middleware.discovery.model.generated.person.EducationAndTrainingOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.Credential;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.CredentialEligibilityAttained;
 import edu.tamu.scholars.middleware.discovery.model.generated.person.AwardsAndHonors;
@@ -64,19 +60,13 @@ public class Person extends AbstractNestedDocument {
 
   private List<Position> positions;
 
-  private List<PositionOrganizationParent> positionOrganizationParent;
-
   private List<ResearchArea> researchAreas;
 
   private List<GeographicFocus> geographicFocus;
 
   private List<HeadOf> headOf;
 
-  private List<HeadOfOrganization> headOfOrganization;
-
   private List<MemberOf> memberOf;
-
-  private List<MemberOfOrganization> memberOfOrganization;
 
   private List<HasCollaborator> hasCollaborator;
 
@@ -85,8 +75,6 @@ public class Person extends AbstractNestedDocument {
   private List<AttendedEvent> attendedEvents;
 
   private List<EducationAndTraining> educationAndTraining;
-
-  private List<EducationAndTrainingOrganization> educationAndTrainingOrganization;
 
   private List<Credential> credentials;
 
@@ -238,15 +226,6 @@ public class Person extends AbstractNestedDocument {
     this.positions = positions;
   }
 
-  public List<PositionOrganizationParent> getPositionOrganizationParent() {
-    return positionOrganizationParent;
-  }
-
-  public void setPositionOrganizationParent(
-      List<PositionOrganizationParent> positionOrganizationParent) {
-    this.positionOrganizationParent = positionOrganizationParent;
-  }
-
   public List<ResearchArea> getResearchAreas() {
     return researchAreas;
   }
@@ -271,28 +250,12 @@ public class Person extends AbstractNestedDocument {
     this.headOf = headOf;
   }
 
-  public List<HeadOfOrganization> getHeadOfOrganization() {
-    return headOfOrganization;
-  }
-
-  public void setHeadOfOrganization(List<HeadOfOrganization> headOfOrganization) {
-    this.headOfOrganization = headOfOrganization;
-  }
-
   public List<MemberOf> getMemberOf() {
     return memberOf;
   }
 
   public void setMemberOf(List<MemberOf> memberOf) {
     this.memberOf = memberOf;
-  }
-
-  public List<MemberOfOrganization> getMemberOfOrganization() {
-    return memberOfOrganization;
-  }
-
-  public void setMemberOfOrganization(List<MemberOfOrganization> memberOfOrganization) {
-    this.memberOfOrganization = memberOfOrganization;
   }
 
   public List<HasCollaborator> getHasCollaborator() {
@@ -325,15 +288,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setEducationAndTraining(List<EducationAndTraining> educationAndTraining) {
     this.educationAndTraining = educationAndTraining;
-  }
-
-  public List<EducationAndTrainingOrganization> getEducationAndTrainingOrganization() {
-    return educationAndTrainingOrganization;
-  }
-
-  public void setEducationAndTrainingOrganization(
-      List<EducationAndTrainingOrganization> educationAndTrainingOrganization) {
-    this.educationAndTrainingOrganization = educationAndTrainingOrganization;
   }
 
   public List<Credential> getCredentials() {

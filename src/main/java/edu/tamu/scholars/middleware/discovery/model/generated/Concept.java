@@ -3,7 +3,6 @@ package edu.tamu.scholars.middleware.discovery.model.generated;
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.Website;
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.AssociatedDepartment;
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.ResearchAreaOf;
-import edu.tamu.scholars.middleware.discovery.model.generated.concept.ResearchAreaOfOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.discovery.model.generated.concept.RelatedConcept;
@@ -33,8 +32,6 @@ public class Concept extends AbstractNestedDocument {
   private List<AssociatedDepartment> associatedDepartments;
 
   private List<ResearchAreaOf> researchAreaOf;
-
-  private List<ResearchAreaOfOrganization> researchAreaOfOrganization;
 
   private List<BroaderConcept> broaderConcepts;
 
@@ -80,15 +77,6 @@ public class Concept extends AbstractNestedDocument {
 
   public void setResearchAreaOf(List<ResearchAreaOf> researchAreaOf) {
     this.researchAreaOf = researchAreaOf;
-  }
-
-  public List<ResearchAreaOfOrganization> getResearchAreaOfOrganization() {
-    return researchAreaOfOrganization;
-  }
-
-  public void setResearchAreaOfOrganization(
-      List<ResearchAreaOfOrganization> researchAreaOfOrganization) {
-    this.researchAreaOfOrganization = researchAreaOfOrganization;
   }
 
   public List<BroaderConcept> getBroaderConcepts() {

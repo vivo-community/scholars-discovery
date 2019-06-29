@@ -3,7 +3,6 @@ package edu.tamu.scholars.middleware.discovery.model.generated;
 import edu.tamu.scholars.middleware.discovery.model.generated.collection.Website;
 import edu.tamu.scholars.middleware.discovery.model.generated.collection.PublicationVenueFor;
 import edu.tamu.scholars.middleware.discovery.model.generated.collection.Author;
-import edu.tamu.scholars.middleware.discovery.model.generated.collection.AuthorOrganization;
 import edu.tamu.scholars.middleware.discovery.model.generated.collection.Editor;
 import edu.tamu.scholars.middleware.discovery.model.generated.collection.Translator;
 import edu.tamu.scholars.middleware.discovery.model.generated.collection.Publisher;
@@ -43,8 +42,6 @@ public class Collection extends AbstractNestedDocument {
   private List<PublicationVenueFor> publicationVenueFor;
 
   private List<Author> authors;
-
-  private List<AuthorOrganization> authorOrganization;
 
   private List<Editor> editors;
 
@@ -125,14 +122,6 @@ public class Collection extends AbstractNestedDocument {
 
   public void setAuthors(List<Author> authors) {
     this.authors = authors;
-  }
-
-  public List<AuthorOrganization> getAuthorOrganization() {
-    return authorOrganization;
-  }
-
-  public void setAuthorOrganization(List<AuthorOrganization> authorOrganization) {
-    this.authorOrganization = authorOrganization;
   }
 
   public List<Editor> getEditors() {
