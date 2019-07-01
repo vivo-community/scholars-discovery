@@ -46,11 +46,11 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     // @formatter:off
     public ResponseEntity<Count> count(
         @RequestParam(value = "query", required = false) String query,
-        @RequestParam(value = "fields", required = false) String[] facets,
+        @RequestParam(value = "fields", required = false) String[] fields,
         @RequestParam MultiValueMap<String, String> params
     ) {
     // @formatter:on
-        return ResponseEntity.ok(new Count(repo.count(query, facets, params)));
+        return ResponseEntity.ok(new Count(repo.count(query, fields, params)));
     }
 
     class Count {

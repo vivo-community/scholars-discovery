@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.generator;
 
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypes;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,7 +43,7 @@ public class NestedDocumentGeneratorTest {
     private void assertFilesCreated() {
         assertTrue(generatedModelDirectory.exists());
         assertTrue(generatedModelDirectory.isDirectory());
-        for (Class<?> docType : NestedDocumentGenerator.getIndexDocuments()) {
+        for (Class<?> docType : getDiscoveryDocumentTypes()) {
             File docFile = new File(String.format("%s%s%s.java", generatedModelDirectory.getAbsolutePath(), File.separator, docType.getSimpleName()));
             assertTrue(docFile.exists());
             assertTrue(docFile.isFile());

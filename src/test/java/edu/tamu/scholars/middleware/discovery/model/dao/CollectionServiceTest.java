@@ -3,8 +3,8 @@ package edu.tamu.scholars.middleware.discovery.model.dao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
+import edu.tamu.scholars.middleware.discovery.dao.CollectionService;
 import edu.tamu.scholars.middleware.discovery.model.Collection;
-import edu.tamu.scholars.middleware.discovery.model.dao.CollectionService;
 import edu.tamu.scholars.middleware.discovery.model.repo.CollectionRepo;
 
 public class CollectionServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.generated.Collection, Collection, CollectionRepo, CollectionService> {

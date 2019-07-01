@@ -1,8 +1,7 @@
-package edu.tamu.scholars.middleware.discovery.model.dao;
+package edu.tamu.scholars.middleware.discovery.dao;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,44 +9,44 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.stereotype.Service;
 
-import edu.tamu.scholars.middleware.discovery.model.generated.Collection;
-import edu.tamu.scholars.middleware.discovery.model.repo.CollectionRepo;
+import edu.tamu.scholars.middleware.discovery.model.generated.Organization;
+import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Service
-public class CollectionService extends AbstractNestedDocumentService<Collection, edu.tamu.scholars.middleware.discovery.model.Collection, CollectionRepo> {
+public class OrganizationService extends AbstractNestedDocumentService<Organization, edu.tamu.scholars.middleware.discovery.model.Organization, OrganizationRepo> {
 
     // TODO: figure out how to use findById returning Optional
     // TODO: figure out how to use name collections
     @Override
-    @GraphQLQuery(name = "collection")
-    public Collection getById(@GraphQLArgument(name = "id") String id) {
+    @GraphQLQuery(name = "organization")
+    public Organization getById(@GraphQLArgument(name = "id") String id) {
         return super.getById(id);
     }
 
     @Override
-    @GraphQLQuery(name = "collections")
-    public Iterable<Collection> findAll() {
+    @GraphQLQuery(name = "organizations")
+    public Iterable<Organization> findAll() {
         return super.findAll();
     }
 
     @Override
-    @GraphQLQuery(name = "collections")
-    public Iterable<Collection> findAll(@GraphQLArgument(name = "sort") Sort sort) {
+    @GraphQLQuery(name = "organizations")
+    public Iterable<Organization> findAll(@GraphQLArgument(name = "sort") Sort sort) {
         return super.findAll(sort);
     }
 
     @Override
-    @GraphQLQuery(name = "collections")
-    public Page<Collection> findAll(@GraphQLArgument(name = "paging") Pageable pageable) {
+    @GraphQLQuery(name = "organizations")
+    public Page<Organization> findAll(@GraphQLArgument(name = "paging") Pageable pageable) {
         return super.findAll(pageable);
     }
 
     @Override
-    @GraphQLQuery(name = "collections")
+    @GraphQLQuery(name = "organizations")
     // @formatter:off
-    public FacetPage<Collection> search(
+    public FacetPage<Organization> search(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "index") String index,
         @GraphQLArgument(name = "facets") String[] facets,
@@ -55,21 +54,18 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
     // @formatter:on
-        params.keySet().stream().filter(key -> key.contains("_")).collect(Collectors.toList()).forEach(key -> {
-            params.put(key.replace("_", "."), params.remove(key));
-        });
         return super.search(query, index, facets, params, page);
     }
 
     @Override
-    @GraphQLQuery(name = "collections")
-    public List<Collection> findByType(@GraphQLArgument(name = "type") String type) {
+    @GraphQLQuery(name = "organizations")
+    public List<Organization> findByType(@GraphQLArgument(name = "type") String type) {
         return super.findByType(type);
     }
 
     @Override
     protected Class<?> getNestedDocumentType() {
-        return Collection.class;
+        return Organization.class;
     }
 
 }

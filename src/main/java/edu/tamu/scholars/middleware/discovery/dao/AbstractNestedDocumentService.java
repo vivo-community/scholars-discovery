@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.model.dao;
+package edu.tamu.scholars.middleware.discovery.dao;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -109,6 +109,9 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public FacetPage<ND> search(String query, String index, String[] facets, Map<String, List<String>> params, Pageable page) {
+        params.keySet().stream().filter(key -> key.contains("_")).collect(Collectors.toList()).forEach(key -> {
+            params.put(key.replace("_", "."), params.remove(key));
+        });
         FacetPage<D> facetPage = repo.search(query, index, facets, params, page);
         List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
         FacetPage<ND> nestedFacetPage = new SolrResultPage<ND>(content);

@@ -1,7 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.generator;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-import static edu.tamu.scholars.middleware.config.GraphQLConfig.DISCOVERY_MODEL_PACKAGE;
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypes;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,18 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.lang.model.element.Modifier;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.FileSystemUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -38,7 +33,6 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 
-import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
@@ -53,7 +47,7 @@ public class NestedDocumentGenerator {
         "SameAs",
         "AwardsAndHonors"
     });
-    
+
     private static final String DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME = "AbstractNestedDocument";
 
     private static final ClassName LIST = ClassName.get("java.util", "List");
@@ -61,8 +55,6 @@ public class NestedDocumentGenerator {
     private static final ClassName STRING = ClassName.get("java.lang", "String");
 
     public final String destinationPath;
-    
-    
 
     public final String destinationPackage;
 
@@ -74,24 +66,9 @@ public class NestedDocumentGenerator {
     public void generate() {
         FileSystemUtils.deleteRecursively(new File(String.format("%s%s%s", destinationPath, File.separator, destinationPackage.replace(".", "/"))));
         buildAbstractNestedDocument();
-        for (Class<?> docType : getIndexDocuments()) {
+        for (Class<?> docType : getDiscoveryDocumentTypes()) {
             buildNestedDocumentClass(docType);
         }
-    }
-
-    protected static Set<Class<?>> getIndexDocuments() {
-        Set<Class<?>> documents = new HashSet<Class<?>>();
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
-        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
-        for (BeanDefinition beanDefinition : beanDefinitions) {
-            try {
-                documents.add(Class.forName(beanDefinition.getBeanClassName()));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to find class for " + beanDefinition.getBeanClassName(), e);
-            }
-        }
-        return documents;
     }
 
     private void buildAbstractNestedDocument() {
@@ -214,7 +191,7 @@ public class NestedDocumentGenerator {
         fields.forEach(f -> builder.addField(f));
 
         builder.addMethod(constructor());
-        
+
         methods.forEach(m -> builder.addMethod(m));
 
         createFile(builder, packagePath, className, imports);

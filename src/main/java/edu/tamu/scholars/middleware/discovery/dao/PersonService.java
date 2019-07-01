@@ -1,8 +1,7 @@
-package edu.tamu.scholars.middleware.discovery.model.dao;
+package edu.tamu.scholars.middleware.discovery.dao;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,9 +54,6 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
         @GraphQLArgument(name = "paging") Pageable page
     ) {
     // @formatter:on
-        params.keySet().stream().filter(key -> key.contains("_")).collect(Collectors.toList()).forEach(key -> {
-            params.put(key.replace("_", "."), params.remove(key));
-        });
         return super.search(query, index, facets, params, page);
     }
 
