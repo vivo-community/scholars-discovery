@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.generator;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static edu.tamu.scholars.middleware.config.GraphQLConfig.DISCOVERY_MODEL_PACKAGE;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,31 +56,34 @@ public class NestedDocumentGenerator {
     
     private static final String DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME = "AbstractNestedDocument";
 
-    private static final String DISCOVERY_MODEL_PACKAGE_PATH = "edu.tamu.scholars.middleware.discovery.model";
-
-    public static final String DISCOVERY_GENERATED_MODEL_PACKAGE_PATH = String.format("%s.generated", DISCOVERY_MODEL_PACKAGE_PATH);
-
     private static final ClassName LIST = ClassName.get("java.util", "List");
 
     private static final ClassName STRING = ClassName.get("java.lang", "String");
 
-    public static void main(String[] args) {
-        generate();
+    public final String destinationPath;
+    
+    
+
+    public final String destinationPackage;
+
+    public NestedDocumentGenerator(String destinationPath, String destinationPackage) {
+        this.destinationPath = destinationPath;
+        this.destinationPackage = destinationPackage;
     }
 
-    public static void generate() {
-        FileSystemUtils.deleteRecursively(new File(String.format("src/main/java/%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH.replace(".", "/"))));
+    public void generate() {
+        FileSystemUtils.deleteRecursively(new File(String.format("%s%s%s", destinationPath, File.separator, destinationPackage.replace(".", "/"))));
         buildAbstractNestedDocument();
         for (Class<?> docType : getIndexDocuments()) {
             buildNestedDocumentClass(docType);
         }
     }
 
-    private static Set<Class<?>> getIndexDocuments() {
+    protected static Set<Class<?>> getIndexDocuments() {
         Set<Class<?>> documents = new HashSet<Class<?>>();
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
-        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE_PATH);
+        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
         for (BeanDefinition beanDefinition : beanDefinitions) {
             try {
                 documents.add(Class.forName(beanDefinition.getBeanClassName()));
@@ -90,8 +94,8 @@ public class NestedDocumentGenerator {
         return documents;
     }
 
-    private static void buildAbstractNestedDocument() {
-        String packagePath = DISCOVERY_GENERATED_MODEL_PACKAGE_PATH;
+    private void buildAbstractNestedDocument() {
+        String packagePath = destinationPackage;
         String className = DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME;
 
         // NOTE: currently the semantic identifier, i.e name, title, etc, of a nested object is label
@@ -114,7 +118,7 @@ public class NestedDocumentGenerator {
 
         JavaFile nestedDocumentFile = JavaFile.builder(packagePath, abstractNestedDocumentClass).build();
 
-        File sourceDirectory = new File("src/main/java");
+        File sourceDirectory = new File(destinationPath);
 
         try {
             nestedDocumentFile.writeTo(sourceDirectory);
@@ -123,10 +127,10 @@ public class NestedDocumentGenerator {
         }
     }
 
-    private static void buildNestedDocumentClass(Class<?> docType) {
-        String packagePath = DISCOVERY_GENERATED_MODEL_PACKAGE_PATH;
+    private void buildNestedDocumentClass(Class<?> docType) {
+        String packagePath = destinationPackage;
 
-        String nestedPackagePath = String.format("%s.%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, docType.getSimpleName().toLowerCase());
+        String nestedPackagePath = String.format("%s.%s", destinationPackage, docType.getSimpleName().toLowerCase());
 
         String className = docType.getSimpleName();
 
@@ -134,12 +138,14 @@ public class NestedDocumentGenerator {
                 .stream()
                 .filter(field -> !field.getName().equals("id"))
                 .filter(field -> !field.getName().equals("syncIds"))
+                .filter(field -> !field.getName().startsWith("$"))
                 .collect(Collectors.toList());
 
         List<Field> nestedObjectFields = FieldUtils.getFieldsListWithAnnotation(docType, NestedObject.class)
                 .stream()
                 .filter(field -> !field.getName().equals("id"))
                 .filter(field -> !field.getName().equals("syncIds"))
+                .filter(field -> !field.getName().startsWith("$"))
                 .collect(Collectors.toList());
 
         List<FieldSpec> fields = new ArrayList<FieldSpec>();
@@ -217,10 +223,10 @@ public class NestedDocumentGenerator {
         // createFile(builder, packagePath);
     }
 
-    private static String buildNestedClass(Field field, String baseName) {
+    private String buildNestedClass(Field field, String baseName) {
         Class<?> docType = field.getDeclaringClass();
 
-        String packagePath = String.format("%s.%s", DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, docType.getSimpleName().toLowerCase());
+        String packagePath = String.format("%s.%s", destinationPackage, docType.getSimpleName().toLowerCase());
 
         String className = buildClassName(baseName);
 
@@ -298,7 +304,7 @@ public class NestedDocumentGenerator {
         return className;
     }
 
-    private static FieldSpec serializeVersionUID(String fullClassName) {
+    private FieldSpec serializeVersionUID(String fullClassName) {
         return FieldSpec
                 .builder(long.class, "serialVersionUID", Modifier.PRIVATE, Modifier.STATIC,Modifier.FINAL)
                 .initializer("$LL", Long.valueOf(fullClassName.hashCode()))
@@ -307,8 +313,8 @@ public class NestedDocumentGenerator {
 
     // TODO: if and when property types are imported, remove this method
     // NOTE: hack to manually add reference imports to allow top level nested documents in parent package
-    private static void createFile(Builder builder, String packagePath, String className, List<String> imports) {
-        ClassName abstractNestedDocumentClass = ClassName.get(DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
+    private void createFile(Builder builder, String packagePath, String className, List<String> imports) {
+        ClassName abstractNestedDocumentClass = ClassName.get(destinationPackage, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
 
         TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
 
@@ -330,7 +336,7 @@ public class NestedDocumentGenerator {
             }
         }
 
-        String directoryPath = String.format("%s%s%s", "src/main/java", File.separator, packagePath.replace(".", File.separator));
+        String directoryPath = String.format("%s%s%s", destinationPath, File.separator, packagePath.replace(".", File.separator));
 
         File directory = new File(directoryPath);
 
@@ -349,14 +355,14 @@ public class NestedDocumentGenerator {
     // if and when property types import properly, use this method
     // https://github.com/square/javapoet#t-for-types
     @SuppressWarnings("unused")
-    private static void createFile(Builder builder, String packagePath) {
-        ClassName abstractNestedDocumentClass = ClassName.get(DISCOVERY_GENERATED_MODEL_PACKAGE_PATH, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
+    private void createFile(Builder builder, String packagePath) {
+        ClassName abstractNestedDocumentClass = ClassName.get(destinationPackage, DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME);
 
         TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
 
         JavaFile nestedDocumentFile = JavaFile.builder(packagePath, nestedDocumentClass).build();
 
-        File sourceDirectory = new File("src/main/java");
+        File sourceDirectory = new File(destinationPath);
 
         try {
              nestedDocumentFile.writeTo(sourceDirectory);
@@ -366,7 +372,7 @@ public class NestedDocumentGenerator {
     }
 
     // NOTE: not good, but makes for friendlier class names
-    private static String buildClassName(String baseName) {
+    private String buildClassName(String baseName) {
         String className = String.format("%s%s", baseName.substring(0, 1).toUpperCase(), baseName.substring(1));
         if (className.endsWith("ies")) {
             className = String.format("%sy", className.substring(0, className.length() - 3));
@@ -376,17 +382,17 @@ public class NestedDocumentGenerator {
         return className;
     }
     
-    private static Builder builder(String className, Modifier...modifiers) {
+    private Builder builder(String className, Modifier...modifiers) {
         return TypeSpec.classBuilder(className)
                 .addJavadoc("This file is automatically generated on compile.\n\nDo not modify this file -- YOUR CHANGES WILL BE ERASED!\n")
                 .addModifiers(modifiers);
     }
 
-    private static FieldSpec field(TypeName type, String name, Modifier...modifiers) {
+    private FieldSpec field(TypeName type, String name, Modifier...modifiers) {
         return FieldSpec.builder(type, name, modifiers).build();
     }
 
-    private static MethodSpec constructor() {
+    private MethodSpec constructor() {
         return MethodSpec
                 .constructorBuilder()
                 .addStatement("super()")
@@ -394,7 +400,7 @@ public class NestedDocumentGenerator {
                 .build();
     }
 
-    private static MethodSpec getter(TypeName type, String name) {
+    private MethodSpec getter(TypeName type, String name) {
         return MethodSpec
                 .methodBuilder(String.format("get%s%s", name.substring(0, 1).toUpperCase(), name.substring(1)))
                 .addModifiers(Modifier.PUBLIC)
@@ -403,7 +409,7 @@ public class NestedDocumentGenerator {
                 .build();
     }
 
-    private static MethodSpec setter(TypeName type, String name) {
+    private MethodSpec setter(TypeName type, String name) {
         return MethodSpec
                 .methodBuilder(String.format("set%s%s", name.substring(0, 1).toUpperCase(), name.substring(1)))
                 .addModifiers(Modifier.PUBLIC)
@@ -411,6 +417,13 @@ public class NestedDocumentGenerator {
                 .addParameter(type, name)
                 .addStatement("this.$N = $N", name, name)
                 .build();
+    }
+
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            throw new RuntimeException("Please provide two arguments: destination path and generated model destination package");
+        }
+        new NestedDocumentGenerator(args[0], args[1]).generate();
     }
 
 }

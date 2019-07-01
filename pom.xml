@@ -366,6 +366,10 @@
             <configuration>
               <!-- deletes all generated nested documents before generation -->
               <mainClass>edu.tamu.scholars.middleware.discovery.generator.NestedDocumentGenerator</mainClass>
+              <arguments>
+              	<argument>src/main/java</argument>
+              	<argument>edu.tamu.scholars.middleware.discovery.model.generated</argument>
+              </arguments>
             </configuration>
           </execution>
         </executions>

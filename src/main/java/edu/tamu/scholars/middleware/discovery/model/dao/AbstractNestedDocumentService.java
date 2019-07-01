@@ -3,16 +3,18 @@ package edu.tamu.scholars.middleware.discovery.model.dao;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetPage;
-import org.springframework.util.MultiValueMap;
+import org.springframework.data.solr.core.query.result.SolrResultPage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -101,12 +103,16 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public FacetPage<ND> search(String query, String index, String[] facets, MultiValueMap<String, String> params, Pageable page) {
-        return (FacetPage<ND>) repo.search(query, index, facets, params, page).map(this::toNested);
+    public FacetPage<ND> search(String query, String index, String[] facets, Map<String, List<String>> params, Pageable page) {
+        FacetPage<D> facetPage = repo.search(query, index, facets, params, page);
+        List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
+        FacetPage<ND> nestedFacetPage = new SolrResultPage<ND>(content);
+        BeanUtils.copyProperties(facetPage, nestedFacetPage, "content");
+        return nestedFacetPage;
     }
 
     @Override
-    public long count(String query, String[] fields, MultiValueMap<String, String> params) {
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
         return repo.count(query, fields, params);
     }
 
