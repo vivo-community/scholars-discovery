@@ -26,6 +26,24 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
     }
 
     @Override
+    @GraphQLQuery(name = "conceptCount")
+    public long count() {
+        return super.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "conceptCount")
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
+        return super.count(query, fields, params);
+    }
+
+    @Override
+    @GraphQLQuery(name = "conceptExists")
+    public boolean existsById(String id) {
+        return super.existsById(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "concepts")
     public Iterable<Concept> findAll() {
         return super.findAll();

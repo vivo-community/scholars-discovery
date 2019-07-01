@@ -26,6 +26,24 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     }
 
     @Override
+    @GraphQLQuery(name = "processCount")
+    public long count() {
+        return super.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "processCount")
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
+        return super.count(query, fields, params);
+    }
+
+    @Override
+    @GraphQLQuery(name = "processExists")
+    public boolean existsById(String id) {
+        return super.existsById(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "processes")
     public Iterable<Process> findAll() {
         return super.findAll();

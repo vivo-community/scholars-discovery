@@ -26,6 +26,24 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
     }
 
     @Override
+    @GraphQLQuery(name = "personCount")
+    public long count() {
+        return super.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "personCount")
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
+        return super.count(query, fields, params);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personExists")
+    public boolean existsById(String id) {
+        return super.existsById(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "persons")
     public Iterable<Person> findAll() {
         return super.findAll();

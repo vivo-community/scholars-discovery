@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.dao;
 
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
@@ -109,9 +111,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public FacetPage<ND> search(String query, String index, String[] facets, Map<String, List<String>> params, Pageable page) {
-        params.keySet().stream().filter(key -> key.contains("_")).collect(Collectors.toList()).forEach(key -> {
-            params.put(key.replace("_", "."), params.remove(key));
-        });
+        translateParameters(facets, params);
         FacetPage<D> facetPage = repo.search(query, index, facets, params, page);
         List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
         FacetPage<ND> nestedFacetPage = new SolrResultPage<ND>(content);
@@ -121,6 +121,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public long count(String query, String[] fields, Map<String, List<String>> params) {
+        translateParameters(fields, params);
         return repo.count(query, fields, params);
     }
 
@@ -159,6 +160,26 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Something went wrong");
+        }
+    }
+    
+    private void translateParameters(String[] fields, Map<String, List<String>> params) {
+        final String type = getNestedDocumentType().getSimpleName();
+        // replace underscores with dots for the facet namespace
+        // lookup flattened property for facet fields
+        params.keySet().stream().filter(key -> key.contains("_")).collect(Collectors.toList()).forEach(key -> {
+            List<String> value = params.remove(key);
+            key = key.replace("_", ".");
+            String[] keyParts = key.split("\\.");
+            if(keyParts.length > 2) {
+                String property = findProperty(type, key.substring(0, key.lastIndexOf(".")));
+                key = String.format("%s.%s", property, keyParts[keyParts.length - 1]);
+            }
+            params.put(key, value);
+        });
+        // lookup flattened property for path
+        for(int i = 0; i < fields.length; i++) {
+            fields[i] = findProperty(type, fields[i]);
         }
     }
 

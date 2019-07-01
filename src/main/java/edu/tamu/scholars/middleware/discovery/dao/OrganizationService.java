@@ -26,6 +26,24 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
+    @GraphQLQuery(name = "organizationCount")
+    public long count() {
+        return super.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "organizationCount")
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
+        return super.count(query, fields, params);
+    }
+
+    @Override
+    @GraphQLQuery(name = "organizationExists")
+    public boolean existsById(String id) {
+        return super.existsById(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "organizations")
     public Iterable<Organization> findAll() {
         return super.findAll();

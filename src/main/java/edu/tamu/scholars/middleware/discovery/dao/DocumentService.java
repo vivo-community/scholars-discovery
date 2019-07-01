@@ -26,6 +26,24 @@ public class DocumentService extends AbstractNestedDocumentService<Document, edu
     }
 
     @Override
+    @GraphQLQuery(name = "documentCount")
+    public long count() {
+        return super.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "documentCount")
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
+        return super.count(query, fields, params);
+    }
+
+    @Override
+    @GraphQLQuery(name = "documentExists")
+    public boolean existsById(String id) {
+        return super.existsById(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "documents")
     public Iterable<Document> findAll() {
         return super.findAll();

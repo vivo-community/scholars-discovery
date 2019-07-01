@@ -26,6 +26,24 @@ public class RelationshipService extends AbstractNestedDocumentService<Relations
     }
 
     @Override
+    @GraphQLQuery(name = "relationshipCount")
+    public long count() {
+        return super.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "relationshipCount")
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
+        return super.count(query, fields, params);
+    }
+
+    @Override
+    @GraphQLQuery(name = "relationshipExists")
+    public boolean existsById(String id) {
+        return super.existsById(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "relationships")
     public Iterable<Relationship> findAll() {
         return super.findAll();
