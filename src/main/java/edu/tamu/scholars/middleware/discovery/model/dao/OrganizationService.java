@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.discovery.model.dao;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -14,17 +13,18 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.discovery.model.generated.Organization;
 import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Service
 public class OrganizationService extends AbstractNestedDocumentService<Organization, edu.tamu.scholars.middleware.discovery.model.Organization, OrganizationRepo> {
 
-//    @Override
-//    @GraphQLQuery(name = "organization")
-//    public @GraphQLNonNull Optional<Organization> findById(@GraphQLArgument(name = "id") String id) {
-//        return super.findById(id);
-//    }
+    // TODO: figure out how to use findById returning Optional
+    // TODO: figure out how to use name collections
+    @Override
+    @GraphQLQuery(name = "organization")
+    public Organization getById(@GraphQLArgument(name = "id") String id) {
+        return super.getById(id);
+    }
 
     @Override
     @GraphQLQuery(name = "organizations")

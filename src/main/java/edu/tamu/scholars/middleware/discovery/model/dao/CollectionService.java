@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.discovery.model.dao;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -14,17 +13,18 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.discovery.model.generated.Collection;
 import edu.tamu.scholars.middleware.discovery.model.repo.CollectionRepo;
 import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Service
 public class CollectionService extends AbstractNestedDocumentService<Collection, edu.tamu.scholars.middleware.discovery.model.Collection, CollectionRepo> {
 
-//    @Override
-//    @GraphQLQuery(name = "collection")
-//    public @GraphQLNonNull Optional<Collection> findById(@GraphQLArgument(name = "id") String id) {
-//        return super.findById(id);
-//    }
+    // TODO: figure out how to use findById returning Optional
+    // TODO: figure out how to use name collections
+    @Override
+    @GraphQLQuery(name = "collection")
+    public Collection getById(@GraphQLArgument(name = "id") String id) {
+        return super.getById(id);
+    }
 
     @Override
     @GraphQLQuery(name = "collections")

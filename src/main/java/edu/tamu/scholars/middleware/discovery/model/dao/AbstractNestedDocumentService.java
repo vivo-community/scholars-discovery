@@ -72,6 +72,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return nestedDocument;
     }
 
+    // TODO: remove when able to use Optional with generic type for @GraphQLQuery
+    public ND getById(String id) {
+        return findById(id).get();
+    }
+
     @Override
     public boolean existsById(String id) {
         return repo.existsById(id);

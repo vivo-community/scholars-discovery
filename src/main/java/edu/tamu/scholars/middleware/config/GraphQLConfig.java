@@ -38,7 +38,7 @@ import io.leangen.graphql.metadata.strategy.value.InputFieldBuilderParams;
 
 @Configuration
 public class GraphQLConfig {
-    
+
     public final static String DISCOVERY_MODEL_PACKAGE = "edu.tamu.scholars.middleware.discovery.model";
 
     @Autowired
