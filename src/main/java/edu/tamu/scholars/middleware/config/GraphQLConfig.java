@@ -131,7 +131,7 @@ public class GraphQLConfig {
     @SuppressWarnings("unchecked")
     private Sort parseSort(Object input, String type) {
         Map<String, Object> sort = (Map<String, Object>) input;
-        if (sort.containsKey("orders")) {
+        if (sort != null && sort.containsKey("orders")) {
             List<Sort.Order> orders = new ArrayList<>();
             for (Map<String, Object> order : (List<Map<String, Object>>) sort.get("orders")) {
                 String direction = ((String) order.get("direction")).toUpperCase();
