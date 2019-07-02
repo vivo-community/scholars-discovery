@@ -82,8 +82,9 @@
       - name: Education And Training
         field: educationAndTraining
         sort:
-        - field: label
-          direction: ASC
+        - field: endDate
+          direction: DESC
+          date: true
         template: "defaults/displayViews/people/academicBackground/educationAndTraining/default.html"
     - name: credentials
       hidden: false
