@@ -55,6 +55,14 @@
     limit: 10
     collapsed: true
     hidden: false
+  - name: Research Keywords
+    field: keywords
+    type: STRING
+    sort: COUNT
+    direction: DESC
+    limit: 10
+    collapsed: true
+    hidden: false
   filters: []
   sort:
   - field: name
@@ -114,6 +122,14 @@
     hidden: false
   - name: Publisher
     field: publisher
+    type: STRING
+    sort: COUNT
+    direction: DESC
+    limit: 10
+    collapsed: true
+    hidden: false
+  - name: Research Keywords
+    field: keywords
     type: STRING
     sort: COUNT
     direction: DESC
