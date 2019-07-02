@@ -14,9 +14,11 @@
     </div>
     <div>
       <span>{{preferredTitle}}</span>
+      {{#if positions}}
       {{#showPositionForPreferredTitle positions preferredTitle}}
       <span><a href="display/organizations/{{id}}">{{label}}</a></span>
       {{/showPositionForPreferredTitle}}
+      {{/if}}
     </div>
   </div>
 </div>
