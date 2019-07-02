@@ -3,7 +3,10 @@
   {{#each principalInvestigatorOn}}
     <li class="mb-2">
       <a href="display/relationships/{{id}}">{{label}}</a>
-      <span>{{toYear startDate}} - {{toYear endDate}}</span>
+      <span>{{toYear startDate}}</span>
+      {{#if endDate}}      
+      <span> - {{toYear endDate}}</span>
+      {{/if}}
     </li>
   {{/each}}
   </ul>
