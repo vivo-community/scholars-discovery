@@ -110,7 +110,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         if (filterQuery.isPresent()) {
             simpleQuery.addFilterQuery(filterQuery.get());
         }
-        simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
+        Sort scoreSort = Sort.by("score").descending().and(sort);
+        simpleQuery.addSort(scoreSort.and(Sort.by(Direction.ASC, ID)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 
