@@ -150,6 +150,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return repo.findBySyncIdsIn(syncIds).stream().map(this::toNested).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ND> findAllByOrderByModTimeDesc(Pageable pageable) {
+        return repo.findAllByOrderByModTimeDesc(pageable).stream().map(this::toNested).collect(Collectors.toList());
+    }
+
     protected abstract Class<?> getNestedDocumentType();
 
     @SuppressWarnings("unchecked")
@@ -162,7 +167,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
             throw new RuntimeException("Something went wrong");
         }
     }
-    
+
     private void translateParameters(String[] fields, Map<String, List<String>> params) {
         final String type = getNestedDocumentType().getSimpleName();
         // replace underscores with dots for the facet namespace
@@ -171,14 +176,14 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
             List<String> value = params.remove(key);
             key = key.replace("_", ".");
             String[] keyParts = key.split("\\.");
-            if(keyParts.length > 2) {
+            if (keyParts.length > 2) {
                 String property = findProperty(type, key.substring(0, key.lastIndexOf(".")));
                 key = String.format("%s.%s", property, keyParts[keyParts.length - 1]);
             }
             params.put(key, value);
         });
         // lookup flattened property for path
-        for(int i = 0; i < fields.length; i++) {
+        for (int i = 0; i < fields.length; i++) {
             fields[i] = findProperty(type, fields[i]);
         }
     }

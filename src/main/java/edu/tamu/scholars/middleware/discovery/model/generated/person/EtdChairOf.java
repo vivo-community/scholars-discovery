@@ -21,6 +21,8 @@ public class EtdChairOf extends AbstractNestedDocument {
 
   private String url;
 
+  private String publicationDate;
+
   public EtdChairOf() {
     super();
   }
@@ -31,5 +33,13 @@ public class EtdChairOf extends AbstractNestedDocument {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public String getPublicationDate() {
+    return publicationDate;
+  }
+
+  public void setPublicationDate(String publicationDate) {
+    this.publicationDate = publicationDate;
   }
 }

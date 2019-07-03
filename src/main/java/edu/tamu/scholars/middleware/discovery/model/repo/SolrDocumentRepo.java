@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.discovery.model.repo;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -29,6 +28,6 @@ public interface SolrDocumentRepo<D extends AbstractSolrDocument> extends SolrCr
 
     public List<D> findBySyncIdsIn(List<String> syncIds);
 
-    public Page<D> findAllByOrderByModTimeDesc(Pageable pageable);
+    public List<D> findAllByOrderByModTimeDesc(Pageable pageable);
 
 }
