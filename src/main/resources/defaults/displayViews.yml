@@ -82,8 +82,9 @@
       - name: Education And Training
         field: educationAndTraining
         sort:
-        - field: label
-          direction: ASC
+        - field: endDate
+          direction: DESC
+          date: true
         template: "defaults/displayViews/people/academicBackground/educationAndTraining/default.html"
     - name: credentials
       hidden: false
@@ -219,8 +220,11 @@
       requiredFields:
       - editorOf
       subsections:
-      - name: Editor Of
+      - name: Books
         field: editorOf
+        filters:
+        - field: type
+          value: Book
         sort:
         - field: label
           direction: ASC
@@ -315,8 +319,9 @@
       - name: Documents
         field: etdChairOf
         sort:
-        - field: label
-          direction: ASC
+        - field: publicationDate
+          direction: DESC
+          date: true
         template: "defaults/displayViews/people/worksByStudents/chairedThesesAndDissertations/default.html"
   - name: Service
     hidden: false
@@ -614,6 +619,13 @@
       template: "defaults/displayViews/organizations/affiliation/organizationForTraining.html"
       requiredFields:
       - organizationForTraining
+      subsections:
+      - name: Organization For Training
+        field: organizationForTraining
+        sort:
+        - field: label
+          direction: ASC
+        template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
     - name: people
       hidden: false
       template: "defaults/displayViews/organizations/affiliation/people.html"
@@ -1439,7 +1451,7 @@
       template: "defaults/displayViews/awards/other/dateTimeValue.html"
       requiredFields:
       - dateTimeValue
-  
+
 - name: Courses
   types:
   - Course

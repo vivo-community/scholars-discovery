@@ -10,7 +10,13 @@ import edu.tamu.scholars.middleware.discovery.model.Collection;
 @JsonComponent
 public class CollectionSerializer extends AbstractSolrDocumentSerializer<Collection> {
 
+    private static final long serialVersionUID = -6696726318107162766L;
+
     private final JsonSerializer<Collection> delegate = new UnwrappingCollectionSerializer(NameTransformer.NOP);
+
+    public CollectionSerializer() {
+        super(Collection.class);
+    }
 
     @Override
     protected JsonSerializer<Collection> getDelegate() {

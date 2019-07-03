@@ -1,16 +1,19 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -40,7 +43,7 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         @RequestParam(value = "query", required = false) String query,
         @RequestParam(value = "index", required = false) String index,
         @RequestParam(value = "facets", required = false) String[] facets,
-        @RequestParam MultiValueMap<String, String> params,
+        @RequestParam Map<String, List<String>> params,
         @PageableDefault Pageable pageable
     ) {
     // @formatter:on
@@ -54,7 +57,7 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         @RequestParam(value = "query", required = false) String query,
         @RequestParam(value = "index", required = false) String index,
         @RequestParam(value = "fields", required = false) String[] fields,
-        @RequestParam MultiValueMap<String, String> params,
+        @RequestParam Map<String, List<String>> params,
         @SortDefault Sort sort,
         Export export,
         Exporter exporter
@@ -66,15 +69,20 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     }
     // @formatter:on
 
-    @GetMapping(value = "/search/count", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping("/search/count")
     // @formatter:off
     public ResponseEntity<Count> count(
         @RequestParam(value = "query", required = false) String query,
         @RequestParam(value = "fields", required = false) String[] fields,
-        @RequestParam MultiValueMap<String, String> params
+        @RequestParam Map<String, List<String>> params
     ) {
     // @formatter:on
         return ResponseEntity.ok(new Count(repo.count(query, fields, params)));
+    }
+
+    @GetMapping("/search/recently-updated")
+    public ResponseEntity<Resources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
+        return ResponseEntity.ok(new Resources<R>(assembler.toResources(repo.findAllByOrderByModTimeDesc(PageRequest.of(0, limit)))));
     }
 
     class Count {

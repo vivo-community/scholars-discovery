@@ -148,7 +148,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     )
                     .hasRole("ADMIN")
 
-                .antMatchers(POST, "/registration")
+                .antMatchers(POST,
+                        "/registration",
+                        "/graphql"
+                 )
                     .permitAll()
                 .antMatchers(POST,
                         "/directoryViews/{id}",
@@ -174,18 +177,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET,
                         "/api",
+                        "/gui",
+                        "/graphql",
                         "/registration",
                         "/themes/search/active",
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn",
-                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/export", "/collections/search/count",
-                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/export", "/concepts/search/count",
-                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/export", "/documents/search/count",
-                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count",
-                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count",
-                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count",
-                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count"
+                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/export", "/collections/search/count", "/collections/search/recently-updated",
+                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/export", "/concepts/search/count", "/concepts/search/recently-updated",
+                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/export", "/documents/search/count", "/documents/search/recently-updated",
+                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count", "/organizations/search/recently-updated",
+                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count", "/persons/search/recently-updated",
+                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count", "/processes/search/recently-updated",
+                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count", "/relationships/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,

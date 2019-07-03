@@ -16,7 +16,9 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
+@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "collections")
 @CollectionSource(predicate = "http://purl.org/ontology/bibo/Collection")
@@ -76,6 +78,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> authorRank;
 
     @NestedMultiValuedProperty
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "collection/authorOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authorOrganization;

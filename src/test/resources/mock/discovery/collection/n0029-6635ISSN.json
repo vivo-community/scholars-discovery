@@ -1,11 +1,30 @@
 {
-  "id": "n0029-6635ISSN",
-  "name": "NUTRITION REPORTS INTERNATIONAL",
-  "type": [
+  "id" : "n0029-6635ISSN",
+  "syncIds" : [
+    "n330952SE",
+    "n0029-6635ISSN",
+    "n330950SE",
+    "n201922SE",
+    "n330926SE",
+    "n194140SE",
+    "n330969SE",
+    "n330906SE",
+    "n330923SE",
+    "n198808SE",
+    "n330878SE",
+    "n330869SE",
+    "n330863SE",
+    "n330887SE",
+    "n330875SE",
+    "n330865SE"
+  ],
+  "name" : "Nutrition Reports International",
+  "type" : [
     "Journal"
   ],
-  "publicationVenueFor": [
+  "publicationVenueFor" : [
     "The influence of fatty liver syndrome on the calcium status of the laying hen::n330878SE",
+    "Effect of dietary copper on tissue mineral composition as an estimate of copper bioavailability in broiler chicks::n330875SE",
     "Performance of turkey poults when fed four levels of virginiamycin::n330863SE",
     "Effect of dietary copper and age on tissue mineral composition of broiler-type chicks as a bioassay of inorganic copper sources::n330950SE",
     "Effects of four antibiotics on energy utilization by the turkey poult::n330952SE",
@@ -20,5 +39,6 @@
     "Influence of virginiamycin on energy utilization of turkey poults::n330923SE",
     "Tissue manganese uptake as a measure of manganese bioavailability::n330926SE"
   ],
-  "issn": "0029-6635"
+  "issn": "0029-6635",
+  "modTime": "2019-01-01T00:00:00"
 }

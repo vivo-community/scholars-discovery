@@ -133,6 +133,31 @@
     </dependency>
 
     <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>javapoet</artifactId>
+      <version>1.11.1</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.leangen.graphql</groupId>
+      <artifactId>graphql-spqr-spring-boot-starter</artifactId>
+      <version>0.0.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.leangen.graphql</groupId>
+      <artifactId>spqr</artifactId>
+      <version>0.10.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
+      <version>4.7.1</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.solr</groupId>
       <artifactId>solr-core</artifactId>
       <exclusions>
@@ -306,17 +331,56 @@
     <plugins>
 
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
+          <!-- in case generate files are not available -->
+          <!-- add additional exclusions for code importing generated classes -->
+          <!--
+          <excludes>
+            <exclude>edu/tamu/scholars/middleware/discovery/model/doa/*</exclude>
+            <exclude>edu/tamu/scholars/middleware/discovery/model/generated/*</exclude>
+            <exclude>edu/tamu/scholars/middleware/discovery/model/generated/**/*</exclude>
+          </excludes>
+          -->
         </configuration>
       </plugin>
+
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <!-- deletes all generated nested documents before generation -->
+              <mainClass>edu.tamu.scholars.middleware.discovery.generator.NestedDocumentGenerator</mainClass>
+              <arguments>
+              	<argument>src/main/java</argument>
+              	<argument>edu.tamu.scholars.middleware.discovery.model.generated</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -417,6 +481,36 @@
       </plugin>
 
     </plugins>
+
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.codehaus.mojo</groupId>
+    								<artifactId>exec-maven-plugin</artifactId>
+    								<versionRange>[1.6.0,)</versionRange>
+    								<goals>
+    									<goal>java</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
   </build>
 
 </project>

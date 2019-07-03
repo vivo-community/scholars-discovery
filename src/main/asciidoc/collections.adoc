@@ -104,3 +104,22 @@ include::{snippets}/collections/count-search/http-response.adoc[]
 
 ===== CURL Sample
 include::{snippets}/collections/count-search/curl-request.adoc[]
+
+==== Recently Updated
+
+This will return a json response listing recently updated collections, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::{snippets}/collections/recently-updated-search/request-parameters.adoc[]
+
+===== Response Fields
+include::{snippets}/collections/recently-updated-search/response-fields.adoc[]
+
+===== Sample Request
+include::{snippets}/collections/recently-updated-search/http-request.adoc[]
+
+===== Sample Response
+include::{snippets}/collections/recently-updated-search/http-response.adoc[]
+
+===== CURL Sample
+include::{snippets}/collections/recently-updated-search/curl-request.adoc[]

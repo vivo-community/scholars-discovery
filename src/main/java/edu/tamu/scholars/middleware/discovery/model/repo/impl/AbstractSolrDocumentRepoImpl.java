@@ -5,10 +5,12 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.REQUEST_
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -26,7 +28,6 @@ import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
-import org.springframework.util.MultiValueMap;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
@@ -49,11 +50,14 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, String index, String[] facets, MultiValueMap<String, String> params, Pageable page) {
+    public FacetPage<D> search(String query, String index, String[] facets, Map<String, List<String>> params, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query != null) {
-            facetQuery.addCriteria(new SimpleStringCriteria(query));
+            Criteria criteria = getCriteria(query);
+            facetQuery.addCriteria(criteria);
+            Sort scoreSort = Sort.by("score").descending().and(page.getSort());
+            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), scoreSort);
         } else {
             facetQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
         }
@@ -94,14 +98,13 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         facetQuery.setDefaultOperator(queryOperator);
 
         facetQuery.setDefType(queryParser);
-
         facetQuery.setPageRequest(page);
 
         return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
     }
 
     @Override
-    public Cursor<D> stream(String query, String index, String[] fields, MultiValueMap<String, String> params, Sort sort) {
+    public Cursor<D> stream(String query, String index, String[] fields, Map<String, List<String>> params, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
         Optional<FilterQuery> filterQuery = getIndexFilterQuery(index);
         if (filterQuery.isPresent()) {
@@ -112,7 +115,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public long count(String query, String[] fields, MultiValueMap<String, String> params) {
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
         return solrTemplate.count(collection(), simpleQuery, type());
     }
@@ -120,6 +123,10 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     public abstract String collection();
 
     public abstract Class<D> type();
+
+    protected Criteria getCriteria(String query) {
+        return new SimpleStringCriteria(query);
+    }
 
     private Optional<FilterQuery> getIndexFilterQuery(String index) {
         if (index != null) {
@@ -134,11 +141,11 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return Optional.empty();
     }
 
-    private SimpleQuery buildSimpleQuery(String query, String[] fields, MultiValueMap<String, String> params) {
+    private SimpleQuery buildSimpleQuery(String query, String[] fields, Map<String, List<String>> params) {
         SimpleQuery simpleQuery = new SimpleQuery();
 
         if (query != null) {
-            simpleQuery.addCriteria(new SimpleStringCriteria(query));
+            simpleQuery.addCriteria(getCriteria(query));
         } else {
             simpleQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
         }

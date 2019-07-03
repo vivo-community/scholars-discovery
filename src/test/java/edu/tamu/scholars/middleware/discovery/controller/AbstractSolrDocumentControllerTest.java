@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -36,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -134,17 +134,17 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                     document(
                         getPath().substring(1) + "/facet-search",
                         requestParameters(
-                            parameterWithName("query").description("The search query"),
-                            parameterWithName("facets").description("The facet fields"),
-                            parameterWithName("type.limit").description("Type facet limit"),
-                            parameterWithName("type.offset").description("Type facet offset"),
-                            parameterWithName("type.sort").description("Type facet sort {index/count}"),
-                            parameterWithName("page").description("The page number"),
-                            parameterWithName("size").description("The page size"),
-                            parameterWithName("sort").description("The page sort 'field,{asc/desc}'")
+                            parameterWithName("query").description("The search query."),
+                            parameterWithName("facets").description("The facet fields."),
+                            parameterWithName("type.limit").description("Type facet limit."),
+                            parameterWithName("type.offset").description("Type facet offset."),
+                            parameterWithName("type.sort").description("Type facet sort {index/count}."),
+                            parameterWithName("page").description("The page number."),
+                            parameterWithName("size").description("The page size."),
+                            parameterWithName("sort").description("The page sort 'field,{asc/desc}'.")
                         ),
                         links(
-                            linkWithRel("self").description("Canonical link for this resource")
+                            linkWithRel("self").description("Canonical link for this resource.")
                         ),
                         responseFields(
                             subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
@@ -195,16 +195,36 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
         // @formatter:off
         mockMvc.perform(get(getPath() + "/search/count").param("query", "*"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("value", equalTo(3)))
             .andDo(
                 document(
                     getPath().substring(1) + "/count-search",
                     requestParameters(
-                        parameterWithName("query").description("The search query")
+                        parameterWithName("query").description("The search query.")
                     ),
                     responseFields(
                         subsectionWithPath("value").description("The resulting count.")
+                    )
+                )
+            );
+        // @formatter:on
+    }
+
+    @Test
+    public void testRecentlyUpdated() throws Exception {
+        // @formatter:off
+        mockMvc.perform(get(getPath() + "/search/recently-updated").param("limit", "3"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+            .andDo(
+                document(
+                    getPath().substring(1) + "/recently-updated-search",
+                    requestParameters(
+                        parameterWithName("limit").description("The number of recently updated documents to return.")
+                    ),
+                    responseFields(
+                        subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
                     )
                 )
             );
@@ -219,7 +239,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
         }
         ConstraintDescriptionsHelper describeDocument = new ConstraintDescriptionsHelper(getType());
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/findByIdIn").param("ids", String.join(",", ids)))            
+        mockMvc.perform(get(getPath() + "/search/findByIdIn").param("ids", String.join(",", ids)))
             .andExpect(status().isOk())
             .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
             .andDo(
@@ -229,7 +249,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                         describeDocument.withParameter("ids", String.format("The %s ids.", getType().getSimpleName()))
                     ),
                     links(
-                        linkWithRel("self").description("Canonical link for this resource")
+                        linkWithRel("self").description("Canonical link for this resource.")
                     ),
                     responseFields(
                         subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),

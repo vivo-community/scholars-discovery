@@ -10,7 +10,13 @@ import edu.tamu.scholars.middleware.discovery.model.Organization;
 @JsonComponent
 public class OrganizationSerializer extends AbstractSolrDocumentSerializer<Organization> {
 
+    private static final long serialVersionUID = 4538751491457551643L;
+
     private final JsonSerializer<Organization> delegate = new UnwrappingOrganizationSerializer(NameTransformer.NOP);
+
+    public OrganizationSerializer() {
+        super(Organization.class);
+    }
 
     @Override
     protected JsonSerializer<Organization> getDelegate() {

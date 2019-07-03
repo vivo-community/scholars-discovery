@@ -13,8 +13,10 @@ import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 
+@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "persons")
 @CollectionSource(predicate = "http://xmlns.com/foaf/0.1/Person")
@@ -81,6 +83,7 @@ public class Person extends AbstractSolrDocument {
     private List<String> positionOrganization;
 
     @NestedMultiValuedProperty
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> positionOrganizationParent;
@@ -120,6 +123,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/headOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> headOfType;
 
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/headOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> headOfOrganization;
@@ -141,6 +145,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/memberOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> memberOfType;
 
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/memberOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> memberOfOrganization;
@@ -201,6 +206,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/educationAndTraining", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTraining;
 
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "person/educationAndTrainingOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTrainingOrganization;
@@ -719,7 +725,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/fax", predicate = "http://www.w3.org/2006/vcard/ns#fax")
     private String fax;
 
-    @NestedObject({ @Reference(value = "etdChairOfURL", key = "url") })
+    @NestedObject({ @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key="publicationDate") })
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "person/etdChairOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairOf;
@@ -727,6 +733,10 @@ public class Person extends AbstractSolrDocument {
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/etdChairOfURL", predicate = "http://www.w3.org/2006/vcard/ns#url")
     private List<String> etdChairOfURL;
+
+    @Indexed(type = "nested_dates")
+    @PropertySource(template = "person/etdChairOfPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> etdChairOfPublicationDate;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "person/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
@@ -2072,6 +2082,14 @@ public class Person extends AbstractSolrDocument {
         this.etdChairOfURL = etdChairOfURL;
     }
 
+    public List<String> getEtdChairOfPublicationDate() {
+        return etdChairOfPublicationDate;
+    }
+
+    public void setEtdChairOfPublicationDate(List<String> etdChairOfPublicationDate) {
+        this.etdChairOfPublicationDate = etdChairOfPublicationDate;
+    }
+
     public String getModTime() {
         return modTime;
     }
@@ -2079,5 +2097,4 @@ public class Person extends AbstractSolrDocument {
     public void setModTime(String modTime) {
         this.modTime = modTime;
     }
-
 }

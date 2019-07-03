@@ -10,7 +10,13 @@ import edu.tamu.scholars.middleware.discovery.model.Relationship;
 @JsonComponent
 public class RelationshipSerializer extends AbstractSolrDocumentSerializer<Relationship> {
 
+    private static final long serialVersionUID = -7713600009466458715L;
+
     private final JsonSerializer<Relationship> delegate = new UnwrappingRelationshipSerializer(NameTransformer.NOP);
+
+    public RelationshipSerializer() {
+        super(Relationship.class);
+    }
 
     @Override
     protected JsonSerializer<Relationship> getDelegate() {

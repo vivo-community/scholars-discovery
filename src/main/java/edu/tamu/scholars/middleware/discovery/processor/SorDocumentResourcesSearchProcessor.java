@@ -14,9 +14,11 @@ public class SorDocumentResourcesSearchProcessor implements ResourceProcessor<Re
         final Link facetSearchLink = new Link(search + "/facet{?query,index,facets,page,size,sort}").withRel("facet");
         final Link exportSearchLink = new Link(search + "/export{?query,index,fields,export,sort}").withRel("export");
         final Link countSearchLink = new Link(search + "/count{?query,fields}").withRel("count");
+        final Link recentSearchLink = new Link(search + "/recently-updated{?limit}").withRel("recent");
         resource.add(facetSearchLink);
         resource.add(exportSearchLink);
         resource.add(countSearchLink);
+        resource.add(recentSearchLink);
         return resource;
     }
 
