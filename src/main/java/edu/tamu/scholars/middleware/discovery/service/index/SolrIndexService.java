@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.service;
+package edu.tamu.scholars.middleware.discovery.service.index;
 
 public interface SolrIndexService {
 

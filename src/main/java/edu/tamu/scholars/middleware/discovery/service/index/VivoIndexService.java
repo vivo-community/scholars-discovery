@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.service;
+package edu.tamu.scholars.middleware.discovery.service.index;
 
 import java.time.Duration;
 import java.time.Instant;

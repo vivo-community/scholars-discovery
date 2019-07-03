@@ -26,6 +26,8 @@ public class DirectoryViewTest {
         assertNotNull(directoryView.getFilters());
         assertTrue(directoryView.getFacets().isEmpty());
         assertTrue(directoryView.getFilters().isEmpty());
+        assertTrue(directoryView.getSort().isEmpty());
+        assertTrue(directoryView.getExport().isEmpty());
     }
 
     @Test
@@ -65,6 +67,14 @@ public class DirectoryViewTest {
         assertNotNull(directoryView.getIndex());
         assertEquals("name", directoryView.getIndex().getField());
         assertEquals(OperationKey.ENDS_WITH, directoryView.getIndex().getOperationKey());
+
+        assertEquals(2, directoryView.getExport().size());
+        assertEquals("Id", directoryView.getExport().get(0).getColumnHeader());
+        assertEquals("id", directoryView.getExport().get(0).getValuePath());
+        assertEquals("||", directoryView.getExport().get(0).getDelimiter());
+        assertEquals("Name", directoryView.getExport().get(1).getColumnHeader());
+        assertEquals("name", directoryView.getExport().get(1).getValuePath());
+        assertEquals("||", directoryView.getExport().get(1).getDelimiter());
     }
 
 }

@@ -12,12 +12,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MappedSuperclass;
 
+import edu.tamu.scholars.middleware.view.annotation.ValidCollectionExport;
 import edu.tamu.scholars.middleware.view.annotation.ValidCollectionFacets;
 import edu.tamu.scholars.middleware.view.annotation.ValidCollectionFilters;
 
 @MappedSuperclass
 @ValidCollectionFacets(message = "{CollectionView.validCollectionFacets}")
 @ValidCollectionFilters(message = "{CollectionView.validCollectionFilters}")
+@ValidCollectionExport(message = "{CollectionView.validCollectionExport}")
 public abstract class CollectionView extends ResourceView {
 
     private static final long serialVersionUID = 6875458024293994230L;
@@ -43,6 +45,9 @@ public abstract class CollectionView extends ResourceView {
     @ElementCollection
     private List<Sort> sort;
 
+    @ElementCollection
+    private List<ExportField> export;
+
     public CollectionView() {
         super();
         templates = new HashMap<String, String>();
@@ -50,6 +55,7 @@ public abstract class CollectionView extends ResourceView {
         facets = new ArrayList<Facet>();
         filters = new ArrayList<Filter>();
         sort = new ArrayList<Sort>();
+        export = new ArrayList<ExportField>();
     }
 
     public Layout getLayout() {
@@ -98,6 +104,14 @@ public abstract class CollectionView extends ResourceView {
 
     public void setSort(List<Sort> sort) {
         this.sort = sort;
+    }
+
+    public List<ExportField> getExport() {
+        return export;
+    }
+
+    public void setExport(List<ExportField> export) {
+        this.export = export;
     }
 
 }

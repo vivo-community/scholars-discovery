@@ -70,6 +70,22 @@ include::{snippets}/concepts/facet-search/http-response.adoc[]
 ===== CURL Sample
 include::{snippets}/concepts/facet-search/curl-request.adoc[]
 
+==== Export
+
+This export will return a stream of specified type containing the search results with the requested fields, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::{snippets}/concepts/export-search/request-parameters.adoc[]
+
+===== Sample Request
+include::{snippets}/concepts/export-search/http-request.adoc[]
+
+===== Sample Response
+include::{snippets}/concepts/export-search/http-response.adoc[]
+
+===== CURL Sample
+include::{snippets}/concepts/export-search/curl-request.adoc[]
+
 ==== Count
 
 This count will return a json response containing the count, based on the query parameters as shown in *Request Parameters*.

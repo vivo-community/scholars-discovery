@@ -1,4 +1,7 @@
-package edu.tamu.scholars.middleware.discovery.service;
+package edu.tamu.scholars.middleware.discovery.service.index;
+
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -38,19 +41,15 @@ import edu.tamu.scholars.middleware.service.Triplestore;
 
 public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R extends SolrCrudRepository<D, String>> implements SolrIndexService {
 
-    private final static String COLLECTION_SPARQL_TEMPLATE = "collection";
-
-    private final static String ID_PROPERTY_NAME = "id";
-
-    private final static String FORWARD_SLASH = "/";
-
-    private final static String HASH_TAG = "#";
-
-    private final static String NESTED = "nested";
-
-    private final static String NESTED_DELIMITER = "::";
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static final String COLLECTION_SPARQL_TEMPLATE = "collection";
+
+    private static final String FORWARD_SLASH = "/";
+
+    private static final String HASH_TAG = "#";
+
+    private static final String NESTED = "nested";
 
     @Value("${middleware.index.batchSize:10000}")
     public int indexBatchSize;
@@ -154,7 +153,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
 
     private D createDocument(String subject) throws InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
         D document = construct();
-        Field field = FieldUtils.getField(type(), ID_PROPERTY_NAME, true);
+        Field field = FieldUtils.getField(type(), ID, true);
         field.set(document, parse(subject));
         lookupProperties(document, subject);
         lookupSyncIds(document);

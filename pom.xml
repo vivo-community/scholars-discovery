@@ -20,7 +20,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jena.version>3.10.0</jena.version>
+    <jena.version>3.12.0</jena.version>
   </properties>
 
   <dependencies>
@@ -203,11 +203,17 @@
       <artifactId>commons-compress</artifactId>
       <version>1.18</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.7</version>
+    </dependency>
 
     <dependency>
       <groupId>com.github.jsonld-java</groupId>
       <artifactId>jsonld-java</artifactId>
-      <version>0.12.3</version>
+      <version>0.12.4</version>
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -256,7 +262,7 @@
     <dependency>
       <groupId>org.passay</groupId>
       <artifactId>passay</artifactId>
-      <version>1.4.0</version>
+      <version>1.5.0</version>
     </dependency>
 
     <dependency>
@@ -406,7 +412,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.3</version>
+        <version>0.8.4</version>
         <executions>
           <execution>
             <id>prepare-agent</id>

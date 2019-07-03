@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
 
@@ -153,6 +154,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     @Override
     public List<ND> findAllByOrderByModTimeDesc(Pageable pageable) {
         return repo.findAllByOrderByModTimeDesc(pageable).stream().map(this::toNested).collect(Collectors.toList());
+    }
+
+    @Override
+    public Cursor<ND> stream(String query, String index, String[] fields, Map<String, List<String>> params, Sort sort) {
+        throw new UnsupportedOperationException("Unable to map stream");
     }
 
     protected abstract Class<?> getNestedDocumentType();

@@ -1,5 +1,9 @@
 package edu.tamu.scholars.middleware.discovery.serializer;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.LABEL;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -24,12 +28,6 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 
 public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends AbstractSolrDocument> extends JsonSerializer<D> {
 
-    private final static String ID_PROPERTY_NAME = "id";
-
-    private final static String LABEL_PROPERTY_NAME = "label";
-
-    private final static String NESTED_ID_DELIMITER = "::";
-
     private final NameTransformer nameTransformer;
 
     public AbstractUnwrappingSolrDocumentSerializer(final NameTransformer nameTransformer) {
@@ -44,7 +42,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
     @Override
     public void serialize(D document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
 
-        jsonGenerator.writeObjectField(nameTransformer.transform(ID_PROPERTY_NAME), document.getId());
+        jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
 
         for (Field field : FieldUtils.getFieldsListWithAnnotation(document.getClass(), PropertySource.class)) {
             field.setAccessible(true);
@@ -67,7 +65,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                             List<String> values = (List<String>) value;
                             ArrayNode array = JsonNodeFactory.instance.arrayNode();
                             for (String v : values) {
-                                String[] vParts = v.split(NESTED_ID_DELIMITER);
+                                String[] vParts = v.split(NESTED_DELIMITER);
                                 if (vParts.length > 1) {
                                     array.add(processValue(document, field, vParts, 1));
                                 }
@@ -77,7 +75,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                             }
                         } else {
                             String v = value.toString();
-                            String[] vParts = v.split(NESTED_ID_DELIMITER);
+                            String[] vParts = v.split(NESTED_DELIMITER);
                             if (vParts.length > 1) {
                                 ObjectNode node = processValue(document, field, vParts, 1);
                                 jsonGenerator.writeObjectField(nameTransformer.transform(name), node);
@@ -85,7 +83,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                         }
                     }
                 } else {
-                    if (!value.toString().contains(NESTED_ID_DELIMITER)) {
+                    if (!value.toString().contains(NESTED_DELIMITER)) {
                         jsonGenerator.writeObjectField(nameTransformer.transform(name), value);
                     }
                 }
@@ -95,8 +93,8 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
 
     private ObjectNode processValue(D document, Field field, String[] vParts, int index) {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
-        node.put(LABEL_PROPERTY_NAME, vParts[0]);
-        node.put(ID_PROPERTY_NAME, vParts[index]);
+        node.put(LABEL, vParts[0]);
+        node.put(ID, vParts[index]);
         processNestedReferences(document, field, node, vParts, index + 1);
         return node;
     }
@@ -127,7 +125,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                         boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
                         for (String nv : nestedValues) {
                             if (nv.contains(vParts[depth - 1])) {
-                                String[] nvParts = nv.split(NESTED_ID_DELIMITER);
+                                String[] nvParts = nv.split(NESTED_DELIMITER);
                                 if (nvParts.length > depth) {
                                     ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
                                     array.add(subNode);
@@ -150,7 +148,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                         }
                     } else {
                         String nv = nestedValue.toString();
-                        String[] nvParts = nv.split(NESTED_ID_DELIMITER);
+                        String[] nvParts = nv.split(NESTED_DELIMITER);
                         if (nvParts.length > depth) {
                             ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
                             node.set(name, subNode);

@@ -1,5 +1,10 @@
 package edu.tamu.scholars.middleware.discovery.utility;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DISCOVERY_MODEL_PACKAGE;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.LABEL;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DELIMETER_REGEX;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,13 +23,13 @@ import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 
 public class DiscoveryUtility {
 
-    public static final String DISCOVERY_MODEL_PACKAGE = "edu.tamu.scholars.middleware.discovery.model";
-
-    public static List<String> getFields(String collection) {
+    public static List<String> getFieldNames(String collection) {
         List<String> fields = new ArrayList<String>();
+        fields.add(ID);
         for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
             try {
                 Class<?> type = Class.forName(beanDefinition.getBeanClassName());
@@ -50,6 +55,21 @@ public class DiscoveryUtility {
         return false;
     }
 
+    public static Optional<Class<?>> getCollectionType(String collection) {
+        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
+            try {
+                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
+                SolrDocument solrDocument = type.getAnnotation(SolrDocument.class);
+                if (collection.equals(solrDocument.collection())) {
+                    return Optional.of(type);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return Optional.empty();
+    }
+
     public static boolean isCollection(String collection) {
         for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
             try {
@@ -64,7 +84,7 @@ public class DiscoveryUtility {
         }
         return false;
     }
-    
+
     public static Set<Class<?>> getDiscoveryDocumentTypes() {
         Set<Class<?>> documents = new HashSet<Class<?>>();
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
@@ -84,7 +104,7 @@ public class DiscoveryUtility {
         String classPath = String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, type);
         try {
             Class<?> documentType = Class.forName(classPath);
-            List<String> properties = new ArrayList<String>(Arrays.asList(path.split("\\.")));
+            List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
             return findProperty(documentType, properties);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -114,25 +134,41 @@ public class DiscoveryUtility {
         }
     }
 
+    public static Field findField(Class<?> clazz, String[] path) throws InvalidValuePathException {
+        if (path.length == 1 || path[1].equals(LABEL) || path[1].equals(ID)) {
+            return findField(clazz, path[0]);
+        }
+        Field field = findField(clazz, path[0]);
+        return getReferenceField(field, Arrays.copyOfRange(path, 1, path.length));
+    }
+
+    public static Field getReferenceField(Field field, String[] path) throws InvalidValuePathException {
+        NestedObject nested = field.getAnnotation(NestedObject.class);
+        for (Reference reference : nested.value()) {
+            if (reference.key().contentEquals(path[0])) {
+                Field refField = findField(field.getDeclaringClass(), reference.value());
+                return path.length > 1 ? getReferenceField(refField, Arrays.copyOfRange(path, 1, path.length)) : refField;
+            }
+        }
+        throw new InvalidValuePathException(String.format("Unable to resolve %s reference %s", field.getName(), String.join(".", path)));
+    }
+
+    public static Field findField(Class<?> clazz, String property) throws InvalidValuePathException {
+        try {
+            return clazz.getDeclaredField(property);
+        } catch (NoSuchFieldException | SecurityException e) {
+            Class<?> superClazz = clazz.getSuperclass();
+            if (superClazz != null) {
+                return findField(superClazz, property);
+            }
+        }
+        throw new InvalidValuePathException(String.format("Unable to resolve %s of %s", property, clazz.getSimpleName()));
+    }
+
     private static Set<BeanDefinition> getSolrDocumentBeanDefinitions() {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AnnotationTypeFilter(SolrDocument.class));
         return provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
-    }
-
-    private static Optional<Class<?>> getCollectionType(String collection) {
-        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
-            try {
-                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                SolrDocument solrDocument = type.getAnnotation(SolrDocument.class);
-                if (collection.equals(solrDocument.collection())) {
-                    return Optional.of(type);
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return Optional.empty();
     }
 
 }

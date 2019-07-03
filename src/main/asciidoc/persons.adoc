@@ -70,6 +70,22 @@ include::{snippets}/persons/facet-search/http-response.adoc[]
 ===== CURL Sample
 include::{snippets}/persons/facet-search/curl-request.adoc[]
 
+==== Export
+
+This export will return a stream of specified type containing the search results with the requested fields, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::{snippets}/persons/export-search/request-parameters.adoc[]
+
+===== Sample Request
+include::{snippets}/persons/export-search/http-request.adoc[]
+
+===== Sample Response
+include::{snippets}/persons/export-search/http-response.adoc[]
+
+===== CURL Sample
+include::{snippets}/persons/export-search/curl-request.adoc[]
+
 ==== Count
 
 This count will return a json response containing the count, based on the query parameters as shown in *Request Parameters*.

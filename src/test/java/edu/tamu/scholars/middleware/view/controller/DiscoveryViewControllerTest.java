@@ -59,7 +59,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
                         describeDiscoveryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
-                        describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>.")
+                        describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
+                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -76,6 +77,7 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
+                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                         subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -105,8 +107,9 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                         describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
                         describeDiscoveryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
+                        describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
-                        describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>.")
+                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -123,6 +126,7 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
+                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                         subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -161,7 +165,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                                 describeDiscoveryView.withParameter("styles", "An array of result style strings of the Discovery View.").optional(),
                                 describeDiscoveryView.withParameter("facets", "An array of <<resources-facets, Facet resources>>.").optional(),
                                 describeDiscoveryView.withParameter("filters", "An array of <<resources-filters, Filters resources>>.").optional(),
-                                describeDiscoveryView.withParameter("sort", "An array of <<resources-sort, Sort resources>>.").optional()
+                                describeDiscoveryView.withParameter("sort", "An array of <<resources-sort, Sort resources>>.").optional(),
+                                describeDiscoveryView.withParameter("export", "An array of <<resources-export, Export resources>>.").optional()
                             ),
                             links(
                                 linkWithRel("self").description("Canonical link for this resource."),
@@ -178,6 +183,7 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                                 describeDiscoveryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                                 describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                                 describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
+                                describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                                 subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                             )
                         )
@@ -216,6 +222,7 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                             describeDiscoveryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                             describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                             describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
+                            describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                             subsectionWithPath("_links").description("<<resources-discovery-view-list-links, Links>> to other resources.")
                         )
                     )

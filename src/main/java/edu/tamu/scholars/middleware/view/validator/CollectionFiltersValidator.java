@@ -9,15 +9,11 @@ import edu.tamu.scholars.middleware.view.model.Filter;
 public class CollectionFiltersValidator extends CollectionFieldValidator<ValidCollectionFilters> {
 
     @Override
-    protected boolean isValidField(CollectionView collectionView, List<String> fields) {
-        List<Filter> filters = collectionView.getFilters();
-        if (filters.isEmpty()) {
-            return true;
-        }
-        for (Filter filter : filters) {
+    protected boolean isValidField(CollectionView collectionView, List<String> fieldNames) {
+        for (Filter filter : collectionView.getFilters()) {
             boolean facetValid = false;
-            for (String field : fields) {
-                if (field.equals(filter.getField())) {
+            for (String fieldName : fieldNames) {
+                if (fieldName.equals(filter.getField())) {
                     facetValid = true;
                     break;
                 }

@@ -67,6 +67,19 @@
   sort:
   - field: name
     direction: ASC
+  export:
+    - columnHeader: First name
+      valuePath: firstName
+    - columnHeader: Last name
+      valuePath: lastName
+    - columnHeader: Preferred title
+      valuePath: preferredTitle
+    - columnHeader: Overview
+      valuePath: overview
+    - columnHeader: Position
+      valuePath: positions
+    - columnHeader: Department
+      valuePath: positions.organizations
 
 - name: Publications
   collection: documents
@@ -140,6 +153,29 @@
   sort:
   - field: title
     direction: ASC
+  export:
+    - columnHeader: Publication type
+      valuePath: type
+    - columnHeader: Publication title
+      valuePath: title
+    - columnHeader: Publication date
+      valuePath: publicationDate
+    - columnHeader: Journal title
+      valuePath: publicationVenue
+    - columnHeader: Book title
+      valuePath: bookTitle
+    - columnHeader: Author
+      valuePath: authors
+    - columnHeader: Author's department
+      valuePath: authors.organizations
+    - columnHeader: DOI
+      valuePath: doi
+    - columnHeader: PubMed ID
+      valuePath: pmcid
+    - columnHeader: Open Access Link
+      valuePath: uri
+    - columnHeader: Publisher
+      valuePath: publisher
 
 - name: Grants
   collection: relationships
@@ -210,6 +246,19 @@
   sort:
   - field: title
     direction: ASC
+  export:
+    - columnHeader: Grant title
+      valuePath: title
+    - columnHeader: Grant date
+      valuePath: yearAwarded
+    - columnHeader: Awarded by
+      valuePath: awardedBy
+    - columnHeader: Principal investigators
+      valuePath: principalInvestigators
+    - columnHeader: Co-Principal investigators
+      valuePath: coPrincipalInvestigators
+    - columnHeader: Administered by
+      valuePath: administeredBy
 
 - name: Awards
   collection: relationships
@@ -256,6 +305,15 @@
   sort:
   - field: title
     direction: ASC
+  export:
+    - columnHeader: Award title
+      valuePath: title
+    - columnHeader: Conferred by
+      valuePath: awardConferredBy
+    - columnHeader: Award receipt name
+      valuePath: receiptOf
+    - columnHeader: Year awarded
+      valuePath: yearAwarded
 
 - name: Courses
   collection: processes
@@ -286,6 +344,9 @@
   sort:
   - field: title
     direction: ASC
+  export:
+    - columnHeader: Course number and title
+      valuePath: title
 
 - name: Concepts
   collection: concepts
@@ -322,3 +383,8 @@
   sort:
   - field: name
     direction: ASC
+  export:
+    - columnHeader: Concept name
+      valuePath: name
+    - columnHeader: Associated departments
+      valuePath: associatedDepartments
