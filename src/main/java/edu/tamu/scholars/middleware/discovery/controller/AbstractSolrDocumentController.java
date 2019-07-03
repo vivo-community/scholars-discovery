@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.http.MediaType;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,20 +43,20 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         return ResponseEntity.ok(pagedResourcesAssembler.toResource(page, assembler));
     }
 
-    @GetMapping(value = "/search/count", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping("/search/count")
     // @formatter:off
     public ResponseEntity<Count> count(
         @RequestParam(value = "query", required = false) String query,
-        @RequestParam(value = "fields", required = false) String[] facets,
+        @RequestParam(value = "fields", required = false) String[] fields,
         @RequestParam MultiValueMap<String, String> params
     ) {
     // @formatter:on
-        return ResponseEntity.ok(new Count(repo.count(query, facets, params)));
+        return ResponseEntity.ok(new Count(repo.count(query, fields, params)));
     }
 
     @GetMapping("/search/recently-updated")
-    public ResponseEntity<PagedResources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
-        return ResponseEntity.ok(pagedResourcesAssembler.toResource(repo.findAllByOrderByModTimeDesc(PageRequest.of(0, limit)),assembler));
+    public ResponseEntity<Resources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
+        return ResponseEntity.ok(new Resources<R>(assembler.toResources(repo.findAllByOrderByModTimeDesc(PageRequest.of(0, limit)))));
     }
 
     class Count {

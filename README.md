@@ -12,18 +12,18 @@ Existing frontend applications include:
 ## Installation instructions
 
 1. [Install](https://maven.apache.org/install.html) Maven
-1. [Install](https://docs.docker.com/install/) Docker
-1. Clone this project
-1. Build and Run the provided Solr application
+2. [Install](https://docs.docker.com/install/) Docker
+3. Clone this project
+4. Build and Run the provided Solr application
 ```bash
    cd scholars-discovery/solr
    docker build --tag=scholars-solr .
    docker run -p 8983:8983 scholars-solr
 ```
-1. Build and Run the application
+5. Build and Run the application
 ```bash
    mvn clean install
-   mvn spring-boot:run 
+   mvn spring-boot:run
 ```
    - Note: Custom application configuration can be achieved by providing a location and an optional profile, such as:
 ```bash

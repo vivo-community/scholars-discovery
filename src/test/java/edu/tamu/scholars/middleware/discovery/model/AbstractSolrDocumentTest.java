@@ -37,7 +37,6 @@ public abstract class AbstractSolrDocumentTest<D extends AbstractSolrDocument> {
         @SuppressWarnings("unchecked")
         D document = (D) clazz.getConstructor().newInstance();
 
-        String single = "Test";
         List<String> list = Arrays.asList(new String[] { "Hello", "World" });
 
         Set<String> set = new HashSet<String>(list);
@@ -51,9 +50,11 @@ public abstract class AbstractSolrDocumentTest<D extends AbstractSolrDocument> {
             } else if (Set.class.isAssignableFrom(field.getType())) {
                 MethodUtils.invokeMethod(document, true, setter(property), set);
                 assertEquals(set, MethodUtils.invokeMethod(document, true, getter(property)));
+            } else if (String.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), "Test");
+                assertEquals("Test", MethodUtils.invokeMethod(document, true, getter(property)));
             } else {
-                MethodUtils.invokeMethod(document, true, setter(property), single);
-                assertEquals(single, MethodUtils.invokeMethod(document, true, getter(property)));
+                throw new RuntimeException("Unexpected type");
             }
         }
     }

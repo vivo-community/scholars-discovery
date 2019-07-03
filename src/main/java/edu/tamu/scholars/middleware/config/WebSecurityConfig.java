@@ -148,7 +148,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     )
                     .hasRole("ADMIN")
 
-                .antMatchers(POST, "/registration")
+                .antMatchers(POST,
+                        "/registration",
+                        "/graphql"
+                 )
                     .permitAll()
                 .antMatchers(POST,
                         "/directoryViews/{id}",
@@ -174,6 +177,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET,
                         "/api",
+                        "/gui",
+                        "/graphql",
                         "/registration",
                         "/themes/search/active",
                         "/directoryViews", "/directoryViews/{id}",

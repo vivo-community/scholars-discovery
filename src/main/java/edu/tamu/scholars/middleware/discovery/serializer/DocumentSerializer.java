@@ -10,7 +10,13 @@ import edu.tamu.scholars.middleware.discovery.model.Document;
 @JsonComponent
 public class DocumentSerializer extends AbstractSolrDocumentSerializer<Document> {
 
+    private static final long serialVersionUID = 8958373904891340032L;
+
     private final JsonSerializer<Document> delegate = new UnwrappingDocumentSerializer(NameTransformer.NOP);
+
+    public DocumentSerializer() {
+        super(Document.class);
+    }
 
     @Override
     protected JsonSerializer<Document> getDelegate() {

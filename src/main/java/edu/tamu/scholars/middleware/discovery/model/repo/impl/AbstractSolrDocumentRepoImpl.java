@@ -3,6 +3,7 @@ package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,6 @@ import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.FacetPage;
-import org.springframework.util.MultiValueMap;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
@@ -45,8 +45,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, String index, String[] facets, MultiValueMap<String, String> params, Pageable page) {
-
+    public FacetPage<D> search(String query, String index, String[] facets, Map<String, List<String>> params, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query != null) {
@@ -108,7 +107,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public long count(String query, String[] fields, MultiValueMap<String, String> params) {
+    public long count(String query, String[] fields, Map<String, List<String>> params) {
         SimpleQuery simpleQuery = new SimpleQuery();
 
         if (query != null) {

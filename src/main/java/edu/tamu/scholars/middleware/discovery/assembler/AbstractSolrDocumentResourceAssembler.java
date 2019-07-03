@@ -21,8 +21,8 @@ public abstract class AbstractSolrDocumentResourceAssembler<D extends AbstractSo
 
     @Override
     public R toResource(D document) {
-        Link documentLink = repositoryEntityLinks.linkToSingleResource(document.getClass(), document.getId());
-        Link selfLink = new Link(documentLink.getHref(), Link.REL_SELF);
+        Link selfLink = repositoryEntityLinks.linkToSingleResource(document.getClass(), document.getId()).withSelfRel();
+        Link documentLink = repositoryEntityLinks.linkToCollectionResource(document.getClass());
         return createResource(document, Arrays.asList(selfLink, documentLink));
     }
 

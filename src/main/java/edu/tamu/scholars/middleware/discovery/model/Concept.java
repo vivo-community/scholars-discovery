@@ -13,8 +13,10 @@ import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 
+@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "concepts")
 @CollectionSource(predicate = "http://www.w3.org/2004/02/skos/core#Concept")
@@ -60,6 +62,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> researchAreaOfTitle;
 
     @NestedMultiValuedProperty
+    @NestedObject(root = false)
     @Indexed(type = "nested_strings")
     @PropertySource(template = "concept/researchAreaOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOfOrganization;

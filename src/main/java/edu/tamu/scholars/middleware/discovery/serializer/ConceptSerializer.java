@@ -10,7 +10,13 @@ import edu.tamu.scholars.middleware.discovery.model.Concept;
 @JsonComponent
 public class ConceptSerializer extends AbstractSolrDocumentSerializer<Concept> {
 
+    private static final long serialVersionUID = 2956446943109798523L;
+
     private final JsonSerializer<Concept> delegate = new UnwrappingConceptSerializer(NameTransformer.NOP);
+
+    public ConceptSerializer() {
+        super(Concept.class);
+    }
 
     @Override
     protected JsonSerializer<Concept> getDelegate() {
