@@ -725,7 +725,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/fax", predicate = "http://www.w3.org/2006/vcard/ns#fax")
     private String fax;
 
-    @NestedObject({ @Reference(value = "etdChairOfURL", key = "url") })
+    @NestedObject({ @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key="publicationDate") })
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "person/etdChairOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairOf;
@@ -733,6 +733,10 @@ public class Person extends AbstractSolrDocument {
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/etdChairOfURL", predicate = "http://www.w3.org/2006/vcard/ns#url")
     private List<String> etdChairOfURL;
+
+    @Indexed(type = "nested_dates")
+    @PropertySource(template = "person/etdChairOfPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> etdChairOfPublicationDate;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "person/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
@@ -2078,6 +2082,14 @@ public class Person extends AbstractSolrDocument {
         this.etdChairOfURL = etdChairOfURL;
     }
 
+    public List<String> getEtdChairOfPublicationDate() {
+        return etdChairOfPublicationDate;
+    }
+
+    public void setEtdChairOfPublicationDate(List<String> etdChairOfPublicationDate) {
+        this.etdChairOfPublicationDate = etdChairOfPublicationDate;
+    }
+
     public String getModTime() {
         return modTime;
     }
@@ -2085,5 +2097,4 @@ public class Person extends AbstractSolrDocument {
     public void setModTime(String modTime) {
         this.modTime = modTime;
     }
-
 }

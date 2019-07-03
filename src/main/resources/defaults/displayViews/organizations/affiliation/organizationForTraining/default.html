@@ -1,0 +1,13 @@
+<div class="person comma-separated">
+  <span><a href="display/persons/{{trainee.id}}">{{trainee.label}}</a></span>
+  <span>{{label}}</span>
+</div>
+<style>
+  .comma-separated span:after {
+    content: ", ";
+  }
+
+  .comma-separated span:last-child:after {
+    content: "";
+  }
+</style>

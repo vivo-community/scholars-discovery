@@ -23,11 +23,12 @@
   "authorList" : [
     "McQuiston, J. R., Vemulapalli, R., Inzana, T. J., Schurig, G. G., Sriranganathan, N., Fritzinger, D., ... Boyle, S. M."
   ],
-  "publicationDate" : "Fri Dec 31 18:00:00 CST 1999",
-  "identifier" : "313910SE",
-  "doi" : "10.1128/IAI.68.9.5471-5471.2000",
-  "pageStart" : "5471",
-  "pageEnd" : "5471",
-  "volume" : "68",
-  "issue" : "9"
+  "publicationDate": "2000-01-01T00:00:00",
+  "identifier": "313910SE",
+  "doi": "10.1128/IAI.68.9.5471-5471.2000",
+  "pageStart": "5471",
+  "pageEnd": "5471",
+  "volume": "68",
+  "issue": "9",
+  "modTime": "2019-02-01T00:00:00"
 }

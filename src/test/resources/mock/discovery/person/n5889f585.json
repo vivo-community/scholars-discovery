@@ -607,14 +607,15 @@
     "Instructor::n9952df17",
     "Instructor::n00cd7a92"
   ],
-  "netid" : "rvemulapalli",
-  "uid" : "29c4db01cbc04b27820afdd347f0ab11",
-  "email" : "rvemulapalli@tamu.edu",
-  "firstName" : "Ramesh",
-  "lastName" : "Vemulapalli",
-  "streetAddress" : "Texas A&M University; Dean Of Veterinary Medicine; 4461 TAMU",
-  "locality" : "College Station",
-  "region" : "TX",
-  "postalCode" : "77843-4461",
-  "country" : "USA"
+  "netid": "rvemulapalli",
+  "uid": "29c4db01cbc04b27820afdd347f0ab11",
+  "email": "rvemulapalli@tamu.edu",
+  "firstName": "Ramesh",
+  "lastName": "Vemulapalli",
+  "streetAddress": "Texas A&M University; Department of Veterinary Pathobiology; 4467 TAMU",
+  "locality": "College Station",
+  "region": "TX",
+  "postalCode": "77843-4467",
+  "country": "USA",
+  "modTime": "2019-01-01T00:00:00"
 }
