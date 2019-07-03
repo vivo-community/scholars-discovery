@@ -1,9 +1,8 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
@@ -18,8 +17,10 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.subsecti
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.ByteArrayInputStream;
@@ -214,9 +215,10 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     @Test
     public void testRecentlyUpdated() throws Exception {
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/recently-updated").param("limit", "3"))
+        mockMvc.perform(get(getPath() + "/search/recently-updated").param("limit", "2"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+            .andExpect(jsonPath(String.format("$._embedded.%s.length()", getPath().substring(1)), is(2)))
             .andDo(
                 document(
                     getPath().substring(1) + "/recently-updated-search",
@@ -287,3 +289,4 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     protected abstract String getPath();
 
 }
+

@@ -26,7 +26,9 @@ public final class ExportArgumentResolver implements HandlerMethodArgumentResolv
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        Optional<Export> export = Collections.list(request.getParameterNames()).stream().filter(paramName -> paramName.equals(EXPORT_QUERY_PARAM_KEY)).map(request::getParameterValues).map(Export::new).findAny();
+        Optional<Export> export = Collections.list(request.getParameterNames()).stream()
+                .filter(paramName -> paramName.equals(EXPORT_QUERY_PARAM_KEY))
+                .map(request::getParameterValues).map(Export::new).findAny();
         if (export.isPresent()) {
             return export.get();
         }
