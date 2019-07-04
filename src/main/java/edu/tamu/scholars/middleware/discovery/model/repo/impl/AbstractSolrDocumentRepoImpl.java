@@ -35,7 +35,11 @@ import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepo
 
 public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocument> implements SolrDocumentRepoCustom<D> {
 
-    public final static String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
+    private static final String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
+
+    private static final String SCORE_FIELD = "score";
+
+    private static final String MOD_TIME_FIELD = "modTime";
 
     @Value("${spring.data.solr.parser:edismax}")
     private String queryParser;
@@ -55,7 +59,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         } else {
             Criteria criteria = getCriteria(query);
             facetQuery.addCriteria(criteria);
-            Sort scoreSort = Sort.by("score").descending().and(page.getSort());
+            Sort scoreSort = Sort.by(SCORE_FIELD).descending().and(page.getSort());
             page = PageRequest.of(page.getPageNumber(), page.getPageSize(), scoreSort);
         }
 
@@ -101,7 +105,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         if (index.isPresent()) {
             simpleQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
         }
-        Sort scoreSort = Sort.by("score").descending().and(sort);
+        Sort scoreSort = Sort.by(SCORE_FIELD).descending().and(sort);
         simpleQuery.addSort(scoreSort.and(Sort.by(Direction.ASC, ID)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
@@ -109,7 +113,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     @Override
     public List<D> findMostRecentlyUpdate(Integer limit) {
         SimpleQuery simpleQuery = buildSimpleQuery();
-        simpleQuery.addSort(Sort.by("modTime").descending());
+        simpleQuery.addSort(Sort.by(MOD_TIME_FIELD).descending());
         simpleQuery.setRows(limit);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
     }

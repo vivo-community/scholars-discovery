@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.service.export;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EMPTY_STRING;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DELIMETER_REGEX;
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findField;
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.tamu.scholars.middleware.config.ExportConfig;
 import edu.tamu.scholars.middleware.discovery.argument.Export;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -40,8 +41,8 @@ public class CSVExporter implements Exporter {
     @Autowired
     private ObjectMapper mapper;
 
-    @Value("${ui.url:http://localhost:4200}")
-    private String uiUrl;
+    @Autowired
+    private ExportConfig config;
 
     @Override
     public String type() {
@@ -68,6 +69,19 @@ public class CSVExporter implements Exporter {
                     D document = cursor.next();
                     List<Object> row = new ArrayList<Object>();
                     for (Export exp : export) {
+                        if (exp.getField().equals(config.getIndividualKey())) {
+                            Field idField = findField(document.getClass(), ID);
+                            idField.setAccessible(true);
+                            Object idValue = idField.get(document);
+                            if (config.isIncludeCollection()) {
+                                SolrDocument solrDocument = document.getClass().getAnnotation(SolrDocument.class);
+                                String collection = solrDocument.collection();
+                                row.add(String.format("%s/%s/%s", config.getIndividualBaseUri(), collection, idValue));
+                            } else {
+                                row.add(String.format("%s/%s", config.getIndividualBaseUri(), idValue));
+                            }
+                            continue;
+                        }
                         Field field = findField(document.getClass(), exp.getField().split(PATH_DELIMETER_REGEX));
                         field.setAccessible(true);
                         Object objValue = field.get(document);
@@ -85,15 +99,6 @@ public class CSVExporter implements Exporter {
                         }
                         row.add(removeNestedIdentifiers(value));
                     }
-
-                    // TODO: figure out a better way to do this
-                    Field idField = findField(document.getClass(), "id");
-                    idField.setAccessible(true);
-                    Object idValue = idField.get(document);
-                    SolrDocument solrDocument = document.getClass().getAnnotation(SolrDocument.class);
-                    String collection = solrDocument.collection();
-                    row.add(String.format("%s/display/%s/%s", uiUrl, collection, idValue));
-
                     printer.printRecord(row.toArray(new Object[row.size()]));
                 }
             } catch (InvalidValuePathException | IllegalArgumentException | IllegalAccessException e) {
@@ -109,10 +114,6 @@ public class CSVExporter implements Exporter {
         for (Export exp : export) {
             columnHeaders.add(exp.getLabel());
         }
-
-        // TODO: figure out a better way to do this
-        columnHeaders.add("Individual");
-
         return columnHeaders.toArray(new String[columnHeaders.size()]);
     }
 

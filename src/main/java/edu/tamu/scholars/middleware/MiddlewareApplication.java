@@ -3,6 +3,7 @@ package edu.tamu.scholars.middleware;
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_DURATION_IN_DAYS;
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MAX_LENGTH;
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MIN_LENGTH;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 
 import javax.annotation.PostConstruct;
 
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
+import edu.tamu.scholars.middleware.config.ExportConfig;
 import edu.tamu.scholars.middleware.config.MiddlewareConfig;
 
 @EnableScheduling
@@ -33,6 +35,8 @@ public class MiddlewareApplication {
         PASSWORD_DURATION_IN_DAYS = password.getDuration();
         PASSWORD_MIN_LENGTH = password.getMinLength();
         PASSWORD_MAX_LENGTH = password.getMaxLength();
+        ExportConfig export = middlewareConfig.getExport();
+        EXPORT_INDIVIDUAL_KEY = export.getIndividualKey();
     }
 
 }

@@ -26,6 +26,10 @@ middleware:
     zone: America/Chicago
     onStartup: true
     batchSize: 10000
+  export:
+    individualKey: individual
+    includeCollection: true
+    individualBaseUri: http://localhost:4200/display
 
 ui:
   url: http://localhost:4200

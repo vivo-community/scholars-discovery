@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.config;
+package edu.tamu.scholars.middleware.graphql.config;
 
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
 

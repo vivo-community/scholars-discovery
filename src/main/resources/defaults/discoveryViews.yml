@@ -80,6 +80,8 @@
       valuePath: positions
     - columnHeader: Department
       valuePath: positions.organizations
+    - columnHeader: Individual
+      valuePath: individual
 
 - name: Publications
   collection: documents
@@ -176,6 +178,8 @@
       valuePath: uri
     - columnHeader: Publisher
       valuePath: publisher
+    - columnHeader: Individual
+      valuePath: individual
 
 - name: Grants
   collection: relationships
@@ -259,6 +263,8 @@
       valuePath: coPrincipalInvestigators
     - columnHeader: Administered by
       valuePath: administeredBy
+    - columnHeader: Individual
+      valuePath: individual
 
 - name: Awards
   collection: relationships
@@ -314,6 +320,8 @@
       valuePath: receiptOf
     - columnHeader: Year awarded
       valuePath: yearAwarded
+    - columnHeader: Individual
+      valuePath: individual
 
 - name: Courses
   collection: processes
@@ -388,3 +396,5 @@
       valuePath: name
     - columnHeader: Associated departments
       valuePath: associatedDepartments
+    - columnHeader: Individual
+      valuePath: individual

@@ -165,7 +165,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
             .param("query", "*")
             .param("type", "csv")
             .param("export", "id,Id")
-            .param("export", "type,Type"))
+            .param("export", "type,Type")
+            .param("export", "individual,Individual"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         result = mockMvc.perform(asyncDispatch(result))

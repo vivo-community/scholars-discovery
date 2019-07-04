@@ -1,7 +1,9 @@
 package edu.tamu.scholars.middleware.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +37,16 @@ public class MiddlewareConfigTest {
         assertNotNull(mailConfig);
         assertEquals("scholarsdiscovery@gmail.com", mailConfig.getFrom());
         assertEquals("scholarsdiscovery@gmail.com", mailConfig.getReplyTo());
+        HttpConfig httpConfig = middlewareConfig.getHttp();
+        assertNotNull(httpConfig);
+        assertEquals(60000, httpConfig.getTimeout());
+        assertEquals(60000, httpConfig.getTimeToLive());
+        assertEquals(30000, httpConfig.getRequestTimeout());
+        assertEquals(60000, httpConfig.getSocketTimeout());
+        ExportConfig exportConfig = middlewareConfig.getExport();
+        assertNotNull(exportConfig);
+        assertTrue(exportConfig.isIncludeCollection());
+        assertEquals("http://localhost:4200/display", exportConfig.getIndividualBaseUri());
     }
 
     @Test
@@ -89,6 +101,20 @@ public class MiddlewareConfigTest {
         assertEquals(90000, httpConfig.getTimeToLive());
         assertEquals(15000, httpConfig.getRequestTimeout());
         assertEquals(450000, httpConfig.getSocketTimeout());
+    }
+
+    @Test
+    public void testExportGetterSetter() {
+        MiddlewareConfig middlewareConfig = new MiddlewareConfig();
+        ExportConfig newExportConfig = new ExportConfig();
+        newExportConfig.setIndividualKey("link");
+        newExportConfig.setIndividualBaseUri("http://localhost:8080/vivo/display");
+        newExportConfig.setIncludeCollection(false);
+        middlewareConfig.setExport(newExportConfig);
+        ExportConfig exportConfig = middlewareConfig.getExport();
+        assertEquals("link", exportConfig.getIndividualKey());
+        assertEquals("http://localhost:8080/vivo/display", exportConfig.getIndividualBaseUri());
+        assertFalse(exportConfig.isIncludeCollection());
     }
 
 }

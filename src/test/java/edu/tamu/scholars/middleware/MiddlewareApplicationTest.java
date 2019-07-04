@@ -3,7 +3,9 @@ package edu.tamu.scholars.middleware;
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_DURATION_IN_DAYS;
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MAX_LENGTH;
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MIN_LENGTH;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +17,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
 import edu.tamu.scholars.middleware.auth.config.TokenConfig;
+import edu.tamu.scholars.middleware.config.ExportConfig;
+import edu.tamu.scholars.middleware.config.HttpConfig;
 import edu.tamu.scholars.middleware.config.MailConfig;
 import edu.tamu.scholars.middleware.config.MiddlewareConfig;
 
@@ -40,6 +44,12 @@ public class MiddlewareApplicationTest {
     @Autowired
     private MailConfig mailConfig;
 
+    @Autowired
+    private HttpConfig httpConfig;
+
+    @Autowired
+    private ExportConfig exportConfig;
+
     @Test
     public void contextLoads() {
         assertEquals("test", activeProfile);
@@ -50,6 +60,8 @@ public class MiddlewareApplicationTest {
         assertEquals(180, PASSWORD_DURATION_IN_DAYS);
         assertEquals(8, PASSWORD_MIN_LENGTH);
         assertEquals(64, PASSWORD_MAX_LENGTH);
+        assertEquals(64, PASSWORD_MAX_LENGTH);
+        assertEquals("individual", EXPORT_INDIVIDUAL_KEY);
     }
 
     @Test
@@ -100,6 +112,21 @@ public class MiddlewareApplicationTest {
     public void testMailConfig() {
         assertEquals("scholarsdiscovery@gmail.com", mailConfig.getFrom());
         assertEquals("scholarsdiscovery@gmail.com", mailConfig.getReplyTo());
+    }
+
+    @Test
+    public void testHttpConfig() {
+        assertEquals(60000, httpConfig.getTimeout());
+        assertEquals(60000, httpConfig.getTimeToLive());
+        assertEquals(30000, httpConfig.getRequestTimeout());
+        assertEquals(60000, httpConfig.getSocketTimeout());
+    }
+
+    @Test
+    public void testExportConfig() {
+        assertEquals("individual", exportConfig.getIndividualKey());
+        assertEquals("http://localhost:4200/display", exportConfig.getIndividualBaseUri());
+        assertTrue(exportConfig.isIncludeCollection());
     }
 
     @Test
