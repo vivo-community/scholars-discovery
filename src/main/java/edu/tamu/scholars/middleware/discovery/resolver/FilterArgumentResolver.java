@@ -36,6 +36,9 @@ public class FilterArgumentResolver implements HandlerMethodArgumentResolver {
             .map(request::getParameterValues)
             .map(Arrays::asList)
             .flatMap(list -> list.stream())
+            .map(s -> s.split(","))
+            .map(Arrays::asList)
+            .flatMap(list -> list.stream())
             .collect(Collectors.toList());
         List<Filter> filters = new ArrayList<Filter>();
         fields.forEach(field -> {

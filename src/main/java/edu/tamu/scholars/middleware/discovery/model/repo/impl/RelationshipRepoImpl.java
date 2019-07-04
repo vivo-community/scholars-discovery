@@ -15,4 +15,5 @@ public class RelationshipRepoImpl extends AbstractSolrDocumentRepoImpl<Relations
     protected Criteria getCriteria(String query) {
         return Criteria.where("title").is(query).boost(2).or("awardedBy").is(query).boost(2).or(super.getCriteria(query));
     }
+
 }
