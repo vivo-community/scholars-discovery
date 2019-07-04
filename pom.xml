@@ -371,10 +371,10 @@
             </goals>
             <configuration>
               <!-- deletes all generated nested documents before generation -->
-              <mainClass>edu.tamu.scholars.middleware.discovery.generator.NestedDocumentGenerator</mainClass>
+              <mainClass>edu.tamu.scholars.middleware.graphql.generator.NestedDocumentGenerator</mainClass>
               <arguments>
               	<argument>src/main/java</argument>
-              	<argument>edu.tamu.scholars.middleware.discovery.model.generated</argument>
+              	<argument>edu.tamu.scholars.middleware.graphql.model</argument>
               </arguments>
             </configuration>
           </execution>

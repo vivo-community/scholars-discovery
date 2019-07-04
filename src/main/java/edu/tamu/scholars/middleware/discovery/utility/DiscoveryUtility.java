@@ -104,12 +104,16 @@ public class DiscoveryUtility {
         String classPath = String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, type);
         try {
             Class<?> documentType = Class.forName(classPath);
-            List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
-            return findProperty(documentType, properties);
+            return findProperty(documentType, path);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(String.format("Unable to find class %s", classPath), e);
         }
+    }
+
+    public static String findProperty(Class<?> type, String path) {
+        List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
+        return findProperty(type, properties);
     }
 
     public static String findProperty(Class<?> type, List<String> properties) {

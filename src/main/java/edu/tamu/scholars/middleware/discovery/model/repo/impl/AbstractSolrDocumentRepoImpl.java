@@ -1,11 +1,10 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.REQUEST_PARAM_DELIMETER;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.Criteria;
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.data.solr.core.query.FacetOptions.FieldWithFacetParameters;
 import org.springframework.data.solr.core.query.FacetQuery;
-import org.springframework.data.solr.core.query.FilterQuery;
 import org.springframework.data.solr.core.query.Query.Operator;
 import org.springframework.data.solr.core.query.SimpleFacetQuery;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
@@ -29,16 +27,15 @@ import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
+import edu.tamu.scholars.middleware.discovery.argument.Facet;
+import edu.tamu.scholars.middleware.discovery.argument.Filter;
+import edu.tamu.scholars.middleware.discovery.argument.Index;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 
 public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocument> implements SolrDocumentRepoCustom<D> {
 
-    private static final String FILTER_TEMPLATE = "%s.filter";
-
-    private static final int LIMIT = Integer.MAX_VALUE;
-
-    private static final int OFFSET = 0;
+    public final static String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
 
     @Value("${spring.data.solr.parser:edismax}")
     private String queryParser;
@@ -50,65 +47,59 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, String index, String[] facets, Map<String, List<String>> params, Pageable page) {
+    public FacetPage<D> search(String query, Optional<Index> index, List<Facet> facets, List<Filter> filters, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
-        if (query != null) {
+        if (query.equals(DEFAULT_QUERY)) {
+            facetQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
+        } else {
             Criteria criteria = getCriteria(query);
             facetQuery.addCriteria(criteria);
             Sort scoreSort = Sort.by("score").descending().and(page.getSort());
             page = PageRequest.of(page.getPageNumber(), page.getPageSize(), scoreSort);
-        } else {
-            facetQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
         }
 
-        Optional<FilterQuery> filterQuery = getIndexFilterQuery(index);
-        if (filterQuery.isPresent()) {
-            facetQuery.addFilterQuery(filterQuery.get());
+        if (index.isPresent()) {
+            facetQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
         }
 
-        if (facets != null) {
+        FacetOptions facetOptions = new FacetOptions();
+        facets.forEach(facet -> {
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
 
-            FacetOptions facetOptions = new FacetOptions();
-            for (String facet : facets) {
-                FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet);
+            fieldWithFacetParameters.setLimit(facet.getLimit());
 
-                fieldWithFacetParameters.setLimit(LIMIT);
+            fieldWithFacetParameters.setOffset(facet.getOffset());
 
-                fieldWithFacetParameters.setOffset(OFFSET);
+            fieldWithFacetParameters.setSort(facet.getSort());
 
-                fieldWithFacetParameters.setSort(FacetOptions.FacetSort.COUNT);
+            // NOTE: other possible; method, minCount, missing, and prefix
 
-                // NOTE: other possible; method, minCount, missing, and prefix
+            facetOptions.addFacetOnField(fieldWithFacetParameters);
+        });
 
-                facetOptions.addFacetOnField(fieldWithFacetParameters);
-
-                List<String> filters = params.get(String.format(FILTER_TEMPLATE, facet));
-                if (filters != null) {
-                    for (String filter : filters) {
-                        facetQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(facet).is(filter)));
-                    }
-                }
-
-            }
-
+        if (facetOptions.hasFields()) {
             facetQuery.setFacetOptions(facetOptions);
         }
+
+        filters.forEach(filter -> {
+            facetQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(filter.getPath(type())).is(filter.getValue())));
+        });
 
         facetQuery.setDefaultOperator(queryOperator);
 
         facetQuery.setDefType(queryParser);
+
         facetQuery.setPageRequest(page);
 
         return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
     }
 
     @Override
-    public Cursor<D> stream(String query, String index, String[] fields, Map<String, List<String>> params, Sort sort) {
-        SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
-        Optional<FilterQuery> filterQuery = getIndexFilterQuery(index);
-        if (filterQuery.isPresent()) {
-            simpleQuery.addFilterQuery(filterQuery.get());
+    public Cursor<D> stream(String query, Optional<Index> index, List<Filter> filters, Sort sort) {
+        SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
+        if (index.isPresent()) {
+            simpleQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
         }
         Sort scoreSort = Sort.by("score").descending().and(sort);
         simpleQuery.addSort(scoreSort.and(Sort.by(Direction.ASC, ID)));
@@ -116,12 +107,22 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public long count(String query, String[] fields, Map<String, List<String>> params) {
-        SimpleQuery simpleQuery = buildSimpleQuery(query, fields, params);
+    public List<D> findMostRecentlyUpdate(Integer limit) {
+        SimpleQuery simpleQuery = buildSimpleQuery();
+        simpleQuery.addSort(Sort.by("modTime").descending());
+        simpleQuery.setRows(limit);
+        return solrTemplate.query(collection(), simpleQuery, type()).getContent();
+    }
+
+    @Override
+    public long count(String query, List<Filter> filters) {
+        SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
         return solrTemplate.count(collection(), simpleQuery, type());
     }
 
-    public abstract String collection();
+    public String collection() {
+        return type().getAnnotation(SolrDocument.class).collection();
+    }
 
     public abstract Class<D> type();
 
@@ -129,39 +130,22 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return new SimpleStringCriteria(query);
     }
 
-    private Optional<FilterQuery> getIndexFilterQuery(String index) {
-        if (index != null) {
-            String[] indexParts = index.split(REQUEST_PARAM_DELIMETER);
-            // NOTE: to support all operation keys additional values will have to be included in the index query parameter
-            // TODO: if invalid index query parameter, consider an argument resolver into Indexable class
-            if (indexParts.length == 3) {
-                Criteria criteria = buildCriteria(indexParts);
-                return Optional.of(new SimpleFilterQuery(criteria));
-            }
-        }
-        return Optional.empty();
+    private SimpleQuery buildSimpleQuery() {
+        return buildSimpleQuery(DEFAULT_QUERY, new ArrayList<Filter>());
     }
 
-    private SimpleQuery buildSimpleQuery(String query, String[] fields, Map<String, List<String>> params) {
+    private SimpleQuery buildSimpleQuery(String query, List<Filter> filters) {
         SimpleQuery simpleQuery = new SimpleQuery();
 
-        if (query != null) {
-            simpleQuery.addCriteria(getCriteria(query));
-        } else {
+        if (query.equals(DEFAULT_QUERY)) {
             simpleQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
+        } else {
+            simpleQuery.addCriteria(getCriteria(query));
         }
 
-        if (fields != null) {
-            for (String field : fields) {
-                List<String> filters = params.get(String.format(FILTER_TEMPLATE, field));
-                if (filters != null) {
-                    for (String filter : filters) {
-                        FilterQuery filterQuery = new SimpleFilterQuery(new Criteria(field).is(filter));
-                        simpleQuery.addFilterQuery(filterQuery);
-                    }
-                }
-            }
-        }
+        filters.forEach(filter -> {
+            simpleQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(filter.getPath(type())).is(filter.getValue())));
+        });
 
         simpleQuery.setDefaultOperator(queryOperator);
 
@@ -170,33 +154,30 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return simpleQuery;
     }
 
-    private Criteria buildCriteria(String[] indexParts) {
-        String field = indexParts[0];
-        String option = indexParts[2];
-        OperationKey operationKey = OperationKey.valueOf(indexParts[1]);
-        Criteria criteria = new Criteria(field);
-        switch (operationKey) {
+    private Criteria buildCriteria(Index index) {
+        Criteria criteria = new Criteria(index.getPath(type()));
+        switch (index.getOperationKey()) {
         case BETWEEN:
             // NOTE: not supported yet
             break;
         case CONTAINS:
-            criteria.contains(option);
+            criteria.contains(index.getOption());
             break;
         case ENDS_WITH:
-            criteria.endsWith(option);
+            criteria.endsWith(index.getOption());
             break;
         case EQUALS:
-            criteria.is(option);
+            criteria.is(index.getOption());
             break;
         case EXPRESSION:
-            criteria.expression(option);
+            criteria.expression(index.getOption());
             break;
         case FUNCTION:
             // NOTE: not supported
             break;
         case FUZZY:
             // NOTE: more arguments can be used for fuzzy compare
-            criteria.fuzzy(option);
+            criteria.fuzzy(index.getOption());
             break;
         case NEAR:
             // NOTE: not supported yet
@@ -205,7 +186,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             // NOTE: not supported
             break;
         case STARTS_WITH:
-            criteria.startsWith(option);
+            criteria.startsWith(index.getOption());
             break;
         case WITHIN:
             // NOTE: not supported yet

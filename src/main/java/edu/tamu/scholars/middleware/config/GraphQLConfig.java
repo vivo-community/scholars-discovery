@@ -18,7 +18,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.solr.core.query.Criteria.OperationKey;
+import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
+import edu.tamu.scholars.middleware.discovery.argument.Export;
+import edu.tamu.scholars.middleware.discovery.argument.Facet;
+import edu.tamu.scholars.middleware.discovery.argument.Filter;
+import edu.tamu.scholars.middleware.discovery.argument.Index;
 import io.leangen.geantyref.GenericTypeReflector;
 import io.leangen.graphql.ExtendedGeneratorConfiguration;
 import io.leangen.graphql.ExtensionProvider;
@@ -45,8 +51,56 @@ public class GraphQLConfig {
     }
 
     @Bean
-    public ExtensionProvider<GeneratorConfiguration, ArgumentInjector> testArgumentInjectorExtensionProvider() {
+    public ExtensionProvider<GeneratorConfiguration, ArgumentInjector> argumentInjectorExtensionProvider() {
         return (config, current) -> current.prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
+                return Index.of(params);
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return Index.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
+                return Filter.of(params);
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return Filter.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
+                return Facet.of(params);
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return Facet.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
+                return Export.of(params);
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return Export.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
@@ -74,8 +128,68 @@ public class GraphQLConfig {
     }
 
     @Bean
-    public ExtensionProvider<ExtendedGeneratorConfiguration, InputFieldBuilder> testInputFieldBuilder() {
+    public ExtensionProvider<ExtendedGeneratorConfiguration, InputFieldBuilder> inputFieldBuilder() {
         return (config, current) -> current.prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("field", "Index field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("operationKey", "Index operation key", new TypedElement(GenericTypeReflector.annotate(OperationKey.class)), GenericTypeReflector.annotate(OperationKey.class), null));
+                fields.add(new InputField("option", "Index option", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return Index.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("field", "Filter field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("value", "Filter value", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return Filter.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("field", "Facet field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("sort", "Facet sort", new TypedElement(GenericTypeReflector.annotate(FacetSort.class)), GenericTypeReflector.annotate(FacetSort.class), FacetSort.COUNT));
+                fields.add(new InputField("limit", "Facet limit", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
+                fields.add(new InputField("offset", "Facet offset", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 0));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return Facet.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("field", "Export field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("label", "Export label", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("delimiter", "Export delimiter", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return Export.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
 
             @Override
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
@@ -109,7 +223,7 @@ public class GraphQLConfig {
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
                 Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("property", "Sorting order property", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
-                fields.add(new InputField("direction", "Sorting order direction", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("direction", "Sorting order direction", new TypedElement(GenericTypeReflector.annotate(Sort.Direction.class)), GenericTypeReflector.annotate(Sort.Direction.class), Sort.Direction.ASC));
                 return fields;
             }
 
@@ -134,9 +248,9 @@ public class GraphQLConfig {
         if (sort != null && sort.containsKey("orders")) {
             List<Sort.Order> orders = new ArrayList<>();
             for (Map<String, Object> order : (List<Map<String, Object>>) sort.get("orders")) {
-                String direction = ((String) order.get("direction")).toUpperCase();
+                Sort.Direction direction = (Sort.Direction) order.get("direction");
                 String property = findProperty(type, (String) order.get("property"));
-                orders.add(new Sort.Order(Sort.Direction.fromString(direction), property));
+                orders.add(new Sort.Order(direction, property));
             }
             return Sort.by(orders);
         }

@@ -189,6 +189,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
         assertEquals(4, records.size());
         assertEquals("Id", records.get(0).get(0));
         assertEquals("Type", records.get(0).get(1));
+        assertEquals("Individual", records.get(0).get(2));
     }
 
     @Test
