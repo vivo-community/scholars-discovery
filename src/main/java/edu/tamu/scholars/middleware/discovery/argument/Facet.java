@@ -41,8 +41,9 @@ public class Facet extends Mapping {
         return new Facet(field, sort, limit, offset);
     }
 
+    // NOTE: sort set to count, limit set to max value, and offset to 0 for client side management
     public static Facet of(String field) {
-        return new Facet(field, FacetSort.COUNT, 10, 0);
+        return new Facet(field, FacetSort.COUNT, Integer.MAX_VALUE, 0);
     }
 
 }
