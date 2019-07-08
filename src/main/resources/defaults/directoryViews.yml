@@ -46,6 +46,8 @@
       valuePath: positions
     - columnHeader: Department
       valuePath: positions.organizations
+    - columnHeader: Individual
+      valuePath: individual
   index:
     field: name
     operationKey: STARTS_WITH
@@ -94,6 +96,11 @@
     hidden: false
   filters: []
   sort: []
+  export:
+    - columnHeader: Name
+      valuePath: name
+    - columnHeader: Individual
+      valuePath: individual
   index:
     field: name
     operationKey: STARTS_WITH
@@ -181,6 +188,8 @@
       valuePath: uri
     - columnHeader: Publisher
       valuePath: publisher
+    - columnHeader: Individual
+      valuePath: individual
   index:
     field: title
     operationKey: STARTS_WITH

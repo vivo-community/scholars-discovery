@@ -165,7 +165,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
             .param("query", "*")
             .param("type", "csv")
             .param("export", "id,Id")
-            .param("export", "type,Type"))
+            .param("export", "type,Type")
+            .param("export", "individual,Individual"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         result = mockMvc.perform(asyncDispatch(result))
@@ -189,6 +190,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
         assertEquals(4, records.size());
         assertEquals("Id", records.get(0).get(0));
         assertEquals("Type", records.get(0).get(1));
+        assertEquals("Individual", records.get(0).get(2));
     }
 
     @Test

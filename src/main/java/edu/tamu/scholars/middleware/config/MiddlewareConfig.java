@@ -24,6 +24,8 @@ public class MiddlewareConfig {
 
     private HttpConfig http = new HttpConfig();
 
+    private ExportConfig export = new ExportConfig();
+
     public MiddlewareConfig() {
         this.allowedOrigins.add("http://localhost:4200");
     }
@@ -74,6 +76,14 @@ public class MiddlewareConfig {
 
     public void setHttp(HttpConfig http) {
         this.http = http;
+    }
+
+    public ExportConfig getExport() {
+        return export;
+    }
+
+    public void setExport(ExportConfig export) {
+        this.export = export;
     }
 
 }

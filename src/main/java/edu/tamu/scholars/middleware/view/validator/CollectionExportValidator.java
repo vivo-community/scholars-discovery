@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.view.validator;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DELIMETER_REGEX;
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findField;
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getCollectionType;
@@ -20,6 +21,9 @@ public class CollectionExportValidator extends CollectionFieldValidator<ValidCol
         Optional<Class<?>> type = getCollectionType(collectionView.getCollection());
         if (type.isPresent()) {
             for (ExportField export : collectionView.getExport()) {
+                if (export.getValuePath().equals(EXPORT_INDIVIDUAL_KEY)) {
+                    continue;
+                }
                 String[] path = export.getValuePath().split(PATH_DELIMETER_REGEX);
                 boolean exportValid = false;
                 for (String fieldName : fieldNames) {

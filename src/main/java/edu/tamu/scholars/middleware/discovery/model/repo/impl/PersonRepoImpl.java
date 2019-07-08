@@ -7,11 +7,6 @@ import edu.tamu.scholars.middleware.discovery.model.Person;
 public class PersonRepoImpl extends AbstractSolrDocumentRepoImpl<Person> {
 
     @Override
-    public String collection() {
-        return "persons";
-    }
-
-    @Override
     public Class<Person> type() {
         return Person.class;
     }
@@ -20,4 +15,5 @@ public class PersonRepoImpl extends AbstractSolrDocumentRepoImpl<Person> {
     protected Criteria getCriteria(String query) {
         return Criteria.where("firstName").is(query).boost(2).or("lastName").is(query).boost(2).or(super.getCriteria(query));
     }
+
 }

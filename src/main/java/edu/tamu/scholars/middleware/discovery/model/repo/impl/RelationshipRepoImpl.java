@@ -7,11 +7,6 @@ import edu.tamu.scholars.middleware.discovery.model.Relationship;
 public class RelationshipRepoImpl extends AbstractSolrDocumentRepoImpl<Relationship> {
 
     @Override
-    public String collection() {
-        return "relationships";
-    }
-
-    @Override
     public Class<Relationship> type() {
         return Relationship.class;
     }
@@ -20,4 +15,5 @@ public class RelationshipRepoImpl extends AbstractSolrDocumentRepoImpl<Relations
     protected Criteria getCriteria(String query) {
         return Criteria.where("title").is(query).boost(2).or("awardedBy").is(query).boost(2).or(super.getCriteria(query));
     }
+
 }

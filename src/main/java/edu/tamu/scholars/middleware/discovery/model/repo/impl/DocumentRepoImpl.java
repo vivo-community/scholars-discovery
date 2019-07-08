@@ -7,11 +7,6 @@ import edu.tamu.scholars.middleware.discovery.model.Document;
 public class DocumentRepoImpl extends AbstractSolrDocumentRepoImpl<Document> {
 
     @Override
-    public String collection() {
-        return "documents";
-    }
-
-    @Override
     public Class<Document> type() {
         return Document.class;
     }
@@ -20,4 +15,5 @@ public class DocumentRepoImpl extends AbstractSolrDocumentRepoImpl<Document> {
     protected Criteria getCriteria(String query) {
         return Criteria.where("title").is(query).boost(2).or("keywords").is(query).boost(2).or(super.getCriteria(query));
     }
+
 }

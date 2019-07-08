@@ -7,11 +7,6 @@ import edu.tamu.scholars.middleware.discovery.model.Concept;
 public class ConceptRepoImpl extends AbstractSolrDocumentRepoImpl<Concept> {
 
     @Override
-    public String collection() {
-        return "concepts";
-    }
-
-    @Override
     public Class<Concept> type() {
         return Concept.class;
     }
@@ -20,4 +15,5 @@ public class ConceptRepoImpl extends AbstractSolrDocumentRepoImpl<Concept> {
     protected Criteria getCriteria(String query) {
         return Criteria.where("name").is(query).boost(2).or(super.getCriteria(query));
     }
+
 }
