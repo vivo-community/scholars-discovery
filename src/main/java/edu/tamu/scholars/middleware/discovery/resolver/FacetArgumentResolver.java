@@ -13,7 +13,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 
 public class FacetArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -22,7 +22,7 @@ public class FacetArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Facet.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return FacetArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class FacetArgumentResolver implements HandlerMethodArgumentResolver {
             .map(s -> s.split(","))
             .map(Arrays::asList)
             .flatMap(list -> list.stream())
-            .map(Facet::of)
+            .map(FacetArg::of)
             .collect(Collectors.toList());
     }
 

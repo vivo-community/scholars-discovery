@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.tamu.scholars.middleware.config.ExportConfig;
-import edu.tamu.scholars.middleware.discovery.argument.Export;
+import edu.tamu.scholars.middleware.discovery.argument.ExportArg;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 
@@ -60,7 +60,7 @@ public class CSVExporter implements Exporter {
     }
 
     @Override
-    public <D extends AbstractSolrDocument> StreamingResponseBody streamSolrResponse(Cursor<D> cursor, List<Export> export) {
+    public <D extends AbstractSolrDocument> StreamingResponseBody streamSolrResponse(Cursor<D> cursor, List<ExportArg> export) {
         return outputStream -> {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             String[] headers = getColumnHeaders(export);
@@ -68,7 +68,7 @@ public class CSVExporter implements Exporter {
                 while (cursor.hasNext()) {
                     D document = cursor.next();
                     List<Object> row = new ArrayList<Object>();
-                    for (Export exp : export) {
+                    for (ExportArg exp : export) {
                         if (exp.getField().equals(config.getIndividualKey())) {
                             Field idField = findField(document.getClass(), ID);
                             idField.setAccessible(true);
@@ -109,9 +109,9 @@ public class CSVExporter implements Exporter {
         };
     }
 
-    private String[] getColumnHeaders(List<Export> export) {
+    private String[] getColumnHeaders(List<ExportArg> export) {
         List<String> columnHeaders = new ArrayList<String>();
-        for (Export exp : export) {
+        for (ExportArg exp : export) {
             columnHeaders.add(exp.getLabel());
         }
         return columnHeaders.toArray(new String[columnHeaders.size()]);

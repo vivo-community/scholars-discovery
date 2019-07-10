@@ -101,13 +101,12 @@ public class DiscoveryUtility {
     }
 
     public static String findProperty(String type, String path) {
-        String classPath = String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, type);
         try {
-            Class<?> documentType = Class.forName(classPath);
+            Class<?> documentType = Class.forName(type);
             return findProperty(documentType, path);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            throw new RuntimeException(String.format("Unable to find class %s", classPath), e);
+            throw new RuntimeException(String.format("Unable to find class %s", type), e);
         }
     }
 

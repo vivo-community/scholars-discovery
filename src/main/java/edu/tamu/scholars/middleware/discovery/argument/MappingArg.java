@@ -2,11 +2,11 @@ package edu.tamu.scholars.middleware.discovery.argument;
 
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
 
-public abstract class Mapping {
+public abstract class MappingArg {
 
-    public final String path;
+    private final String path;
 
-    public Mapping(String path) {
+    public MappingArg(String path) {
         this.path = path;
     }
 

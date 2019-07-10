@@ -2,11 +2,11 @@ package edu.tamu.scholars.middleware.discovery.argument;
 
 import java.util.Map;
 
-public class Filter extends Mapping {
+public class FilterArg extends MappingArg {
 
-    public final String value;
+    private final String value;
 
-    public Filter(String field, String value) {
+    public FilterArg(String field, String value) {
         super(field);
         this.value = value;
     }
@@ -16,15 +16,15 @@ public class Filter extends Mapping {
     }
 
     @SuppressWarnings("unchecked")
-    public static Filter of(Object input) {
+    public static FilterArg of(Object input) {
         Map<String, Object> filter = (Map<String, Object>) input;
         String field = (String) filter.get("field");
         String value = (String) filter.get("value");
-        return new Filter(field, value);
+        return new FilterArg(field, value);
     }
 
-    public static Filter of(String field, String value) {
-        return new Filter(field, value);
+    public static FilterArg of(String field, String value) {
+        return new FilterArg(field, value);
     }
 
 }

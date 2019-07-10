@@ -15,7 +15,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 
 public class FilterArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -25,7 +25,7 @@ public class FilterArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Filter.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return FilterArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override
@@ -40,14 +40,14 @@ public class FilterArgumentResolver implements HandlerMethodArgumentResolver {
             .map(Arrays::asList)
             .flatMap(list -> list.stream())
             .collect(Collectors.toList());
-        List<Filter> filters = new ArrayList<Filter>();
+        List<FilterArg> filters = new ArrayList<FilterArg>();
         fields.forEach(field -> {
             filters.addAll(Collections.list(request.getParameterNames()).stream()
                 .filter(paramName -> paramName.equals(String.format("%s.%s", field, "filter")))
                 .map(request::getParameterValues)
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
-                .map(value -> Filter.of(field, value))
+                .map(value -> FilterArg.of(field, value))
                 .collect(Collectors.toList()));
         });
         return filters;

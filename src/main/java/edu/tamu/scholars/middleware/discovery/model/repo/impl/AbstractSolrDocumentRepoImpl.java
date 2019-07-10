@@ -27,9 +27,9 @@ import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
-import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 
@@ -51,7 +51,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, Optional<Index> index, List<Facet> facets, List<Filter> filters, Pageable page) {
+    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query.equals(DEFAULT_QUERY)) {
@@ -71,9 +71,10 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         facets.forEach(facet -> {
             FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
 
-            fieldWithFacetParameters.setLimit(facet.getLimit());
+            // NOTE: until spring fixes their Solr facet entry pagination, using max limit and zero offset
+            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 
-            fieldWithFacetParameters.setOffset(facet.getOffset());
+            fieldWithFacetParameters.setOffset(0);
 
             fieldWithFacetParameters.setSort(facet.getSort());
 
@@ -100,7 +101,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public Cursor<D> stream(String query, Optional<Index> index, List<Filter> filters, Sort sort) {
+    public Cursor<D> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
         if (index.isPresent()) {
             simpleQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
@@ -119,7 +120,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public long count(String query, List<Filter> filters) {
+    public long count(String query, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
         return solrTemplate.count(collection(), simpleQuery, type());
     }
@@ -135,10 +136,10 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     private SimpleQuery buildSimpleQuery() {
-        return buildSimpleQuery(DEFAULT_QUERY, new ArrayList<Filter>());
+        return buildSimpleQuery(DEFAULT_QUERY, new ArrayList<FilterArg>());
     }
 
-    private SimpleQuery buildSimpleQuery(String query, List<Filter> filters) {
+    private SimpleQuery buildSimpleQuery(String query, List<FilterArg> filters) {
         SimpleQuery simpleQuery = new SimpleQuery();
 
         if (query.equals(DEFAULT_QUERY)) {
@@ -158,7 +159,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return simpleQuery;
     }
 
-    private Criteria buildCriteria(Index index) {
+    private Criteria buildCriteria(IndexArg index) {
         Criteria criteria = new Criteria(index.getPath(type()));
         switch (index.getOperationKey()) {
         case BETWEEN:
