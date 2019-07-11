@@ -12,7 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 
 public class IndexArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -21,7 +21,7 @@ public class IndexArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Index.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return IndexArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IndexArgumentResolver implements HandlerMethodArgumentResolver {
             .map(request::getParameterValues)
             .map(Arrays::asList)
             .flatMap(list -> list.stream())
-            .map(Index::of)
+            .map(IndexArg::of)
             .findAny();
     }
 

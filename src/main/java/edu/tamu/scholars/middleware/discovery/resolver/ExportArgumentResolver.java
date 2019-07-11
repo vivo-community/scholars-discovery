@@ -13,7 +13,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import edu.tamu.scholars.middleware.discovery.argument.Export;
+import edu.tamu.scholars.middleware.discovery.argument.ExportArg;
 
 public final class ExportArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -22,7 +22,7 @@ public final class ExportArgumentResolver implements HandlerMethodArgumentResolv
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Export.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return ExportArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override
@@ -33,7 +33,7 @@ public final class ExportArgumentResolver implements HandlerMethodArgumentResolv
             .map(request::getParameterValues)
             .map(Arrays::asList)
             .flatMap(list -> list.stream())
-            .map(Export::of)
+            .map(ExportArg::of)
             .collect(Collectors.toList());
     }
 
