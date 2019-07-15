@@ -176,6 +176,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .denyAll()
 
                 .antMatchers(GET,
+                        "/js/embed.js",
                         "/api",
                         "/gui",
                         "/graphql",
