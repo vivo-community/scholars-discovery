@@ -2,7 +2,7 @@ middleware:
   load-defaults: true
   update-defaults: true
   allowed-origins:
-  - http://localhost:4200
+  - http://54.160.51.113:4200
   auth:
     password:
       duration: 180
@@ -24,11 +24,11 @@ middleware:
   index:
     cron: 0 0 0 * * SUN
     zone: America/Chicago
-    onStartup: true
+    onStartup: false
     batchSize: 10000
 
 ui:
-  url: http://localhost:4200
+  url: http://54.160.51.113:4200
 
 vivo:
   email: vivo_root@school.edu
@@ -39,7 +39,7 @@ vivo:
   sparql-query-endpoint: /api/sparqlQuery
   triplestore:
     type: TDB
-    directory: triplestore
+    directory: /home/ubuntu/tdbContentModels
     datasourceUrl: jdbc:mysql://localhost/vivo?useLegacyDatetimeCode=false&serverTimezone=America/Chicago
     username:
     password:
@@ -58,6 +58,7 @@ logging:
   path:
 
 server:
+  host: 54.160.51.113
   port: 9000
   servlet:
     context-path:

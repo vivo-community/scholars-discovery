@@ -25,7 +25,7 @@ public class MiddlewareConfig {
     private HttpConfig http = new HttpConfig();
 
     public MiddlewareConfig() {
-        this.allowedOrigins.add("http://localhost:4200");
+        this.allowedOrigins.add("http://54.160.51.113:4200");
     }
 
     public boolean isLoadDefaults() {

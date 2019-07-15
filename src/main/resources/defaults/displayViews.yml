@@ -11,6 +11,7 @@
   types:
   - FacultyMember
   - NonFacultyAcademic
+  - Person
   mainContentTemplate: "defaults/displayViews/people/mainContentTemplate.html"
   leftScanTemplate: "defaults/displayViews/people/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/people/aside.html"
@@ -559,6 +560,7 @@
   - Department
   - Library
   - University
+  - Company
   mainContentTemplate: "defaults/displayViews/organizations/mainContentTemplate.html"
   leftScanTemplate: "defaults/displayViews/organizations/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/organizations/aside.html"

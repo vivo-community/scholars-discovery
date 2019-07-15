@@ -1,7 +1,7 @@
 ---
 
 - name: TAMU
-  organization: Texas A&M University
+  organization: OpenVIVO
   active: true
   home:
     heroesNavigable: false
@@ -28,9 +28,9 @@
       value: "#ffc222"
   header:
     navbar:
-      brandText: Texas A&M University Libraries
+      brandText: 
       brandUri: https://library.tamu.edu
-      logoUri: assets/images/tamu-logo-with-right-border.png
+      logoUri: 
       links:
       - label: Hours
         uri: https://library.tamu.edu/about/hours.html
@@ -42,23 +42,23 @@
         uri: https://askus.library.tamu.edu
       variables:
       - key: "--navbar-background-color"
-        value: "#3c0000"
+        value: "#2485ae"
       - key: "--navbar-hover-background-color"
         value: "#ffc222"
       - key: "--navbar-color"
         value: "#fff"
       - key: "--navbar-hover-color"
-        value: "#3c0000"
+        value: "#2485ae"
       - key: "--navbar-link-seperator-color"
         value: "#6a0000"
     banner:
-      imageUri: assets/images/scholars-logo-white.png
+      imageUri: http://openvivo.org/themes/openvivo/images/open-vivo.png
       altText: SCHOLARS@TAMU
       variables:
       - key: "--banner-border-top"
         value: '1px #8d8d8d solid'
       - key: "--banner-background-color"
-        value: "#500000"
+        value: "#2485ae"
       - key: "--banner-color"
         value: "#fff"
     variables: []
@@ -82,7 +82,7 @@
     - key: "--footer-border-top"
       value: '1px #8d8d8d solid'
     - key: "--footer-background-color"
-      value: "#3c0000"
+      value: "#2485ae"
     - key: "--footer-color"
       value: "#fff"
     - key: "--footer-min-height"
@@ -140,7 +140,7 @@
   - key: "--light"
     value: "#f8f9fa"
   - key: "--dark"
-    value: "#3c0000"
+    value: "#2485ae"
   variables:
   - key: "--accent"
     value: "#ffc222"
@@ -151,7 +151,7 @@
   - key: "--navigation-background-color"
     value: "#ededed"
   - key: "--navigation-color"
-    value: "#3c0000"
+    value: "#2485ae"
   - key: "--navigation-hover-background-color"
     value: "#4d4d4d"
   - key: "--navigation-hover-color"

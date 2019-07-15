@@ -1,1 +1,1 @@
-{{name}} - Texas A&M University (TAMU) Scholar
+{{name}} - OpenVIVO Scholar
