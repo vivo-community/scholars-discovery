@@ -1,0 +1,16 @@
+{
+  "name": "scholars-embed",
+  "dependencies": {
+    "@types/jquery": "^3.3.30",
+    "handlebars": "4.1.2",
+    "handlebars-loader": "^1.7.1",
+    "jquery": "3.4.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6"
+  }
+}
