@@ -1,8 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.resolver;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +31,8 @@ public class EnhancedPersonResolver {
     public EnhancedPerson getById(@GraphQLArgument(name = "id") String id) {
         Person person = personService.getById(id);
         EnhancedPerson enhancedPerson = new EnhancedPerson();
-        enhancedPerson.setSelectedPublications(getPersonsPublications(person));
         BeanUtils.copyProperties(person, enhancedPerson);
         return enhancedPerson;
-    }
-
-    // NOTE: batch requests by ids to avoid exceeding Solr query string limit
-    private List<Document> getPersonsPublications(Person person) {
-        List<Document> selectedPublications = new ArrayList<Document>();
-        List<String> ids = person.getPublications().stream().map(document -> document.getId()).collect(Collectors.toList());
-        while (ids.size() >= MAX_DOCUMENT_BATCH_SIZE) {
-            selectedPublications.addAll(documentService.findByIdIn(ids.subList(0, MAX_DOCUMENT_BATCH_SIZE)));
-            ids = ids.subList(MAX_DOCUMENT_BATCH_SIZE, ids.size());
-        }
-        selectedPublications.addAll(documentService.findByIdIn(ids));
-        return selectedPublications;
     }
 
     // NOTE: This concrete class extending the generated nested Person class is required
@@ -65,14 +50,8 @@ public class EnhancedPersonResolver {
 
         private static final long serialVersionUID = -2574871417252355891L;
 
-        private List<Document> selectedPublications;
-
         public List<Document> getSelectedPublications() {
-            return selectedPublications;
-        }
-
-        public void setSelectedPublications(List<Document> selectedPublications) {
-            this.selectedPublications = selectedPublications;
+          return documentService.findBySyncIds(this.getId());
         }
 
     }
