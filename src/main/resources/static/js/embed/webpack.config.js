@@ -3,6 +3,7 @@ var webpack = require("webpack");
 
 module.exports = {
   entry: './src/embed.ts',
+  mode: 'production',
   module: {
     rules: [
       {
