@@ -8,7 +8,8 @@ $('.scholars-embed').each(function() {
     const sections: any = $embed.data('sections').split(',');
     const templates: string[] = [];
 
-    const uriHost = 'http://savell.evans.tamu.edu:9000/'; /* FIXME: this should be generated when this script gets generated. */
+    const uriHost = 'http://localhost:9000/'; /* FIXME: this should be generated when this script gets generated. */
+    const uriNgApp = 'http://localhost:4200/';
     const uriDisplayByType = 'displayViews/search/findByTypesIn?types=';
     const uriDisplayByName = 'displayViews/search/findByName?name=';
 
@@ -45,17 +46,18 @@ $('.scholars-embed').each(function() {
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         var html = '<head>'+
-                 '  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />'+
-                 '  <script type="text/javascript" src=""></script>'+
-                 '  <style type="text/css">'+
-                 '    :root{'+
-                 '       --primary: #500000;--link-color: #2b5d7d;'+
-                 '    }'+
-                 '    body a {color: var(--link-color);}'+
-                 '    .text-primary {color: var(--primary) !important;}'+
-                 '  </style>'+
-                 '</head>'+
-                 '<body>'+renderTemplate(templates.join(' '), mainSolrDocoument)+'</body>';
+                 '    <base href="'+uriNgApp+'">'+
+                 '    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />'+
+                 '    <script type="text/javascript" src=""></script>'+
+                 '    <style type="text/css">'+
+                 '      :root{'+
+                 '        --primary: #500000;--link-color: #2b5d7d;'+
+                 '      }'+
+                 '      body a {color: var(--link-color);}'+
+                 '      .text-primary {color: var(--primary) !important;}'+
+                 '    </style>'+
+                 '  </head>'+
+                 '  <body>'+renderTemplate(templates.join(' '), mainSolrDocoument)+'</body>';
         $embed.append(iframe);
         iframe.contentWindow.document.open();
         iframe.contentWindow.document.write(html);
