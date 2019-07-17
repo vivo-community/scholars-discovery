@@ -8,7 +8,7 @@ $('.scholars-embed').each(function() {
     const sections: any = $embed.data('sections').split(',');
     const templates: string[] = [];
 
-    const uriHost = 'http://localhost:9000/'; /* FIXME: this should be generated when this script gets generated. */
+    const uriHost = 'http://savell.evans.tamu.edu:9000/'; /* FIXME: this should be generated when this script gets generated. */
     const uriDisplayByType = 'displayViews/search/findByTypesIn?types=';
     const uriDisplayByName = 'displayViews/search/findByName?name=';
 
@@ -37,9 +37,29 @@ $('.scholars-embed').each(function() {
                 });
             });
         });
+        renderIframe(templates);
+    };
 
-        const markup: any = renderTemplate(templates.join(' '), mainSolrDocoument);
-        $embed.html(markup);
+    var renderIframe = function(templates: string[]) {
+        var iframe = document.createElement('iframe');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        var html = '<head>'+
+                 '  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />'+
+                 '  <script type="text/javascript" src=""></script>'+
+                 '  <style type="text/css">'+
+                 '    :root{'+
+                 '       --primary: #500000;--link-color: #2b5d7d;'+
+                 '    }'+
+                 '    body a {color: var(--link-color);}'+
+                 '    .text-primary {color: var(--primary) !important;}'+
+                 '  </style>'+
+                 '</head>'+
+                 '<body>'+renderTemplate(templates.join(' '), mainSolrDocoument)+'</body>';
+        $embed.append(iframe);
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
     };
 
     var processTabSectionTemplates = function (tabSection: any) {
@@ -47,8 +67,12 @@ $('.scholars-embed').each(function() {
         var subTemplate: any;
         var fieldIndex: any;
 
+        var aggregateTemplate = '<div class="ml-3 mr-3 mt-3 card">'+
+                                '  <div class="card-header font-weight-bold text-primary text-capitalize">'+tabSection.name+'</div>'+
+                                '  <div class="card-body">';
+
         if (tabSection.hasOwnProperty("template")) {
-            templates.push(tabSection.template);
+            aggregateTemplate += tabSection.template;
         }
 
         $.each(tabSection.lazyReferences, function(i: any, lazyReference: any) {
@@ -61,18 +85,22 @@ $('.scholars-embed').each(function() {
                     for (fieldIndex in mainSolrDocoument[subSection.field]) {
                         let document: any = getSolrDocument(references[subSection.field], mainSolrDocoument[subSection.field][fieldIndex].id);
                         let renderred: any = renderTemplate(subSection.template, document);
-                        templates.push(renderred);
+                        aggregateTemplate += renderred;
                     }
                 }
                 else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
                     for (fieldIndex in mainSolrDocoument[subSection.field]) {
                         let document: any = mainSolrDocoument[subSection.field][fieldIndex];
                         let renderred: any = renderTemplate(subSection.template, document);
-                        templates.push(renderred);
+                        aggregateTemplate += renderred;
                     }
                 }
             }
         });
+
+        aggregateTemplate +=     '</div>'+
+                             '</div>';
+        templates.push(aggregateTemplate);
     };
 
     // temporary sycnhronious implementation, FIXME: needs async that block until all requests are done.
