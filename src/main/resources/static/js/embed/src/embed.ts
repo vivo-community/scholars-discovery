@@ -1,4 +1,8 @@
 import {renderTemplate, initializeTemplateHelpers} from './utilities/template.utility';
+import { environment } from './environments/environment.ts';
+
+import * as DisplayView from './services/displayView.service';
+import * as SolrDocument from './services/solrDocument.service';
 
 $('.scholars-embed').each(function() {
     const $embed: any = $(this);
@@ -7,22 +11,44 @@ $('.scholars-embed').each(function() {
     const displayCollection: any = $embed.data('collection');
     const sections: any = $embed.data('sections').split(',');
     const templates: string[] = [];
-
-    const uriHost = 'http://localhost:9000/'; /* FIXME: this should be generated when this script gets generated. */
-    const uriNgApp = 'http://localhost:4200/';
-    const uriDisplayByType = 'displayViews/search/findByTypesIn?types=';
-    const uriDisplayByName = 'displayViews/search/findByName?name=';
+    const promises: Promise<any>[] = [];
 
     var displayView: any = {};
     var mainSolrDocoument: any = {};
     var solrDocuments: any = {};
 
+    const solrDocumentRepo = new SolrDocument.Service();
+    const displayViewRepo = new DisplayView.Service();
+
     var processDisplayView = function () {
-        $.ajax(uriHost + uriDisplayByName + displayViewName).then(function (responseDisplayView: any) {
-            displayView = responseDisplayView;
-            $.ajax(uriHost + displayCollection + '/' + id).then(function(responseSolrDocument: any) {
-                mainSolrDocoument = responseSolrDocument;
-                processSolrDocument();
+        const dvOptions: DisplayView.Options = new DisplayView.Options(displayViewName);
+
+        displayViewRepo.get(dvOptions).then((response: any) => {
+            const sdOptions: SolrDocument.Options = new SolrDocument.Options(displayCollection, id);
+
+            displayView = response;
+
+            solrDocumentRepo.get(sdOptions).then((response: any) => {
+                mainSolrDocoument = response;
+                preProcessSolrDocument();
+
+                Promise.all(promises).then((response: any) => {
+                    processSolrDocument();
+                });
+            });
+        });
+    };
+
+    // TODO: rewrite to remove redudancy in designs between preProcessX and processX calls (and related).
+    var preProcessSolrDocument = function () {
+        $.each(sections, function(i: any, section: any) {
+            $.each(displayView.tabs, function(j: any, tab: any) {
+                $.each(tab.sections, function(k: any, tabSection: any) {
+                    if (tabSection.name === section) {
+                        preProcessTabSectionTemplates(tabSection);
+                        return false;
+                    }
+                });
             });
         });
     };
@@ -46,7 +72,7 @@ $('.scholars-embed').each(function() {
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         var html = '<head>'+
-                 '    <base href="'+uriNgApp+'">'+
+                 '    <base href="' + environment.ngAppUrl + '">'+
                  '    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />'+
                  '    <script type="text/javascript" src=""></script>'+
                  '    <style type="text/css">'+
@@ -64,8 +90,52 @@ $('.scholars-embed').each(function() {
         iframe.contentWindow.document.close();
     };
 
+    var preProcessTabSectionTemplates = function (tabSection: any) {
+        var references = {};
+        var subTemplate: any;
+        var fieldIndex: any;
+
+        $.each(tabSection.lazyReferences, function(i: any, lazyReference: any) {
+            references[lazyReference.field] = lazyReference.collection;
+        });
+
+        $.each(tabSection.subsections, function(i: any, subSection: any) {
+            if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
+                if (references.hasOwnProperty(subSection.field)) {
+                    for (fieldIndex in mainSolrDocoument[subSection.field]) {
+                        let mainField = mainSolrDocoument[subSection.field][fieldIndex];
+
+                        // filter out all main document fields designated by the display view subsection.
+                        if (subSection.hasOwnProperty('filters') && subSection.filters.length > 0) {
+                            let isFilteredOut: boolean = false;
+                            for (let filterIndex in subSection.filters) {
+                                let filterField = subSection.filters[filterIndex].field;
+                                let filterValue = subSection.filters[filterIndex].value;
+
+                                if (!mainField.hasOwnProperty(filterField)) {
+                                    isFilteredOut = true;
+                                    break;
+                                }
+
+                                if (mainField[filterField] !== filterValue) {
+                                    isFilteredOut = true;
+                                    break;
+                                }
+                            }
+
+                            if (isFilteredOut) continue;
+                        }
+
+                        let options: SolrDocument.Options = new SolrDocument.Options(references[subSection.field], mainField.id);
+                        promises.push(solrDocumentRepo.get(options));
+                    }
+                }
+            }
+        });
+    };
+
     var processTabSectionTemplates = function (tabSection: any) {
-        var references: any = {};
+        var references = {};
         var subTemplate: any;
         var fieldIndex: any;
 
@@ -85,8 +155,31 @@ $('.scholars-embed').each(function() {
             if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
                 if (references.hasOwnProperty(subSection.field)) {
                     for (fieldIndex in mainSolrDocoument[subSection.field]) {
-                        let document: any = getSolrDocument(references[subSection.field], mainSolrDocoument[subSection.field][fieldIndex].id);
-                        let renderred: any = renderTemplate(subSection.template, document);
+                        let mainField = mainSolrDocoument[subSection.field][fieldIndex];
+
+                        // filter out all main document fields designated by the display view subsection.
+                        if (subSection.hasOwnProperty('filters') && subSection.filters.length > 0) {
+                            let isFilteredOut: boolean = false;
+                            for (let filterIndex in subSection.filters) {
+                                let filterField = subSection.filters[filterIndex].field;
+                                let filterValue = subSection.filters[filterIndex].value;
+
+                                if (!mainField.hasOwnProperty(filterField)) {
+                                    isFilteredOut = true;
+                                    break;
+                                }
+
+                                if (mainField[filterField] !== filterValue) {
+                                    isFilteredOut = true;
+                                    break;
+                                }
+                            }
+
+                            if (isFilteredOut) continue;
+                        }
+
+                        let document = solrDocumentRepo.getById(mainField.id);
+                        let renderred = renderTemplate(subSection.template, document);
                         aggregateTemplate += renderred;
                     }
                 }
@@ -103,24 +196,6 @@ $('.scholars-embed').each(function() {
         aggregateTemplate +=     '</div>'+
                              '</div>';
         templates.push(aggregateTemplate);
-    };
-
-    // temporary sycnhronious implementation, FIXME: needs async that block until all requests are done.
-    var getSolrDocument = function (collection: any, id: any) {
-        if (!solrDocuments.hasOwnProperty(id)) {
-            const request: any = {
-                type: 'GET',
-                url: uriHost + collection + '/' + id,
-                async: false,
-                success: function(document: any) {
-                    solrDocuments[id] = document;
-                }
-            };
-
-            $.ajax(request);
-        }
-
-        return solrDocuments[id];
     };
 
     initializeTemplateHelpers();
