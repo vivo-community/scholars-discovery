@@ -9,5 +9,17 @@ export const environment = {
     formalize: {
         otherUniversity: 'ExternalOrganization',
         GreyLiterature: 'InstitutionalRepositoryDocument'
+    },
+    javascript: {
+        jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js',
+        pagination: 'http://localhost:9000/js/embed/dist/pagination.js'
+    },
+    stylesheets: {
+        bootstrap: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+    },
+    pagination: {
+        limit: 5,
+        display: 3,
+        placeholder: 'pagination-disabled-',
     }
 };
