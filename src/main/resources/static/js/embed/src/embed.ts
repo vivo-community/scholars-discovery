@@ -19,9 +19,9 @@ initializeTemplateHelpers();
 
 const embeddables = document.getElementsByClassName("scholars-embed");
 
-for (var i=0;i<embeddables.length;i++) {
+for (var i = 0; i < embeddables.length; i++) {
     (function() {
-        let embed = embeddables.item(i);
+        const embed = embeddables.item(i);
         const id: string = embed.getAttribute("data-id");
         const displayViewName: any = embed.getAttribute("data-displayview");
         const displayCollection: any = embed.getAttribute("data-collection");
@@ -29,15 +29,15 @@ for (var i=0;i<embeddables.length;i++) {
         const showHeaders: boolean = (embed.getAttribute("data-show-headers") !== null && embed.getAttribute("data-show-headers").toLowerCase().trim() === 'true') ? true:false;
         const templates: string[] = [];
         const promises: Promise<any>[] = [];
+        const solrDocuments: any = {};
 
         var displayView: any = {};
         var mainSolrDocoument: any = {};
-        var solrDocuments: any = {};
 
         const solrDocumentRepo = new SolrDocument.Service();
         const displayViewRepo = new DisplayView.Service();
 
-        var processDisplayView = function () {
+        const processDisplayView = function () {
             const dvOptions: DisplayView.Options = new DisplayView.Options(displayViewName);
 
             displayViewRepo.get(dvOptions).then((response: any) => {
@@ -57,7 +57,7 @@ for (var i=0;i<embeddables.length;i++) {
             });
         };
 
-        var renderIframe = function(templates: string[]) {
+        const renderIframe = (templates: string[]) => {
             const html: Html.View = new Html.View(renderTemplate(templates.join(' '), mainSolrDocoument));
             const iframe: any = document.createElement('iframe');
             iframe.style.width = '100%';
@@ -69,21 +69,20 @@ for (var i=0;i<embeddables.length;i++) {
             iframe.contentWindow.document.close();
         };
 
-        var preProcessTabSectionTemplates = function (section: any, tabSection: any) {
-            var references = {};
+        const preProcessTabSectionTemplates = (section: any, tabSection: any) => {
+            const references = {};
             var subTemplate: any;
-            var fieldIndex: any;
 
-            for (var i=0;i<tabSection.lazyReferences.length;i++) {
+            for (var i = 0; i < tabSection.lazyReferences.length; i++) {
                 var lazyReference = tabSection.lazyReferences[i];
                 references[lazyReference.field] = lazyReference.collection;
             }
 
-            for (var j=0;j<tabSection.subsections.length;j++) {
+            for (var j = 0; j < tabSection.subsections.length; j++) {
                 var subSection = tabSection.subsections[j];
                 if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
                     if (references.hasOwnProperty(subSection.field)) {
-                        for (fieldIndex in mainSolrDocoument[subSection.field]) {
+                        for (let fieldIndex in mainSolrDocoument[subSection.field]) {
                             let mainField = mainSolrDocoument[subSection.field][fieldIndex];
 
                             // filter out all main document fields designated by the display view subsection.
@@ -115,26 +114,26 @@ for (var i=0;i<embeddables.length;i++) {
             }
         };
 
-        var processTabSectionTemplates = function (section: any, tabSection: any) {
-            var references = {};
-            var subTemplate: any;
-            var fieldIndex: any;
+        const processTabSectionTemplates = (section: any, tabSection: any) => {
+            const references = {};
             var paginationId: number = 0;
+            var subTemplate: any;
 
-            var aggregate: Aggregate.View = new Aggregate.View(tabSection.name, [], showHeaders);
+            const aggregate: Aggregate.View = new Aggregate.View(tabSection.name, [], showHeaders);
 
             if (tabSection.hasOwnProperty("template")) {
                 aggregate.list.push(tabSection.template);
             }
 
-            for (var i=0;i<tabSection.lazyReferences.length;i++) {
-                var lazyReference = tabSection.lazyReferences[i];
+            for (let i = 0; i < tabSection.lazyReferences.length; i++) {
+                let lazyReference = tabSection.lazyReferences[i];
                 references[lazyReference.field] = lazyReference.collection;
             }
 
-            for (var i=0;i<tabSection.subsections.length;i++) {
-                var subSection = tabSection.subsections[i];
+            for (let i = 0; i < tabSection.subsections.length; i++) {
+                let subSection = tabSection.subsections[i];
                 let subsectionView: Subsection.View;
+
                 if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
                     if (references.hasOwnProperty(subSection.field)) {
                         paginationId++;
@@ -153,7 +152,8 @@ for (var i=0;i<embeddables.length;i++) {
                     else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
                         paginationId++;
                         let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'TODO: add aria label here');
-                        for (fieldIndex in mainSolrDocoument[subSection.field]) {
+
+                        for (let fieldIndex in mainSolrDocoument[subSection.field]) {
                             let document: any = mainSolrDocoument[subSection.field][fieldIndex];
                             let renderred: any = renderTemplate(subSection.template, document);
                             pagination.list.push(renderred);
@@ -168,15 +168,15 @@ for (var i=0;i<embeddables.length;i++) {
             templates.push(aggregate.render());
         };
 
-        var filterSubsection = (subSection: any): any[] => {
-            var filtered: any[] = [];
+        const filterSubsection = (subSection: any): any[] => {
+            const filtered: any[] = [];
 
             for (let index in mainSolrDocoument[subSection.field]) {
                 let mainField = mainSolrDocoument[subSection.field][index];
 
-                // filter out all main document fields designated by the display view subsection.
                 if (subSection.hasOwnProperty('filters') && subSection.filters.length > 0) {
                     let isFilteredOut: boolean = false;
+
                     for (let filterIndex in subSection.filters) {
                         let filterField = subSection.filters[filterIndex].field;
                         let filterValue = subSection.filters[filterIndex].value;
@@ -202,7 +202,7 @@ for (var i=0;i<embeddables.length;i++) {
             return filtered;
         };
 
-        var sortSubsection = (list: any[], sort: Sort[]): any[] => {
+        const sortSubsection = (list: any[], sort: Sort[]): any[] => {
             let sorted = [].concat(list);
 
             for (const s of sort) {
