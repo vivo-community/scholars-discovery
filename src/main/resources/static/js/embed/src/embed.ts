@@ -195,8 +195,10 @@ for (var i = 0; i < embeddables.length; i++) {
                     if (isFilteredOut) continue;
                 }
 
-                let document = solrDocumentRepo.getById(mainField.id);
-                filtered.push(document);
+                let document: any = solrDocumentRepo.getById(mainField.id);
+                if (document) {
+                    filtered.push(document);
+                }
             }
 
             return filtered;

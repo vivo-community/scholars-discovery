@@ -26,13 +26,13 @@ export class Service {
         return promise;
     };
 
-    // TODO: temporarily intentonaly only loads cached, this should be redesigned.
     public getById = (id: string): any => {
         if (this.cache.hasOwnProperty(id)) {
             return this.cache[id];
         }
 
-        return {};
+        // collection is required to get from endpoint, so this cannot perform a get.
+        return false;
     };
 
     private cache = {};
