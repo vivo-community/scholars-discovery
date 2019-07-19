@@ -1,6 +1,10 @@
 import {renderTemplate, initializeTemplateHelpers} from './utilities/template.utility';
 import { environment } from './environments/environment.ts';
 
+import { Direction } from './enums/direction.enum';
+
+import { Sort } from './interfaces/sort.interface';
+
 import * as DisplayView from './services/displayView.service';
 import * as SolrDocument from './services/solrDocument.service';
 
@@ -96,8 +100,6 @@ for (var i=0;i<embeddables.length;i++) {
             iframe.contentWindow.document.open();
             iframe.contentWindow.document.write(html.render());
             iframe.contentWindow.document.close();
-
-
         };
 
         var preProcessTabSectionTemplates = function (tabSection: any) {
@@ -170,33 +172,11 @@ for (var i=0;i<embeddables.length;i++) {
                     if (references.hasOwnProperty(subSection.field)) {
                         paginationId++;
                         let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'TODO: add aria label here');
+                        let filtered = filterSubsection(subSection);
+                        let sorted = sortSubsection(filtered, subSection.sort);
 
-                        for (fieldIndex in mainSolrDocoument[subSection.field]) {
-                            let mainField = mainSolrDocoument[subSection.field][fieldIndex];
-
-                            // filter out all main document fields designated by the display view subsection.
-                            if (subSection.hasOwnProperty('filters') && subSection.filters.length > 0) {
-                                let isFilteredOut: boolean = false;
-                                for (let filterIndex in subSection.filters) {
-                                    let filterField = subSection.filters[filterIndex].field;
-                                    let filterValue = subSection.filters[filterIndex].value;
-
-                                    if (!mainField.hasOwnProperty(filterField)) {
-                                        isFilteredOut = true;
-                                        break;
-                                    }
-
-                                    if (mainField[filterField] !== filterValue) {
-                                        isFilteredOut = true;
-                                        break;
-                                    }
-                                }
-
-                                if (isFilteredOut) continue;
-                            }
-
-                            let document = solrDocumentRepo.getById(mainField.id);
-                            let renderred = renderTemplate(subSection.template, document);
+                        for (let index in sorted) {
+                            let renderred = renderTemplate(subSection.template, sorted[index]);
                             pagination.list.push(renderred);
                         }
 
@@ -219,6 +199,56 @@ for (var i=0;i<embeddables.length;i++) {
             }
 
             templates.push(aggregate.render());
+        };
+
+        var filterSubsection = (subSection: any): any[] => {
+            var filtered: any[] = [];
+
+            for (let index in mainSolrDocoument[subSection.field]) {
+                let mainField = mainSolrDocoument[subSection.field][index];
+
+                // filter out all main document fields designated by the display view subsection.
+                if (subSection.hasOwnProperty('filters') && subSection.filters.length > 0) {
+                    let isFilteredOut: boolean = false;
+                    for (let filterIndex in subSection.filters) {
+                        let filterField = subSection.filters[filterIndex].field;
+                        let filterValue = subSection.filters[filterIndex].value;
+
+                        if (!mainField.hasOwnProperty(filterField)) {
+                            isFilteredOut = true;
+                            break;
+                        }
+
+                        if (mainField[filterField] !== filterValue) {
+                            isFilteredOut = true;
+                            break;
+                        }
+                    }
+
+                    if (isFilteredOut) continue;
+                }
+
+                let document = solrDocumentRepo.getById(mainField.id);
+                filtered.push(document);
+            }
+
+            return filtered;
+        };
+
+        var sortSubsection = (list: any[], sort: Sort[]): any[] => {
+            let sorted = [].concat(list);
+
+            for (const s of sort) {
+                const asc = Direction[s.direction] === Direction.ASC;
+                sorted = sorted.sort((a, b) => {
+                    const av = s.date ? new Date(a[s.field]) : a[s.field];
+                    const bv = s.date ? new Date(b[s.field]) : b[s.field];
+
+                    return asc ? (av > bv) ? 1 : ((bv > av) ? -1 : 0) : (bv > av) ? 1 : ((av > bv) ? -1 : 0);
+                });
+            }
+
+            return sorted;
         };
 
         processDisplayView();
