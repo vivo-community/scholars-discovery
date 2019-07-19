@@ -11,8 +11,7 @@ export const environment = {
         GreyLiterature: 'InstitutionalRepositoryDocument'
     },
     javascript: {
-        jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js',
-        pagination: 'http://localhost:9000/js/embed/dist/pagination.js'
+        jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'
     },
     stylesheets: {
         bootstrap: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
