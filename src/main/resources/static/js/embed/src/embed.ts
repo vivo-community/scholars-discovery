@@ -20,6 +20,7 @@ for (var i=0;i<embeddables.length;i++) {
         const displayViewName: any = embed.getAttribute("data-displayview");
         const displayCollection: any = embed.getAttribute("data-collection");
         const sections: any = embed.getAttribute("data-sections").split(',');
+        const showHeaders: boolean = (embed.getAttribute("data-show-headers") !== null && embed.getAttribute("data-show-headers").toLowerCase().trim() === 'true') ? true:false;
         const templates: string[] = [];
         const promises: Promise<any>[] = [];
 
@@ -90,6 +91,7 @@ for (var i=0;i<embeddables.length;i++) {
             const iframe: any = document.createElement('iframe');
             iframe.style.width = '100%';
             iframe.style.height = '100%';
+            iframe.frameBorder = 0;
             embed.appendChild(iframe);
             iframe.contentWindow.document.open();
             iframe.contentWindow.document.write(html.render());
@@ -150,10 +152,9 @@ for (var i=0;i<embeddables.length;i++) {
             var fieldIndex: any;
             var paginationId: number = 0;
 
-            var aggregate: Aggregate.View = new Aggregate.View(tabSection.name);
+            var aggregate: Aggregate.View = new Aggregate.View(tabSection.name, [], showHeaders);
 
             if (tabSection.hasOwnProperty("template")) {
-                //aggregateTemplate += tabSection.template;
                 aggregate.list.push(tabSection.template);
             }
 
@@ -196,7 +197,6 @@ for (var i=0;i<embeddables.length;i++) {
 
                             let document = solrDocumentRepo.getById(mainField.id);
                             let renderred = renderTemplate(subSection.template, document);
-                            //aggregateTemplate += renderred;
                             pagination.list.push(renderred);
                         }
 
@@ -209,7 +209,6 @@ for (var i=0;i<embeddables.length;i++) {
                         for (fieldIndex in mainSolrDocoument[subSection.field]) {
                             let document: any = mainSolrDocoument[subSection.field][fieldIndex];
                             let renderred: any = renderTemplate(subSection.template, document);
-                            //aggregateTemplate += renderred;
                             pagination.list.push(renderred);
                         }
 
