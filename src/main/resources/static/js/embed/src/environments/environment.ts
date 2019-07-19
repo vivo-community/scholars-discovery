@@ -20,6 +20,6 @@ export const environment = {
     pagination: {
         limit: 5,
         display: 3,
-        placeholder: 'pagination-disabled-',
+        placeholder: 'pagination-disabled-'
     }
 };

@@ -26,24 +26,24 @@ export class View {
             return markup;
         }
 
-        var total: number = Math.ceil(this.list.length / limit);
         var page: number = 1;
+        var pages: number = Math.ceil(this.list.length / limit);
 
         for (let i = 0; i < this.list.length; i++) {
             page = Math.floor(i / limit) + 1;
 
             if (i >= limit) {
-                markup += '<div class="paginated paginated-hidden list-group-item border-0" data-id="' + this.id + '" data-page="' + page + '">';
+                markup += '<div class="paginated-hidden list-group-item border-0" data-page="' + page + '">';
             }
             else {
-                markup += '<div class="paginated paginated-visible list-group-item border-0" data-id="' + this.id + '" data-page="' + page + '">';
+                markup += '<div class="paginated-visible list-group-item border-0" data-page="' + page + '">';
             }
 
             markup += this.list[i] + '</div>';
         }
 
-        markup += '<nav aria-label="' + this.label + '" class="pagination-controls form-group mt-3" data-pagination="' + this.id + '">' +
-                  '  <ul class="pagination" data-pagination="' + this.id + '">' +
+        markup += '<nav aria-label="' + this.label + '" class="pagination-controls form-group mt-3">' +
+                  '  <ul class="pagination" data-pagination="' + this.id + '" data-pages="' + pages + '">' +
                   '    <li class="page-item disabled">' +
                   '      <a class="page-link" href="#" aria-label="First" data-page="first">' +
                   '        <span aria-hidden="true">&laquo;&laquo;</span>' +
@@ -57,7 +57,7 @@ export class View {
                   '      </a>' +
                   '    </li>';
 
-        for (let i = 0; i < total && i < environment.pagination.display; i++) {
+        for (let i = 0; i < pages && i < environment.pagination.display; i++) {
             let page: string = (i + 1).toString();
             markup += '    <li class="page-item' + (i == 0 ? ' active' : '') + '"><a class="page-link" href="#" data-page="' + page + '">' + page + ' </a></li>';
         }
@@ -75,6 +75,7 @@ export class View {
                   '      </a>' +
                   '    </li>' +
                   '  </ul>' +
+                  '  <div class="page-control-divider"></div>' +
                   '</nav>';
 
         return markup;

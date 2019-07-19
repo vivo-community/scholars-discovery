@@ -169,7 +169,7 @@ for (var i=0;i<embeddables.length;i++) {
                 if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
                     if (references.hasOwnProperty(subSection.field)) {
                         paginationId++;
-                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), "TODO: add aria label here");
+                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'TODO: add aria label here');
 
                         for (fieldIndex in mainSolrDocoument[subSection.field]) {
                             let mainField = mainSolrDocoument[subSection.field][fieldIndex];
@@ -200,19 +200,19 @@ for (var i=0;i<embeddables.length;i++) {
                             pagination.list.push(renderred);
                         }
 
-                        subsectionView = new Subsection.View(subSection.name, pagination.render(), pagination.list.length);
+                        subsectionView = new Subsection.View(paginationId.toString(), subSection.name, pagination.render(), pagination.list.length);
                         aggregate.list.push(subsectionView.render());
                     }
                     else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
                         paginationId++;
-                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), "TODO: add aria label here");
+                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'TODO: add aria label here');
                         for (fieldIndex in mainSolrDocoument[subSection.field]) {
                             let document: any = mainSolrDocoument[subSection.field][fieldIndex];
                             let renderred: any = renderTemplate(subSection.template, document);
                             pagination.list.push(renderred);
                         }
 
-                        subsectionView = new Subsection.View(subSection.name, pagination.render(), pagination.list.length);
+                        subsectionView = new Subsection.View(paginationId.toString(), subSection.name, pagination.render(), pagination.list.length);
                         aggregate.list.push(subsectionView.render());
                     }
                 }

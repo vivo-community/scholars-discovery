@@ -1,13 +1,13 @@
 import { environment } from '../environments/environment.ts';
 
-import * as Pagination from './pagination.view';
-
 export class View {
+    public id: string;
     public name: string;
     public markup: string;
     public length: number;
 
-    constructor(name?: string, markup?: string, length?: number) {
+    constructor(id?: string, name?: string, markup?: string, length?: number) {
+        this.id = id ? id : '';
         this.name = name ? name : '';
         this.markup = markup ? markup : '';
         this.length = length ? length : 0;
@@ -23,7 +23,7 @@ export class View {
                '    <span class="subsection-name text-capitalize">' + this.name + '</span>' +
                '    <span class="subsection-length badge badge-light ml-2">' + this.length + '</span>' +
                '  </div>' +
-               '  <div class="subsection-block list-group">' +  this.markup + '</div>' +
+               '  <div class="subsection-block list-group" data-id="' + this.id + '">' +  this.markup + '</div>' +
                '</div>';
     };
 }

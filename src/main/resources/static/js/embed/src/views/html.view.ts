@@ -14,14 +14,16 @@ export class View {
                '  <script type="application/javascript" src="' + environment.javascript.jquery + '"></script>' +
                '  <script type="application/javascript" src="' + environment.javascript.pagination + '"></script>' + // TODO: this is temporary.
                '  <style type="text/css">' +
-               '    :root{' +
+               '    :root {' +
                '      --primary: #500000;--link-color: #2b5d7d;' +
                '    }' +
-               '    body a {color: var(--link-color);}' +
+               '    body a { color: var(--link-color); }' +
                '    .text-primary {color: var(--primary) !important;}' +
                '    .subsection-header .subsection-name { font-size: 1.25rem; }' +
-               '    .paginated-visible: { }' +
-               '    .paginated-hidden: { display: none; }' +
+               '    .pagination-controls { display: flex; }' +
+               '    .pagination-controls .page-control-divider { flex-grow: 1; }' +
+               '    .paginated-visible { }' +
+               '    .paginated-hidden { display: none; }' +
                '  </style>' +
                '</head>' +
                '<body>' + this.markup + '</body>';
