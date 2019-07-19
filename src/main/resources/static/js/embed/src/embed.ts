@@ -1,12 +1,14 @@
-import {renderTemplate, initializeTemplateHelpers} from './utilities/template.utility';
-import { environment } from './environments/environment.ts';
-
 import { Direction } from './enums/direction.enum';
+
+import { environment } from './environments/environment.ts';
 
 import { Sort } from './interfaces/sort.interface';
 
 import * as DisplayView from './services/displayView.service';
 import * as SolrDocument from './services/solrDocument.service';
+
+import { renderTemplate, initializeTemplateHelpers } from './utilities/template.utility';
+import { processSolrDocument } from './utilities/process.utility';
 
 import * as Aggregate from './views/aggregate.view';
 import * as Html from './views/html.view';
@@ -45,49 +47,14 @@ for (var i=0;i<embeddables.length;i++) {
 
                 solrDocumentRepo.get(sdOptions).then((response: any) => {
                     mainSolrDocoument = response;
-                    preProcessSolrDocument();
+                    processSolrDocument(sections, displayView, preProcessTabSectionTemplates);
 
                     Promise.all(promises).then((response: any) => {
-                        processSolrDocument();
+                        processSolrDocument(sections, displayView, processTabSectionTemplates);
+                        renderIframe(templates);
                     });
                 });
             });
-        };
-
-        // TODO: rewrite to remove redudancy in designs between preProcessX and processX calls (and related).
-        var preProcessSolrDocument = function () {
-            for (var i=0;i<sections.length;i++) {
-                var section = sections[i];
-                for (var j=0;j<displayView.tabs.length;j++) {
-                    var tab = displayView.tabs[j];
-                    for (var k=0;k<tab.sections.length;k++) {
-                        var tabSection = tab.sections[k];
-                        if (tabSection.name === section) {
-                            preProcessTabSectionTemplates(tabSection);
-                            break;
-                        }
-                    }
-                }
-
-            }
-        };
-
-        var processSolrDocument = function () {
-            for (var i=0;i<sections.length;i++) {
-                var section = sections[i];
-                for (var j=0;j<displayView.tabs.length;j++) {
-                    var tab = displayView.tabs[j];
-                    for (var k=0;k<tab.sections.length;k++) {
-                        var tabSection = tab.sections[k];
-                        if (tabSection.name === section) {
-                            processTabSectionTemplates(tabSection);
-                            break;
-                        }
-                    }
-                }
-
-            }
-            renderIframe(templates);
         };
 
         var renderIframe = function(templates: string[]) {
@@ -102,7 +69,7 @@ for (var i=0;i<embeddables.length;i++) {
             iframe.contentWindow.document.close();
         };
 
-        var preProcessTabSectionTemplates = function (tabSection: any) {
+        var preProcessTabSectionTemplates = function (section: any, tabSection: any) {
             var references = {};
             var subTemplate: any;
             var fieldIndex: any;
@@ -148,7 +115,7 @@ for (var i=0;i<embeddables.length;i++) {
             }
         };
 
-        var processTabSectionTemplates = function (tabSection: any) {
+        var processTabSectionTemplates = function (section: any, tabSection: any) {
             var references = {};
             var subTemplate: any;
             var fieldIndex: any;
