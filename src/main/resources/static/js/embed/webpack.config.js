@@ -16,19 +16,12 @@ module.exports = {
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
     alias: {
-      'express-handlebars': 'handlebars/dist/handlebars.js',
-      'jquery': "jquery/src/jquery.js"
+      'express-handlebars': 'handlebars/dist/handlebars.js'
     }
   },
   node: {
       fs: 'empty'
   },
-  plugins: [
-      new webpack.ProvidePlugin({
-          $: "jquery",
-          jQuery: "jquery"
-      })
-  ],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')

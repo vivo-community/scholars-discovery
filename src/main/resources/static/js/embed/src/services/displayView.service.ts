@@ -27,8 +27,9 @@ export class Service {
     private cache = {};
 
     private onSuccess = (response: any, options: Options, resolve: Function) => {
-        this.cache[options.viewName] = response;
-        resolve(response);
+        var responseJson = JSON.parse(response);
+        this.cache[options.viewName] = responseJson;
+        resolve(responseJson);
     };
 
     private onFailure = (response: any, options: Options, reject: Function) => {
@@ -38,17 +39,22 @@ export class Service {
     private request = (options: Options, resolve: Function, reject: Function): void => {
         const service = this;
 
-        const request = {
-            type: 'GET',
-            url: environment.middleware.baseUrl + environment.middleware.displayViewByName + options.viewName,
-            success: function (response: any) {
-                service.onSuccess(response, options, resolve);
-            },
-            error: function (response: any) {
-                service.onFailure(response, options, reject);
-            }
-        };
+        const request = new XMLHttpRequest();
 
-        $.ajax(request);
+        request.open("GET", environment.middleware.baseUrl + environment.middleware.displayViewByName + options.viewName);
+
+        request.addEventListener('load', function () {
+            if (this.readyState === 4 && this.status === 200) {
+                service.onSuccess(request.responseText, options, resolve);
+            } else {
+                service.onFailure(request.responseText, options, reject);
+            }
+        });
+
+        request.addEventListener('error', function () {
+            service.onFailure(request.responseText, options, reject);
+        });
+
+        request.send();
     }
 }
