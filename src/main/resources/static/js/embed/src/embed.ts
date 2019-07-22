@@ -20,7 +20,8 @@ initializeTemplateHelpers();
 const embeddables = document.getElementsByClassName("scholars-embed");
 const solrDocumentRepo = new SolrDocument.Service();
 const displayViewRepo = new DisplayView.Service();
-const promised: any = {};
+const promisedSdr: any = {};
+const promisedDv: any = {};
 
 for (var i = 0; i < embeddables.length; i++) {
     (function() {
@@ -39,21 +40,30 @@ for (var i = 0; i < embeddables.length; i++) {
         const processDisplayView = function () {
             const dvOptions: DisplayView.Options = new DisplayView.Options(displayViewName);
 
-            displayViewRepo.get(dvOptions).then((response: any) => {
+            let promiseDv: Promise<any>;
+            if (promisedDv.hasOwnProperty(dvOptions.viewName)) {
+                promiseDv = promisedDv[dvOptions.viewName];
+            }
+            else {
+                promiseDv = displayViewRepo.get(dvOptions);
+                promisedDv[dvOptions.viewName] = promiseDv;
+            }
+
+            promiseDv.then((response: any) => {
                 const sdOptions: SolrDocument.Options = new SolrDocument.Options(displayCollection, id);
 
                 displayView = response;
 
-                let promise: Promise<any>;
-                if (promised.hasOwnProperty(sdOptions.id)) {
-                    promise = promised[sdOptions.id];
+                let promiseSdr: Promise<any>;
+                if (promisedSdr.hasOwnProperty(sdOptions.id)) {
+                    promiseSdr = promisedSdr[sdOptions.id];
                 }
                 else {
-                    promise = solrDocumentRepo.get(sdOptions);
-                    promised[sdOptions.id] = promise;
+                    promiseSdr = solrDocumentRepo.get(sdOptions);
+                    promisedSdr[sdOptions.id] = promiseSdr;
                 }
 
-                promise.then((response: any) => {
+                promiseSdr.then((response: any) => {
                     mainSolrDocoument = response;
                     processSolrDocument(sections, displayView, preProcessTabSectionTemplates);
 
@@ -115,13 +125,13 @@ for (var i = 0; i < embeddables.length; i++) {
                             }
 
                             let options: SolrDocument.Options = new SolrDocument.Options(references[subSection.field], mainField.id);
-                            if (promised.hasOwnProperty(options.id)) {
-                                promises.push(promised[options.id]);
+                            if (promisedSdr.hasOwnProperty(options.id)) {
+                                promises.push(promisedSdr[options.id]);
                             }
                             else {
                                 let promise = solrDocumentRepo.get(options);
                                 promises.push(promise);
-                                promised[options.id] = promise;
+                                promisedSdr[options.id] = promise;
                             }
                         }
                     }
