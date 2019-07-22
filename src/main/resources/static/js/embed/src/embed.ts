@@ -44,7 +44,16 @@ for (var i = 0; i < embeddables.length; i++) {
 
                 displayView = response;
 
-                solrDocumentRepo.get(sdOptions).then((response: any) => {
+                let promise: Promise<any>;
+                if (promised.hasOwnProperty(sdOptions.id)) {
+                    promise = promised[sdOptions.id];
+                }
+                else {
+                    promise = solrDocumentRepo.get(sdOptions);
+                    promised[sdOptions.id] = promise;
+                }
+
+                promise.then((response: any) => {
                     mainSolrDocoument = response;
                     processSolrDocument(sections, displayView, preProcessTabSectionTemplates);
 
