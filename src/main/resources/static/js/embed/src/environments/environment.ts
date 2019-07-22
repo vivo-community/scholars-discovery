@@ -18,7 +18,7 @@ export const environment = {
     },
     pagination: {
         limit: 5,
-        display: 3,
+        range: 5,
         placeholder: 'pagination-disabled-'
     }
 };

@@ -31,6 +31,7 @@ export class View {
                '            var page = $link.attr(\'data-page\');' +
                '            var pages = Number($pagination.attr(\'data-pages\'));' +
                '            var paginationId = $pagination.attr(\'data-pagination\');' +
+               '            var range = Number($pagination.attr(\'data-range\'));' +
                '            var current;' +
                '    ' +
                '            if (page === \'first\' || page == \'previous\' || page === \'next\' || page === \'last\') {' +
@@ -48,10 +49,38 @@ export class View {
                '                pages = 0;' +
                '            }' +
                '    ' +
+               '            if (isNaN(range)) {' +
+               '                range = 5;' +
+               '            }' +
+               '    ' +
                '            if (pages < 2 || current > pages || current < 1) {' +
                '                console.error(\'Pagination current = \' + current + \' and pages = \' + pages + \' for pagination "\' + paginationId + \'".\');' +
                '                return;' +
                '            }' +
+               '    ' +
+               '            var showItem = function($item) {' +
+               '                if ($item.hasClass(\'hidden\')) {' +
+               '                    $item.removeClass(\'hidden\');' +
+               '                }' +
+               '            };' +
+               '    ' +
+               '            var hideItem = function($item) {' +
+               '                if (!$item.hasClass(\'hidden\')) {' +
+               '                    $item.addClass(\'hidden\');' +
+               '                }' +
+               '            };' +
+               '    ' +
+               '            var enableItem = function($item) {' +
+               '                if ($item.hasClass(\'disabled\')) {' +
+               '                    $item.removeClass(\'disabled\');' +
+               '                }' +
+               '            };' +
+               '    ' +
+               '            var disableItem = function($item) {' +
+               '                if (!$item.hasClass(\'disabled\')) {' +
+               '                    $item.addClass(\'disabled\');' +
+               '                }' +
+               '            };' +
                '    ' +
                '            if (current > 0) {' +
                '              $minus_one = $pagination.find(\'.page-item .page-link[data-page="\' + (current - 1) + \'"]\').first();' +
@@ -63,12 +92,18 @@ export class View {
                '    ' +
                '            $pagination.children(\'.pagination-controls .pagination .page-item.active\').each(function() {' +
                '                var $active=$(this);' +
-               '                $active.removeClass(\'active\');' +
+               '    ' +
+               '                if ($active.children(\'.page-link\').first().is(\'[data-page]\')) {' +
+               '                    $active.removeClass(\'active\');' +
+               '                }' +
                '            });' +
                '    ' +
                '            $pagination.children(\'.pagination-controls .pagination .page-item.disabled\').each(function() {' +
                '                var $disabled=$(this);' +
-               '                $disabled.removeClass(\'disabled\');' +
+               '    ' +
+               '                if ($disabled.children(\'.page-link\').first().is(\'[data-page]\')) {' +
+               '                    $disabled.removeClass(\'disabled\');' +
+               '                }' +
                '            });' +
                '    ' +
                '            var $active;' +
@@ -78,57 +113,151 @@ export class View {
                '            var $last = $pagination.find(\'.page-item .page-link[data-page="last"]\').last().parent();' +
                '    ' +
                '            if (page === \'first\') {' +
-               '                $first.addClass(\'disabled\');' +
-               '                $previous.addClass(\'disabled\');' +
-               '    ' +
-               '                $active =  $pagination.find(\'.page-item .page-link[data-page="1"]\').first().parent();' +
-               '                $active.addClass(\'active\');' +
+               '                disableItem($first);' +
+               '                disableItem($previous);' +
                '    ' +
                '                current = 1;' +
                '            }' +
                '            else if (page === \'previous\') {' +
                '                if (current == 2) {' +
-               '                    $first.addClass(\'disabled\');' +
-               '                    $previous.addClass(\'disabled\');' +
+               '                    disableItem($first);' +
+               '                    disableItem($previous);' +
                '                }' +
-               '    ' +
-               '                $active =  $minus_one.parent();' +
-               '                $active.addClass(\'active\');' +
                '    ' +
                '                current--;' +
                '            }' +
                '            else if (page === \'next\') {' +
                '                if (current == pages - 1) {' +
-               '                    $next.addClass(\'disabled\');' +
-               '                    $last.addClass(\'disabled\');' +
+               '                    disableItem($next);' +
+               '                    disableItem($last);' +
                '                }' +
-               '    ' +
-               '                $active =  $plus_one.parent();' +
-               '                $active.addClass(\'active\');' +
                '    ' +
                '                current++;' +
                '            }' +
                '            else if (page === \'last\') {' +
-               '                $next.addClass(\'disabled\');' +
-               '                $last.addClass(\'disabled\');' +
-               '    ' +
-               '                $active =  $pagination.find(\'.page-item .page-link[data-page="\' + pages + \'"]\').first().parent();' +
-               '                $active.addClass(\'active\');' +
+               '                disableItem($next);' +
+               '                disableItem($last);' +
                '    ' +
                '                current = pages;' +
                '            }' +
                '            else {' +
                '                if (current == 1) {' +
-               '                    $first.addClass(\'disabled\');' +
-               '                    $previous.addClass(\'disabled\');' +
+               '                    disableItem($first);' +
+               '                    disableItem($previous);' +
                '                }' +
                '                else if (current == pages) {' +
-               '                    $next.addClass(\'disabled\');' +
-               '                    $last.addClass(\'disabled\');' +
+               '                    disableItem($next);' +
+               '                    disableItem($last);' +
+               '                }' +
+               '            }' +
+               '    ' +
+               '            var $dotsFirst = $pagination.find(\'.page-item.dots-first\').first();' +
+               '            var $dotsLast = $pagination.find(\'.page-item.dots-last\').first();' +
+               '            var $itemExtra = $pagination.find(\'.page-item.item-\' + (range + 1)).first();' +
+               '            var newPage = 0;' +
+               '            var position;' +
+               '            var $position;' +
+               '            var $positionLink;' +
+               '    ' +
+               '            if (current < range) {' +
+               '                hideItem($dotsFirst);' +
+               '            }' +
+               '            else {' +
+               '                showItem($dotsFirst);' +
+               '            }' +
+               '    ' +
+               '            if (current < range) {' +
+               '                hideItem($dotsFirst);' +
+               '                showItem($dotsLast);' +
+               '    ' +
+               '                $active = $pagination.find(\'.page-item.item-\' + current).first();' +
+               '                $active.addClass(\'active\');' +
+               '    ' +
+               '                newPage = 2;' +
+               '                for (position = 2; position <= range; position++, newPage++) {' +
+               '                    $position = $pagination.find(\'.page-item.item-\' + position).first();' +
+               '                    $positionLink = $position.children(\'.page-link\').first();' +
+               '                    $positionLink.attr(\'data-page\', newPage);' +
+               '                    $positionLink.text(newPage);' +
                '                }' +
                '    ' +
-               '                $active =  $link.parent();' +
+               '                $positionLink = $itemExtra.children(\'.page-link\').first();' +
+               '                if (current < range - 1) {' +
+               '                    $positionLink.attr(\'data-page\', \'\');' +
+               '                    $positionLink.text(\'\');' +
+               '    ' +
+               '                    hideItem($itemExtra);' +
+               '                    disableItem($itemExtra);' +
+               '                }' +
+               '                else {' +
+               '                    $positionLink.attr(\'data-page\', newPage);' +
+               '                    $positionLink.text(newPage);' +
+               '    ' +
+               '                    showItem($itemExtra);' +
+               '                    enableItem($itemExtra);' +
+               '                }' +
+               '            }' +
+               '            else if (current >= range && current <= pages - (range - 1)) {' +
+               '                showItem($dotsFirst);' +
+               '                showItem($dotsLast);' +
+               '    ' +
+               '                showItem($itemExtra);' +
+               '                enableItem($itemExtra);' +
+               '    ' +
+               '                position = 4;' +
+               '                newPage = current - 2;' +
+               '    ' +
+               '                $active = $pagination.find(\'.page-item.item-\' + position).first();' +
                '                $active.addClass(\'active\');' +
+               '    ' +
+               '                for (position = 2; position <= range + 1; position++, newPage++) {' +
+               '                    $position = $pagination.find(\'.page-item.item-\' + position).first();' +
+               '                    $positionLink = $position.children(\'.page-link\').first();' +
+               '                    $positionLink.attr(\'data-page\', newPage);' +
+               '                    $positionLink.text(newPage);' +
+               '                }' +
+               '            }' +
+               '            else {' +
+               '                showItem($dotsFirst);' +
+               '                hideItem($dotsLast);' +
+               '    ' +
+               '                newPage = (pages - range) + 1;' +
+               '                if (current == newPage + 1) {' +
+               '                    newPage--;' +
+               '                    position = (range - (pages - current)) + 2;' +
+               '                }' +
+               '                else if (current == pages) {' +
+               '                    position = 7;' +
+               '                }' +
+               '                else {' +
+               '                    position = (range - (pages - current)) + 1;' +
+               '                }' +
+               '    ' +
+               '                $active = $pagination.find(\'.page-item.item-\' + position).first();' +
+               '                $active.addClass(\'active\');' +
+               '    ' +
+               '                for (position = 2; position <= range; position++, newPage++) {' +
+               '                    $position = $pagination.find(\'.page-item.item-\' + position).first();' +
+               '                    $positionLink = $position.children(\'.page-link\').first();' +
+               '                    $positionLink.attr(\'data-page\', newPage);' +
+               '                    $positionLink.text(newPage);' +
+               '                }' +
+               '    ' +
+               '                $positionLink = $itemExtra.children(\'.page-link\').first();' +
+               '                if (current > (pages - range) + 2) {' +
+               '                    $positionLink.attr(\'data-page\', \'\');' +
+               '                    $positionLink.text(\'\');' +
+               '    ' +
+               '                    hideItem($itemExtra);' +
+               '                    disableItem($itemExtra);' +
+               '                }' +
+               '                else {' +
+               '                    $positionLink.attr(\'data-page\', newPage);' +
+               '                    $positionLink.text(newPage);' +
+               '    ' +
+               '                    showItem($itemExtra);' +
+               '                    enableItem($itemExtra);' +
+               '                }' +
                '            }' +
                '    ' +
                '            $subsection = $pagination.parent().parent();' +
@@ -158,6 +287,7 @@ export class View {
                '    .pagination-controls .page-control-divider { flex-grow: 1; }' +
                '    .paginated-visible { }' +
                '    .paginated-hidden { display: none; }' +
+               '    .page-item.hidden { display: none; }' +
                '  </style>' +
                '</head>' +
                '<body>' + this.markup + '</body>';

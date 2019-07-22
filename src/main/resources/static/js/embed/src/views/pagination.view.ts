@@ -13,6 +13,7 @@ export class View {
 
     public render = (): string => {
         const limit: number = environment.pagination.limit as number;
+        const range: number = environment.pagination.range as number;
         var markup: string = '';
 
         if (this.list.length == 0) {
@@ -43,7 +44,7 @@ export class View {
         }
 
         markup += '<nav aria-label="' + this.label + '" class="pagination-controls form-group mt-3">' +
-                  '  <ul class="pagination" data-pagination="' + this.id + '" data-pages="' + pages + '">' +
+                  '  <ul class="pagination" data-pagination="' + this.id + '" data-pages="' + pages + '" data-range="' + range + '">' +
                   '    <li class="page-item disabled">' +
                   '      <a class="page-link" href="#" aria-label="First" data-page="first">' +
                   '        <span aria-hidden="true">&laquo;&laquo;</span>' +
@@ -55,11 +56,32 @@ export class View {
                   '        <span aria-hidden="true">&laquo;</span>' +
                   '        <span class="sr-only">Previous</span>' +
                   '      </a>' +
+                  '    </li>' +
+                  '    <li class="page-item item-1 active">' +
+                  '      <a class="page-link" href="#" data-page="1">1</a>' +
+                  '    </li>' +
+                  '    <li class="page-item dots-first disabled hidden">' +
+                  '      <a class="page-link" href="#">...</a>' +
                   '    </li>';
 
-        for (let i = 0; i < pages && i < environment.pagination.display; i++) {
-            let page: string = (i + 1).toString();
-            markup += '    <li class="page-item' + (i == 0 ? ' active' : '') + '"><a class="page-link" href="#" data-page="' + page + '">' + page + ' </a></li>';
+        if (pages > 1) {
+            for (let i = 1; i < pages && i < range; i++) {
+                let page: string = (i + 1).toString();
+                markup += '    <li class="page-item item-' + page + '"><a class="page-link" href="#" data-page="' + page + '">' + page + ' </a></li>';
+            }
+        }
+
+        if (pages >= range) {
+            markup += '    <li class="page-item item-' + (range + 1) + ' disabled hidden">' +
+                      '      <a class="page-link" href="#" data-page=""></a>' +
+                      '    </li>' +
+                      '    <li class="page-item dots-last disabled"><a class="page-link" href="#">...</a></li>' +
+                      '    <li class="page-item item-' + (range + 2) + '">' +
+                      '      <a class="page-link" href="#" data-page="' + pages + '">' + pages + '</a>' +
+                      '    </li>';
+        }
+        else {
+            markup += '    <li class="page-item dots-last disabled hidden"><a class="page-link" href="#">...</a></li>';
         }
 
         markup += '    <li class="page-item">' +
