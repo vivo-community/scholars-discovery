@@ -18,6 +18,9 @@ import * as Subsection from './views/subsection.view';
 initializeTemplateHelpers();
 
 const embeddables = document.getElementsByClassName("scholars-embed");
+const solrDocumentRepo = new SolrDocument.Service();
+const displayViewRepo = new DisplayView.Service();
+const promised: any = {};
 
 for (var i = 0; i < embeddables.length; i++) {
     (function() {
@@ -29,13 +32,9 @@ for (var i = 0; i < embeddables.length; i++) {
         const showHeaders: boolean = (embed.getAttribute("data-show-headers") !== null && embed.getAttribute("data-show-headers").toLowerCase().trim() === 'true') ? true:false;
         const templates: string[] = [];
         const promises: Promise<any>[] = [];
-        const solrDocuments: any = {};
 
         var displayView: any = {};
         var mainSolrDocoument: any = {};
-
-        const solrDocumentRepo = new SolrDocument.Service();
-        const displayViewRepo = new DisplayView.Service();
 
         const processDisplayView = function () {
             const dvOptions: DisplayView.Options = new DisplayView.Options(displayViewName);
@@ -107,7 +106,14 @@ for (var i = 0; i < embeddables.length; i++) {
                             }
 
                             let options: SolrDocument.Options = new SolrDocument.Options(references[subSection.field], mainField.id);
-                            promises.push(solrDocumentRepo.get(options));
+                            if (promised.hasOwnProperty(options.id)) {
+                                promises.push(promised[options.id]);
+                            }
+                            else {
+                                let promise = solrDocumentRepo.get(options);
+                                promises.push(promise);
+                                promised[options.id] = promise;
+                            }
                         }
                     }
                 }
