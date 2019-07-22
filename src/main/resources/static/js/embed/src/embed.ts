@@ -162,7 +162,7 @@ for (var i = 0; i < embeddables.length; i++) {
                 if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
                     if (references.hasOwnProperty(subSection.field)) {
                         paginationId++;
-                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'TODO: add aria label here');
+                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
                         let filtered = filterSubsection(subSection);
                         let sorted = sortSubsection(filtered, subSection.sort);
 
@@ -176,7 +176,7 @@ for (var i = 0; i < embeddables.length; i++) {
                     }
                     else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
                         paginationId++;
-                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'TODO: add aria label here');
+                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
 
                         for (let fieldIndex in mainSolrDocoument[subSection.field]) {
                             let document: any = mainSolrDocoument[subSection.field][fieldIndex];
