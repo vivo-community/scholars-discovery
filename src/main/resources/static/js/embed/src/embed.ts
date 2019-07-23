@@ -163,7 +163,7 @@ for (var i = 0; i < embeddables.length; i++) {
                     if (references.hasOwnProperty(subSection.field)) {
                         paginationId++;
                         let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
-                        let filtered = filterSubsection(subSection);
+                        let filtered = filterSubsection(subSection, references);
                         let sorted = sortSubsection(filtered, subSection.sort);
 
                         for (let index in sorted) {
@@ -177,10 +177,11 @@ for (var i = 0; i < embeddables.length; i++) {
                     else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
                         paginationId++;
                         let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
+                        let filtered = filterSubsection(subSection, references);
+                        let sorted = sortSubsection(filtered, subSection.sort);
 
-                        for (let fieldIndex in mainSolrDocoument[subSection.field]) {
-                            let document: any = mainSolrDocoument[subSection.field][fieldIndex];
-                            let renderred: any = renderTemplate(subSection.template, document);
+                        for (let index in sorted) {
+                            let renderred = renderTemplate(subSection.template, sorted[index]);
                             pagination.list.push(renderred);
                         }
 
@@ -193,7 +194,7 @@ for (var i = 0; i < embeddables.length; i++) {
             templates.push(aggregate.render());
         };
 
-        const filterSubsection = (subSection: any): any[] => {
+        const filterSubsection = (subSection: any, references: Object): any[] => {
             const filtered: any[] = [];
 
             for (let index in mainSolrDocoument[subSection.field]) {
@@ -220,9 +221,14 @@ for (var i = 0; i < embeddables.length; i++) {
                     if (isFilteredOut) continue;
                 }
 
-                let document: any = solrDocumentRepo.getById(mainField.id);
-                if (document) {
-                    filtered.push(document);
+                if (references.hasOwnProperty(subSection.field)) {
+                    let document: any = solrDocumentRepo.getById(mainField.id);
+                    if (document) {
+                        filtered.push(document);
+                    }
+                }
+                else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
+                    filtered.push(mainField);
                 }
             }
 
