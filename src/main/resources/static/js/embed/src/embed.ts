@@ -160,34 +160,18 @@ for (var i = 0; i < embeddables.length; i++) {
                 let subsectionView: Subsection.View;
 
                 if (subSection.hasOwnProperty('template') && subSection.hasOwnProperty('field')) {
-                    if (references.hasOwnProperty(subSection.field)) {
-                        paginationId++;
-                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
-                        let filtered = filterSubsection(subSection, references);
-                        let sorted = sortSubsection(filtered, subSection.sort);
+                    paginationId++;
+                    let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
+                    let filtered = filterSubsection(subSection, references);
+                    let sorted = sortSubsection(filtered, subSection.sort);
 
-                        for (let index in sorted) {
-                            let renderred = renderTemplate(subSection.template, sorted[index]);
-                            pagination.list.push(renderred);
-                        }
-
-                        subsectionView = new Subsection.View(paginationId.toString(), subSection.name, pagination.render(), pagination.list.length);
-                        aggregate.list.push(subsectionView.render());
+                    for (let index in sorted) {
+                        let renderred = renderTemplate(subSection.template, sorted[index]);
+                        pagination.list.push(renderred);
                     }
-                    else if (mainSolrDocoument.hasOwnProperty(subSection.field)) {
-                        paginationId++;
-                        let pagination: Pagination.View = new Pagination.View(paginationId.toString(), 'Pagination');
-                        let filtered = filterSubsection(subSection, references);
-                        let sorted = sortSubsection(filtered, subSection.sort);
 
-                        for (let index in sorted) {
-                            let renderred = renderTemplate(subSection.template, sorted[index]);
-                            pagination.list.push(renderred);
-                        }
-
-                        subsectionView = new Subsection.View(paginationId.toString(), subSection.name, pagination.render(), pagination.list.length);
-                        aggregate.list.push(subsectionView.render());
-                    }
+                    subsectionView = new Subsection.View(paginationId.toString(), subSection.name, pagination.render(), pagination.list.length);
+                    aggregate.list.push(subsectionView.render());
                 }
             }
 
