@@ -288,6 +288,9 @@ export class View {
                '    .paginated-visible { }' +
                '    .paginated-hidden { display: none; }' +
                '    .page-item.hidden { display: none; }' +
+               '    .list-group-item: { position: relative; display: block; padding: 0.75rem 1.25rem; margin-bottom: -1px; background-color: #ffffff; border: 1px solid #00000020; }' +
+               '    .list-group-item:first-child { border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem; }' +
+               '    .list-group-item:last-child { margin-bottom: 0; border-bottom-right-radius: 0.25rem; border-bottom-left-radius: 0.25rem; }' +
                '  </style>' +
                '</head>' +
                '<body>' + this.markup + '</body>';

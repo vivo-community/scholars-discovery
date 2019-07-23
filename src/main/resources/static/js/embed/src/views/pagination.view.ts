@@ -22,7 +22,7 @@ export class View {
 
         if (this.list.length <= limit) {
             for (let i in this.list) {
-                markup += this.list[i];
+                markup += '<li class="paginated-visible list-group-item border-0">' + this.list[i] + '</li>';
             }
             return markup;
         }
@@ -34,13 +34,13 @@ export class View {
             page = Math.floor(i / limit) + 1;
 
             if (i >= limit) {
-                markup += '<div class="paginated-hidden list-group-item border-0" data-page="' + page + '">';
+                markup += '<li class="paginated-hidden list-group-item border-0" data-page="' + page + '">';
             }
             else {
-                markup += '<div class="paginated-visible list-group-item border-0" data-page="' + page + '">';
+                markup += '<li class="paginated-visible list-group-item border-0" data-page="' + page + '">';
             }
 
-            markup += this.list[i] + '</div>';
+            markup += this.list[i] + '</li>';
         }
 
         markup += '<nav aria-label="' + this.label + '" class="pagination-controls form-group mt-3">' +

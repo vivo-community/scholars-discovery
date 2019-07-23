@@ -23,7 +23,7 @@ export class View {
                '    <span class="subsection-name text-capitalize">' + this.name + '</span>' +
                '    <span class="subsection-length badge badge-light ml-2">' + this.length + '</span>' +
                '  </div>' +
-               '  <div class="subsection-block list-group" data-id="' + this.id + '">' +  this.markup + '</div>' +
+               '  <ul class="subsection-block list-group" data-id="' + this.id + '">' +  this.markup + '</ul>' +
                '</div>';
     };
 }
