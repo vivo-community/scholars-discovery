@@ -13,8 +13,6 @@ public interface DisplayViewRepo extends ViewRepo<DisplayView> {
 
     public Optional<DisplayView> findByTypesIn(List<String> types);
 
-    public Optional<DisplayView> findByNameIn(List<String> names);
-
     @Override
     @RestResource(exported = true)
     public Optional<DisplayView> findByName(String name);
