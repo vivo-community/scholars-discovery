@@ -6,6 +6,8 @@
   mainContentTemplate: "defaults/displayViews/defaults/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/defaults/meta/title.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
 
 - name: People
   types:
@@ -20,6 +22,8 @@
     description: "defaults/displayViews/people/meta/description.txt"
     keywords: "defaults/displayViews/people/meta/keywords.txt"
     position: "defaults/displayViews/people/meta/position.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: true
@@ -572,6 +576,8 @@
     title: "defaults/displayViews/organizations/meta/title.txt"
     description: "defaults/displayViews/organizations/meta/description.txt"
     keywords: "defaults/displayViews/organizations/meta/keywords.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false
@@ -943,6 +949,8 @@
     title: "defaults/displayViews/publications/meta/title.txt"
     description: "defaults/displayViews/publications/meta/description.txt"
     keywords: "defaults/displayViews/publications/meta/keywords.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false
@@ -1211,6 +1219,8 @@
   mainContentTemplate: "defaults/displayViews/grants/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/grants/meta/title.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false
@@ -1370,6 +1380,8 @@
   mainContentTemplate: "defaults/displayViews/awards/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/awards/meta/title.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false
@@ -1458,6 +1470,8 @@
   mainContentTemplate: "defaults/displayViews/courses/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/courses/meta/title.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false
@@ -1597,6 +1611,8 @@
   mainContentTemplate: "defaults/displayViews/collections/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/collections/meta/title.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false
@@ -1757,6 +1773,8 @@
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"
+  embedTemplates:
+    default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
     hidden: false

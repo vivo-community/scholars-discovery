@@ -206,6 +206,11 @@ public class ViewTestUtility {
 
         displayView.setMetaTemplates(metaTemplates);
 
+        Map<String, String> embedTemplates = new HashMap<String, String>();
+        embedTemplates.put("default", "<div>Hello, Embedded!</div>");
+
+        displayView.setEmbedTemplates(embedTemplates);
+
         List<DisplayTabView> tabs = new ArrayList<DisplayTabView>();
 
         tabs.add(getMockDisplayTabView());
