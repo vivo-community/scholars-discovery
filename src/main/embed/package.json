@@ -4,8 +4,9 @@
   "description": "Embedded client for Scholars Discovery",
   "private": false,
   "license": "MIT",
+  "repository": {},
   "scripts": {
-    "build": "npx webpack",
+    "build": "webpack",
     "lint": "tslint -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
