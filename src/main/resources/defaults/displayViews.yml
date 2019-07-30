@@ -110,6 +110,7 @@
     sections:
     - name: selected publications
       hidden: false
+      shared: true
       template: "defaults/displayViews/people/publications/selectedPublications.html"
       requiredFields:
       - publications

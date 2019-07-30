@@ -33,6 +33,9 @@ public class DisplayTabSectionViewTest {
         section.setHidden(true);
         assertTrue(section.isHidden());
 
+        section.setShared(true);
+        assertTrue(section.isShared());
+
         section.setTemplate("<span>Hello, World!</span>");
         assertEquals("<span>Hello, World!</span>", section.getTemplate());
 
