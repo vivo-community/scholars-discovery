@@ -16,4 +16,5 @@ public interface DisplayViewRepo extends ViewRepo<DisplayView> {
     @Override
     @RestResource(exported = true)
     public Optional<DisplayView> findByName(String name);
+
 }
