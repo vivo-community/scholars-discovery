@@ -6,7 +6,10 @@ import { Embedded } from './model/embedded';
 
 import { setLinkTargets, createSectionElement } from './utilities/document.utility';
 
-const additionalContext = { vivoUrl: environment.vivoUrl };
+const additionalContext = {
+    vivoUrl: environment.vivoUrl,
+    serviceUrl: environment.serviceUrl
+};
 
 export class EmbedRenderer {
 

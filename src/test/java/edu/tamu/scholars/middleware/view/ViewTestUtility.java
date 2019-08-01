@@ -190,6 +190,7 @@ public class ViewTestUtility {
         DisplayView displayView = new DisplayView();
 
         displayView.setName(MOCK_VIEW_NAME);
+        displayView.setExportTemplate("<div>Export</div>");
         displayView.setMainContentTemplate("<div>Main</div>");
         displayView.setLeftScanTemplate("<div>Left Scan</div>");
         displayView.setRightScanTemplate("<div>Right Scan</div>");

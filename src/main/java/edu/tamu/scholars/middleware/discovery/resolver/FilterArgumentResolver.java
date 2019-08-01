@@ -25,7 +25,7 @@ public class FilterArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Filter.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return resolvableType.hasGenerics() && Filter.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override

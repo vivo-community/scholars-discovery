@@ -35,6 +35,13 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
         List<DisplayView> views = mapper.readValue(is, new TypeReference<List<DisplayView>>() {});
         // @formatter:on
         for (DisplayView view : views) {
+            if (view.getExportTemplate() != null && view.getExportTemplate().length() > 0) {
+                try {
+                    view.setExportTemplate(getTemplate(view.getExportTemplate()));
+                } catch (IOException e) {
+                    logger.warn(String.format(IO_EXCEPTION_MESSAGE, view.getExportTemplate()));
+                }
+            }
             if (view.getMainContentTemplate() != null && view.getMainContentTemplate().length() > 0) {
                 try {
                     view.setMainContentTemplate(getTemplate(view.getMainContentTemplate()));

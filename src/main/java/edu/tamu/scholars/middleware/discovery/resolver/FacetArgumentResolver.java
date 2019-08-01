@@ -22,7 +22,7 @@ public class FacetArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Facet.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return resolvableType.hasGenerics() && Facet.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override

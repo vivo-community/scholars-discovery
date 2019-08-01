@@ -53,6 +53,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                     requestFields(
                         describeDisplayView.withField("name", "The name of the Display View."),
                         describeDisplayView.withField("types", "An array of types."),
+                        describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                         describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                         describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                         describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),
@@ -69,6 +70,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                     responseFields(
                         describeDisplayView.withField("name", "The name of the Display View."),
                         describeDisplayView.withField("types", "An array of types."),
+                        describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                         describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                         describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                         describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),
@@ -100,6 +102,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         describeDisplayView.withField("id", "The Display View id."),
                         describeDisplayView.withField("name", "The name of the Display View."),
                         describeDisplayView.withField("types", "An array of types."),
+                        describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                         describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                         describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                         describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),
@@ -116,6 +119,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                     responseFields(
                         describeDisplayView.withField("name", "The name of the Display View."),
                         describeDisplayView.withField("types", "An array of types."),
+                        describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                         describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                         describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                         describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),
@@ -154,6 +158,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                                 describeDisplayView.withParameter("id", "The Display View id.").optional(),
                                 describeDisplayView.withParameter("name", "The name of the Display View.").optional(),
                                 describeDisplayView.withParameter("types", "An array of types.").optional(),
+                                describeDisplayView.withParameter("exportTemplate", "The export template of the Display View.").optional(),
                                 describeDisplayView.withParameter("mainContentTemplate", "The main content template of the Display View.").optional(),
                                 describeDisplayView.withParameter("leftScanTemplate", "The left scan template of the Display View.").optional(),
                                 describeDisplayView.withParameter("rightScanTemplate", "The right scan template of the Display View.").optional(),
@@ -170,6 +175,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                             responseFields(
                                 describeDisplayView.withField("name", "The name of the Display View."),
                                 describeDisplayView.withField("types", "An array of types."),
+                                describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                                 describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                                 describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                                 describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),
@@ -208,6 +214,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         responseFields(
                             describeDisplayView.withField("name", "The name of the Display View."),
                             describeDisplayView.withField("types", "An array of types."),
+                            describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                             describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                             describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                             describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),
@@ -245,6 +252,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         responseFields(
                             describeDisplayView.withField("name", "The name of the Display View."),
                             describeDisplayView.withField("types", "An array of types."),
+                            describeDisplayView.withField("exportTemplate", "The export template of the Display View."),
                             describeDisplayView.withField("mainContentTemplate", "The main content template of the Display View."),
                             describeDisplayView.withField("leftScanTemplate", "The left scan template of the Display View."),
                             describeDisplayView.withField("rightScanTemplate", "The right scan template of the Display View."),

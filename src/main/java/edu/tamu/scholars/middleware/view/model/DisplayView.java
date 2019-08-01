@@ -28,6 +28,9 @@ public class DisplayView extends View {
     @ElementCollection
     private List<String> types;
 
+    @Column(columnDefinition = "TEXT")
+    private String exportTemplate;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String mainContentTemplate;
 
@@ -73,6 +76,14 @@ public class DisplayView extends View {
 
     public void setTypes(List<String> types) {
         this.types = types;
+    }
+
+    public String getExportTemplate() {
+        return exportTemplate;
+    }
+
+    public void setExportTemplate(String exportTemplate) {
+        this.exportTemplate = exportTemplate;
     }
 
     public String getMainContentTemplate() {

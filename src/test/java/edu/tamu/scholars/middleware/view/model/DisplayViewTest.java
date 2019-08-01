@@ -32,10 +32,11 @@ public class DisplayViewTest {
 
         assertTrue(displayView.getMetaTemplates().containsKey("default"));
         assertEquals("Meta tag template", displayView.getMetaTemplates().get("default"));
-        
+
         assertTrue(displayView.getEmbedTemplates().containsKey("default"));
         assertEquals("<div>Hello, Embedded!</div>", displayView.getEmbedTemplates().get("default"));
 
+        assertEquals("<div>Export</div>", displayView.getExportTemplate());
         assertEquals("<div>Main</div>", displayView.getMainContentTemplate());
         assertEquals("<div>Left Scan</div>", displayView.getLeftScanTemplate());
         assertEquals("<div>Right Scan</div>", displayView.getRightScanTemplate());

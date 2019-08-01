@@ -172,7 +172,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     @SuppressWarnings("unchecked")
     private ND toNested(D document) {
         try {
-            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(document);
+            String json = mapper.writeValueAsString(document);
             return (ND) mapper.readValue(json, getNestedDocumentType());
         } catch (IOException e) {
             e.printStackTrace();

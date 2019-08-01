@@ -22,7 +22,7 @@ public final class ExportArgumentResolver implements HandlerMethodArgumentResolv
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Export.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return resolvableType.hasGenerics() && Export.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override

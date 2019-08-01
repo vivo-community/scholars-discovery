@@ -1,0 +1,108 @@
+<html>
+
+<head>
+  <style>
+    body {
+      font-family: "Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif";
+      font-size: 14px;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="title">{{firstName}} {{lastName}}</div>
+
+  <div class="image">
+    {{#if image}}
+    <img class="avatar" src="{{vivoUrl}}{{image}}" height="150" width="150" alt="{{name}}">
+    {{else}}
+    <img class="avatar" src="{{uiUrl}}/assets/images/default-avatar.png" height="150" width="150" alt="default avatar">
+    {{/if}}
+  </div>
+
+  <div class="section">
+    <div class="label">Positions:</div>
+    <ul>
+      {{#each positions}}
+      <li>
+        <span>{{label}}{{#if organizations.length }}, {{/if}}</span>
+        {{#each organizations}}
+        <span>{{label}}{{#if @last }}{{else}}, {{/if}}</span>
+        {{#each parent}}
+        <span>{{label}}{{#if @last }}{{else}}, {{/if}}</span>
+        {{/each}}
+        {{/each}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="label">Overview:</div>
+    <div>{{{overview}}}</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Recent Publications:</div>
+
+    {{#each publications}}
+    <div>
+      <span>{{authorList}}</span>
+      <span>({{toYear publicationDate}}).</span>
+      <span><u>{{title}}</u>.</span>
+
+      {{#if publicationVenue}}
+      <span><em>{{publicationVenue.label}}</em>. </span>
+      {{/if}}
+
+      {{#if volume}}
+      {{#if issue}}
+      <span>{{volume}}({{issue}}), </span>
+      {{else}}
+      <span>{{volume}}, </span>
+      {{/if}}
+      {{else}}
+      {{#if issue}}
+      <span>({{issue}}), </span>
+      {{/if}}
+      {{/if}}
+
+      {{#if pageStart}}
+      {{#if pageEnd}}
+      <span>{{pageStart}}-{{pageEnd}}.</span>
+      {{else}}
+      <span>{{pageStart}}.</span>
+      {{/if}}
+      {{else}}
+      {{#if pageEnd}}
+      <span>{{pageEnd}}.</span>
+      {{/if}}
+      {{/if}}
+
+    </div>
+    {{/each}}
+
+  </div>
+
+  <span class="label">Source: </span>
+  <span>{{firstName}} {{lastName}}'s profile <a href="{{vivoUrl}}/display/{{id}}">{{vivoUrl}}/display/{{id}}</a></span>
+
+</body>
+
+</html>

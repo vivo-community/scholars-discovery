@@ -1,8 +1,10 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,10 +12,14 @@ import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -29,8 +35,10 @@ import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.resource.AbstractSolrDocumentResource;
 import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 import edu.tamu.scholars.middleware.discovery.service.export.ExporterRegistry;
+import edu.tamu.scholars.middleware.view.model.DisplayView;
+import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
-public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>, R extends AbstractSolrDocumentResource<D>, SDA extends AbstractSolrDocumentResourceAssembler<D, R>> {
+public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>, R extends AbstractSolrDocumentResource<D>, SDA extends AbstractSolrDocumentResourceAssembler<D, R>> implements ResourceProcessor<Resource<D>> {
 
     @Autowired
     private SDR repo;
@@ -40,6 +48,9 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
 
     @Autowired
     private FacetPagedResourcesAssembler<D> pagedResourcesAssembler;
+
+    @Autowired
+    private DisplayViewRepo displayViewRepo;
 
     @GetMapping("/search/facet")
     // @formatter:off
@@ -73,6 +84,24 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     }
     // @formatter:on
 
+    @GetMapping("/{id}/export")
+    // @formatter:off
+    public ResponseEntity<StreamingResponseBody> export(
+        @PathVariable String id,
+        @RequestParam(value = "type", required = false, defaultValue = "docx") String type
+    ) throws UnknownExporterTypeException, IllegalArgumentException, IllegalAccessException {
+        D document = repo.findById(id).get();
+        Field field = FieldUtils.getField(document.getClass(), "type", true);
+        @SuppressWarnings("unchecked")
+        DisplayView view = displayViewRepo.findByTypesIn((List<String>) field.get(document)).get();
+        Exporter exporter = ExporterRegistry.getExporter(type);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
+            .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
+            .body(exporter.streamIndividual(document, view));
+    }
+    // @formatter:on
+
     @GetMapping("/search/count")
     public ResponseEntity<Count> count(@RequestParam(value = "query", required = false, defaultValue = "*:*") String query, List<Filter> filters) {
         return ResponseEntity.ok(new Count(repo.count(query, filters)));
@@ -81,6 +110,24 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     @GetMapping("/search/recently-updated")
     public ResponseEntity<Resources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
         return ResponseEntity.ok(new Resources<R>(assembler.toResources(repo.findMostRecentlyUpdate(limit))));
+    }
+
+    @Override
+    public Resource<D> process(Resource<D> resource) {
+        // @formatter:off
+        try {
+            resource.add(
+              ControllerLinkBuilder.linkTo(
+                ControllerLinkBuilder
+                  .methodOn(this.getClass())
+                  .export(resource.getContent().getId(), "docx")
+              ).withRel("export")
+            );
+        } catch (UnknownExporterTypeException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        // @formatter:on
+        return resource;
     }
 
     class Count {

@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import edu.tamu.scholars.middleware.discovery.exception.ExportException;
 import edu.tamu.scholars.middleware.discovery.exception.ExportQueryParameterRequiredException;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.discovery.exception.UnknownExporterTypeException;
+import edu.tamu.scholars.middleware.discovery.exception.UnsupportedExporterTypeException;
 
 @ControllerAdvice
 public class DiscoveryControllerAdvice {
@@ -16,6 +18,12 @@ public class DiscoveryControllerAdvice {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UnknownExporterTypeException.class)
     public @ResponseBody String handleUnknownExporterTypeException(UnknownExporterTypeException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = UnsupportedExporterTypeException.class)
+    public @ResponseBody String handleUnsupportedExporterTypeException(UnsupportedExporterTypeException exception) {
         return exception.getMessage();
     }
 
@@ -28,6 +36,12 @@ public class DiscoveryControllerAdvice {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ExportQueryParameterRequiredException.class)
     public @ResponseBody String handleExportQueryParameterRequiredException(ExportQueryParameterRequiredException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = ExportException.class)
+    public @ResponseBody String handleExportException(ExportException exception) {
         return exception.getMessage();
     }
 

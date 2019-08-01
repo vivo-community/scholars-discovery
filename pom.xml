@@ -272,6 +272,18 @@
     </dependency>
 
     <dependency>
+      <groupId>com.github.jknack</groupId>
+      <artifactId>handlebars-jackson2</artifactId>
+      <version>4.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.docx4j</groupId>
+      <artifactId>docx4j-ImportXHTML</artifactId>
+      <version>6.1.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>runtime</scope>

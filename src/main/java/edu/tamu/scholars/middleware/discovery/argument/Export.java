@@ -6,20 +6,13 @@ public class Export extends Mapping {
 
     private final String label;
 
-    private final String delimiter;
-
-    public Export(String field, String label, String delimiter) {
+    public Export(String field, String label) {
         super(field);
         this.label = label;
-        this.delimiter = delimiter;
     }
 
     public String getLabel() {
         return label;
-    }
-
-    public String getDelimiter() {
-        return delimiter;
     }
 
     @SuppressWarnings("unchecked")
@@ -27,13 +20,12 @@ public class Export extends Mapping {
         Map<String, Object> export = (Map<String, Object>) input;
         String field = (String) export.get("field");
         String label = (String) export.get("label");
-        String delimiter = (String) export.get("delimiter");
-        return new Export(field, label, delimiter);
+        return new Export(field, label);
     }
 
     public static Export of(String parameter) {
         String[] parts = parameter.split(",");
-        return new Export(parts[0], parts.length > 1 ? parts[1] : parts[0], parts.length > 2 ? parts[2] : "||");
+        return new Export(parts[0], parts.length > 1 ? parts[1] : parts[0]);
     }
 
 }
