@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.graphql.resolver;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 @GraphQLApi
 public class EnhancedPersonResolver {
 
-    private final static int MAX_DOCUMENT_BATCH_SIZE = 500;
-
     @Autowired
     private PersonService personService;
 
@@ -36,9 +35,9 @@ public class EnhancedPersonResolver {
     }
 
     // NOTE: This concrete class extending the generated nested Person class is required
-    // to generate the GraphQL schema in which to support return type with a Person and 
+    // to generate the GraphQL schema in which to support return type with a Person and
     // a list of full publications. Also, undesired is the additional list of publications.
-    // Unfortunately, there is no way to override the existing property accessor methods 
+    // Unfortunately, there is no way to override the existing property accessor methods
     // with a different generic for the return list.
     // To remedy this, we could annotate the flatten Solr document models with information
     // on how to generate nested documents with complete relational nested documents. There
@@ -51,7 +50,7 @@ public class EnhancedPersonResolver {
         private static final long serialVersionUID = -2574871417252355891L;
 
         public List<Document> getSelectedPublications() {
-          return documentService.findBySyncIds(this.getId());
+            return documentService.findBySyncIds(this.getId()).stream().filter(document -> document.getAuthors().stream().anyMatch(author -> author.getId().equals(this.getId()))).collect(Collectors.toList());
         }
 
     }
