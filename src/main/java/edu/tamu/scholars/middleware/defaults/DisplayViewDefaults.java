@@ -78,6 +78,7 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
                 }
             }
             loadTemplateMap(view.getMetaTemplates());
+            loadTemplateMap(view.getEmbedTemplates());
         }
         return views;
     }

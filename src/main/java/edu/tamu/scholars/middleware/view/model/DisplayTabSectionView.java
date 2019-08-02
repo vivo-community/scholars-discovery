@@ -23,6 +23,9 @@ public class DisplayTabSectionView extends View {
     @Column(nullable = false)
     private boolean hidden;
 
+    @Column(nullable = false)
+    private boolean shared;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     public String template;
 
@@ -39,6 +42,7 @@ public class DisplayTabSectionView extends View {
     public DisplayTabSectionView() {
         super();
         hidden = false;
+        shared = false;
         requiredFields = new ArrayList<String>();
         lazyReferences = new ArrayList<LazyReference>();
         subsections = new ArrayList<DisplayTabSectionSubsectionView>();
@@ -54,6 +58,14 @@ public class DisplayTabSectionView extends View {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 
     public String getTemplate() {

@@ -49,6 +49,11 @@ public class DisplayView extends View {
     @Column(name = "meta_template", columnDefinition = "TEXT")
     private Map<String, String> metaTemplates;
 
+    @ElementCollection
+    @MapKeyColumn(name = "name")
+    @Column(name = "embed_template", columnDefinition = "TEXT")
+    private Map<String, String> embedTemplates;
+
     @JoinColumn(name = "display_view_id")
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<DisplayTabView> tabs;
@@ -57,6 +62,7 @@ public class DisplayView extends View {
         super();
         types = new ArrayList<String>();
         metaTemplates = new HashMap<String, String>();
+        embedTemplates = new HashMap<String, String>();
         tabs = new ArrayList<DisplayTabView>();
         asideLocation = Side.RIGHT;
     }
@@ -115,6 +121,14 @@ public class DisplayView extends View {
 
     public void setMetaTemplates(Map<String, String> metaTemplates) {
         this.metaTemplates = metaTemplates;
+    }
+
+    public Map<String, String> getEmbedTemplates() {
+        return embedTemplates;
+    }
+
+    public void setEmbedTemplates(Map<String, String> embedTemplates) {
+        this.embedTemplates = embedTemplates;
     }
 
     public List<DisplayTabView> getTabs() {
