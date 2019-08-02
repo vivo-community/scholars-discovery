@@ -101,6 +101,10 @@ const createSectionElement = (): any => {
     return document.createElement('div');
 };
 
+const createSubsectionElement = (): any => {
+    return document.createElement('div');
+};
+
 const setLinkTargets = (document: any, target: string = '_blank') => {
     for (const link of document.links) {
         link.target = target;
@@ -110,5 +114,6 @@ const setLinkTargets = (document: any, target: string = '_blank') => {
 export {
     createIframe,
     createSectionElement,
+    createSubsectionElement,
     setLinkTargets
 };
