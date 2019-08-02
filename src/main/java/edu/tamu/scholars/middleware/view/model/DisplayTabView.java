@@ -27,12 +27,12 @@ public class DisplayTabView extends View {
     @JoinColumn(name = "display_tab_view_id")
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    public List<DisplayTabSectionView> sections;
+    public List<DisplaySectionView> sections;
 
     public DisplayTabView() {
         super();
         hidden = false;
-        sections = new ArrayList<DisplayTabSectionView>();
+        sections = new ArrayList<DisplaySectionView>();
     }
 
     public String getName() {
@@ -47,11 +47,11 @@ public class DisplayTabView extends View {
         this.hidden = hidden;
     }
 
-    public List<DisplayTabSectionView> getSections() {
+    public List<DisplaySectionView> getSections() {
         return sections;
     }
 
-    public void setSections(List<DisplayTabSectionView> sections) {
+    public void setSections(List<DisplaySectionView> sections) {
         this.sections = sections;
     }
 

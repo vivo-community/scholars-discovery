@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import edu.tamu.scholars.middleware.view.model.DisplayTabSectionSubsectionView;
-import edu.tamu.scholars.middleware.view.model.DisplayTabSectionView;
+import edu.tamu.scholars.middleware.view.model.DisplaySubsectionView;
+import edu.tamu.scholars.middleware.view.model.DisplaySectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabView;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
@@ -66,10 +66,10 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
             if (view.getTabs() != null) {
                 for (DisplayTabView tabView : view.getTabs()) {
                     if (tabView.getSections() != null) {
-                        for (DisplayTabSectionView section : tabView.getSections()) {
+                        for (DisplaySectionView section : tabView.getSections()) {
                             section.setTemplate(getTemplate(section.getTemplate()));
                             if (section.getSubsections() != null) {
-                                for (DisplayTabSectionSubsectionView subsection : section.getSubsections()) {
+                                for (DisplaySubsectionView subsection : section.getSubsections()) {
                                     subsection.setTemplate(getTemplate(subsection.getTemplate()));
                                 }
                             }
