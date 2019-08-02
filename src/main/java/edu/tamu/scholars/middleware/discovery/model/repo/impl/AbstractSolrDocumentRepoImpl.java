@@ -128,8 +128,6 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return type().getAnnotation(SolrDocument.class).collection();
     }
 
-    public abstract Class<D> type();
-
     protected Criteria getCriteria(String query) {
         return new SimpleStringCriteria(query);
     }

@@ -16,20 +16,17 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
-@Table(name = "display_tab_sections")
+@Table(name = "display_export_views")
 @AttributeOverride(name = "name", column = @Column(nullable = false))
-public class DisplayTabSectionView extends View {
+public class ExportView extends View {
 
-    private static final long serialVersionUID = 938457239875938467L;
+    private static final long serialVersionUID = 8352195631003934922L;
 
-    @Column(nullable = false)
-    private boolean hidden;
+    @Column(columnDefinition = "TEXT")
+    private String contentTemplate;
 
-    @Column(nullable = false)
-    private boolean shared;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    public String template;
+    @Column(columnDefinition = "TEXT")
+    private String headerTemplate;
 
     @ElementCollection
     private List<String> requiredFields;
@@ -37,46 +34,32 @@ public class DisplayTabSectionView extends View {
     @ElementCollection
     private List<LazyReference> lazyReferences;
 
-    @JoinColumn(name = "display_tab_section_id")
+    @JoinColumn(name = "export_field_id")
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<DisplayTabSectionSubsectionView> subsections;
+    private List<ExportFieldView> fieldViews;
 
-    public DisplayTabSectionView() {
+    public ExportView() {
         super();
-        hidden = false;
-        shared = false;
         requiredFields = new ArrayList<String>();
         lazyReferences = new ArrayList<LazyReference>();
-        subsections = new ArrayList<DisplayTabSectionSubsectionView>();
+        fieldViews = new ArrayList<ExportFieldView>();
     }
 
-    public String getName() {
-        return name;
+    public String getContentTemplate() {
+        return contentTemplate;
     }
 
-    public boolean isHidden() {
-        return hidden;
+    public void setContentTemplate(String contentTemplate) {
+        this.contentTemplate = contentTemplate;
     }
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
+    public String getHeaderTemplate() {
+        return headerTemplate;
     }
 
-    public boolean isShared() {
-        return shared;
-    }
-
-    public void setShared(boolean shared) {
-        this.shared = shared;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setHeaderTemplate(String headerTemplate) {
+        this.headerTemplate = headerTemplate;
     }
 
     public List<String> getRequiredFields() {
@@ -95,12 +78,12 @@ public class DisplayTabSectionView extends View {
         this.lazyReferences = lazyReferences;
     }
 
-    public List<DisplayTabSectionSubsectionView> getSubsections() {
-        return subsections;
+    public List<ExportFieldView> getFieldViews() {
+        return fieldViews;
     }
 
-    public void setSubsections(List<DisplayTabSectionSubsectionView> subsections) {
-        this.subsections = subsections;
+    public void setFieldViews(List<ExportFieldView> fieldViews) {
+        this.fieldViews = fieldViews;
     }
 
 }

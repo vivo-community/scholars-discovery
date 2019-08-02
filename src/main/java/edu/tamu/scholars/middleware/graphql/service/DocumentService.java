@@ -141,7 +141,7 @@ public class DocumentService extends AbstractNestedDocumentService<Document, edu
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Document> type() {
         return Document.class;
     }
 

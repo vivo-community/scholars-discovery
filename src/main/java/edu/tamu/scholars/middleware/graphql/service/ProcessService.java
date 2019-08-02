@@ -141,7 +141,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Process> type() {
         return Process.class;
     }
 

@@ -13,11 +13,41 @@
   types:
   - FacultyMember
   - NonFacultyAcademic
-  exportTemplate: "defaults/displayViews/people/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/people/mainContentTemplate.html"
   leftScanTemplate: "defaults/displayViews/people/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/people/asideTemplate.html"
   asideLocation: RIGHT
+  exportView:
+    name: Individual Word Document
+    contentTemplate: "defaults/displayViews/people/exportContentTemplate.html"
+    headerTemplate: "defaults/displayViews/people/exportHeaderTemplate.html"
+    requiredFields:
+    - firstName
+    - lastName
+    - positions
+    - publications
+    lazyReferences:
+    - field: publications
+      collection: documents
+    fieldViews:
+    - name: Recent Publications
+      field: publications
+      limit: 5
+      sort:
+      - field: title
+        direction: ASC
+      - field: publicationDate
+        direction: DESC
+        date: true
+      filters:
+      - field: type
+        value: AcademicArticle
+      - field: type
+        value: Book
+      - field: type
+        value: Chapter
+      - field: type
+        value: ConferencePaper
   metaTemplates:
     title: "defaults/displayViews/people/meta/title.txt"
     description: "defaults/displayViews/people/meta/description.txt"
@@ -318,6 +348,7 @@
     sections:
     - name: chaired theses and dissertations
       hidden: false
+      shared: true
       template: "defaults/displayViews/people/worksByStudents/chairedThesesAndDissertations.html"
       requiredFields:
       - etdChairOf
@@ -570,7 +601,6 @@
   - Department
   - Library
   - University
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/organizations/mainContentTemplate.html"
   leftScanTemplate: "defaults/displayViews/organizations/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/organizations/asideTemplate.html"
@@ -946,7 +976,6 @@
   - GreyLiterature
   - Patent
   - WorkingPaper
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/publications/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/publications/rightScanTemplate.html"
   metaTemplates:
@@ -1220,7 +1249,6 @@
 - name: Grants
   types:
   - Grant
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/grants/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/grants/meta/title.txt"
@@ -1382,7 +1410,6 @@
 - name: Awards
   types:
   - AwardReceipt
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/awards/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/awards/meta/title.txt"
@@ -1473,7 +1500,6 @@
 - name: Courses
   types:
   - Course
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/courses/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/courses/meta/title.txt"
@@ -1615,7 +1641,6 @@
 - name: Collections
   types:
   - Journal
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/collections/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/collections/meta/title.txt"
@@ -1778,7 +1803,6 @@
 - name: Concepts
   types:
   - Concept
-  exportTemplate: "defaults/displayViews/defaults/exportTemplate.html"
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"

@@ -113,8 +113,8 @@ public class CsvExporter implements Exporter {
                 value = (String) objValue;
             } else if (Collection.class.isInstance(objValue)) {
                 // @formatter:off
-                    Collection<String> values = mapper.convertValue(objValue, new TypeReference<Collection<String>>() {});
-                    // @formatter:on
+                Collection<String> values = mapper.convertValue(objValue, new TypeReference<Collection<String>>() {});
+                // @formatter:on
                 value = String.join(DELIMITER, values.stream().map(this::removeNestedIdentifiers).collect(Collectors.toList()));
             }
             if (value == null) {

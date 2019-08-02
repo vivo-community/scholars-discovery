@@ -1,10 +1,8 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,8 +33,6 @@ import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.resource.AbstractSolrDocumentResource;
 import edu.tamu.scholars.middleware.discovery.service.export.Exporter;
 import edu.tamu.scholars.middleware.discovery.service.export.ExporterRegistry;
-import edu.tamu.scholars.middleware.view.model.DisplayView;
-import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>, R extends AbstractSolrDocumentResource<D>, SDA extends AbstractSolrDocumentResourceAssembler<D, R>> implements ResourceProcessor<Resource<D>> {
 
@@ -48,9 +44,6 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
 
     @Autowired
     private FacetPagedResourcesAssembler<D> pagedResourcesAssembler;
-
-    @Autowired
-    private DisplayViewRepo displayViewRepo;
 
     @GetMapping("/search/facet")
     // @formatter:off
@@ -90,15 +83,13 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
         @PathVariable String id,
         @RequestParam(value = "type", required = false, defaultValue = "docx") String type
     ) throws UnknownExporterTypeException, IllegalArgumentException, IllegalAccessException {
+        // TODO: throw not found exception if not found
         D document = repo.findById(id).get();
-        Field field = FieldUtils.getField(document.getClass(), "type", true);
-        @SuppressWarnings("unchecked")
-        DisplayView view = displayViewRepo.findByTypesIn((List<String>) field.get(document)).get();
         Exporter exporter = ExporterRegistry.getExporter(type);
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
-            .body(exporter.streamIndividual(document, view));
+            .body(exporter.streamIndividual(document));
     }
     // @formatter:on
 

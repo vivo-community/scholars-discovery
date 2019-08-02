@@ -12,11 +12,14 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "display_views")
@@ -27,9 +30,6 @@ public class DisplayView extends View {
     // TODO: add validation to prevent any given type belonging to multiple display views
     @ElementCollection
     private List<String> types;
-
-    @Column(columnDefinition = "TEXT")
-    private String exportTemplate;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String mainContentTemplate;
@@ -47,6 +47,11 @@ public class DisplayView extends View {
     @Column(nullable = false)
     private Side asideLocation;
 
+    @JoinColumn(name = "export_view_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private ExportView exportView;
+
     @ElementCollection
     @MapKeyColumn(name = "name")
     @Column(name = "meta_template", columnDefinition = "TEXT")
@@ -58,7 +63,8 @@ public class DisplayView extends View {
     private Map<String, String> embedTemplates;
 
     @JoinColumn(name = "display_view_id")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<DisplayTabView> tabs;
 
     public DisplayView() {
@@ -76,14 +82,6 @@ public class DisplayView extends View {
 
     public void setTypes(List<String> types) {
         this.types = types;
-    }
-
-    public String getExportTemplate() {
-        return exportTemplate;
-    }
-
-    public void setExportTemplate(String exportTemplate) {
-        this.exportTemplate = exportTemplate;
     }
 
     public String getMainContentTemplate() {
@@ -124,6 +122,14 @@ public class DisplayView extends View {
 
     public void setAsideLocation(Side asideLocation) {
         this.asideLocation = asideLocation;
+    }
+
+    public ExportView getExportView() {
+        return exportView;
+    }
+
+    public void setExportView(ExportView exportView) {
+        this.exportView = exportView;
     }
 
     public Map<String, String> getMetaTemplates() {

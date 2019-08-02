@@ -141,7 +141,7 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Concept> type() {
         return Concept.class;
     }
 

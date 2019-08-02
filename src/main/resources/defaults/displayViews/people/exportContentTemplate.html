@@ -1,0 +1,158 @@
+<html>
+
+<head>
+  <style>
+    body {
+      font-family: "Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif";
+      font-size: 14.5px;
+      line-height: 85%;
+      margin-bottom: 0px;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 21px;
+    }
+
+    .positions {
+      vertical-align: top;
+      margin-left: 5px;
+    }
+
+    .overview {
+      margin-top: 10px;
+    }
+
+    .publications {
+      margin-top: 25px;
+    }
+
+    .source {
+      margin-top: 50px;
+    }
+
+    .section {
+      margin-bottom: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="title">{{firstName}} {{lastName}}</div>
+
+  <table>
+    <tr>
+      <td>
+        {{#if image}}
+        <img src="{{vivoUrl}}{{image}}" height="125" width="125" alt="{{name}}" />
+        {{else}}
+        <img src="{{uiUrl}}/assets/images/default-avatar.png" height="125" width="125" alt="default avatar" />
+        {{/if}}
+      </td>
+      <td class="positions">
+        <div class="label">Positions:</div>
+        <ul>
+          {{#each positions}}
+          <li>
+            <span>{{label}}{{#if organizations.length }}, {{/if}}</span>
+            {{#each organizations}}
+            <span>{{label}}{{#if @last }}{{else}}, {{/if}}</span>
+            {{#each parent}}
+            <span>{{label}}{{#if @last }}{{else}}, {{/if}}</span>
+            {{/each}}
+            {{/each}}
+          </li>
+          {{/each}}
+        </ul>
+      </td>
+    </tr>
+  </table>
+
+  <div class="section">
+    <div class="label">Overview:</div>
+    <div class="overview">{{{overview}}}</div>
+  </div>
+
+  <div class="section publications">
+    <div class="label">Recent Publications:</div>
+
+    {{#each publications}}
+    <div>
+      <span>{{parseAuthorList authorList}}</span>
+      <span>({{toYear publicationDate}}).</span>
+      <span><u>{{title}}</u>.</span>
+
+      {{#if publicationVenue}}
+      <span><em>{{publicationVenue.label}}</em>. </span>
+      {{/if}}
+
+      {{#if bookTitle}}
+
+      {{#if editorList}}
+      <span>{{editorList}} (Eds.),</span>
+      {{/if}}
+      <span>{{bookTitle}}.</span>
+
+      {{#if pageStart}}
+      {{#if pageEnd}}
+      <span>(pp. {{pageStart}}-{{pageEnd}}).</span>
+      {{else}}
+      <span>(pp. {{pageStart}}).</span>
+      {{/if}}
+      {{else}}
+      {{#if pageEnd}}
+      <span>(pp. {{pageEnd}}).</span>
+      {{/if}}
+      {{/if}}
+
+      {{else}}
+
+      {{#if volume}}
+      {{#if issue}}
+      <span>{{volume}}({{issue}}), </span>
+      {{else}}
+      <span>{{volume}}, </span>
+      {{/if}}
+      {{else}}
+      {{#if issue}}
+      <span>({{issue}}), </span>
+      {{/if}}
+      {{/if}}
+
+      {{#if pageStart}}
+      {{#if pageEnd}}
+      <span>{{pageStart}}-{{pageEnd}}.</span>
+      {{else}}
+      <span>{{pageStart}}.</span>
+      {{/if}}
+      {{else}}
+      {{#if pageEnd}}
+      <span>{{pageEnd}}.</span>
+      {{/if}}
+      {{/if}}
+
+      {{/if}}
+
+      {{#if publisher}}
+      <span>{{publisher.label}}.</span>
+      {{/if}}
+
+    </div>
+    {{/each}}
+
+  </div>
+
+  <div class="source">
+    <span class="label">Source: </span>
+    <span>{{firstName}} {{lastName}}'s profile <a href="{{vivoUrl}}/display/{{id}}">{{vivoUrl}}/display/{{id}}</a></span>
+  </div>
+
+</body>
+
+</html>

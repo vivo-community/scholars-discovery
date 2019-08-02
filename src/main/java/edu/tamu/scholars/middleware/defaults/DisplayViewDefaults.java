@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import edu.tamu.scholars.middleware.view.model.DisplayTabSectionSubsectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabSectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabView;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
-import edu.tamu.scholars.middleware.view.model.DisplayTabSectionSubsectionView;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 @Service
@@ -35,13 +35,6 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
         List<DisplayView> views = mapper.readValue(is, new TypeReference<List<DisplayView>>() {});
         // @formatter:on
         for (DisplayView view : views) {
-            if (view.getExportTemplate() != null && view.getExportTemplate().length() > 0) {
-                try {
-                    view.setExportTemplate(getTemplate(view.getExportTemplate()));
-                } catch (IOException e) {
-                    logger.warn(String.format(IO_EXCEPTION_MESSAGE, view.getExportTemplate()));
-                }
-            }
             if (view.getMainContentTemplate() != null && view.getMainContentTemplate().length() > 0) {
                 try {
                     view.setMainContentTemplate(getTemplate(view.getMainContentTemplate()));
@@ -81,6 +74,22 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
                                 }
                             }
                         }
+                    }
+                }
+            }
+            if (view.getExportView() != null) {
+                if (view.getExportView().getContentTemplate() != null && view.getExportView().getContentTemplate().length() > 0) {
+                    try {
+                        view.getExportView().setContentTemplate(getTemplate(view.getExportView().getContentTemplate()));
+                    } catch (IOException e) {
+                        logger.warn(String.format(IO_EXCEPTION_MESSAGE, view.getExportView().getContentTemplate()));
+                    }
+                }
+                if (view.getExportView().getHeaderTemplate() != null && view.getExportView().getHeaderTemplate().length() > 0) {
+                    try {
+                        view.getExportView().setHeaderTemplate(getTemplate(view.getExportView().getHeaderTemplate()));
+                    } catch (IOException e) {
+                        logger.warn(String.format(IO_EXCEPTION_MESSAGE, view.getExportView().getHeaderTemplate()));
                     }
                 }
             }

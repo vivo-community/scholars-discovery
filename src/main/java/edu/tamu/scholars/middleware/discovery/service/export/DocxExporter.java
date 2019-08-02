@@ -1,29 +1,67 @@
 package edu.tamu.scholars.middleware.discovery.service.export;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import javax.xml.bind.JAXBException;
 
-import org.docx4j.convert.in.xhtml.DivToSdt;
-import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
+import org.docx4j.jaxb.Context;
+import org.docx4j.model.structure.SectionWrapper;
+import org.docx4j.openpackaging.contenttype.ContentType;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
+import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
+import org.docx4j.relationships.Relationship;
+import org.docx4j.wml.Body;
+import org.docx4j.wml.CTAltChunk;
+import org.docx4j.wml.Hdr;
+import org.docx4j.wml.HdrFtrRef;
+import org.docx4j.wml.HeaderReference;
+import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.SectPr;
+import org.docx4j.wml.SectPr.PgMar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.tamu.scholars.middleware.discovery.exception.ExportException;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.service.HandlebarsService;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
+import edu.tamu.scholars.middleware.view.model.ExportFieldView;
+import edu.tamu.scholars.middleware.view.model.ExportView;
+import edu.tamu.scholars.middleware.view.model.Filter;
+import edu.tamu.scholars.middleware.view.model.LazyReference;
+import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 @Service
 public class DocxExporter implements Exporter {
+
+    private static final int MAX_DOCUMENT_BATCH_SIZE = 200;
 
     private static final String TYPE = "docx";
 
@@ -31,7 +69,15 @@ public class DocxExporter implements Exporter {
 
     private static final String CONTENT_DISPOSITION = "attachment; filename=export.docx";
 
-    private static final String HYPERLINK_STYLE = "Hyperlink";
+    private static final ContentType HTML_CONTENT_TYPE = new ContentType("text/html");
+
+    private static final ObjectFactory WML_OBJECT_FACTORY = Context.getWmlObjectFactory();
+
+    @Autowired
+    private DisplayViewRepo displayViewRepo;
+
+    @Autowired
+    private List<SolrDocumentRepo<?>> solrDocumentRepos;
 
     @Autowired
     private HandlebarsService handlebarsService;
@@ -61,39 +107,205 @@ public class DocxExporter implements Exporter {
     }
 
     @Override
-    public <D extends AbstractSolrDocument> StreamingResponseBody streamIndividual(D document, DisplayView view) {
+    public <D extends AbstractSolrDocument> StreamingResponseBody streamIndividual(D document) {
+        final ObjectNode node = mapper.valueToTree(document);
+
+        final List<String> types = StreamSupport.stream(node.get("type").spliterator(), false).map(type -> type.asText()).collect(Collectors.toList());
+
+        Optional<DisplayView> displayView = displayViewRepo.findByTypesIn(types);
+
+        if (!displayView.isPresent()) {
+            // TODO: throw more specific exception with better message
+            throw new ExportException("Display view not found for types");
+        }
+
+        Optional<ExportView> exportView = Optional.ofNullable(displayView.get().getExportView());
+
+        if (!exportView.isPresent()) {
+            // TODO: throw more specific exception with better message
+            throw new ExportException("Display view has no export view");
+        }
+
         return outputStream -> {
             try {
-                WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();
-                NumberingDefinitionsPart ndp = new NumberingDefinitionsPart();
+                final WordprocessingMLPackage pkg = WordprocessingMLPackage.createPackage();
+                final MainDocumentPart mdp = pkg.getMainDocumentPart();
 
-                wordMLPackage.getMainDocumentPart().addTargetPart(ndp);
-
+                final NumberingDefinitionsPart ndp = new NumberingDefinitionsPart();
+                pkg.getMainDocumentPart().addTargetPart(ndp);
                 ndp.unmarshalDefaultNumbering();
 
-                XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+                ObjectNode json = processDocument(node, exportView.get());
 
-                XHTMLImporter.setHyperlinkStyle(HYPERLINK_STYLE);
+                String contentHtml = handlebarsService.template(exportView.get().getContentTemplate(), json);
 
-                XHTMLImporter.setDivHandler(new DivToSdt());
+                String headerHtml = handlebarsService.template(exportView.get().getHeaderTemplate(), json);
 
-                ObjectNode json = mapper.valueToTree(document);
+                addMargin(mdp);
 
-                json.put("vivoUrl", vivoUrl);
-                json.put("uiUrl", uiUrl);
+                createAndAddHeader(pkg, headerHtml);
 
-                String html = handlebarsService.template(view.getExportTemplate(), json);
+                addContent(mdp, contentHtml);
 
-                MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
-
-                mdp.addAltChunk(AltChunkType.Xhtml, html.getBytes());
-
-                wordMLPackage.save(outputStream);
+                pkg.save(outputStream);
 
             } catch (JAXBException | Docx4JException e) {
                 throw new ExportException(e.getMessage());
             }
         };
+    }
+
+    private <D extends AbstractSolrDocument> ObjectNode processDocument(ObjectNode node, ExportView view) {
+        node.put("vivoUrl", vivoUrl);
+        node.put("uiUrl", uiUrl);
+        fetchLazyReferences(node, view.getLazyReferences());
+        view.getFieldViews().forEach(fieldView -> {
+            filter(node, fieldView);
+            sort(node, fieldView);
+            limit(node, fieldView);
+        });
+        return node;
+    }
+
+    private void fetchLazyReferences(ObjectNode node, List<LazyReference> lazyReferences) {
+        lazyReferences.forEach(lazyReference -> {
+            String collection = lazyReference.getCollection();
+            JsonNode reference = node.get(lazyReference.getField());
+            List<String> ids = new ArrayList<String>();
+            if (reference.isArray()) {
+                ids = StreamSupport.stream(reference.spliterator(), false).map(rn -> rn.get("id").asText()).collect(Collectors.toList());
+            } else {
+                ids.add(reference.get("id").asText());
+            }
+            ArrayNode references = node.putArray(lazyReference.getField());
+            references.addAll((ArrayNode) mapper.valueToTree(fetchLazyReference(collection, ids)));
+        });
+    }
+
+    private List<AbstractSolrDocument> fetchLazyReference(String collection, List<String> ids) {
+        SolrDocumentRepo<?> solrDocumentRepo = solrDocumentRepos.stream().filter(repo -> {
+            Optional<SolrDocument> annotation = Optional.ofNullable(repo.type().getAnnotation(SolrDocument.class));
+            return annotation.isPresent() && annotation.get().collection().equals(collection);
+        }).findAny().get();
+        List<AbstractSolrDocument> documents = new ArrayList<AbstractSolrDocument>();
+        while (ids.size() >= MAX_DOCUMENT_BATCH_SIZE) {
+            documents.addAll(solrDocumentRepo.findByIdIn(ids.subList(0, MAX_DOCUMENT_BATCH_SIZE)));
+            ids = ids.subList(MAX_DOCUMENT_BATCH_SIZE, ids.size());
+        }
+        documents.addAll(solrDocumentRepo.findByIdIn(ids));
+        return documents;
+    }
+
+    private void sort(ObjectNode node, ExportFieldView fieldView) {
+        String field = fieldView.getField();
+        fieldView.getSort().forEach(sort -> {
+            List<JsonNode> sorted = StreamSupport.stream(node.get(field).spliterator(), false).sorted((sn1, sn2) -> {
+                String n1 = sn1.get(sort.getField()).asText();
+                String n2 = sn2.get(sort.getField()).asText();
+
+                // Wed Dec 31 18:00:00 CST 2014
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z yyyy");
+
+                try {
+                    LocalDate ld1 = LocalDate.parse(n1, dtf);
+                    LocalDate ld2 = LocalDate.parse(n2, dtf);
+                    return sort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
+                } catch (DateTimeParseException dtpe) {
+                    try {
+                        Double d1 = Double.parseDouble(n1);
+                        Double d2 = Double.parseDouble(n2);
+                        return sort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
+                    } catch (NumberFormatException nfe) {
+                        return sort.getDirection().equals(Direction.ASC) ? n1.compareTo(n2) : n2.compareTo(n1);
+                    }
+                }
+
+            }).collect(Collectors.toList());
+            ArrayNode references = node.putArray(field);
+            references.addAll(sorted);
+        });
+    }
+
+    private void limit(ObjectNode node, ExportFieldView fieldView) {
+        String field = fieldView.getField();
+        List<JsonNode> limited = StreamSupport.stream(node.get(field).spliterator(), false).limit(fieldView.getLimit()).collect(Collectors.toList());
+        ArrayNode references = node.putArray(field);
+        references.addAll(limited);
+    }
+
+    private void filter(ObjectNode node, ExportFieldView fieldView) {
+        String field = fieldView.getField();
+        List<JsonNode> filtered = StreamSupport.stream(node.get(field).spliterator(), false).filter((n) -> {
+            for (Filter filter : fieldView.getFilters()) {
+                if (StreamSupport.stream(n.get(filter.getField()).spliterator(), false).anyMatch((fn) -> fn.asText().equals(filter.getValue()))) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+        ArrayNode references = node.putArray(field);
+        references.addAll(filtered);
+    }
+
+    private void addMargin(final MainDocumentPart mainDocumentPart) {
+        final Body body = mainDocumentPart.getJaxbElement().getBody();
+        final SectPr sectPr = body.getSectPr();
+        final PgMar pgMar = sectPr.getPgMar();
+
+        pgMar.setLeft(BigInteger.valueOf(750));
+        pgMar.setRight(BigInteger.valueOf(750));
+        pgMar.setTop(BigInteger.valueOf(500));
+        pgMar.setBottom(BigInteger.valueOf(500));
+    }
+
+    private void addContent(final MainDocumentPart mainDocumentPart, String html) throws Docx4JException {
+        mainDocumentPart.addAltChunk(AltChunkType.Xhtml, html.getBytes(Charset.defaultCharset()));
+    }
+
+    private void createAndAddHeader(final WordprocessingMLPackage pkg, final String html) throws InvalidFormatException {
+        final HeaderPart headerPart = new HeaderPart(new PartName("/word/content-header.xml"));
+        pkg.getParts().put(headerPart);
+        final Relationship headerRel = pkg.getMainDocumentPart().addTargetPart(headerPart);
+        createAndAddHtmlHeader(headerPart, html);
+        final HeaderReference headerRef = WML_OBJECT_FACTORY.createHeaderReference();
+        headerRef.setId(headerRel.getId());
+        headerRef.setType(HdrFtrRef.DEFAULT);
+        final List<SectionWrapper> sections = pkg.getDocumentModel().getSections();
+        final SectPr lastSectPr = getLastSectionPart(pkg, sections);
+        lastSectPr.getEGHdrFtrReferences().add(headerRef);
+    }
+
+    private void createAndAddHtmlHeader(final HeaderPart headerPart, final String html) throws InvalidFormatException {
+        final Hdr hdr = WML_OBJECT_FACTORY.createHdr();
+        headerPart.setJaxbElement(hdr);
+        try {
+            final AlternativeFormatInputPart targetpart = createHeaderHtml(new PartName("/word/htmlheader.html"), html);
+            final Relationship rel = headerPart.addTargetPart(targetpart);
+            final CTAltChunk ac = WML_OBJECT_FACTORY.createCTAltChunk();
+            ac.setId(rel.getId());
+            hdr.getContent().add(ac);
+        } catch (final UnsupportedEncodingException e) {
+            throw new InvalidFormatException(e.getMessage(), e);
+        }
+    }
+
+    private AlternativeFormatInputPart createHeaderHtml(final PartName partName, final String html) throws InvalidFormatException, UnsupportedEncodingException {
+        final AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(partName);
+        afiPart.setBinaryData(html.getBytes(Charset.defaultCharset()));
+        afiPart.setContentType(HTML_CONTENT_TYPE);
+        return afiPart;
+    }
+
+    private SectPr getLastSectionPart(final WordprocessingMLPackage pkg, final List<SectionWrapper> sections) {
+        final SectionWrapper lastSect = sections.get(sections.size() - 1);
+        final SectPr currentSectPr = lastSect.getSectPr();
+        if (currentSectPr != null) {
+            return currentSectPr;
+        }
+        final SectPr sectPr = WML_OBJECT_FACTORY.createSectPr();
+        pkg.getMainDocumentPart().addObject(sectPr);
+        lastSect.setSectPr(sectPr);
+        return sectPr;
     }
 
 }

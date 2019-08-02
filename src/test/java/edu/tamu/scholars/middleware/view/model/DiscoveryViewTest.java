@@ -66,10 +66,8 @@ public class DiscoveryViewTest {
         assertEquals(2, discoveryView.getExport().size());
         assertEquals("Id", discoveryView.getExport().get(0).getColumnHeader());
         assertEquals("id", discoveryView.getExport().get(0).getValuePath());
-        assertEquals("||", discoveryView.getExport().get(0).getDelimiter());
         assertEquals("Name", discoveryView.getExport().get(1).getColumnHeader());
         assertEquals("name", discoveryView.getExport().get(1).getValuePath());
-        assertEquals("||", discoveryView.getExport().get(1).getDelimiter());
     }
 
 }
