@@ -36,7 +36,7 @@ public class CsvExporter implements Exporter {
 
     private static final String CONTENT_TYPE = "text/csv";
 
-    private static final String CONTENT_DISPOSITION = "attachment; filename=results.csv";
+    private static final String CONTENT_DISPOSITION_TEMPLATE = "attachment; filename=%s.csv";
 
     private static final String DELIMITER = "||";
 
@@ -52,8 +52,8 @@ public class CsvExporter implements Exporter {
     }
 
     @Override
-    public String contentDisposition() {
-        return CONTENT_DISPOSITION;
+    public String contentDisposition(String filename) {
+        return String.format(CONTENT_DISPOSITION_TEMPLATE, filename);
     }
 
     @Override

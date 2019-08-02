@@ -24,7 +24,6 @@
     requiredFields:
     - firstName
     - lastName
-    - positions
     - publications
     lazyReferences:
     - field: publications

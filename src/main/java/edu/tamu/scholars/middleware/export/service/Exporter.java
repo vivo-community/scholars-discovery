@@ -13,7 +13,7 @@ public interface Exporter {
 
     public String type();
 
-    public String contentDisposition();
+    public String contentDisposition(String filename);
 
     public String contentType();
 

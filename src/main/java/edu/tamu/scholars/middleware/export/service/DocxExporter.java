@@ -67,7 +67,7 @@ public class DocxExporter implements Exporter {
 
     private static final String CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-    private static final String CONTENT_DISPOSITION = "attachment; filename=single_page.docx";
+    private static final String CONTENT_DISPOSITION_TEMPLATE = "attachment; filename=%s.docx";
 
     private static final ContentType HTML_CONTENT_TYPE = new ContentType("text/html");
 
@@ -97,8 +97,8 @@ public class DocxExporter implements Exporter {
     }
 
     @Override
-    public String contentDisposition() {
-        return CONTENT_DISPOSITION;
+    public String contentDisposition(String filename) {
+        return String.format(CONTENT_DISPOSITION_TEMPLATE, filename);
     }
 
     @Override
@@ -207,8 +207,10 @@ public class DocxExporter implements Exporter {
         String field = fieldView.getField();
         fieldView.getSort().forEach(sort -> {
             List<JsonNode> sorted = StreamSupport.stream(node.get(field).spliterator(), false).sorted((sn1, sn2) -> {
-                String n1 = sn1.get(sort.getField()).asText();
-                String n2 = sn2.get(sort.getField()).asText();
+                JsonNode jn1 = sn1.get(sort.getField());
+                JsonNode jn2 = sn2.get(sort.getField());
+                String n1 = jn1 != null ? jn1.asText() : "";
+                String n2 = jn2 != null ? jn2.asText() : "";
 
                 // Wed Dec 31 18:00:00 CST 2014
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z yyyy");

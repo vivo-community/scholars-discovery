@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
@@ -42,7 +43,7 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
     ) throws UnknownExporterTypeException {
         Exporter exporter = ExporterRegistry.getExporter(type);
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
+            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(repo.type().getAnnotation(SolrDocument.class).collection()))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
             .body(exporter.streamSolrResponse(repo.stream(query, index, filters, sort), export));
     }
@@ -58,7 +59,7 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
         D document = repo.findById(id).get();
         Exporter exporter = ExporterRegistry.getExporter(type);
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition())
+            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(id))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
             .body(exporter.streamIndividual(document));
     }
