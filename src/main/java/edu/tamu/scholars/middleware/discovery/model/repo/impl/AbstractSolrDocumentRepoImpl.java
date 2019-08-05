@@ -3,9 +3,14 @@ package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,8 +91,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             facetQuery.setFacetOptions(facetOptions);
         }
 
-        filters.forEach(filter -> {
-            facetQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(filter.getPath(type())).is(filter.getValue())));
+        buildFilterQueries(filters).forEach(filterQuery -> {
+            facetQuery.addFilterQuery(filterQuery);
         });
 
         facetQuery.setDefaultOperator(queryOperator);
@@ -145,8 +150,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             simpleQuery.addCriteria(getCriteria(query));
         }
 
-        filters.forEach(filter -> {
-            simpleQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(filter.getPath(type())).is(filter.getValue())));
+        buildFilterQueries(filters).forEach(filterQuery -> {
+            simpleQuery.addFilterQuery(filterQuery);
         });
 
         simpleQuery.setDefaultOperator(queryOperator);
@@ -154,6 +159,26 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         simpleQuery.setDefType(queryParser);
 
         return simpleQuery;
+    }
+
+    public List<SimpleFilterQuery> buildFilterQueries(List<Filter> filters) {
+        return filters.stream().map(filter -> {
+            Criteria criteria;
+            String value = filter.getValue();
+            if (value.startsWith("[") && value.contains(" TO ") && value.endsWith("]")) {
+                // TODO: how to support other date formats
+                DateFormat format = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+                String[] parts = value.substring(1, value.length() - 1).split(" TO ");
+                try {
+                    criteria = new Criteria(filter.getPath(type())).between(format.parse(parts[0]), format.parse(parts[1]), true, false);
+                } catch (ParseException e) {
+                    criteria = new SimpleStringCriteria(value);
+                }
+            } else {
+                criteria = new Criteria(filter.getPath(type())).is(value);
+            }
+            return new SimpleFilterQuery(criteria);
+        }).collect(Collectors.toList());
     }
 
     private Criteria buildCriteria(Index index) {

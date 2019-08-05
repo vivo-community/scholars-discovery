@@ -212,6 +212,7 @@ public class DocxExporter implements Exporter {
                 String n1 = jn1 != null ? jn1.asText() : "";
                 String n2 = jn2 != null ? jn2.asText() : "";
 
+                // TODO: how to support other date formats
                 // Wed Dec 31 18:00:00 CST 2014
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z yyyy");
 
