@@ -141,7 +141,7 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Collection> type() {
         return Collection.class;
     }
 

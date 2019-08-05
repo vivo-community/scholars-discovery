@@ -60,7 +60,8 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         describeDisplayView.withField("asideLocation", "The aside location [LEFT,RIGHT] of the Display View."),
                         describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                         describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
-                        describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>.")
+                        describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                        describeDisplayView.withSubsection("exportView", "The export view of the Display View.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -77,6 +78,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                         describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
                         describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                        describeDisplayView.withSubsection("exportView", "The export view of the Display View."),
                         subsectionWithPath("_links").description("<<resources-display-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -107,7 +109,8 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         describeDisplayView.withField("asideLocation", "The aside location [LEFT,RIGHT] of the Display View."),
                         describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                         describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
-                        describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>.")
+                        describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                        describeDisplayView.withSubsection("exportView", "The export view of the Display View.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -124,6 +127,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                         describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                         describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
                         describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                        describeDisplayView.withSubsection("exportView", "The export view of the Display View."),
                         subsectionWithPath("_links").description("<<resources-display-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -161,7 +165,8 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                                 describeDisplayView.withParameter("asideLocation", "The aside location [LEFT,RIGHT] of the Display View.").optional(),
                                 describeDisplayView.withParameter("metaTemplates", "The meta tag templates of the Display View.").optional(),
                                 describeDisplayView.withParameter("embedTemplates", "The embed templates of the Display View.").optional(),
-                                describeDisplayView.withParameter("tabs", "An array of <<resources-display-tabs, Display tab view resources>>.").optional()
+                                describeDisplayView.withParameter("tabs", "An array of <<resources-display-tabs, Display tab view resources>>.").optional(),
+                                describeDisplayView.withParameter("exportView", "The export view of the Display View.").optional()
                             ),
                             links(
                                 linkWithRel("self").description("Canonical link for this resource."),
@@ -178,6 +183,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                                 describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                                 describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
                                 describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                                describeDisplayView.withSubsection("exportView", "The export view of the Display View."),
                                 subsectionWithPath("_links").description("<<resources-display-views-list-links, Links>> to other resources.")
                             )
                         )
@@ -216,6 +222,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                             describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                             describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
                             describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                            describeDisplayView.withSubsection("exportView", "The export view of the Display View."),
                             subsectionWithPath("_links").description("<<resources-display-view-list-links, Links>> to other resources.")
                         )
                     )
@@ -253,6 +260,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                             describeDisplayView.withSubsection("metaTemplates", "The meta tag templates of the Display View."),
                             describeDisplayView.withSubsection("embedTemplates", "The embed templates of the Display View."),
                             describeDisplayView.withSubsection("tabs", "An array of <<resources-display-tabs, Display tab view resources>>."),
+                            describeDisplayView.withSubsection("exportView", "The export view of the Display View."),
                             subsectionWithPath("_links").description("<<resources-display-view-list-links, Links>> to other resources.")
                         )
                     )

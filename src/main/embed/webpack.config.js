@@ -4,7 +4,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
-    'scholars-embed': './src/index.ts',
     'scholars-embed.min': './src/index.ts',
     'vendor-bundle.min': [
       path.resolve(__dirname, './src/vendor/badge.js'),

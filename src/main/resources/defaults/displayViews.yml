@@ -15,8 +15,38 @@
   - NonFacultyAcademic
   mainContentTemplate: "defaults/displayViews/people/mainContentTemplate.html"
   leftScanTemplate: "defaults/displayViews/people/leftScanTemplate.html"
-  asideTemplate: "defaults/displayViews/people/aside.html"
+  asideTemplate: "defaults/displayViews/people/asideTemplate.html"
   asideLocation: RIGHT
+  exportView:
+    name: Individual Word Document
+    contentTemplate: "defaults/displayViews/people/exportContentTemplate.html"
+    headerTemplate: "defaults/displayViews/people/exportHeaderTemplate.html"
+    requiredFields:
+    - firstName
+    - lastName
+    - publications
+    lazyReferences:
+    - field: publications
+      collection: documents
+    fieldViews:
+    - name: Recent Publications
+      field: publications
+      limit: 5
+      sort:
+      - field: title
+        direction: ASC
+      - field: publicationDate
+        direction: DESC
+        date: true
+      filters:
+      - field: type
+        value: AcademicArticle
+      - field: type
+        value: Book
+      - field: type
+        value: Chapter
+      - field: type
+        value: ConferencePaper
   metaTemplates:
     title: "defaults/displayViews/people/meta/title.txt"
     description: "defaults/displayViews/people/meta/description.txt"
@@ -317,6 +347,7 @@
     sections:
     - name: chaired theses and dissertations
       hidden: false
+      shared: true
       template: "defaults/displayViews/people/worksByStudents/chairedThesesAndDissertations.html"
       requiredFields:
       - etdChairOf
@@ -571,7 +602,7 @@
   - University
   mainContentTemplate: "defaults/displayViews/organizations/mainContentTemplate.html"
   leftScanTemplate: "defaults/displayViews/organizations/leftScanTemplate.html"
-  asideTemplate: "defaults/displayViews/organizations/aside.html"
+  asideTemplate: "defaults/displayViews/organizations/asideTemplate.html"
   asideLocation: RIGHT
   metaTemplates:
     title: "defaults/displayViews/organizations/meta/title.txt"

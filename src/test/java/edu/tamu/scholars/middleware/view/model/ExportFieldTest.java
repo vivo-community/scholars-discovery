@@ -14,7 +14,6 @@ public class ExportFieldTest {
     public void testDefaultConstructor() {
         ExportField export = new ExportField();
         assertNotNull(export);
-        assertEquals("||", export.getDelimiter());
     }
 
     @Test
@@ -23,11 +22,9 @@ public class ExportFieldTest {
 
         export.setColumnHeader("Test");
         export.setValuePath("test");
-        export.setDelimiter("::");
 
         assertEquals("Test", export.getColumnHeader());
         assertEquals("test", export.getValuePath());
-        assertEquals("::", export.getDelimiter());
     }
 
 }

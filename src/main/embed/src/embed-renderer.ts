@@ -4,9 +4,12 @@ import { environment } from './environments/environment';
 
 import { Embedded } from './model/embedded';
 
-import { setLinkTargets, createSectionElement } from './utilities/document.utility';
+import { setLinkTargets, createSectionElement, createSubsectionElement } from './utilities/document.utility';
 
-const additionalContext = { vivoUrl: environment.vivoUrl };
+const additionalContext = {
+    vivoUrl: environment.vivoUrl,
+    serviceUrl: environment.serviceUrl
+};
 
 export class EmbedRenderer {
 
@@ -16,15 +19,18 @@ export class EmbedRenderer {
         this.embedded = embedded;
     }
 
-    public render(section: any): void {
-        const sectionTemplateFunction = getParsedTemplateFunction(section.template, additionalContext);
-        const sectionElement = createSectionElement();
-        sectionElement.innerHTML = sectionTemplateFunction(this.embedded.individual);
-        this.embedded.window.document.body.appendChild(sectionElement);
-        setLinkTargets(this.embedded.window.document);
-        for (const subsection of section.subsections) {
-            this.renderSubsection(subsection, 1, subsection.pageSize);
-        }
+    public render(section: any): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const sectionTemplateFunction = getParsedTemplateFunction(section.template, additionalContext);
+            const sectionElement = createSectionElement();
+            sectionElement.innerHTML = sectionTemplateFunction(this.embedded.individual);
+            this.embedded.window.document.body.appendChild(sectionElement);
+            setLinkTargets(this.embedded.window.document);
+            for (const subsection of section.subsections) {
+                this.renderSubsection(subsection, 1, subsection.pageSize);
+            }
+            resolve();
+        });
     }
 
     public renderSubsection(subsection: any, pageNumber: number, pageSize: number): void {
@@ -39,7 +45,7 @@ export class EmbedRenderer {
         if (subsectionHTML) {
             let subsectionElement = this.embedded.window.document.getElementById(identifier);
             if (!subsectionElement) {
-                subsectionElement = document.createElement('div');
+                subsectionElement = createSubsectionElement();
                 subsectionElement.id = identifier;
                 this.embedded.window.document.body.appendChild(subsectionElement);
             }

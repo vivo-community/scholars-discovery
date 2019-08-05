@@ -37,12 +37,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public <NS extends ND> NS save(NS nestedDocument, Duration commitWithin) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public <NS extends ND> Iterable<NS> saveAll(Iterable<NS> nestedDocuments, Duration commitWithin) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -62,7 +62,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public <NS extends ND> Iterable<NS> saveAll(Iterable<NS> nestedDocuments) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -97,17 +97,17 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public void deleteById(String id) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public void deleteAll(Iterable<? extends ND> nestedDocuments) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public void deleteAll() {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     public abstract FacetPage<ND> search(String query, Pageable page);
@@ -134,12 +134,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public <NS extends ND> NS save(NS nestedDocument) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public void delete(ND nestedDocument) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -166,14 +166,10 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     public Cursor<ND> stream(String query, Optional<Index> index, List<Filter> filters, Sort sort) {
         throw new UnsupportedOperationException("Unable to map stream");
     }
-
-    protected abstract Class<?> getNestedDocumentType();
-
-    @SuppressWarnings("unchecked")
     private ND toNested(D document) {
         try {
-            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(document);
-            return (ND) mapper.readValue(json, getNestedDocumentType());
+            String json = mapper.writeValueAsString(document);
+            return mapper.readValue(json, type());
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Something went wrong");

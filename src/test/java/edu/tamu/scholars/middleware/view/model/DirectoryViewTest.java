@@ -71,10 +71,8 @@ public class DirectoryViewTest {
         assertEquals(2, directoryView.getExport().size());
         assertEquals("Id", directoryView.getExport().get(0).getColumnHeader());
         assertEquals("id", directoryView.getExport().get(0).getValuePath());
-        assertEquals("||", directoryView.getExport().get(0).getDelimiter());
         assertEquals("Name", directoryView.getExport().get(1).getColumnHeader());
         assertEquals("name", directoryView.getExport().get(1).getValuePath());
-        assertEquals("||", directoryView.getExport().get(1).getDelimiter());
     }
 
 }

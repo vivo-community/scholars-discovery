@@ -21,7 +21,7 @@ public class IndexArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return Index.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return resolvableType.hasGenerics() && Index.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override

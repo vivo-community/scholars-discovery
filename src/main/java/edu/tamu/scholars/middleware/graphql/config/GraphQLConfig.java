@@ -21,10 +21,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
-import edu.tamu.scholars.middleware.discovery.argument.Export;
 import edu.tamu.scholars.middleware.discovery.argument.Facet;
 import edu.tamu.scholars.middleware.discovery.argument.Filter;
 import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.export.argument.Export;
 import io.leangen.geantyref.GenericTypeReflector;
 import io.leangen.graphql.ExtendedGeneratorConfiguration;
 import io.leangen.graphql.ExtensionProvider;

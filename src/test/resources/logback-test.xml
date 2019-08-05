@@ -3,6 +3,7 @@
   <include resource="org/springframework/boot/logging/logback/base.xml" />
   <logger name="com.zaxxer" level="ERROR"/>
   <logger name="org.apache" level="ERROR"/>
+  <logger name="org.docx4j" level="ERROR"/>
   <logger name="org.hibernate" level="ERROR"/>
   <logger name="org.springframework" level="ERROR"/>
   <logger name="edu.tamu.scholars.middleware" level="DEBUG"/>
