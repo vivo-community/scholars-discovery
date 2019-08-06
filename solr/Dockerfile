@@ -1,10 +1,7 @@
-FROM solr:7.7.1
+FROM solr:7.7.2
 
-WORKDIR /opt/solr/server/solr/
-ADD . /opt/solr/server/solr/
+COPY  --chown=solr:solr . /opt/solr/server/solr/
 
-USER root
-RUN chown -R solr /opt/solr/server/solr
 USER solr
 
 RUN precreate-core persons /opt/solr/server/solr/persons

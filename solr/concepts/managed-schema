@@ -195,7 +195,7 @@
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" docValues="true" />
     <fieldType name="strings" class="solr.StrField" sortMissingLast="true" multiValued="true" docValues="true" />
 
-    <!-- Scholars whole string type  -->
+    <!-- Scholars sorting string type  -->
     <fieldType name="sorting_string" class="solr.TextField" sortMissingLast="true">
       <analyzer>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
