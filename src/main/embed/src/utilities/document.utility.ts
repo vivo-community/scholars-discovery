@@ -1,6 +1,6 @@
 import { environment } from '../environments/environment';
 
-const iframeBaseHref = environment.uiUrl;
+const iframeBaseHref = `${environment.uiUrl}/`;
 
 const iframeStylesheets = [
     `${environment.serviceUrl}/embed/bootstrap.min.css`
