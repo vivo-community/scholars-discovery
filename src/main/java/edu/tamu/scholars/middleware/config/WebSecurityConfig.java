@@ -208,6 +208,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api",
                         "/gui",
                         "/graphql",
+                        "/embed/**/*",
                         "/registration",
                         "/themes/search/active",
                         "/directoryViews", "/directoryViews/{id}",
