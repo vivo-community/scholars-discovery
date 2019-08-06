@@ -1,14 +1,27 @@
 PREFIX vivo: <http://vivoweb.org/ontology/core#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 
 CONSTRUCT {
     ?person vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?position .
-    ?position a vivo:Position .
-    ?position vivo:relatedBy ?person .
-    ?person a foaf:Person .
-    ?person vitro:mostSpecificType ?mostSpecificType .
-    BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?person), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
+    {
+        <[(${uri})]> vivo:relatedBy ?position .
+        ?position a vivo:Position .
+        ?position vivo:relatedBy ?person .
+        ?person a foaf:Person .
+        ?person vitro:mostSpecificType ?mostSpecificType .
+        BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?person), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
+    }
+    UNION
+    {
+        <[(${uri})]> obo:BFO_0000051 ?organization .
+        ?organization vivo:relatedBy ?position .
+        ?position a vivo:Position .
+        ?position vivo:relatedBy ?person .
+        ?person a foaf:Person .
+        ?person vitro:mostSpecificType ?mostSpecificType .
+        BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?person), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
+    }
 }
