@@ -1139,22 +1139,46 @@
   <updateProcessor class="solr.ParseDoubleFieldUpdateProcessorFactory" name="parse-double"/>
   <updateProcessor class="solr.ParseDateFieldUpdateProcessorFactory" name="parse-date">
     <arr name="format">
-      <str>yyyy-MM-dd'T'HH:mm:ss.SSSz</str>
-      <str>yyyy-MM-dd'T'HH:mm:ss,SSSz</str>
       <str>yyyy-MM-dd'T'HH:mm:ss.SSS</str>
+      <str>yyyy-MM-dd'T'HH:mm:ss.SSSz</str>
+      <str>yyyy-MM-dd'T'HH:mm:ss.SSSZ</str>
+      <str>yyyy-MM-dd'T'HH:mm:ss.SSSZZ</str>
+
       <str>yyyy-MM-dd'T'HH:mm:ss,SSS</str>
-      <str>yyyy-MM-dd'T'HH:mm:ssz</str>
+      <str>yyyy-MM-dd'T'HH:mm:ss,SSSz</str>
+      <str>yyyy-MM-dd'T'HH:mm:ss,SSSZ</str>
+      <str>yyyy-MM-dd'T'HH:mm:ss,SSSZZ</str>
+
       <str>yyyy-MM-dd'T'HH:mm:ss</str>
-      <str>yyyy-MM-dd'T'HH:mmz</str>
+      <str>yyyy-MM-dd'T'HH:mm:ssz</str>
+      <str>yyyy-MM-dd'T'HH:mm:ssZ</str>
+      <str>yyyy-MM-dd'T'HH:mm:ssZZ</str>
+      
       <str>yyyy-MM-dd'T'HH:mm</str>
-      <str>yyyy-MM-dd HH:mm:ss.SSSz</str>
-      <str>yyyy-MM-dd HH:mm:ss,SSSz</str>
+      <str>yyyy-MM-dd'T'HH:mmz</str>
+      <str>yyyy-MM-dd'T'HH:mmZ</str>
+      <str>yyyy-MM-dd'T'HH:mmZZ</str>
+
       <str>yyyy-MM-dd HH:mm:ss.SSS</str>
+      <str>yyyy-MM-dd HH:mm:ss.SSSz</str>
+      <str>yyyy-MM-dd HH:mm:ss.SSSZ</str>
+      <str>yyyy-MM-dd HH:mm:ss.SSSZZ</str>
+      
       <str>yyyy-MM-dd HH:mm:ss,SSS</str>
-      <str>yyyy-MM-dd HH:mm:ssz</str>
+      <str>yyyy-MM-dd HH:mm:ss,SSSz</str>
+      <str>yyyy-MM-dd HH:mm:ss,SSSZ</str>
+      <str>yyyy-MM-dd HH:mm:ss,SSSZZ</str>
+      
       <str>yyyy-MM-dd HH:mm:ss</str>
-      <str>yyyy-MM-dd HH:mmz</str>
+      <str>yyyy-MM-dd HH:mm:ssz</str>
+      <str>yyyy-MM-dd HH:mm:ssZ</str>
+      <str>yyyy-MM-dd HH:mm:ssZZ</str>
+      
       <str>yyyy-MM-dd HH:mm</str>
+      <str>yyyy-MM-dd HH:mmz</str>
+      <str>yyyy-MM-dd HH:mmZ</str>
+      <str>yyyy-MM-dd HH:mmZZ</str>
+
       <str>yyyy-MM-dd</str>
     </arr>
   </updateProcessor>

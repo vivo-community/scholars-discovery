@@ -1,6 +1,12 @@
 FROM solr:7.7.2
 
-COPY  --chown=solr:solr . /opt/solr/server/solr/
+COPY --chown=solr:solr config /opt/solr/server/solr/persons
+COPY --chown=solr:solr config /opt/solr/server/solr/organizations
+COPY --chown=solr:solr config /opt/solr/server/solr/documents
+COPY --chown=solr:solr config /opt/solr/server/solr/relationships
+COPY --chown=solr:solr config /opt/solr/server/solr/processes
+COPY --chown=solr:solr config /opt/solr/server/solr/collections
+COPY --chown=solr:solr config /opt/solr/server/solr/concepts
 
 USER solr
 

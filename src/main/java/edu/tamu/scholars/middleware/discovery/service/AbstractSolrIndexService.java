@@ -148,7 +148,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
     }
 
     public String name() {
-        return name();
+        return type().getSimpleName();
     }
 
     private D createDocument(String subject) throws InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
