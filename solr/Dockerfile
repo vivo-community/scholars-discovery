@@ -1,4 +1,4 @@
-FROM solr:7.7.2
+FROM solr:7.7.2-slim
 
 COPY --chown=solr:solr config /opt/solr/server/solr/persons
 COPY --chown=solr:solr config /opt/solr/server/solr/organizations
