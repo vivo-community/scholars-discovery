@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -170,9 +171,11 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
                 DateFormat format = new SimpleDateFormat("yyyy", Locale.ENGLISH);
                 String[] parts = value.substring(1, value.length() - 1).split(" TO ");
                 try {
-                    criteria = new Criteria(filter.getPath(type())).between(format.parse(parts[0]), format.parse(parts[1]), true, false);
+                    Date from = format.parse(parts[0]);
+                    Date to = format.parse(parts[1]);
+                    criteria = new Criteria(filter.getPath(type())).between(from, to);
                 } catch (ParseException e) {
-                    criteria = new SimpleStringCriteria(value);
+                    criteria = new SimpleStringCriteria(String.format("%s:%s", filter.getPath(type()), value));
                 }
             } else {
                 criteria = new Criteria(filter.getPath(type())).is(value);

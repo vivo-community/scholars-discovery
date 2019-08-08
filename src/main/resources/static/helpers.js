@@ -1,8 +1,7 @@
 Handlebars.registerHelper('toYear', function (value) {
     if (value !== undefined) {
         const date = new Date(value);
-        date.setSeconds(date.getSeconds() + 1);
-        value = date.getFullYear().toString();
+        value = Number(date.getFullYear() + 1).toString();
     }
     return value;
 });
