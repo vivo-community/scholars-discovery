@@ -173,7 +173,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
                 try {
                     Date from = format.parse(parts[0]);
                     Date to = format.parse(parts[1]);
-                    criteria = new Criteria(filter.getPath(type())).between(from, to);
+                    criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
                 } catch (ParseException e) {
                     criteria = new SimpleStringCriteria(String.format("%s:%s", filter.getPath(type()), value));
                 }

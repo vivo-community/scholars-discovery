@@ -5,6 +5,8 @@ import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MAX_LENGT
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MIN_LENGTH;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 
+import java.util.TimeZone;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,11 @@ public class MiddlewareApplication {
         PASSWORD_MAX_LENGTH = password.getMaxLength();
         ExportConfig export = middlewareConfig.getExport();
         EXPORT_INDIVIDUAL_KEY = export.getIndividualKey();
+    }
+
+    @PostConstruct
+    public void initializeTimeZone() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 }
