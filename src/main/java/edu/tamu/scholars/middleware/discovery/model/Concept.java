@@ -13,8 +13,8 @@ import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
@@ -66,6 +66,37 @@ public class Concept extends AbstractSolrDocument {
     @Indexed(type = "nested_strings")
     @PropertySource(template = "concept/researchAreaOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOfOrganization;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @NestedObject({ @Reference(value = "awardOrHonorForType", key = "type") })
+    @PropertySource(template = "concept/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> awardOrHonorFor;
+
+    @Indexed
+    @PropertySource(template = "concept/awardOrHonorForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> awardOrHonorForType;
+
+    @Indexed(type = "nested_string", copyTo = "_text_")
+    @NestedObject({ @Reference(value = "awardConferredByType", key = "type") })
+    @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private String awardConferredBy;
+
+    @Indexed(type = "nested_string")
+    @PropertySource(template = "concept/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private String awardConferredByType;
+
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
+    private String awardConferredByPreferredLabel;
+
+    @Indexed(type = "pdate")
+    @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private String yearAwarded;
+
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "concept/receipts", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> receipts;
 
     @Indexed(type = "nested_strings")
     @NestedObject({ @Reference(value = "broaderConceptType", key = "type") })
@@ -185,6 +216,62 @@ public class Concept extends AbstractSolrDocument {
 
     public void setResearchAreaOfOrganization(List<String> researchAreaOfOrganization) {
         this.researchAreaOfOrganization = researchAreaOfOrganization;
+    }
+
+    public List<String> getAwardOrHonorFor() {
+        return awardOrHonorFor;
+    }
+
+    public void setAwardOrHonorFor(List<String> awardOrHonorFor) {
+        this.awardOrHonorFor = awardOrHonorFor;
+    }
+
+    public List<String> getAwardOrHonorForType() {
+        return awardOrHonorForType;
+    }
+
+    public void setAwardOrHonorForType(List<String> awardOrHonorForType) {
+        this.awardOrHonorForType = awardOrHonorForType;
+    }
+
+    public String getAwardConferredBy() {
+        return awardConferredBy;
+    }
+
+    public void setAwardConferredBy(String awardConferredBy) {
+        this.awardConferredBy = awardConferredBy;
+    }
+
+    public String getAwardConferredByType() {
+        return awardConferredByType;
+    }
+
+    public void setAwardConferredByType(String awardConferredByType) {
+        this.awardConferredByType = awardConferredByType;
+    }
+
+    public String getAwardConferredByPreferredLabel() {
+        return awardConferredByPreferredLabel;
+    }
+
+    public void setAwardConferredByPreferredLabel(String awardConferredByPreferredLabel) {
+        this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+    }
+
+    public String getYearAwarded() {
+        return yearAwarded;
+    }
+
+    public void setYearAwarded(String yearAwarded) {
+        this.yearAwarded = yearAwarded;
+    }
+
+    public List<String> getReceipts() {
+        return receipts;
+    }
+
+    public void setReceipts(List<String> receipts) {
+        this.receipts = receipts;
     }
 
     public List<String> getBroaderConcepts() {

@@ -1,0 +1,8 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    ?relationship tamu:awardConferredBy_label ?label .
+} WHERE {
+    <[(${uri})]> vivo:relatedBy ?relationship ; a vivo:Award .
+    ?relationship tamu:awardConferredBy_label ?label .
+}

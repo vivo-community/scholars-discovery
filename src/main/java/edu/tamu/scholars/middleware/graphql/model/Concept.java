@@ -3,6 +3,9 @@ package edu.tamu.scholars.middleware.graphql.model;
 import edu.tamu.scholars.middleware.graphql.model.concept.Website;
 import edu.tamu.scholars.middleware.graphql.model.concept.AssociatedDepartment;
 import edu.tamu.scholars.middleware.graphql.model.concept.ResearchAreaOf;
+import edu.tamu.scholars.middleware.graphql.model.concept.AwardOrHonorFor;
+import edu.tamu.scholars.middleware.graphql.model.concept.AwardConferredBy;
+import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
@@ -33,6 +36,12 @@ public class Concept extends AbstractNestedDocument {
 
   private List<ResearchAreaOf> researchAreaOf;
 
+  private List<AwardOrHonorFor> awardOrHonorFor;
+
+  private AwardConferredBy awardConferredBy;
+
+  private List<Receipt> receipts;
+
   private List<BroaderConcept> broaderConcepts;
 
   private List<NarrowerConcept> narrowerConcepts;
@@ -48,6 +57,10 @@ public class Concept extends AbstractNestedDocument {
   private String image;
 
   private String thumbnail;
+
+  private String awardConferredByPreferredLabel;
+
+  private String yearAwarded;
 
   private String modTime;
 
@@ -77,6 +90,30 @@ public class Concept extends AbstractNestedDocument {
 
   public void setResearchAreaOf(List<ResearchAreaOf> researchAreaOf) {
     this.researchAreaOf = researchAreaOf;
+  }
+
+  public List<AwardOrHonorFor> getAwardOrHonorFor() {
+    return awardOrHonorFor;
+  }
+
+  public void setAwardOrHonorFor(List<AwardOrHonorFor> awardOrHonorFor) {
+    this.awardOrHonorFor = awardOrHonorFor;
+  }
+
+  public AwardConferredBy getAwardConferredBy() {
+    return awardConferredBy;
+  }
+
+  public void setAwardConferredBy(AwardConferredBy awardConferredBy) {
+    this.awardConferredBy = awardConferredBy;
+  }
+
+  public List<Receipt> getReceipts() {
+    return receipts;
+  }
+
+  public void setReceipts(List<Receipt> receipts) {
+    this.receipts = receipts;
   }
 
   public List<BroaderConcept> getBroaderConcepts() {
@@ -141,6 +178,22 @@ public class Concept extends AbstractNestedDocument {
 
   public void setThumbnail(String thumbnail) {
     this.thumbnail = thumbnail;
+  }
+
+  public String getAwardConferredByPreferredLabel() {
+    return awardConferredByPreferredLabel;
+  }
+
+  public void setAwardConferredByPreferredLabel(String awardConferredByPreferredLabel) {
+    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+  }
+
+  public String getYearAwarded() {
+    return yearAwarded;
+  }
+
+  public void setYearAwarded(String yearAwarded) {
+    this.yearAwarded = yearAwarded;
   }
 
   public String getModTime() {
