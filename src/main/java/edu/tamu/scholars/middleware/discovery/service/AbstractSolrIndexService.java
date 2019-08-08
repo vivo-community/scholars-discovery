@@ -78,7 +78,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
                 tripleStream.forEach(triple -> {
                     String subject = triple.getSubject().toString();
                     if (logger.isDebugEnabled()) {
-                        logger.debug(String.format("Indexing %s %s", type().getSimpleName(), subject));
+                        logger.debug(String.format("Indexing %s %s", name(), subject));
                     }
                     try {
                         documents.add(createDocument(subject));
@@ -108,7 +108,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
 
     public void index(String subject) {
         if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Indexing %s %s", type().getSimpleName(), subject));
+            logger.debug(String.format("Indexing %s %s", name(), subject));
         }
         try {
             repo.save(createDocument(subject));
