@@ -50,7 +50,7 @@ public class VivoIndexService {
             logger.info("Loading dataset...");
             triplestore.init();
             logger.info(String.format("Loading finished. %s seconds", Duration.between(start, Instant.now()).toMillis() / 1000.0));
-            indexers.stream().forEach(indexer -> {
+            indexers.parallelStream().forEach(indexer -> {
                 logger.info(String.format("Indexing %s documents", indexer.name()));
                 Instant indexStart = Instant.now();
                 indexer.index();

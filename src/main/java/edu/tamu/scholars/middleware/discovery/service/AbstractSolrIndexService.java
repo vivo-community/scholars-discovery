@@ -71,11 +71,10 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         }
         try (QueryExecution qe = QueryExecutionFactory.create(query, triplestore.getDataset())) {
             Iterator<Triple> triples = qe.execConstructTriples();
-            ConcurrentLinkedDeque<D> documents = new ConcurrentLinkedDeque<D>();
+            List<D> documents = new ArrayList<D>();
             if (triples.hasNext()) {
-                Iterable<Triple> tripleIterable = () -> triples;
-                Stream<Triple> tripleStream = StreamSupport.stream(tripleIterable.spliterator(), true);
-                tripleStream.forEach(triple -> {
+                while (triples.hasNext()) {
+                    Triple triple = triples.next();
                     String subject = triple.getSubject().toString();
                     if (logger.isDebugEnabled()) {
                         logger.debug(String.format("Indexing %s %s", name(), subject));
@@ -96,7 +95,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
                     if (documents.size() == indexBatchSize) {
                         batchSave(documents);
                     }
-                });
+                }
                 if (documents.size() > 0) {
                     batchSave(documents);
                 }
@@ -125,7 +124,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         }
     }
 
-    private synchronized void batchSave(ConcurrentLinkedDeque<D> documents) {
+    private void batchSave(List<D> documents) {
         try {
             repo.saveAll(documents);
         } catch (Exception e1) {
