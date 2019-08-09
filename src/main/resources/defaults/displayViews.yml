@@ -275,7 +275,7 @@
   - name: Patents
     hidden: false
     sections:
-    - name: selected publications
+    - name: patents
       hidden: false
       shared: true
       template: "defaults/displayViews/persons/publications/patents.html"
