@@ -322,13 +322,10 @@
       - field: coPrincipalInvestigatorOn
         collection: relationships
     - name: investigator on
-      hidden: false
+      hidden: true
       template: "defaults/displayViews/persons/grantsAwards/investigatorOn.html"
       requiredFields:
       - investigatorOn
-      lazyReferences:
-      - field: investigatorOn
-        collection: relationships
     - name: other research activities
       hidden: false
       template: "defaults/displayViews/persons/grantsAwards/otherResearchActivities.html"
