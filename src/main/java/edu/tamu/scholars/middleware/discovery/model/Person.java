@@ -85,7 +85,7 @@ public class Person extends AbstractSolrDocument {
     @NestedMultiValuedProperty
     @NestedObject(root = false)
     @Indexed(type = "nested_strings")
-    @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> positionOrganizationParent;
 
     @Indexed(type = "whole_string", copyTo = "_text_")

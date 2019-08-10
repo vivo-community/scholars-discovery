@@ -626,7 +626,6 @@
   - Library
   - University
   mainContentTemplate: "defaults/displayViews/organizations/mainContentTemplate.html"
-  leftScanTemplate: "defaults/displayViews/organizations/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/organizations/asideTemplate.html"
   asideLocation: RIGHT
   metaTemplates:
