@@ -330,6 +330,9 @@
       template: "defaults/displayViews/persons/grantsAwards/awardsAndHonors.html"
       requiredFields:
       - awardsAndHonors
+      lazyReferences:
+      - field: awardsAndHonors
+        collection: relationships
   - name: Recent Courses
     hidden: false
     sections:

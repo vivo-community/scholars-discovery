@@ -4,7 +4,7 @@ CONSTRUCT {
     ?award vivo:dateTime ?dateTimeWithId .
 } WHERE {
     <[(${uri})]> vivo:assigns ?award .
-    ?award a vivo:Award .
+    ?award a vivo:AwardReceipt .
     ?award vivo:dateTimeValue ?date .
     ?date vivo:dateTime ?dateTime .
     BIND( CONCAT( STR(?dateTime), REPLACE(STR(?award), "(^.*/)", "::") ) AS ?dateTimeWithId ) .
