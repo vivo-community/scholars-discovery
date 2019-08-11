@@ -17,9 +17,9 @@ public class DateFormatUtility {
 
     public static LocalDate parse(String value) {
         DateTimeParseException dtpe = null;
-        for (DateTimeFormatter dtf : formatters) {
+        for (DateTimeFormatter formatter : formatters) {
             try {
-                return LocalDate.parse(value, dtf);
+                return LocalDate.parse(value, formatter);
             } catch (DateTimeParseException e) {
                 dtpe = e;
             }

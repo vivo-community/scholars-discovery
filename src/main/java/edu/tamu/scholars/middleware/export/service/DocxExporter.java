@@ -211,7 +211,6 @@ public class DocxExporter implements Exporter {
                 JsonNode jn2 = sn2.get(sort.getField());
                 String n1 = jn1 != null ? jn1.asText() : "";
                 String n2 = jn2 != null ? jn2.asText() : "";
-
                 try {
                     LocalDate ld1 = DateFormatUtility.parse(n1);
                     LocalDate ld2 = DateFormatUtility.parse(n2);
