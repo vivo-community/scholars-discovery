@@ -6,7 +6,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
@@ -50,6 +52,18 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(facetFieldEntry.getField().getName())).findAny();
                 }
                 entries.add(new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
+            }
+
+            switch (facetArgument.get().getType()) {
+            case DATE_YEAR:
+                // TODO: how to support other date formats
+                // 2020-01-01T00:00:00Z
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(LocalDate.parse(e.value, dtf).getYear(), e), Map::putAll).values());
+                break;
+            case STRING:
+            default:
+                break;
             }
 
             sort(entries, facetArgument.get());

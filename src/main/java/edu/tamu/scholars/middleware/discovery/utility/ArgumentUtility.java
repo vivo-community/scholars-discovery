@@ -19,9 +19,10 @@ public class ArgumentUtility {
     private final static String FILTER_QUERY_PARAM_KEY = "filters";
     private final static String INDEX_QUERY_PARAM_KEY = "index";
 
-    private final static String SORT_FORMAT = "%s.sort";
-    private final static String PAGE_SIZE_FORMAT = "%s.pageSize";
-    private final static String PAGE_NUMBER_FORMAT = "%s.pageNumber";
+    private final static String FACET_SORT_FORMAT = "%s.sort";
+    private final static String FACET_PAGE_SIZE_FORMAT = "%s.pageSize";
+    private final static String FACET_PAGE_NUMBER_FORMAT = "%s.pageNumber";
+    private final static String FACET_TYPE_FORMAT = "%s.type";
 
     private final static String FILTER_FORMAT = "%s.filter";
 
@@ -39,24 +40,30 @@ public class ArgumentUtility {
             .collect(Collectors.toList());
         return fields.stream().map(field -> {
             Optional<String> sort = perameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(SORT_FORMAT, field)))
+                .filter(paramName -> paramName.equals(String.format(FACET_SORT_FORMAT, field)))
                 .map(request::getParameterValues)
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
                 .findAny();
             Optional<String> pageSize = perameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(PAGE_SIZE_FORMAT, field)))
+                .filter(paramName -> paramName.equals(String.format(FACET_PAGE_SIZE_FORMAT, field)))
                 .map(request::getParameterValues)
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
                 .findAny();
             Optional<String> pageNumber = perameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(PAGE_NUMBER_FORMAT, field)))
+                .filter(paramName -> paramName.equals(String.format(FACET_PAGE_NUMBER_FORMAT, field)))
                 .map(request::getParameterValues)
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
                 .findAny();
-            return FacetArg.of(field, sort, pageSize, pageNumber);
+            Optional<String> type = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FACET_TYPE_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();
+            return FacetArg.of(field, sort, pageSize, pageNumber, type);
         }).collect(Collectors.toList());
         // @formatter:on
     }

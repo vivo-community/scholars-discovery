@@ -90,7 +90,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             facetOptions.addFacetOnField(fieldWithFacetParameters);
         });
 
-        if (facetOptions.hasFields()) {
+        if (facetOptions.hasFacets()) {
             facetQuery.setFacetOptions(facetOptions);
         }
 
