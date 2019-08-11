@@ -1,13 +1,22 @@
 package edu.tamu.scholars.middleware.discovery.response;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FacetSortArg;
 import io.leangen.graphql.annotations.types.GraphQLType;
 
 @GraphQLType(name = "FacetPage")
@@ -43,6 +52,8 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                 entries.add(new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
             }
 
+            sort(entries, facetArgument.get());
+
             if (field.isPresent()) {
                 int pageSize = facetArgument.get().getPageSize();
                 int pageNumber = facetArgument.get().getPageNumber();
@@ -61,6 +72,39 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
         });
         return facets;
+    }
+
+    private static void sort(List<FacetEntry> entries, FacetArg facetArg) {
+        FacetSortArg facetSort = facetArg.getSort();
+        FacetSort property = facetSort.getProperty();
+        Sort.Direction direction = facetSort.getDirection();
+        if (property.equals(FacetSort.COUNT) && direction.equals(Sort.Direction.DESC)) {
+            return;
+        }
+        Collections.sort(entries, new Comparator<FacetEntry>() {
+            public int compare(FacetEntry e1, FacetEntry e2) {
+                if (property.equals(FacetSort.COUNT)) {
+                    return direction.equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
+                }
+                // TODO: how to support other date formats
+                // Wed Dec 31 18:00:00 CST 2014
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z yyyy");
+
+                try {
+                    LocalDate ld1 = LocalDate.parse(e1.value, dtf);
+                    LocalDate ld2 = LocalDate.parse(e2.value, dtf);
+                    return direction.equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
+                } catch (DateTimeParseException dtpe) {
+                    try {
+                        Double d1 = Double.parseDouble(e1.value);
+                        Double d2 = Double.parseDouble(e2.value);
+                        return direction.equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
+                    } catch (NumberFormatException nfe) {
+                        return direction.equals(Direction.ASC) ? e1.value.compareTo(e2.value) : e2.value.compareTo(e1.value);
+                    }
+                }
+            }
+        });
     }
 
     public List<Facet> getFacets() {
