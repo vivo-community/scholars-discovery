@@ -58,7 +58,8 @@ public class ViewTestUtility {
         facet.setType(FacetType.STRING);
         facet.setSort(FacetOptions.FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
-        facet.setLimit(20);
+        facet.setPageSize(20);
+        facet.setPageNumber(0);
 
         facets.add(facet);
 
@@ -140,7 +141,8 @@ public class ViewTestUtility {
         facet.setType(FacetType.STRING);
         facet.setSort(FacetOptions.FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
-        facet.setLimit(20);
+        facet.setPageSize(20);
+        facet.setPageNumber(0);
 
         facets.add(facet);
 

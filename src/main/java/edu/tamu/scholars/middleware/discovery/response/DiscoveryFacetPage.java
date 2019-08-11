@@ -53,32 +53,33 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                 }
                 entries.add(new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
             }
+            if (facetArgument.isPresent()) {
+                switch (facetArgument.get().getType()) {
+                case DATE_YEAR:
+                    entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(DateFormatUtility.parse(e.value).getYear(), e), Map::putAll).values());
+                    break;
+                case STRING:
+                default:
+                    break;
+                }
 
-            switch (facetArgument.get().getType()) {
-            case DATE_YEAR:
-                entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(DateFormatUtility.parse(e.value).getYear(), e), Map::putAll).values());
-                break;
-            case STRING:
-            default:
-                break;
-            }
+                sort(entries, facetArgument.get());
 
-            sort(entries, facetArgument.get());
+                if (field.isPresent()) {
+                    int pageSize = facetArgument.get().getPageSize();
+                    int pageNumber = facetArgument.get().getPageNumber();
+                    int offset = pageSize * pageNumber;
 
-            if (field.isPresent()) {
-                int pageSize = facetArgument.get().getPageSize();
-                int pageNumber = facetArgument.get().getPageNumber();
-                int offset = pageSize * pageNumber;
+                    long totalElements = facetFieldEntryPage.getTotalElements();
+                    int totalPages = facetFieldEntryPage.getTotalPages();
 
-                long totalElements = facetFieldEntryPage.getTotalElements();
-                int totalPages = facetFieldEntryPage.getTotalPages();
+                    PageInfo pageInfo = PageInfo.from(pageSize, totalElements, totalPages, pageNumber);
 
-                PageInfo pageInfo = PageInfo.from(pageSize, totalElements, totalPages, pageNumber);
+                    int start = offset;
+                    int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
 
-                int start = offset;
-                int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
-
-                facets.add(new Facet(field.get(), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
+                    facets.add(new Facet(field.get(), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
+                }
             }
 
         });

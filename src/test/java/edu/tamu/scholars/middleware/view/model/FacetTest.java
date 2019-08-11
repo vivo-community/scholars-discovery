@@ -18,7 +18,8 @@ public class FacetTest {
     public void testDefaultConstructor() {
         Facet facet = new Facet();
         assertNotNull(facet);
-        assertEquals(10, facet.getLimit());
+        assertEquals(10, facet.getPageSize());
+        assertEquals(0, facet.getPageNumber());
         assertTrue(facet.isCollapsed());
         assertFalse(facet.isHidden());
     }
@@ -32,7 +33,8 @@ public class FacetTest {
         facet.setType(FacetType.DATE_YEAR);
         facet.setSort(FacetOptions.FacetSort.INDEX);
         facet.setDirection(Sort.Direction.ASC);
-        facet.setLimit(20);
+        facet.setPageSize(5);
+        facet.setPageNumber(1);
         facet.setCollapsed(false);
         facet.setHidden(true);
 
@@ -41,7 +43,8 @@ public class FacetTest {
         assertEquals(FacetType.DATE_YEAR, facet.getType());
         assertEquals(FacetOptions.FacetSort.INDEX, facet.getSort());
         assertEquals(Sort.Direction.ASC, facet.getDirection());
-        assertEquals(20, facet.getLimit());
+        assertEquals(5, facet.getPageSize());
+        assertEquals(1, facet.getPageNumber());
         assertFalse(facet.isCollapsed());
         assertTrue(facet.isHidden());
     }
