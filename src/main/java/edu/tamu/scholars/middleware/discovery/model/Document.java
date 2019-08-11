@@ -237,7 +237,7 @@ public class Document extends AbstractSolrDocument {
     @PropertySource(template = "document/presentedAtType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> presentedAtType;
 
-    @Indexed(type = "delimited_strings", copyTo = "_text_")
+    @Indexed(type = "whole_strings", copyTo = "_text_")
     @PropertySource(template = "document/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 

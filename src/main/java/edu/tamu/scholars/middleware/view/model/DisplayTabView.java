@@ -7,10 +7,12 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "display_tabs")
@@ -23,13 +25,14 @@ public class DisplayTabView extends View {
     private boolean hidden;
 
     @JoinColumn(name = "display_tab_view_id")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<DisplayTabSectionView> sections;
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<DisplaySectionView> sections;
 
     public DisplayTabView() {
         super();
         hidden = false;
-        sections = new ArrayList<DisplayTabSectionView>();
+        sections = new ArrayList<DisplaySectionView>();
     }
 
     public String getName() {
@@ -44,11 +47,11 @@ public class DisplayTabView extends View {
         this.hidden = hidden;
     }
 
-    public List<DisplayTabSectionView> getSections() {
+    public List<DisplaySectionView> getSections() {
         return sections;
     }
 
-    public void setSections(List<DisplayTabSectionView> sections) {
+    public void setSections(List<DisplaySectionView> sections) {
         this.sections = sections;
     }
 

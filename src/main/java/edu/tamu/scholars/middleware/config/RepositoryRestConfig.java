@@ -14,10 +14,10 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
-import edu.tamu.scholars.middleware.discovery.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FacetArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FilterArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.IndexArgumentResolver;
+import edu.tamu.scholars.middleware.export.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
 
 @Configuration

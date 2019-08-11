@@ -142,7 +142,7 @@ public class RelationshipService extends AbstractNestedDocumentService<Relations
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Relationship> type() {
         return Relationship.class;
     }
 

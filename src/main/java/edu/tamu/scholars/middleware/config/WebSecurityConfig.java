@@ -30,8 +30,8 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -93,15 +93,44 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(config.getAllowedOrigins());
-        configuration.setAllowedMethods(Arrays.asList("GET", "DELETE", "PUT", "POST", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Origin", "Content-Type"));
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**/*", configuration);
-        return source;
+
+        CorsConfiguration embedConfig = new CorsConfiguration();
+        embedConfig.setAllowCredentials(true);
+        embedConfig.addAllowedOrigin("*");
+        embedConfig.addAllowedHeader("Origin");
+        embedConfig.addAllowedHeader("Content-Type");
+        embedConfig.addAllowedMethod("GET");
+        embedConfig.addAllowedMethod("OPTION");
+
+        source.registerCorsConfiguration("/displayViews/search/findByName", embedConfig);
+
+        source.registerCorsConfiguration("/collections/{id}", embedConfig);
+        source.registerCorsConfiguration("/concepts/{id}", embedConfig);
+        source.registerCorsConfiguration("/documents/{id}", embedConfig);
+        source.registerCorsConfiguration("/organizations/{id}", embedConfig);
+        source.registerCorsConfiguration("/persons/{id}", embedConfig);
+        source.registerCorsConfiguration("/processes/{id}", embedConfig);
+        source.registerCorsConfiguration("/relationships/{id}", embedConfig);
+
+        source.registerCorsConfiguration("/collections/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/concepts/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/documents/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/organizations/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/persons/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/processes/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/relationships/search/findByIdIn", embedConfig);
+
+        CorsConfiguration primaryConfig = new CorsConfiguration();
+        primaryConfig.setAllowCredentials(true);
+        primaryConfig.setAllowedOrigins(config.getAllowedOrigins());
+        primaryConfig.setAllowedMethods(Arrays.asList("GET", "DELETE", "PUT", "POST", "PATCH", "OPTIONS"));
+        primaryConfig.setAllowedHeaders(Arrays.asList("Authorization", "Origin", "Content-Type"));
+
+        // NOTE: most general path must be last
+        source.registerCorsConfiguration("/**/*", primaryConfig);
+        return new CorsFilter(source);
     }
 
     @Bean
@@ -179,18 +208,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api",
                         "/gui",
                         "/graphql",
+                        "/embed/**/*",
                         "/registration",
                         "/themes/search/active",
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
-                        "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn",
-                        "/collections", "/collections/{id}", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/export", "/collections/search/count", "/collections/search/recently-updated",
-                        "/concepts", "/concepts/{id}", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/export", "/concepts/search/count", "/concepts/search/recently-updated",
-                        "/documents", "/documents/{id}", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/export", "/documents/search/count", "/documents/search/recently-updated",
-                        "/organizations", "/organizations/{id}", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count", "/organizations/search/recently-updated",
-                        "/persons", "/persons/{id}", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count", "/persons/search/recently-updated",
-                        "/processes", "/processes/{id}", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count", "/processes/search/recently-updated",
-                        "/relationships", "/relationships/{id}", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count", "/relationships/search/recently-updated"
+                        "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
+                        "/collections", "/collections/{id}", "/collections/{id}/export", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/export", "/collections/search/count", "/collections/search/recently-updated",
+                        "/concepts", "/concepts/{id}", "/concepts/{id}/export", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/export", "/concepts/search/count", "/concepts/search/recently-updated",
+                        "/documents", "/documents/{id}", "/documents/{id}/export", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/export", "/documents/search/count", "/documents/search/recently-updated",
+                        "/organizations", "/organizations/{id}", "/organizations/{id}/export", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count", "/organizations/search/recently-updated",
+                        "/persons", "/persons/{id}", "/persons/{id}/export", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count", "/persons/search/recently-updated",
+                        "/processes", "/processes/{id}", "/processes/{id}/export", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count", "/processes/search/recently-updated",
+                        "/relationships", "/relationships/{id}", "/relationships/{id}/export", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count", "/relationships/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,

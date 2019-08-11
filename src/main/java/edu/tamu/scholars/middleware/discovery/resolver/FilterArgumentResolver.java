@@ -25,30 +25,16 @@ public class FilterArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return FilterArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return resolvableType.hasGenerics() && FilterArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        List<String> fields = Collections.list(request.getParameterNames()).stream()
-            .filter(paramName -> paramName.equals(FACET_QUERY_PARAM_KEY) || paramName.equals(FILTER_QUERY_PARAM_KEY))
-            .map(request::getParameterValues)
-            .map(Arrays::asList)
-            .flatMap(list -> list.stream())
-            .map(s -> s.split(","))
-            .map(Arrays::asList)
-            .flatMap(list -> list.stream())
-            .collect(Collectors.toList());
+        List<String> fields = Collections.list(request.getParameterNames()).stream().filter(paramName -> paramName.equals(FACET_QUERY_PARAM_KEY) || paramName.equals(FILTER_QUERY_PARAM_KEY)).map(request::getParameterValues).map(Arrays::asList).flatMap(list -> list.stream()).map(s -> s.split(",")).map(Arrays::asList).flatMap(list -> list.stream()).collect(Collectors.toList());
         List<FilterArg> filters = new ArrayList<FilterArg>();
         fields.forEach(field -> {
-            filters.addAll(Collections.list(request.getParameterNames()).stream()
-                .filter(paramName -> paramName.equals(String.format("%s.%s", field, "filter")))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .map(value -> FilterArg.of(field, value))
-                .collect(Collectors.toList()));
+            filters.addAll(Collections.list(request.getParameterNames()).stream().filter(paramName -> paramName.equals(String.format("%s.%s", field, "filter"))).map(request::getParameterValues).map(Arrays::asList).flatMap(list -> list.stream()).map(value -> FilterArg.of(field, value)).collect(Collectors.toList()));
         });
         return filters;
     }

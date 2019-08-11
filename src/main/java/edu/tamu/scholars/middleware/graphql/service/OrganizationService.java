@@ -142,7 +142,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Organization> type() {
         return Organization.class;
     }
 

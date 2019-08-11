@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import edu.tamu.scholars.middleware.discovery.argument.ExportArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.export.argument.ExportArg;
 
 public interface Exporter {
 

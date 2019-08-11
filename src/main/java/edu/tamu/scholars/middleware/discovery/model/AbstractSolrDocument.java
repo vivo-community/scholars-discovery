@@ -8,10 +8,7 @@ import org.springframework.data.solr.core.mapping.Indexed;
 
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 
-@GraphQLInterface(
-    name = "AbstractSolrDocument",
-    implementationAutoDiscovery = true
-)
+@GraphQLInterface(name = "AbstractSolrDocument", implementationAutoDiscovery = true)
 public abstract class AbstractSolrDocument {
 
     @Id

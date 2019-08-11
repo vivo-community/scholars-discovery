@@ -83,6 +83,7 @@ spring:
       authorize-hal-browser: false
       return-body-on-create: true
       return-body-on-update: true
+      max-page-size: 10000
     solr:
       host: http://localhost:8983/solr
       operator: AND

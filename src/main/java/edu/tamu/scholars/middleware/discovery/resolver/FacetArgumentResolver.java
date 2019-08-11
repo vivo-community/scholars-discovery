@@ -22,22 +22,13 @@ public class FacetArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
-        return FacetArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
+        return resolvableType.hasGenerics() && FacetArg.class.isAssignableFrom(resolvableType.getGeneric(0).resolve());
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        return Collections.list(request.getParameterNames()).stream()
-            .filter(paramName -> paramName.equals(FACET_QUERY_PARAM_KEY))
-            .map(request::getParameterValues)
-            .map(Arrays::asList)
-            .flatMap(list -> list.stream())
-            .map(s -> s.split(","))
-            .map(Arrays::asList)
-            .flatMap(list -> list.stream())
-            .map(FacetArg::of)
-            .collect(Collectors.toList());
+        return Collections.list(request.getParameterNames()).stream().filter(paramName -> paramName.equals(FACET_QUERY_PARAM_KEY)).map(request::getParameterValues).map(Arrays::asList).flatMap(list -> list.stream()).map(s -> s.split(",")).map(Arrays::asList).flatMap(list -> list.stream()).map(FacetArg::of).collect(Collectors.toList());
     }
 
 }
