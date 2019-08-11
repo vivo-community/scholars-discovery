@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.response;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +18,7 @@ import org.springframework.data.solr.core.query.result.FacetPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetSortArg;
+import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 import io.leangen.graphql.annotations.types.GraphQLType;
 
 @GraphQLType(name = "FacetPage")
@@ -56,10 +56,7 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
             switch (facetArgument.get().getType()) {
             case DATE_YEAR:
-                // TODO: how to support other date formats
-                // 2020-01-01T00:00:00Z
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(LocalDate.parse(e.value, dtf).getYear(), e), Map::putAll).values());
+                entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(DateFormatUtility.parse(e.value).getYear(), e), Map::putAll).values());
                 break;
             case STRING:
             default:
@@ -100,13 +97,9 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                 if (property.equals(FacetSort.COUNT)) {
                     return direction.equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
                 }
-                // TODO: how to support other date formats
-                // Wed Dec 31 18:00:00 CST 2014
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z yyyy");
-
                 try {
-                    LocalDate ld1 = LocalDate.parse(e1.value, dtf);
-                    LocalDate ld2 = LocalDate.parse(e2.value, dtf);
+                    LocalDate ld1 = DateFormatUtility.parse(e1.value);
+                    LocalDate ld2 = DateFormatUtility.parse(e2.value);
                     return direction.equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
                 } catch (DateTimeParseException dtpe) {
                     try {

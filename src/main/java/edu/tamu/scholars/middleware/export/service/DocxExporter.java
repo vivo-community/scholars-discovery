@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +50,7 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.export.exception.ExportException;
 import edu.tamu.scholars.middleware.service.HandlebarsService;
+import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.ExportFieldView;
 import edu.tamu.scholars.middleware.view.model.ExportView;
@@ -212,13 +212,9 @@ public class DocxExporter implements Exporter {
                 String n1 = jn1 != null ? jn1.asText() : "";
                 String n2 = jn2 != null ? jn2.asText() : "";
 
-                // TODO: how to support other date formats
-                // Wed Dec 31 18:00:00 CST 2014
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z yyyy");
-
                 try {
-                    LocalDate ld1 = LocalDate.parse(n1, dtf);
-                    LocalDate ld2 = LocalDate.parse(n2, dtf);
+                    LocalDate ld1 = DateFormatUtility.parse(n1);
+                    LocalDate ld2 = DateFormatUtility.parse(n2);
                     return sort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
                 } catch (DateTimeParseException dtpe) {
                     try {
