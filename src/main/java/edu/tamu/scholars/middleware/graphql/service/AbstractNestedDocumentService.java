@@ -26,9 +26,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLFacetPage;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLPage;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
 @GraphQLApi
@@ -60,8 +60,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return StreamSupport.stream(repo.findAll(sort).spliterator(), false).map(this::toNested).collect(Collectors.toList());
     }
 
-    public GraphQLPage<ND> findAllPaged(Pageable page) {
-        return GraphQLPage.from(findAll(page));
+    public DiscoveryPage<ND> findAllPaged(Pageable page) {
+        return DiscoveryPage.from(findAll(page));
     }
 
     @Override
@@ -128,25 +128,25 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return (FacetPage<ND>) facetPage;
     }
 
-    public GraphQLFacetPage<ND> search(String query, Pageable page) {
+    public DiscoveryFacetPage<ND> search(String query, Pageable page) {
         return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), page);
     }
 
-    public GraphQLFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
         return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, page);
     }
 
-    public GraphQLFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
         return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), page);
     }
 
-    public GraphQLFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
         return facetedSearch(query, Optional.empty(), facets, filters, page);
     }
 
-    public GraphQLFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
         FacetPage<ND> facetPage = search(query, index, facets, filters, page);
-        return GraphQLFacetPage.from(facetPage, facets, getOriginDocumentType());
+        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
     @Override

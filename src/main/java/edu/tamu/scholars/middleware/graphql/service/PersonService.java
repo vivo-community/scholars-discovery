@@ -11,9 +11,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.Person;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLFacetPage;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLPage;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
@@ -57,14 +57,14 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
 
     @Override
     @GraphQLQuery(name = "personsPaged")
-    public GraphQLPage<Person> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
+    public DiscoveryPage<Person> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
         return super.findAllPaged(page);
     }
 
     @Override
     @GraphQLQuery(name = "personsSearch")
     // @formatter:off
-    public GraphQLFacetPage<Person> search(
+    public DiscoveryFacetPage<Person> search(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
@@ -75,7 +75,7 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
     @Override
     @GraphQLQuery(name = "personsFilterSearch")
     // @formatter:off
-    public GraphQLFacetPage<Person> filterSearch(
+    public DiscoveryFacetPage<Person> filterSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
         @GraphQLArgument(name = "paging") Pageable page
@@ -87,7 +87,7 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
     @Override
     @GraphQLQuery(name = "personsFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Person> facetedSearch(
+    public DiscoveryFacetPage<Person> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "paging") Pageable page
@@ -99,7 +99,7 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
     @Override
     @GraphQLQuery(name = "personsFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Person> facetedSearch(
+    public DiscoveryFacetPage<Person> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
@@ -112,7 +112,7 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
     @Override
     @GraphQLQuery(name = "personsFacetedSearchIndex")
     // @formatter:off
-    public GraphQLFacetPage<Person> facetedSearch(
+    public DiscoveryFacetPage<Person> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "index") Optional<IndexArg> index,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,

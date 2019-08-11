@@ -57,7 +57,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facetArguments, List<FilterArg> filters, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query.equals(DEFAULT_QUERY)) {
@@ -74,15 +74,16 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         }
 
         FacetOptions facetOptions = new FacetOptions();
-        facets.forEach(facet -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
+        facetArguments.forEach(facetArg -> {
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facetArg.getPath(type()));
 
             // NOTE: until spring fixes their Solr facet entry pagination, using max limit and zero offset
+
             fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 
             fieldWithFacetParameters.setOffset(0);
 
-            fieldWithFacetParameters.setSort(facet.getSort());
+            fieldWithFacetParameters.setSort(facetArg.getSort());
 
             // NOTE: other possible; method, minCount, missing, and prefix
 

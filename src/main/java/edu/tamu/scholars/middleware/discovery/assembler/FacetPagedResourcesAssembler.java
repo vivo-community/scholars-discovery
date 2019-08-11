@@ -1,22 +1,40 @@
 package edu.tamu.scholars.middleware.discovery.assembler;
 
-import java.util.ArrayList;
+import static edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage.buildFacets;
+import static edu.tamu.scholars.middleware.discovery.utility.ArgumentUtility.getFacetArguments;
+import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
+import static org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST;
+
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
-import org.springframework.data.solr.core.query.result.FacetFieldEntry;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
 
-@Component
+import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage.Facet;
+
+@Service
+@Scope(value = SCOPE_REQUEST, proxyMode = TARGET_CLASS)
 public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> {
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private List<SolrDocumentRepo<?>> solrDocumentRepos;
 
     public FacetPagedResourcesAssembler(@Nullable HateoasPageableHandlerMethodArgumentResolver resolver, @Nullable UriComponents baseUri) {
         super(resolver, baseUri);
@@ -26,90 +44,26 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
     protected <R extends ResourceSupport, S> PagedResources<R> createPagedResource(List<R> resources, PagedResources.PageMetadata metadata, Page<S> page) {
         PagedResources<R> pagedResource = super.createPagedResource(resources, metadata, page);
         if (page instanceof FacetPage) {
-            return new FacetPagedResource<R, S>(pagedResource, (FacetPage<S>) page);
+            return new FacetPagedResource<R, S>(pagedResource, (FacetPage<S>) page, request);
         }
         return pagedResource;
     }
 
     class FacetPagedResource<R extends ResourceSupport, S> extends PagedResources<R> {
 
-        private List<Facet> facets;
+        private final List<Facet> facets;
 
-        FacetPagedResource(PagedResources<R> pagedResources, FacetPage<S> facetPage) {
+        FacetPagedResource(PagedResources<R> pagedResources, FacetPage<S> facetPage, HttpServletRequest request) {
             super(pagedResources.getContent(), pagedResources.getMetadata(), pagedResources.getLinks());
-
-            List<Facet> facets = new ArrayList<Facet>();
-
-            facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
-
-                Optional<String> field = Optional.empty();
-
-                List<Entry> entries = new ArrayList<Entry>();
-
-                for (FacetFieldEntry facetFieldEntry : facetFieldEntryPage.getContent()) {
-                    if (!field.isPresent()) {
-                        field = Optional.of(facetFieldEntry.getField().getName());
-                    }
-                    entries.add(new Entry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
-                }
-
-                if (field.isPresent()) {
-                    facets.add(new Facet(field.get(), entries));
-                }
-
-            });
-
-            setFacets(facets);
+            Class<?> type = solrDocumentRepos.stream().filter(repo -> {
+                Optional<SolrDocument> annotation = Optional.ofNullable(repo.type().getAnnotation(SolrDocument.class));
+                return annotation.isPresent() && request.getRequestURI().substring(1).startsWith(annotation.get().collection());
+            }).map(repo -> repo.type()).findAny().get();
+            this.facets = buildFacets(facetPage, getFacetArguments(request), type);
         }
 
         public List<Facet> getFacets() {
             return facets;
-        }
-
-        public void setFacets(List<Facet> facets) {
-            this.facets = facets;
-        }
-
-        class Facet {
-
-            private final String field;
-
-            private final List<Entry> entries;
-
-            public Facet(String field, List<Entry> entries) {
-                this.field = field;
-                this.entries = entries;
-            }
-
-            public String getField() {
-                return field;
-            }
-
-            public List<Entry> getEntries() {
-                return entries;
-            }
-
-        }
-
-        class Entry {
-
-            private final String value;
-
-            private final long count;
-
-            public Entry(String value, long count) {
-                this.value = value;
-                this.count = count;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public long getCount() {
-                return count;
-            }
-
         }
 
     }

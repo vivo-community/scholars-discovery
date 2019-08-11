@@ -11,9 +11,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.Concept;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLFacetPage;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLPage;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
@@ -57,14 +57,14 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
 
     @Override
     @GraphQLQuery(name = "conceptsPaged")
-    public GraphQLPage<Concept> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
+    public DiscoveryPage<Concept> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
         return super.findAllPaged(page);
     }
 
     @Override
     @GraphQLQuery(name = "conceptsSearch")
     // @formatter:off
-    public GraphQLFacetPage<Concept> search(
+    public DiscoveryFacetPage<Concept> search(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
@@ -75,7 +75,7 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
     @Override
     @GraphQLQuery(name = "conceptsFilterSearch")
     // @formatter:off
-    public GraphQLFacetPage<Concept> filterSearch(
+    public DiscoveryFacetPage<Concept> filterSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
         @GraphQLArgument(name = "paging") Pageable page
@@ -87,7 +87,7 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
     @Override
     @GraphQLQuery(name = "conceptsFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Concept> facetedSearch(
+    public DiscoveryFacetPage<Concept> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "paging") Pageable page
@@ -99,7 +99,7 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
     @Override
     @GraphQLQuery(name = "conceptsFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Concept> facetedSearch(
+    public DiscoveryFacetPage<Concept> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
@@ -112,7 +112,7 @@ public class ConceptService extends AbstractNestedDocumentService<Concept, edu.t
     @Override
     @GraphQLQuery(name = "conceptsFacetedSearchIndex")
     // @formatter:off
-    public GraphQLFacetPage<Concept> facetedSearch(
+    public DiscoveryFacetPage<Concept> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "index") Optional<IndexArg> index,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,

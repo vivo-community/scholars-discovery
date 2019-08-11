@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.graphql.type;
+package edu.tamu.scholars.middleware.discovery.response;
 
 import java.util.Iterator;
 import java.util.List;
@@ -8,23 +8,23 @@ import org.springframework.data.domain.Page;
 import io.leangen.graphql.annotations.types.GraphQLType;
 
 @GraphQLType(name = "Page")
-public class GraphQLPage<T> implements Iterable<T> {
+public class DiscoveryPage<T> implements Iterable<T> {
 
     private final List<T> content;
 
     private final PageInfo page;
 
-    public GraphQLPage(List<T> content, PageInfo page) {
+    public DiscoveryPage(List<T> content, PageInfo page) {
         this.content = content;
         this.page = page;
     }
 
-    public static <T> GraphQLPage<T> from(Page<T> page) {
-        return new GraphQLPage<T>(page.getContent(), PageInfo.from(page));
+    public static <T> DiscoveryPage<T> from(Page<T> page) {
+        return new DiscoveryPage<T>(page.getContent(), PageInfo.from(page));
     }
 
-    public static <T> GraphQLPage<T> from(List<T> content, PageInfo page) {
-        return new GraphQLPage<T>(content, page);
+    public static <T> DiscoveryPage<T> from(List<T> content, PageInfo page) {
+        return new DiscoveryPage<T>(content, page);
     }
 
     public List<T> getContent() {

@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.argument;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
@@ -41,8 +42,13 @@ public class FacetArg extends MappingArg {
         return new FacetArg(field, sort, pageSize, pageNumber);
     }
 
-    public static FacetArg of(String field) {
-        return new FacetArg(field, FacetSort.COUNT, 10, 0);
+    public static FacetArg of(String field, Optional<String> sort, Optional<String> pageSize, Optional<String> pageNumber) {
+        // @formatter:off
+        return new FacetArg(field,
+            sort.isPresent() ? FacetSort.valueOf(sort.get()) : FacetSort.COUNT,
+            pageSize.isPresent() ? Integer.valueOf(pageSize.get()) : 10,
+            pageNumber.isPresent() ? Integer.valueOf(pageNumber.get()) : 0);
+        // @formatter:on
     }
 
 }

@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.graphql.type;
+package edu.tamu.scholars.middleware.discovery.response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +11,21 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import io.leangen.graphql.annotations.types.GraphQLType;
 
 @GraphQLType(name = "FacetPage")
-public class GraphQLFacetPage<T> extends GraphQLPage<T> {
+public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
     private final List<Facet> facets;
 
-    public GraphQLFacetPage(List<T> content, PageInfo page, List<Facet> facets) {
+    public DiscoveryFacetPage(List<T> content, PageInfo page, List<Facet> facets) {
         super(content, page);
         this.facets = facets;
     }
 
-    public static <T> GraphQLFacetPage<T> from(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
+    public static <T> DiscoveryFacetPage<T> from(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
+        List<Facet> facets = buildFacets(facetPage, facetArguments, type);
+        return new DiscoveryFacetPage<T>(facetPage.getContent(), PageInfo.from(facetPage), facets);
+    }
+
+    public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
         List<Facet> facets = new ArrayList<Facet>();
 
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
@@ -51,11 +56,11 @@ public class GraphQLFacetPage<T> extends GraphQLPage<T> {
                 int start = offset;
                 int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
 
-                facets.add(new Facet(field.get(), GraphQLPage.from(entries.subList(start, end), pageInfo)));
+                facets.add(new Facet(field.get(), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
             }
 
         });
-        return new GraphQLFacetPage<T>(facetPage.getContent(), PageInfo.from(facetPage), facets);
+        return facets;
     }
 
     public List<Facet> getFacets() {
@@ -67,9 +72,9 @@ public class GraphQLFacetPage<T> extends GraphQLPage<T> {
 
         private final String field;
 
-        private final GraphQLPage<FacetEntry> entries;
+        private final DiscoveryPage<FacetEntry> entries;
 
-        public Facet(String field, GraphQLPage<FacetEntry> entries) {
+        public Facet(String field, DiscoveryPage<FacetEntry> entries) {
             this.field = field;
             this.entries = entries;
         }
@@ -78,7 +83,7 @@ public class GraphQLFacetPage<T> extends GraphQLPage<T> {
             return field;
         }
 
-        public GraphQLPage<FacetEntry> getEntries() {
+        public DiscoveryPage<FacetEntry> getEntries() {
             return entries;
         }
 
