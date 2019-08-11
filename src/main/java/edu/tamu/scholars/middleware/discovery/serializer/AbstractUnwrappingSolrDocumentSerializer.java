@@ -124,7 +124,8 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                         ArrayNode array = JsonNodeFactory.instance.arrayNode();
                         boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
                         for (String nv : nestedValues) {
-                            if (nv.contains(vParts[depth - 1])) {
+                            String refId = vParts[depth - 1];
+                            if (!nv.endsWith(refId) && nv.contains(refId)) {
                                 String[] nvParts = nv.split(NESTED_DELIMITER);
                                 if (nvParts.length > depth) {
                                     ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
