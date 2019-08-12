@@ -57,7 +57,7 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
             super(pagedResources.getContent(), pagedResources.getMetadata(), pagedResources.getLinks());
             Class<?> type = solrDocumentRepos.stream().filter(repo -> {
                 Optional<SolrDocument> annotation = Optional.ofNullable(repo.type().getAnnotation(SolrDocument.class));
-                return annotation.isPresent() && request.getRequestURI().substring(1).startsWith(annotation.get().collection());
+                return annotation.isPresent() && request.getRequestURI().substring(request.getContextPath().length() + 1).startsWith(annotation.get().collection());
             }).map(repo -> repo.type()).findAny().get();
             this.facets = buildFacets(facetPage, getFacetArguments(request), type);
         }
