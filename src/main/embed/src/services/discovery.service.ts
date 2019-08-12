@@ -13,10 +13,8 @@ class DiscoveryService extends RestService {
     public getByIdIn(collection: string, ids: string[]): Promise<any[]> {
         return new Promise((resolve, reject) => {
             const batches = ids.map((e, i) => i % chunkSize === 0 ? ids.slice(i, i + chunkSize) : null).filter((e) => e);
-            const promises: Array<Promise<any>> = batches
-                .map((batch: string[]) => this.get(`${environment.serviceUrl}/${collection}/search/findByIdIn?ids=${batch.join(',')}`));
-            Promise.all(promises)
-                .then((responses: any[]) => resolve([].concat.apply([], responses.map((res) => res._embedded[collection]))));
+            const promises: Array<Promise<any>> = batches.map((batch: string[]) => this.get(`${environment.serviceUrl}/${collection}/search/findByIdIn?ids=${batch.join(',')}`));
+            Promise.all(promises).then((responses: any[]) => resolve([].concat.apply([], responses.map((res) => res._embedded[collection]))));
         });
     }
 
