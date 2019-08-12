@@ -310,13 +310,19 @@
       template: "defaults/displayViews/persons/grantsAwards/principalInvestigator.html"
       requiredFields:
       - principalInvestigatorOn
+      lazyReferences:
+      - field: principalInvestigatorOn
+        collection: relationships
     - name: co-principal investigator on
       hidden: false
       template: "defaults/displayViews/persons/grantsAwards/coPrincipalInvestigatorOn.html"
       requiredFields:
       - coPrincipalInvestigatorOn
+      lazyReferences:
+      - field: coPrincipalInvestigatorOn
+        collection: relationships
     - name: investigator on
-      hidden: false
+      hidden: true
       template: "defaults/displayViews/persons/grantsAwards/investigatorOn.html"
       requiredFields:
       - investigatorOn
@@ -330,6 +336,9 @@
       template: "defaults/displayViews/persons/grantsAwards/awardsAndHonors.html"
       requiredFields:
       - awardsAndHonors
+      lazyReferences:
+      - field: awardsAndHonors
+        collection: relationships
   - name: Recent Courses
     hidden: false
     sections:
@@ -614,7 +623,6 @@
   - Library
   - University
   mainContentTemplate: "defaults/displayViews/organizations/mainContentTemplate.html"
-  leftScanTemplate: "defaults/displayViews/organizations/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/organizations/asideTemplate.html"
   asideLocation: RIGHT
   metaTemplates:
