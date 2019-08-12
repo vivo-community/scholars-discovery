@@ -1,13 +1,2 @@
-<div class="person comma-seperated">
-  <span><a href="display/persons/{{id}}">{{label}}</a></span>
-  <span>{{title}}</span>
-</div>
-<style>
-  .comma-seperated span:after {
-    content: ", ";
-  }
-
-  .comma-seperated span:last-child:after {
-    content: "";
-  }
-</style>
+<span><a href="display/persons/{{id}}">{{label}}{{#if title}}, {{/if}}</a></span>
+<span>{{title}}</span>
