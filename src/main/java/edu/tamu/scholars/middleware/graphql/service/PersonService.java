@@ -1,19 +1,18 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.stereotype.Service;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
-import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.Person;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -21,121 +20,123 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 @Service
 public class PersonService extends AbstractNestedDocumentService<Person, edu.tamu.scholars.middleware.discovery.model.Person, PersonRepo> {
 
-    // TODO: figure out how to use findById returning Optional
-    // TODO: figure out how to use name persons
     @Override
-    @GraphQLQuery(name = "person")
+    @GraphQLQuery(name = "personExistsById")
+    public boolean existsById(@GraphQLArgument(name = "id") String id) {
+        return super.existsById(id);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personById")
     public Person getById(@GraphQLArgument(name = "id") String id) {
         return super.getById(id);
     }
 
     @Override
-    @GraphQLQuery(name = "personCount")
+    @GraphQLQuery(name = "personsCount")
     public long count() {
         return super.count();
     }
 
     @Override
-    @GraphQLQuery(name = "personCount")
+    @GraphQLQuery(name = "personsCount")
     // @formatter:off
     public long count(
         @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "filters") List<Filter> filters
+        @GraphQLArgument(name = "filters") List<FilterArg> filters
     ) {
-    // @formatter:on 
+    // @formatter:on
         return super.count(query, filters);
     }
 
     @Override
-    @GraphQLQuery(name = "personExists")
-    public boolean existsById(String id) {
-        return super.existsById(id);
-    }
-
-    @Override
-    @GraphQLQuery(name = "persons")
-    public Iterable<Person> findAll() {
-        return super.findAll();
-    }
-
-    @Override
-    @GraphQLQuery(name = "persons")
+    @GraphQLQuery(name = "personsSorted")
     public Iterable<Person> findAll(@GraphQLArgument(name = "sort") Sort sort) {
         return super.findAll(sort);
     }
 
     @Override
-    @GraphQLQuery(name = "persons")
-    public Page<Person> findAll(@GraphQLArgument(name = "paging") Pageable pageable) {
-        return super.findAll(pageable);
-    }
-
-    @GraphQLQuery(name = "persons")
-    // @formatter:off
-    public FacetPage<Person> search(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "paging") Pageable page
-    ) {
-    // @formatter:on
-        return search(query, Optional.empty(), new ArrayList<Facet>(), new ArrayList<Filter>(), page);
-    }
-
-    @GraphQLQuery(name = "persons")
-    // @formatter:off
-    public FacetPage<Person> search(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "index") Optional<Index> index,
-        @GraphQLArgument(name = "paging") Pageable page
-    ) {
-    // @formatter:on
-        return search(query, index, new ArrayList<Facet>(), new ArrayList<Filter>(), page);
-    }
-
-    @GraphQLQuery(name = "persons")
-    // @formatter:off
-    public FacetPage<Person> search(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "filters") List<Filter> filters,
-        @GraphQLArgument(name = "paging") Pageable page
-    ) {
-    // @formatter:on
-        return search(query, Optional.empty(), new ArrayList<Facet>(), filters, page);
-    }
-
-    @GraphQLQuery(name = "persons")
-    // @formatter:off
-    public FacetPage<Person> search(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "facets") List<Facet> facets,
-        @GraphQLArgument(name = "filters") List<Filter> filters,
-        @GraphQLArgument(name = "paging") Pageable page
-    ) {
-    // @formatter:on
-        return search(query, Optional.empty(), facets, filters, page);
+    @GraphQLQuery(name = "personsPaged")
+    public DiscoveryPage<Person> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
+        return super.findAllPaged(page);
     }
 
     @Override
-    @GraphQLQuery(name = "persons")
+    @GraphQLQuery(name = "personsSearch")
     // @formatter:off
-    public FacetPage<Person> search(
+    public DiscoveryFacetPage<Person> search(
         @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "index") Optional<Index> index,
-        @GraphQLArgument(name = "facets") List<Facet> facets,
-        @GraphQLArgument(name = "filters") List<Filter> filters,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
     // @formatter:on
-        return super.search(query, index, facets, filters, page);
+        return super.search(query, page);
     }
 
     @Override
-    @GraphQLQuery(name = "persons")
+    @GraphQLQuery(name = "personsFilterSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Person> filterSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.filterSearch(query, filters, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personsFacetedSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Person> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, facets, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personsFacetedSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Person> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, facets, filters, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personsFacetedSearchIndex")
+    // @formatter:off
+    public DiscoveryFacetPage<Person> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "index") Optional<IndexArg> index,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, index, facets, filters, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personsByType")
     public List<Person> findByType(@GraphQLArgument(name = "type") String type) {
         return super.findByType(type);
     }
 
     @Override
-    @GraphQLQuery(name = "persons")
+    @GraphQLQuery(name = "personsByIds")
+    public List<Person> findByIdIn(@GraphQLArgument(name = "ids") List<String> ids) {
+        return super.findByIdIn(ids);
+    }
+
+    @Override
+    @GraphQLQuery(name = "personsMostRecentlyUpdate")
     public List<Person> findMostRecentlyUpdate(@GraphQLArgument(name = "limit") Integer limit) {
         return super.findMostRecentlyUpdate(limit);
     }
@@ -143,6 +144,11 @@ public class PersonService extends AbstractNestedDocumentService<Person, edu.tam
     @Override
     public Class<Person> type() {
         return Person.class;
+    }
+
+    @Override
+    protected Class<?> getOriginDocumentType() {
+        return edu.tamu.scholars.middleware.discovery.model.Person.class;
     }
 
 }

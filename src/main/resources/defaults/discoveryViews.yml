@@ -12,7 +12,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Organization
@@ -20,7 +20,7 @@
     type: STRING
     sort: INDEX
     direction: ASC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Area
@@ -28,7 +28,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Published In
@@ -36,7 +36,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Publisher
@@ -44,7 +44,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Position
@@ -52,7 +52,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Keywords
@@ -60,7 +60,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters: []
@@ -100,7 +100,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Year
@@ -108,7 +108,7 @@
     type: DATE_YEAR
     sort: INDEX
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Author
@@ -116,7 +116,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Author Organization
@@ -124,7 +124,7 @@
     type: STRING
     sort: INDEX
     direction: ASC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Published In
@@ -132,7 +132,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Publisher
@@ -140,7 +140,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Keywords
@@ -148,7 +148,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters: []
@@ -193,7 +193,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: true
   - name: Principal Investigator
@@ -201,7 +201,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Co-Principal Investigator
@@ -209,7 +209,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Awarded By
@@ -217,7 +217,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Administered By
@@ -225,7 +225,7 @@
     type: STRING
     sort: INDEX
     direction: ASC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Year Start
@@ -233,7 +233,7 @@
     type: DATE_YEAR
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Year End
@@ -241,7 +241,7 @@
     type: DATE_YEAR
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters:
@@ -266,19 +266,19 @@
     - columnHeader: Individual
       valuePath: individual
 
-- name: Award or Honor
+- name: Awards
   collection: concepts
   layout: LIST
   templates:
     default: "defaults/discoveryViews/awards/default.html"
   styles: []
   facets:
-  - name: Award or Honor
+  - name: Awards
     field: type
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: true
   - name: Year
@@ -286,7 +286,7 @@
     type: DATE_YEAR
     sort: INDEX
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Recipient
@@ -294,7 +294,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Conferred By
@@ -302,7 +302,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters:
@@ -335,7 +335,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: true
   - name: Offered By
@@ -343,7 +343,7 @@
     type: STRING
     sort: INDEX
     direction: ASC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters:
@@ -368,7 +368,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Associated Department
@@ -376,7 +376,7 @@
     type: STRING
     sort: INDEX
     direction: ASC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Area Of
@@ -384,7 +384,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters: []

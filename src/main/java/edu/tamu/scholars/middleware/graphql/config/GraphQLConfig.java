@@ -21,10 +21,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
-import edu.tamu.scholars.middleware.discovery.argument.Index;
-import edu.tamu.scholars.middleware.export.argument.Export;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
+import edu.tamu.scholars.middleware.export.argument.ExportArg;
+import edu.tamu.scholars.middleware.view.model.FacetType;
 import io.leangen.geantyref.GenericTypeReflector;
 import io.leangen.graphql.ExtendedGeneratorConfiguration;
 import io.leangen.graphql.ExtensionProvider;
@@ -56,55 +57,57 @@ public class GraphQLConfig {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
-                return Index.of(params);
+                return IndexArg.of(params);
             }
 
             @Override
             public boolean supports(AnnotatedType type, Parameter parameter) {
-                return Index.class.equals(type.getType());
+                return IndexArg.class.equals(type.getType());
             }
 
         }).prepend(new ArgumentInjector() {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
-                return Filter.of(params);
+                return FilterArg.of(params);
             }
 
             @Override
             public boolean supports(AnnotatedType type, Parameter parameter) {
-                return Filter.class.equals(type.getType());
+                return FilterArg.class.equals(type.getType());
             }
 
         }).prepend(new ArgumentInjector() {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
-                return Facet.of(params);
+                return FacetArg.of(params);
             }
 
             @Override
             public boolean supports(AnnotatedType type, Parameter parameter) {
-                return Facet.class.equals(type.getType());
+                return FacetArg.class.equals(type.getType());
             }
 
         }).prepend(new ArgumentInjector() {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
-                return Export.of(params);
+                return ExportArg.of(params);
             }
 
             @Override
             public boolean supports(AnnotatedType type, Parameter parameter) {
-                return Export.class.equals(type.getType());
+                return ExportArg.class.equals(type.getType());
             }
 
         }).prepend(new ArgumentInjector() {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
-                return parsePageable(params.getInput(), params.getResolutionEnvironment().fieldType.getChildren().get(0).getName());
+                AnnotatedType returnType = params.getResolutionEnvironment().resolver.getReturnType();
+                AnnotatedType genericType = GenericTypeReflector.getTypeParameter(returnType, Iterable.class.getTypeParameters()[0]);
+                return parsePageable(params.getInput(), genericType.getType().getTypeName());
             }
 
             @Override
@@ -116,7 +119,9 @@ public class GraphQLConfig {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
-                return parseSort(params.getInput(), params.getResolutionEnvironment().fieldType.getChildren().get(0).getName());
+                AnnotatedType returnType = params.getResolutionEnvironment().resolver.getReturnType();
+                AnnotatedType genericType = GenericTypeReflector.getTypeParameter(returnType, Iterable.class.getTypeParameters()[0]);
+                return parseSort(params.getInput(), genericType.getType().getTypeName());
             }
 
             @Override
@@ -142,7 +147,7 @@ public class GraphQLConfig {
 
             @Override
             public boolean supports(AnnotatedType type) {
-                return Index.class.equals(type.getType());
+                return IndexArg.class.equals(type.getType());
             }
         }).prepend(new InputFieldBuilder() {
 
@@ -156,7 +161,7 @@ public class GraphQLConfig {
 
             @Override
             public boolean supports(AnnotatedType type) {
-                return Filter.class.equals(type.getType());
+                return FilterArg.class.equals(type.getType());
             }
         }).prepend(new InputFieldBuilder() {
 
@@ -165,14 +170,15 @@ public class GraphQLConfig {
                 Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("field", "Facet field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 fields.add(new InputField("sort", "Facet sort", new TypedElement(GenericTypeReflector.annotate(FacetSort.class)), GenericTypeReflector.annotate(FacetSort.class), FacetSort.COUNT));
-                fields.add(new InputField("limit", "Facet limit", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
-                fields.add(new InputField("offset", "Facet offset", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 0));
+                fields.add(new InputField("pageSize", "Facet page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
+                fields.add(new InputField("pageNumber", "Facet page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 1));
+                fields.add(new InputField("type", "Facet type", new TypedElement(GenericTypeReflector.annotate(FacetType.class)), GenericTypeReflector.annotate(FacetType.class), FacetType.STRING));
                 return fields;
             }
 
             @Override
             public boolean supports(AnnotatedType type) {
-                return Facet.class.equals(type.getType());
+                return FacetArg.class.equals(type.getType());
             }
         }).prepend(new InputFieldBuilder() {
 
@@ -187,7 +193,7 @@ public class GraphQLConfig {
 
             @Override
             public boolean supports(AnnotatedType type) {
-                return Export.class.equals(type.getType());
+                return ExportArg.class.equals(type.getType());
             }
         }).prepend(new InputFieldBuilder() {
 

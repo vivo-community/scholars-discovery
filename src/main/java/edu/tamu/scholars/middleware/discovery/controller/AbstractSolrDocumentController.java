@@ -13,9 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
-import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
+
 import edu.tamu.scholars.middleware.discovery.assembler.AbstractSolrDocumentResourceAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.FacetPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -38,9 +39,9 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     public ResponseEntity<PagedResources<R>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
         @PageableDefault Pageable pageable,
-        Optional<Index> index,
-        List<Facet> facets,
-        List<Filter> filters
+        Optional<IndexArg> index,
+        List<FacetArg> facets,
+        List<FilterArg> filters
     ) {
     // @formatter:on
         FacetPage<D> page = repo.search(query, index, facets, filters, pageable);
@@ -48,7 +49,7 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     }
 
     @GetMapping("/search/count")
-    public ResponseEntity<Count> count(@RequestParam(value = "query", required = false, defaultValue = "*:*") String query, List<Filter> filters) {
+    public ResponseEntity<Count> count(@RequestParam(value = "query", required = false, defaultValue = "*:*") String query, List<FilterArg> filters) {
         return ResponseEntity.ok(new Count(repo.count(query, filters)));
     }
 

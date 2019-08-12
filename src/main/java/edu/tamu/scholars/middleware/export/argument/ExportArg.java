@@ -2,13 +2,13 @@ package edu.tamu.scholars.middleware.export.argument;
 
 import java.util.Map;
 
-import edu.tamu.scholars.middleware.discovery.argument.Mapping;
+import edu.tamu.scholars.middleware.discovery.argument.MappingArg;
 
-public class Export extends Mapping {
+public class ExportArg extends MappingArg {
 
     private final String label;
 
-    public Export(String field, String label) {
+    public ExportArg(String field, String label) {
         super(field);
         this.label = label;
     }
@@ -18,16 +18,16 @@ public class Export extends Mapping {
     }
 
     @SuppressWarnings("unchecked")
-    public static Export of(Object input) {
+    public static ExportArg of(Object input) {
         Map<String, Object> export = (Map<String, Object>) input;
         String field = (String) export.get("field");
         String label = (String) export.get("label");
-        return new Export(field, label);
+        return new ExportArg(field, label);
     }
 
-    public static Export of(String parameter) {
+    public static ExportArg of(String parameter) {
         String[] parts = parameter.split(",");
-        return new Export(parts[0], parts.length > 1 ? parts[1] : parts[0]);
+        return new ExportArg(parts[0], parts.length > 1 ? parts[1] : parts[0]);
     }
 
 }

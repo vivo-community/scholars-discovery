@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tamu.scholars.middleware.config.ExportConfig;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.export.argument.Export;
+import edu.tamu.scholars.middleware.export.argument.ExportArg;
 
 @Service
 public class CsvExporter implements Exporter {
@@ -62,7 +62,7 @@ public class CsvExporter implements Exporter {
     }
 
     @Override
-    public <D extends AbstractSolrDocument> StreamingResponseBody streamSolrResponse(Cursor<D> cursor, List<Export> export) {
+    public <D extends AbstractSolrDocument> StreamingResponseBody streamSolrResponse(Cursor<D> cursor, List<ExportArg> export) {
         return outputStream -> {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             String[] headers = getColumnHeaders(export);
@@ -81,9 +81,9 @@ public class CsvExporter implements Exporter {
         };
     }
 
-    private String[] getColumnHeaders(List<Export> export) {
+    private String[] getColumnHeaders(List<ExportArg> export) {
         List<String> columnHeaders = new ArrayList<String>();
-        for (Export exp : export) {
+        for (ExportArg exp : export) {
             columnHeaders.add(exp.getLabel());
         }
         return columnHeaders.toArray(new String[columnHeaders.size()]);

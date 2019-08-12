@@ -15,9 +15,9 @@
   {{#if affiliatedResearchAreas}}
   <div class="d-block d-lg-none mt-2 mb-2">
     <div><span class="label">Research Areas:</span></div>
-    <div class="comma-seperated ml-1">
+    <div class="ml-1">
       {{#each affiliatedResearchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}</a></span>
+      <span><a href="display/concepts/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     <hr />
@@ -30,9 +30,9 @@
     <div class="mt-1">
       <span class="label">Research Areas:</span>
     </div>
-    <div class="comma-seperated ml-1">
+    <div class="ml-1">
       {{#each affiliatedResearchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}</a></span>
+      <span><a href="display/concepts/{{id}}">{{label}}{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
   </div>

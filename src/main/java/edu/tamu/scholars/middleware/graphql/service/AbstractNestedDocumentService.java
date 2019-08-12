@@ -1,13 +1,15 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,14 +17,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
+import org.springframework.data.util.ReflectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
-import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
@@ -55,9 +60,13 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return StreamSupport.stream(repo.findAll(sort).spliterator(), false).map(this::toNested).collect(Collectors.toList());
     }
 
+    public DiscoveryPage<ND> findAllPaged(Pageable page) {
+        return DiscoveryPage.from(findAll(page));
+    }
+
     @Override
-    public Page<ND> findAll(Pageable pageable) {
-        return repo.findAll(pageable).map(this::toNested);
+    public Page<ND> findAll(Pageable page) {
+        return repo.findAll(page).map(this::toNested);
     }
 
     @Override
@@ -75,7 +84,6 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return nestedDocument;
     }
 
-    // TODO: remove when able to use Optional with generic type for @GraphQLQuery
     public ND getById(String id) {
         return findById(id).get();
     }
@@ -110,25 +118,39 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
-    public abstract FacetPage<ND> search(String query, Pageable page);
-
-    public abstract FacetPage<ND> search(String query, Optional<Index> index, Pageable page);
-
-    public abstract FacetPage<ND> search(String query, List<Filter> filters, Pageable page);
-
-    public abstract FacetPage<ND> search(String query, List<Facet> facets, List<Filter> filters, Pageable page);
-
     @Override
-    public FacetPage<ND> search(String query, Optional<Index> index, List<Facet> facets, List<Filter> filters, Pageable page) {
+    @SuppressWarnings("unchecked")
+    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
         FacetPage<D> facetPage = repo.search(query, index, facets, filters, page);
         List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
-        FacetPage<ND> nestedFacetPage = new SolrResultPage<ND>(content);
-        BeanUtils.copyProperties(facetPage, nestedFacetPage, "content");
-        return nestedFacetPage;
+        Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
+        ReflectionUtils.setField(field, facetPage, content);
+        return (FacetPage<ND>) facetPage;
+    }
+
+    public DiscoveryFacetPage<ND> search(String query, Pageable page) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), page);
+    }
+
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, page);
+    }
+
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
+        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), page);
+    }
+
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+        return facetedSearch(query, Optional.empty(), facets, filters, page);
+    }
+
+    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+        FacetPage<ND> facetPage = search(query, index, facets, filters, page);
+        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
     @Override
-    public long count(String query, List<Filter> filters) {
+    public long count(String query, List<FilterArg> filters) {
         return repo.count(query, filters);
     }
 
@@ -153,6 +175,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
+    public List<ND> findBySyncIds(String syncId) {
+        return repo.findBySyncIds(syncId).stream().map(this::toNested).collect(Collectors.toList());
+    }
+
+    @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
         return repo.findBySyncIdsIn(syncIds).stream().map(this::toNested).collect(Collectors.toList());
     }
@@ -163,9 +190,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public Cursor<ND> stream(String query, Optional<Index> index, List<Filter> filters, Sort sort) {
+    public Cursor<ND> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, Sort sort) {
         throw new UnsupportedOperationException("Unable to map stream");
     }
+
+    protected abstract Class<?> getOriginDocumentType();
+
     private ND toNested(D document) {
         try {
             String json = mapper.writeValueAsString(document);

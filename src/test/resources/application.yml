@@ -52,6 +52,7 @@ graphql:
   spqr:
     base-packages:
     - edu.tamu.scholars.middleware.discovery.model
+    - edu.tamu.scholars.middleware.discovery.response
     - edu.tamu.scholars.middleware.graphql.model
     gui:
       enabled: false
