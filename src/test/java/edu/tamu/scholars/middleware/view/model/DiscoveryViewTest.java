@@ -52,7 +52,7 @@ public class DiscoveryViewTest {
         assertEquals(FacetOptions.FacetSort.COUNT, discoveryView.getFacets().get(0).getSort());
         assertEquals(Sort.Direction.DESC, discoveryView.getFacets().get(0).getDirection());
         assertEquals(20, discoveryView.getFacets().get(0).getPageSize());
-        assertEquals(0, discoveryView.getFacets().get(0).getPageNumber());
+        assertEquals(1, discoveryView.getFacets().get(0).getPageNumber());
         assertTrue(discoveryView.getFacets().get(0).isCollapsed());
         assertFalse(discoveryView.getFacets().get(0).isHidden());
 

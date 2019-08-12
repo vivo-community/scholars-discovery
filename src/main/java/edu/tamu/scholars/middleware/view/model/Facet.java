@@ -50,7 +50,7 @@ public class Facet {
         sort = COUNT;
         direction = DESC;
         pageSize = 10;
-        pageNumber = 0;
+        pageNumber = 1;
         collapsed = true;
         hidden = false;
     }

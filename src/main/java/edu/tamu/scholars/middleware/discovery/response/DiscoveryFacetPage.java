@@ -68,10 +68,10 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                 if (field.isPresent()) {
                     int pageSize = facetArgument.get().getPageSize();
                     int pageNumber = facetArgument.get().getPageNumber();
-                    int offset = pageSize * pageNumber;
+                    int offset = pageSize * (pageNumber - 1);
 
-                    long totalElements = facetFieldEntryPage.getTotalElements();
-                    int totalPages = facetFieldEntryPage.getTotalPages();
+                    long totalElements = entries.size();
+                    int totalPages = entries.size() / pageSize;
 
                     PageInfo pageInfo = PageInfo.from(pageSize, totalElements, totalPages, pageNumber);
 

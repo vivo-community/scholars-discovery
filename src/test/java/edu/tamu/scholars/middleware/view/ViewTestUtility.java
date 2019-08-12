@@ -59,7 +59,7 @@ public class ViewTestUtility {
         facet.setSort(FacetOptions.FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
         facet.setPageSize(20);
-        facet.setPageNumber(0);
+        facet.setPageNumber(1);
 
         facets.add(facet);
 
@@ -142,7 +142,7 @@ public class ViewTestUtility {
         facet.setSort(FacetOptions.FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
         facet.setPageSize(20);
-        facet.setPageNumber(0);
+        facet.setPageNumber(1);
 
         facets.add(facet);
 

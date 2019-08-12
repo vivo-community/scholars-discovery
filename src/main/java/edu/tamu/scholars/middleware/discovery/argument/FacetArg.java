@@ -55,7 +55,7 @@ public class FacetArg extends MappingArg {
         return new FacetArg(field,
             sort.isPresent() ? sort.get() : "COUNT,DESC",
             pageSize.isPresent() ? Integer.valueOf(pageSize.get()) : 10,
-            pageNumber.isPresent() ? Integer.valueOf(pageNumber.get()) : 0,
+            pageNumber.isPresent() ? Integer.valueOf(pageNumber.get()) : 1,
             type.isPresent() ? type.get() : "STRING");
         // @formatter:on
     }
