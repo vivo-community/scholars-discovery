@@ -16,7 +16,7 @@ class DiscoveryService extends RestService {
             const promises: Array<Promise<any>> = batches
                 .map((batch: string[]) => this.get(`${environment.serviceUrl}/${collection}/search/findByIdIn?ids=${batch.join(',')}`));
             Promise.all(promises)
-                .then((responses: any[]) => resolve([].concat.apply([], responses.map((res) => res._embedded.documents))));
+                .then((responses: any[]) => resolve([].concat.apply([], responses.map((res) => res._embedded[collection]))));
         });
     }
 
