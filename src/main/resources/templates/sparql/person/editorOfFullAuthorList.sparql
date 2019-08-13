@@ -5,7 +5,7 @@ PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
 CONSTRUCT {
     ?document tamu:fullAuthorList ?fullAuthorListWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?editor .
+    <{{uri}}> vivo:relatedBy ?editor .
     ?editor a vivo:Editorship .
     ?editor vivo:relates ?document .
     ?document a bibo:Document .

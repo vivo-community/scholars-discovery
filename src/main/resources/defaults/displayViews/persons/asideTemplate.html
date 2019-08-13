@@ -19,12 +19,16 @@
     <div class="text-nowrap">
       <a href="{{serviceUrl}}/persons/{{id}}/export"><i class="fa fa-user"><span class="d-none">export individual record</span></i><span class="info">Single Page Profile</span></a>
     </div>
+    {{#if email}}
     <div class="text-nowrap">
       <i class="fa fa-envelope-o"></i><span class="info"><a href="mailto: {{email}}">{{email}}</a></span>
     </div>
+    {{/if}}
+    {{#if phone}}
     <div class="text-nowrap">
-      <i class="fa fa-phone"></i><span class="info"><a href="tel: {{email}}">{{phone}}</a></span>
+      <i class="fa fa-phone"></i><span class="info"><a href="tel: {{phone}}">{{phone}}</a></span>
     </div>
+    {{/if}}
   </div>
 
   <div>

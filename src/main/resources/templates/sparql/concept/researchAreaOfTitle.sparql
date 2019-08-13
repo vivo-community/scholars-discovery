@@ -5,7 +5,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?position rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:researchAreaOf ?researchAreaOf .
+    <{{uri}}> vivo:researchAreaOf ?researchAreaOf .
     ?researchAreaOf vivo:relatedBy ?position .
     ?position a vivo:Position .
     ?position rdfs:label ?label .

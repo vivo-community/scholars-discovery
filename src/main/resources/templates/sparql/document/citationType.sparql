@@ -5,7 +5,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?citation vitro:mostSpecificType ?mostSpecificType .
 } WHERE {
-    <[(${uri})]> bibo:cites ?citation .
+    <{{uri}}> bibo:cites ?citation .
     ?citation vitro:mostSpecificType ?mostSpecificType .
 	BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?citation), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
     FILTER (?mostSpecificType != vivo:DateTimeValue) .

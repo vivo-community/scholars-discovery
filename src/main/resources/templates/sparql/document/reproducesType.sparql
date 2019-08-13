@@ -4,7 +4,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?reproduces vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:reproduces ?reproduces .
+    <{{uri}}> vivo:reproduces ?reproduces .
     ?reproduces vitro:mostSpecificType ?mostSpecificType .
 	BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?reproduces), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
     FILTER (?mostSpecificType != vivo:DateTimeValue) .

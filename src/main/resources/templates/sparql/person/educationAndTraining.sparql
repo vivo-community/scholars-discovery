@@ -5,7 +5,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?training rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000056 ?training .
+    <{{uri}}> obo:RO_0000056 ?training .
     ?training obo:RO_0002234 ?info .
     ?info vivo:relates ?degree .
     ?degree rdfs:label ?label .

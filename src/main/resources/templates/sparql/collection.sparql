@@ -1,5 +1,5 @@
 CONSTRUCT {
-    ?model a <[(${uri})]> .
+    ?model a <{{uri}}> .
 } WHERE {
-    ?model a <[(${uri})]> .
+    ?model a <{{uri}}> .
 }

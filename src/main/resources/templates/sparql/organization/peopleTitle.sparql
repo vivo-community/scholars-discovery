@@ -6,7 +6,7 @@ CONSTRUCT {
     ?person vivo:hrJobTitle ?titleWithId .
 } WHERE {
     {
-        <[(${uri})]> vivo:relatedBy ?position .
+        <{{uri}}> vivo:relatedBy ?position .
         ?position a vivo:Position .
         ?position vivo:relatedBy ?person .
         ?person a foaf:Person .
@@ -15,7 +15,7 @@ CONSTRUCT {
     }
     UNION
     {
-        <[(${uri})]> obo:BFO_0000051 ?organization .
+        <{{uri}}> obo:BFO_0000051 ?organization .
         ?organization vivo:relatedBy ?position .
         ?position a vivo:Position .
         ?position vivo:relatedBy ?person .

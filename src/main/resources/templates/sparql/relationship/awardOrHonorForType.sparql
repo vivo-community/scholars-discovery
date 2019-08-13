@@ -5,7 +5,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?relates vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:relates ?relates ; a vivo:AwardReceipt .
+    <{{uri}}> vivo:relates ?relates ; a vivo:AwardReceipt .
     ?relates vitro:mostSpecificType ?mostSpecificType ; a foaf:Person .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?relates), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }

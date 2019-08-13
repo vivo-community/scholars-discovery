@@ -3,7 +3,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?award vivo:dateTimeValue ?dateTimeWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?award .
+    <{{uri}}> vivo:relatedBy ?award .
     ?award a vivo:AwardReceipt .
     ?award vivo:dateTimeValue ?date .
     ?date vivo:dateTime ?dateTime .

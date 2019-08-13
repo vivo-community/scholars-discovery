@@ -4,7 +4,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?presentation vivo:dateTime ?dateTimeWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000053 ?role .
+    <{{uri}}> obo:RO_0000053 ?role .
     ?role a vivo:PresenterRole .
     ?role vivo:relatedBy ?presentation .
     ?presentation vivo:dateTimeValue ?date .
