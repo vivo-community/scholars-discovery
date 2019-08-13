@@ -44,7 +44,7 @@ public class TemplateService {
 
     @PostConstruct
     public void init() throws IOException, Exception {
-        InputStream helpers = getResource("classpath:static/helpers.js");
+        InputStream helpers = getResource("classpath:templates/helpers.js");
         handlebars.registerHelpers("helpers.js", helpers);
     }
 
