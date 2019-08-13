@@ -8,10 +8,12 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import com.github.jknack.handlebars.Context;
@@ -35,6 +37,9 @@ public class TemplateService {
     @Value("${vivo.base-url:http://localhost:8080/vivo}")
     private String vivoUrl;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     public TemplateService() {
         handlebars.with(new HighConcurrencyTemplateCache());
         handlebars.registerHelper("json", Jackson2Helper.INSTANCE);
@@ -55,7 +60,7 @@ public class TemplateService {
     }
 
     public String templateSparql(String name, String uri) {
-        String path = String.format("/templates/sparql/%s.sparql", name);
+        String path = String.format("classpath:templates/sparql/%s.sparql", name);
         Map<String, String> data = new HashMap<String, String>();
         data.put("uri", uri);
         Context context = Context.newBuilder(data).build();
@@ -67,7 +72,7 @@ public class TemplateService {
     }
 
     public String templateConfirmRegistrationMessage(Registration registration, String key) {
-        String path = "/templates/emails/confirm-registration.html";
+        String path = "classpath:templates/emails/confirm-registration.html";
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("registration", registration);
         data.put("link", String.format("%s?key=%s", uiUrl, key));
@@ -81,7 +86,7 @@ public class TemplateService {
 
     @Cacheable("templates")
     public String getTemplate(String path) throws IOException {
-        Resource resource = new ClassPathResource(path);
+        Resource resource = resourceLoader.getResource(path);
         return IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8.name());
     }
 
