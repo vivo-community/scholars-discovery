@@ -101,7 +101,7 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
 
     private String getTemplate(String path) throws IOException {
         Resource resource = resolver.getResource(String.format(CLASSPATH, path));
-        if (resource.exists() && resource.isFile()) {
+        if (resource.exists()) {
             return IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
         }
         throw new IOException(String.format(IO_EXCEPTION_MESSAGE, path));

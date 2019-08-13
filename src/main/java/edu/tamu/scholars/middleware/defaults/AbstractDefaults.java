@@ -51,7 +51,7 @@ public abstract class AbstractDefaults<E extends Named, R extends NamedRepo<E>> 
     @Override
     public void load() throws IOException {
         Resource resource = resolver.getResource(path());
-        if (resource.exists() && resource.isFile()) {
+        if (resource.exists()) {
             List<E> entities = read(resource.getInputStream());
             for (E entity : entities) {
                 process(entity);
@@ -83,7 +83,7 @@ public abstract class AbstractDefaults<E extends Named, R extends NamedRepo<E>> 
         for (Map.Entry<String, String> entry : templateMap.entrySet()) {
             String path = entry.getValue();
             Resource resource = resolver.getResource(String.format(CLASSPATH, path));
-            if (resource.exists() && resource.isFile()) {
+            if (resource.exists()) {
                 entry.setValue(IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8));
             } else {
                 throw new IOException(String.format(IO_EXCEPTION_MESSAGE, path));
