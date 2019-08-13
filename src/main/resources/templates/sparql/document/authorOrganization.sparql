@@ -7,7 +7,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 CONSTRUCT {
     ?organization rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relatedBy .
+    <{{uri}}> vivo:relatedBy ?relatedBy .
     ?relatedBy rdf:type vivo:Authorship .
     ?relatedBy vivo:relates ?author .
     ?author vivo:relatedBy ?position .

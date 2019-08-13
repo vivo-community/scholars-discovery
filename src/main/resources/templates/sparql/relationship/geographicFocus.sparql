@@ -4,7 +4,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?geographicFocus rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:geographicFocus ?geographicFocus ; a vivo:Grant .
+    <{{uri}}> vivo:geographicFocus ?geographicFocus ; a vivo:Grant .
     ?geographicFocus rdfs:label ?label ; a vivo:GeographicRegion .
     BIND( CONCAT( STR(?label), REPLACE(STR(?geographicFocus), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

@@ -5,7 +5,7 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 CONSTRUCT {
     ?relates vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:relates ?relates ; a vivo:Grant .
+    <{{uri}}> vivo:relates ?relates ; a vivo:Grant .
     ?relates obo:RO_0000052 ?contributor ; a vivo:ResearcherRole .
     ?contributor vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?contributor), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .

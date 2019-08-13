@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?relatedBy rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relatedBy .
+    <{{uri}}> vivo:relatedBy ?relatedBy .
     ?relatedBy a vivo:AwardReceipt .
     ?relatedBy vivo:relates ?receipt .
     ?receipt rdfs:label ?label .

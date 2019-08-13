@@ -5,7 +5,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?subjectArea vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:hasSubjectArea ?subjectArea ; a vivo:Grant .
+    <{{uri}}> vivo:hasSubjectArea ?subjectArea ; a vivo:Grant .
     ?subjectArea vitro:mostSpecificType ?mostSpecificType ; a skos:Concept .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?subjectArea), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }

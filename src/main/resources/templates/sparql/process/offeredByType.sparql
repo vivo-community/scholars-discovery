@@ -5,7 +5,7 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 CONSTRUCT {
     ?offeredBy vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:offeredBy ?offeredBy .
+    <{{uri}}> vivo:offeredBy ?offeredBy .
     ?offeredBy vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?offeredBy), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
     FILTER(?mostSpecificType != foaf:Organization)

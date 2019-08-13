@@ -4,7 +4,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?supportedInformationResource rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:supportedInformationResource ?supportedInformationResource .
+    <{{uri}}> vivo:supportedInformationResource ?supportedInformationResource .
     ?supportedInformationResource rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?supportedInformationResource), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

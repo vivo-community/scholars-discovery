@@ -7,7 +7,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?event rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000053 ?role .
+    <{{uri}}> obo:RO_0000053 ?role .
     ?role a vivo:PresenterRole .
     ?role obo:BFO_0000054 ?presentation .
     ?presentation obo:BFO_0000050 ?event .

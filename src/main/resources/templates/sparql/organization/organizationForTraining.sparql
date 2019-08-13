@@ -4,7 +4,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?educationalProcess vivo:majorField ?majorFieldWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000056 ?educationalProcess .
+    <{{uri}}> obo:RO_0000056 ?educationalProcess .
     ?educationalProcess vivo:majorField ?majorField .
     BIND( CONCAT( STR(?majorField), REPLACE(STR(?educationalProcess), "(^.*/)", "::") ) AS ?majorFieldWithId ) .
 }

@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?date vivo:dateTime ?dateTimeWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?awardReceipt .
+    <{{uri}}> vivo:relatedBy ?awardReceipt .
     ?awardReceipt a vivo:AwardReceipt .
     ?awardReceipt vivo:dateTimeValue ?date .
     ?date vivo:dateTime ?dateTime .

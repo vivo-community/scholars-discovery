@@ -4,7 +4,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?patent vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:assigneeFor ?patent .
+    <{{uri}}> vivo:assigneeFor ?patent .
     ?patent vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?patent), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }

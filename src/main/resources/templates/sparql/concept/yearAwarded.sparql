@@ -4,7 +4,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?dateTimeValue vivo:dateTime ?dateTime .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relationship ; a vivo:Award .
+    <{{uri}}> vivo:relatedBy ?relationship ; a vivo:Award .
     ?relationship vivo:dateTimeValue ?dateTimeValue ; a vivo:AwardReceipt .
     ?dateTimeValue vivo:dateTime ?dateTime .
 }

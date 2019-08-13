@@ -49,7 +49,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.export.exception.ExportException;
-import edu.tamu.scholars.middleware.service.HandlebarsService;
+import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.ExportFieldView;
@@ -80,7 +80,7 @@ public class DocxExporter implements Exporter {
     private List<SolrDocumentRepo<?>> solrDocumentRepos;
 
     @Autowired
-    private HandlebarsService handlebarsService;
+    private TemplateService handlebarsService;
 
     @Autowired
     private ObjectMapper mapper;

@@ -4,6 +4,6 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?relationship tamu:awardConferredBy_label ?label .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relationship ; a vivo:Award .
+    <{{uri}}> vivo:relatedBy ?relationship ; a vivo:Award .
     ?relationship tamu:awardConferredBy_label ?label .
 }

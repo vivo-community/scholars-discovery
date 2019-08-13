@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?narrower rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> skos:narrower ?narrower .
+    <{{uri}}> skos:narrower ?narrower .
     ?narrower rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?narrower), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

@@ -6,7 +6,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?author vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relatedBy .
+    <{{uri}}> vivo:relatedBy ?relatedBy .
     ?relatedBy a vivo:Authorship .
     ?relatedBy vivo:relates ?author .
     ?author rdf:type ?type .

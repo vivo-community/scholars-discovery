@@ -4,7 +4,7 @@ PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 CONSTRUCT {
     ?hasEmail vcard:email ?email .
 } WHERE {
-    <[(${uri})]> obo:ARG_2000028 ?vcard .
+    <{{uri}}> obo:ARG_2000028 ?vcard .
     ?vcard vcard:hasEmail ?hasEmail .
     ?hasEmail vcard:email ?email .
 }
