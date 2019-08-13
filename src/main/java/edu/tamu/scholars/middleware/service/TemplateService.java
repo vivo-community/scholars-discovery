@@ -1,6 +1,7 @@
 package edu.tamu.scholars.middleware.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -27,9 +27,6 @@ import edu.tamu.scholars.middleware.auth.controller.request.Registration;
 public class TemplateService {
 
     private static final Handlebars handlebars = new Handlebars();
-
-    @Value("classpath:static/helpers.js")
-    private Resource helpers;
 
     @Value("${ui.url:http://localhost:4200}")
     private String uiUrl;
@@ -47,7 +44,8 @@ public class TemplateService {
 
     @PostConstruct
     public void init() throws IOException, Exception {
-        handlebars.registerHelpers(helpers.getFile());
+        InputStream helpers = getResource("classpath:static/helpers.js");
+        handlebars.registerHelpers("helpers.js", helpers);
     }
 
     public String template(String template, Object data) {
@@ -55,7 +53,7 @@ public class TemplateService {
         try {
             return handlebars.compileInline(template).apply(context);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to template", e);
         }
     }
 
@@ -67,7 +65,7 @@ public class TemplateService {
         try {
             return handlebars.compileInline(getTemplate(path)).apply(context);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(String.format("Unable to template %s sparql", name), e);
         }
     }
 
@@ -80,14 +78,18 @@ public class TemplateService {
         try {
             return handlebars.compileInline(getTemplate(path)).apply(context);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to template registration messsage", e);
         }
     }
 
     @Cacheable("templates")
     public String getTemplate(String path) throws IOException {
+        return IOUtils.toString(getResource(path), StandardCharsets.UTF_8.name());
+    }
+
+    public InputStream getResource(String path) throws IOException {
         Resource resource = resourceLoader.getResource(path);
-        return IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8.name());
+        return resource.getInputStream();
     }
 
 }
