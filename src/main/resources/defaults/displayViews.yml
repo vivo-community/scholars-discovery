@@ -1294,11 +1294,6 @@
       template: "defaults/displayViews/relationships/overview/awardOrHonorFor.html"
       requiredFields:
       - awardOrHonorFor
-    - name: award conferred by
-      hidden: false
-      template: "defaults/displayViews/relationships/overview/awardConferredBy.html"
-      requiredFields:
-      - awardConferredBy
     - name: date/time interval
       hidden: false
       template: "defaults/displayViews/relationships/overview/dateTimeInterval.html"
@@ -1330,12 +1325,12 @@
       template: "defaults/displayViews/relationships/overview/awardedByPreferredLabel.html"
       requiredFields:
       - awardedByPreferredLabel
-    - name: award conferreded by
+    - name: award conferred by
       hidden: false
       template: "defaults/displayViews/relationships/overview/awardConferredBy.html"
       requiredFields:
       - awardConferredBy
-    - name: award conferreded by (preferred label)
+    - name: award conferred by (preferred label)
       hidden: false
       template: "defaults/displayViews/relationships/overview/awardConferredByPreferredLabel.html"
       requiredFields:

@@ -370,7 +370,7 @@
     direction: DESC
     pageSize: 10
     collapsed: true
-    hidden: false
+    hidden: true
   - name: Associated Department
     field: associatedDepartments
     type: STRING
@@ -387,7 +387,9 @@
     pageSize: 10
     collapsed: true
     hidden: false
-  filters: []
+  filters:
+  - field: type
+    value: Concept
   sort:
   - field: name
     direction: ASC
