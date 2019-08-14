@@ -19,7 +19,12 @@ import org.springframework.stereotype.Service;
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Jackson2Helper;
+import com.github.jknack.handlebars.JsonNodeValueResolver;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
+import com.github.jknack.handlebars.context.FieldValueResolver;
+import com.github.jknack.handlebars.context.JavaBeanValueResolver;
+import com.github.jknack.handlebars.context.MapValueResolver;
+import com.github.jknack.handlebars.context.MethodValueResolver;
 
 import edu.tamu.scholars.middleware.auth.controller.request.Registration;
 
@@ -49,9 +54,8 @@ public class TemplateService {
     }
 
     public String template(String template, Object data) {
-        Context context = Context.newBuilder(data).build();
         try {
-            return handlebars.compileInline(template).apply(context);
+            return handlebars.compileInline(template).apply(buildContext(data));
         } catch (IOException e) {
             throw new RuntimeException("Unable to template", e);
         }
@@ -82,12 +86,24 @@ public class TemplateService {
         }
     }
 
+    private Context buildContext(Object data) {
+        // @formatter:off
+        return Context.newBuilder(data).resolver(
+            JsonNodeValueResolver.INSTANCE,
+            JavaBeanValueResolver.INSTANCE,
+            FieldValueResolver.INSTANCE,
+            MapValueResolver.INSTANCE,
+            MethodValueResolver.INSTANCE
+        ).build();
+        // @formatter:on
+    }
+
     @Cacheable("templates")
-    public String getTemplate(String path) throws IOException {
+    private String getTemplate(String path) throws IOException {
         return IOUtils.toString(getResource(path), StandardCharsets.UTF_8.name());
     }
 
-    public InputStream getResource(String path) throws IOException {
+    private InputStream getResource(String path) throws IOException {
         Resource resource = resourceLoader.getResource(path);
         return resource.getInputStream();
     }
