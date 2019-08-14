@@ -76,6 +76,10 @@
       template: "defaults/displayViews/persons/overview/keywords.html"
       requiredFields:
       - keywords
+      subsections:
+      - name: Research Keywords
+        field: keywords
+        template: "defaults/displayViews/persons/overview/keywords/default.html"
   - name: Affiliation
     hidden: false
     sections:
@@ -1033,6 +1037,14 @@
       template: "defaults/displayViews/documents/overview/editors.html"
       requiredFields:
       - editors
+    - name: etd chair
+      hidden: false
+      template: "defaults/displayViews/documents/overview/etdChair.html"
+      requiredFields:
+      - etdChairedBy
+      lazyReferences:
+      - field: etdChairedBy
+        collection: persons
     - name: translator
       hidden: false
       template: "defaults/displayViews/documents/overview/translator.html"

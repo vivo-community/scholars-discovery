@@ -21,6 +21,8 @@ public class Contributor extends AbstractNestedDocument {
 
   private String type;
 
+  private String role;
+
   public Contributor() {
     super();
   }
@@ -31,5 +33,13 @@ public class Contributor extends AbstractNestedDocument {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
   }
 }
