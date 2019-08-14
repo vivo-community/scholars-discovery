@@ -71,15 +71,6 @@
       template: "defaults/displayViews/persons/about/overview.html"
       requiredFields:
       - overview
-    - name: keywords
-      hidden: false
-      template: "defaults/displayViews/persons/overview/keywords.html"
-      requiredFields:
-      - keywords
-      subsections:
-      - name: Research Keywords
-        field: keywords
-        template: "defaults/displayViews/persons/overview/keywords/default.html"
   - name: Affiliation
     hidden: false
     sections:
