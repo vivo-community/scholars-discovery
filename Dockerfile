@@ -1,16 +1,16 @@
-# our base build image
+# build base image
 FROM maven:3-jdk-8-slim as maven
 
-# copy the project files
+# copy pom.xml
 COPY ./pom.xml ./pom.xml
 
-# copy your other files
+# copy src files
 COPY ./src ./src
 
-# build for release
+# build
 RUN mvn package
 
-# our final base image
+# final base image
 FROM openjdk:8u171-jre-alpine
 
 # set deployment directory
