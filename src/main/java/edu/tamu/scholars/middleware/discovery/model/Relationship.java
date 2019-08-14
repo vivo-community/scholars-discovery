@@ -164,9 +164,13 @@ public class Relationship extends AbstractSolrDocument {
     private String localAwardId;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "contributorType", key = "type") })
+    @NestedObject({ @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
     @PropertySource(template = "relationship/contributor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contributors;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "relationship/contributorRole", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> contributorRole;
 
     @Indexed(type = "nested_strings")
     @PropertySource(template = "relationship/contributorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
@@ -523,6 +527,14 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setContributors(List<String> contributors) {
         this.contributors = contributors;
+    }
+
+    public List<String> getContributorRole() {
+        return contributorRole;
+    }
+
+    public void setContributorRole(List<String> contributorRole) {
+        this.contributorRole = contributorRole;
     }
 
     public List<String> getContributorType() {

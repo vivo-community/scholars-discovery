@@ -71,7 +71,7 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     int offset = pageSize * (pageNumber - 1);
 
                     long totalElements = entries.size();
-                    int totalPages = entries.size() / pageSize;
+                    int totalPages = (int) Math.ceil((double) entries.size() / (double) pageSize);
 
                     PageInfo pageInfo = PageInfo.from(pageSize, totalElements, totalPages, pageNumber);
 
