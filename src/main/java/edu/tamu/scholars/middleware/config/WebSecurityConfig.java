@@ -41,6 +41,7 @@ import edu.tamu.scholars.middleware.auth.handler.CustomAuthenticationEntryPoint;
 import edu.tamu.scholars.middleware.auth.handler.CustomAuthenticationFailureHandler;
 import edu.tamu.scholars.middleware.auth.handler.CustomAuthenticationSuccessHandler;
 import edu.tamu.scholars.middleware.auth.handler.CustomLogoutSuccessHandler;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
 @Configuration
 @EnableWebSecurity

@@ -71,6 +71,7 @@ logging:
   path:
 
 server:
+  connection-timeout: 30000
   port: 9001
   servlet:
     contextPath:
@@ -141,3 +142,17 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: always
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      sensitive: false
+      enabled: true
+    info:
+      sensitive: false
+      enabled: true

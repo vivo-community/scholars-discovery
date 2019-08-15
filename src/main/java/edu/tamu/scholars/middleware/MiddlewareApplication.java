@@ -13,13 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
-import edu.tamu.scholars.middleware.config.ExportConfig;
-import edu.tamu.scholars.middleware.config.MiddlewareConfig;
+import edu.tamu.scholars.middleware.config.model.ExportConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
+@EnableAsync
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication

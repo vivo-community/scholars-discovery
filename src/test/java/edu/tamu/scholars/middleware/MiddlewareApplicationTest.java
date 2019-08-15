@@ -17,10 +17,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
 import edu.tamu.scholars.middleware.auth.config.TokenConfig;
-import edu.tamu.scholars.middleware.config.ExportConfig;
-import edu.tamu.scholars.middleware.config.HttpConfig;
-import edu.tamu.scholars.middleware.config.MailConfig;
-import edu.tamu.scholars.middleware.config.MiddlewareConfig;
+import edu.tamu.scholars.middleware.config.model.ExportConfig;
+import edu.tamu.scholars.middleware.config.model.HttpConfig;
+import edu.tamu.scholars.middleware.config.model.MailConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

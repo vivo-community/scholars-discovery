@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.config;
+package edu.tamu.scholars.middleware.config.model;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
