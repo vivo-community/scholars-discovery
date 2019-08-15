@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.config;
+package edu.tamu.scholars.middleware.config.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,6 +12,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
 import edu.tamu.scholars.middleware.auth.config.TokenConfig;
+import edu.tamu.scholars.middleware.config.model.ExportConfig;
+import edu.tamu.scholars.middleware.config.model.HttpConfig;
+import edu.tamu.scholars.middleware.config.model.MailConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
 @ExtendWith(SpringExtension.class)
 public class MiddlewareConfigTest {

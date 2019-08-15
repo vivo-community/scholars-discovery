@@ -17,7 +17,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import edu.tamu.scholars.middleware.config.MiddlewareConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 import edu.tamu.scholars.middleware.model.Named;
 import edu.tamu.scholars.middleware.model.repo.NamedRepo;
 

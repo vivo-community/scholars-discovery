@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.config;
+package edu.tamu.scholars.middleware.config.model;
 
 import java.util.ArrayList;
 import java.util.List;

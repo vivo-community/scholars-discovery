@@ -79,13 +79,11 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         facetArguments.forEach(facetArg -> {
             FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facetArg.getPath(type()));
 
-            // NOTE: until Spring fixes their Solr facet entry pagination, using max limit and zero offset
-
             fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 
             fieldWithFacetParameters.setOffset(0);
 
-            // NOTE: using default sort until Spring Solr affords setting direction of facet sort
+            // NOTE: solr does not return total number of facet entries, nor afford direction of sort
 
             // NOTE: other possible; method, minCount, missing, and prefix
 

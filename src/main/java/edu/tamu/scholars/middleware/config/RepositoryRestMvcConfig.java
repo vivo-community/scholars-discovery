@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
 import edu.tamu.scholars.middleware.discovery.resolver.FacetArgumentResolver;
@@ -21,10 +24,21 @@ import edu.tamu.scholars.middleware.export.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
 
 @Configuration
-public class RepositoryRestConfig extends RepositoryRestMvcConfiguration {
+public class RepositoryRestMvcConfig extends RepositoryRestMvcConfiguration {
 
-    public RepositoryRestConfig(ApplicationContext context, ObjectFactory<ConversionService> conversionService) {
+    @Autowired
+    private AsyncTaskExecutor taskExecutor;
+
+    public RepositoryRestMvcConfig(ApplicationContext context, ObjectFactory<ConversionService> conversionService) {
         super(context, conversionService);
+    }
+
+    @Override
+    public RequestMappingHandlerAdapter repositoryExporterHandlerAdapter() {
+        RequestMappingHandlerAdapter requestMappingHandlerAdapter = super.repositoryExporterHandlerAdapter();
+        requestMappingHandlerAdapter.setAsyncRequestTimeout(900000);
+        requestMappingHandlerAdapter.setTaskExecutor(taskExecutor);
+        return requestMappingHandlerAdapter;
     }
 
     @Override

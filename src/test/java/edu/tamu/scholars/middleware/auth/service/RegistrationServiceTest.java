@@ -43,7 +43,7 @@ import edu.tamu.scholars.middleware.auth.controller.exception.RegistrationExcept
 import edu.tamu.scholars.middleware.auth.controller.request.Registration;
 import edu.tamu.scholars.middleware.auth.model.Role;
 import edu.tamu.scholars.middleware.auth.model.User;
-import edu.tamu.scholars.middleware.config.MiddlewareConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 import edu.tamu.scholars.middleware.service.EmailService;
 import edu.tamu.scholars.middleware.service.TemplateService;
 

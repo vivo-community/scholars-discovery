@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.tamu.scholars.middleware.config.VivoConfig;
+import edu.tamu.scholars.middleware.config.model.VivoConfig;
 import edu.tamu.scholars.middleware.service.request.HttpRequest;
 
 @Service

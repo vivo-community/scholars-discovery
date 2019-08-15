@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.tamu.scholars.middleware.config.ExportConfig;
+import edu.tamu.scholars.middleware.config.model.ExportConfig;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.export.argument.ExportArg;
@@ -73,9 +73,11 @@ public class CsvExporter implements Exporter {
                     List<Object> row = getRow(document, properties.toArray(new String[properties.size()]));
                     printer.printRecord(row.toArray(new Object[row.size()]));
                 }
+                printer.flush();
             } catch (InvalidValuePathException | IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
             } finally {
+                outputStreamWriter.close();
                 cursor.close();
             }
         };

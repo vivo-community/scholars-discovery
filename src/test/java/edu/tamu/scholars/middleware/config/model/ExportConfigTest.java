@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.config;
+package edu.tamu.scholars.middleware.config.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import edu.tamu.scholars.middleware.config.model.ExportConfig;
 
 @ExtendWith(SpringExtension.class)
 public class ExportConfigTest {

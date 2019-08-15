@@ -19,7 +19,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import edu.tamu.scholars.middleware.config.MailConfig;
+import edu.tamu.scholars.middleware.config.model.MailConfig;
 
 @ExtendWith(SpringExtension.class)
 public class EmailServiceTest {
