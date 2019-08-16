@@ -25,6 +25,8 @@ public interface SolrDocumentRepo<D extends AbstractSolrDocument> extends SolrCr
 
     public List<D> findByIdIn(List<String> ids);
 
+    public List<D> findBySyncIds(String syncId);
+
     public List<D> findBySyncIdsIn(List<String> syncIds);
 
 }
