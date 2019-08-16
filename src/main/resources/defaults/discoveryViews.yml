@@ -356,6 +356,61 @@
     - columnHeader: Course number and title
       valuePath: title
 
+- name: Organizations
+  collection: organizations
+  layout: LIST
+  templates:
+    default: "defaults/discoveryViews/organizations/default.html"
+  styles: []
+  facets:
+  - name: Type
+    field: type
+    type: STRING
+    sort: COUNT
+    direction: DESC
+    pageSize: 10
+    collapsed: true
+    hidden: false
+  - name: Within Organization
+    field: organizationWithin
+    type: STRING
+    sort: INDEX
+    direction: ASC
+    pageSize: 10
+    collapsed: true
+    hidden: false
+  - name: Organization For Training
+    field: organizationForTraining
+    type: STRING
+    sort: INDEX
+    direction: ASC
+    pageSize: 10
+    collapsed: true
+    hidden: false
+  - name: Awards Grant
+    field: awardsGrant
+    type: STRING
+    sort: INDEX
+    direction: ASC
+    pageSize: 10
+    collapsed: true
+    hidden: false
+  - name: Research Areas
+    field: affiliatedResearchAreas
+    type: STRING
+    sort: INDEX
+    direction: ASC
+    pageSize: 10
+    collapsed: true
+    hidden: false
+  filters: []
+  sort: []
+  export:
+    - columnHeader: Name
+      valuePath: name
+    - columnHeader: Individual
+      valuePath: individual
+
 - name: Concepts
   collection: concepts
   layout: LIST
