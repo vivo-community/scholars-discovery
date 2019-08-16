@@ -5,6 +5,7 @@ ADD . /opt/solr/server/solr/
 
 USER root
 RUN chown -R solr /opt/solr/server/solr
+RUN chmod -R g=u .
 USER solr
 
 RUN mkdir -p /opt/solr/server/solr/persons
