@@ -5,6 +5,7 @@ ADD . /opt/solr/server/solr/
 
 USER root
 RUN chown -R solr /opt/solr/server/solr
+RUN chmod ugo+w -R /opt/solr/server/solr
 RUN chmod ugo+w -R /opt/solr/server/logs
 USER solr
 
