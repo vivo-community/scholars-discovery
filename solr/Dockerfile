@@ -5,7 +5,6 @@ ADD . /opt/solr/server/solr/
 
 USER root
 RUN chown -R solr /opt/solr/server/solr
-RUN chmod ugo+w -R /opt/solr/server/solr
 RUN chmod ugo+w -R /opt/solr/server/logs
 USER solr
 
@@ -29,6 +28,11 @@ RUN precreate-core collections
 
 RUN mkdir -p /opt/solr/server/solr/concepts
 RUN precreate-core concepts
+
+USER root 
+RUN chmod ugo+w -R /opt/solr/server/solr/mycores/collections/data
+
+USER solr
 
 #RUN precreate-core persons /opt/solr/server/solr/persons
 #RUN precreate-core organizations /opt/solr/server/solr/organizations
