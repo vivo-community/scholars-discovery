@@ -362,6 +362,8 @@
         <filter class="solr.FlattenGraphFilterFactory"/>
         -->
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" preserveOriginal="1"/>
+        <filter class="solr.FlattenGraphFilterFactory"/> <!-- required on index analyzers after graph filters -->
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
