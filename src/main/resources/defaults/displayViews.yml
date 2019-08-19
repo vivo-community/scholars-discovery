@@ -650,16 +650,33 @@
       template: "defaults/displayViews/organizations/overview/sponsorsAwardOrHonor.html"
       requiredFields:
       - sponsorsAwardOrHonor
+      lazyReferences:
+      - field: sponsorsAwardOrHonor
+        collection: relationships
     - name: award or honor given
       hidden: false
       template: "defaults/displayViews/organizations/overview/awardOrHonorGiven.html"
       requiredFields:
       - awardOrHonorGiven
+      lazyReferences:
+      - field: awardOrHonorGiven
+        collection: relationships
+      subsections:
+      - name: Award Or Honor
+        field: awardOrHonorGiven
+        sort:
+        - field: yearAwarded
+          direction: DESC
+          date: true
+        template: "defaults/displayViews/organizations/overview/awardOrHonorGiven/default.html"
     - name: awards and honors received
       hidden: false
       template: "defaults/displayViews/organizations/overview/awardsAndHonorsReceived.html"
       requiredFields:
       - awardsAndHonorsReceived
+      lazyReferences:
+      - field: awardsAndHonorsReceived
+        collection: relationships
     - name: keywords
       hidden: false
       template: "defaults/displayViews/organizations/overview/keywords.html"
