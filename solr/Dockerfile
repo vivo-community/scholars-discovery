@@ -8,7 +8,6 @@ RUN chown -R solr /opt/solr/server/solr/
 RUN chmod ugo+w -R /opt/solr/server/solr/
 RUN chmod ugo+w -R /opt/solr/server/logs
 
-RUN chmod -R g=u /opt/solr/server/
 USER solr
 
 RUN mkdir -p /opt/solr/server/solr/persons
@@ -32,6 +31,13 @@ RUN precreate-core collections
 RUN mkdir -p /opt/solr/server/solr/concepts
 RUN precreate-core concepts
 
+RUN mkdir -p  /opt/solr/server/solr/mycores/collections/data
+RUN mkdir -p /opt/solr/server/solr/mycores/concepts/data
+RUN mkdir -p /opt/solr/server/solr/mycores/documents/data
+RUN mkdir -p /opt/solr/server/solr/mycores/organizations/data
+RUN mkdir -p /opt/solr/server/solr/mycores/persons/data
+RUN mkdir -p /opt/solr/server/solr/mycores/processes/data
+RUN mkdir -p /opt/solr/server/solr/mycores/relationships/data
 
 #RUN precreate-core persons /opt/solr/server/solr/persons
 #RUN precreate-core organizations /opt/solr/server/solr/organizations
