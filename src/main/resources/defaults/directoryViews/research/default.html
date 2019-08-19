@@ -9,10 +9,12 @@
   <span class="badge badge-light">{{formalize type}}</span>
 </div>
 <div>
+  {{#if publicationDate}}
   <div>
     <span class="label">Publication Date:</span>
     <span>{{toYear publicationDate}}</span>
   </div>
+  {{/if}}
   {{#if authors}}
   <div>
     <span class="label">TAMU Faculty Authors (Claimed):</span>
