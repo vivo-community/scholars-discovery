@@ -1818,6 +1818,16 @@
       template: "defaults/displayViews/concepts/overview/researchAreaOf.html"
       requiredFields:
       - researchAreaOf
+    - name: award conferred by
+      hidden: false
+      template: "defaults/displayViews/concepts/overview/awardConferredBy.html"
+      requiredFields:
+      - awardConferredBy
+    - name: award conferred by (preferred label)
+      hidden: false
+      template: "defaults/displayViews/concepts/overview/awardConferredByPreferredLabel.html"
+      requiredFields:
+      - awardConferredByPreferredLabel
     - name: broader concept
       hidden: false
       template: "defaults/displayViews/concepts/overview/broaderConcept.html"

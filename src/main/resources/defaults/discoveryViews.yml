@@ -18,8 +18,8 @@
   - name: Organization
     field: positionOrganization
     type: STRING
-    sort: INDEX
-    direction: ASC
+    sort: COUNT
+    direction: DESC
     pageSize: 10
     collapsed: true
     hidden: false
