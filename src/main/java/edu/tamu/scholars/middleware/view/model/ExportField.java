@@ -12,11 +12,8 @@ public class ExportField {
     @Column(nullable = false)
     private String valuePath;
 
-    @Column(nullable = false)
-    private String delimiter;
-
     public ExportField() {
-        this.delimiter = "||";
+
     }
 
     public String getColumnHeader() {
@@ -33,14 +30,6 @@ public class ExportField {
 
     public void setValuePath(String valuePath) {
         this.valuePath = valuePath;
-    }
-
-    public String getDelimiter() {
-        return delimiter;
-    }
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
     }
 
 }

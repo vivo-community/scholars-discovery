@@ -1,0 +1,94 @@
+<div class="pt-2 w-100">
+
+  <div class="mb-3">
+    <span class="h5 font-weight-bold">{{subsection.name}}<span class="badge badge-light ml-2">{{resources.length}}</span></span>
+    <ul class="list-group">
+      <ul class="list-group">
+        {{#subsectionPage resources page}}
+        <li class="list-group-item border-0">{{#subsectionItem this ../subsection}}{{/subsectionItem}}</li>
+        {{/subsectionPage}}
+      </ul>
+    </ul>
+  </div>
+
+  <!-- TODO: add tabindex -->
+  <div class="pagination-controls form-group mt-3">
+    {{#when page.totalElements '>' page.size }}
+    <ul class="pagination">
+      <li class="page-item page-{{identifier}} {{#when page.number '<=' 1 }}disabled{{/when}}">
+        <a class="page-link" data-page-number="1" data-page-size="{{page.size}}">
+          <span aria-hidden="true">&laquo;&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item page-{{identifier}} {{#when page.number '<=' 1 }}disabled{{/when}}">
+        <a class="page-link" data-page-number="{{#decrement page.number}}{{/decrement}}" data-page-size="{{page.size}}">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {{#each pages}}
+      <li class="page-item page-{{../identifier}} {{#when . '==' ../page.number }}active{{/when}} {{#when . '<' 0 }}disable{{/when}}">
+        {{#when . '<' 0 }}
+        <a class="page-link">
+          <span>...</span>
+        </a>
+        {{else}}
+        <a class="page-link" data-page-number="{{.}}" data-page-size="{{../page.size}}">
+          <span>{{.}}</span>
+          {{#when . '==' ../page.number }}
+          <span class="sr-only">(current)</span>
+          {{/when}}
+        </a>
+        {{/when}}
+      </li>
+      {{/each}}
+      <li class="page-item page-{{identifier}} {{#when page.number '>=' page.totalPages }}disabled{{/when}}">
+        <a class="page-link" data-page-number="{{#increment page.number}}{{/increment}}" data-page-size="{{page.size}}">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      <li class="page-item page-{{identifier}} {{#when page.number '>=' page.totalPages }}disabled{{/when}}">
+        <a class="page-link" data-page-number="{{page.totalPages}}" data-page-size="{{page.size}}">
+          <span aria-hidden="true">&raquo;&raquo;</span>
+        </a>
+      </li>
+    </ul>
+    {{/when}}
+    <div class="page-control-divider"></div>
+    {{#when page.totalElements '>' 5 }}
+    <div>
+      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{page.size}}
+      </button>
+      <div class="dropdown-menu dropdown-menu-right page-size-{{identifier}}">
+        <!-- TODO: use array of options and handlebars each helper -->
+        <button class="dropdown-item" type="button" value="5">5</button>
+        <button class="dropdown-item" type="button" value="10">10</button>
+        <button class="dropdown-item" type="button" value="25">25</button>
+        <button class="dropdown-item" type="button" value="50">50</button>
+        <button class="dropdown-item" type="button" value="100">100</button>
+        <button class="dropdown-item" type="button" value="500">500</button>
+        <button class="dropdown-item" type="button" value="1000">1000</button>
+      </div>
+    </div>
+    {{/when}}
+  </div>
+
+  <style>
+    .pagination-controls {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .pagination-controls .page-control-divider {
+      flex-grow: 1;
+    }
+
+    .page-link:hover {
+      cursor: pointer;
+    }
+
+    .__dimensions_badge_embed__ {
+      display: inline-block;
+    }
+  </style>
+</div>

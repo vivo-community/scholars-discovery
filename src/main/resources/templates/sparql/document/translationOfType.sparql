@@ -5,7 +5,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?translationOf vitro:MostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> bibo:translationOf ?translationOf .
+    <{{uri}}> bibo:translationOf ?translationOf .
     ?translationOf vitro:mostSpecificType ?mostSpecificType .
 	BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?translationOf), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
     FILTER (?mostSpecificType != vivo:DateTimeValue) .

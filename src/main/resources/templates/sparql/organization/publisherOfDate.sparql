@@ -4,7 +4,7 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 CONSTRUCT {
     ?publication vivo:dateTime ?dateTimeWithId .
 } WHERE {
-    <[(${uri})]> vivo:publisherOf ?publication .
+    <{{uri}}> vivo:publisherOf ?publication .
     ?publication a obo:IAO_0000030 .
     ?publication vivo:dateTimeValue ?date .
     ?date vivo:dateTime ?dateTime .

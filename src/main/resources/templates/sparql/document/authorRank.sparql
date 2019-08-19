@@ -5,7 +5,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 CONSTRUCT {
     ?relatedBy vivo:rank ?rankWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relatedBy .
+    <{{uri}}> vivo:relatedBy ?relatedBy .
     ?relatedBy a vivo:Authorship .
     ?relatedBy vivo:relates ?author .
     ?author rdf:type ?type .

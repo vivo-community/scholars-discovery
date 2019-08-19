@@ -4,7 +4,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?technique vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> obo:ERO_0000397 ?technique .
+    <{{uri}}> obo:ERO_0000397 ?technique .
     ?technique vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?technique), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }

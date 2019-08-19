@@ -6,7 +6,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 CONSTRUCT {
     ?editor rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:relatedBy ?relatedBy .
+    <{{uri}}> vivo:relatedBy ?relatedBy .
     ?relatedBy a vivo:Editorship .
     ?relatedBy vivo:relates ?editor .
     ?editor rdf:type ?type .

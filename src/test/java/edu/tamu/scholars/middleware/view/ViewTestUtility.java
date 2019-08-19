@@ -11,11 +11,13 @@ import org.springframework.data.solr.core.query.FacetOptions;
 
 import edu.tamu.scholars.middleware.view.model.DirectoryView;
 import edu.tamu.scholars.middleware.view.model.DiscoveryView;
-import edu.tamu.scholars.middleware.view.model.DisplayTabSectionSubsectionView;
-import edu.tamu.scholars.middleware.view.model.DisplayTabSectionView;
+import edu.tamu.scholars.middleware.view.model.DisplaySectionView;
+import edu.tamu.scholars.middleware.view.model.DisplaySubsectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabView;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.ExportField;
+import edu.tamu.scholars.middleware.view.model.ExportFieldView;
+import edu.tamu.scholars.middleware.view.model.ExportView;
 import edu.tamu.scholars.middleware.view.model.Facet;
 import edu.tamu.scholars.middleware.view.model.FacetType;
 import edu.tamu.scholars.middleware.view.model.Filter;
@@ -56,7 +58,8 @@ public class ViewTestUtility {
         facet.setType(FacetType.STRING);
         facet.setSort(FacetOptions.FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
-        facet.setLimit(20);
+        facet.setPageSize(20);
+        facet.setPageNumber(1);
 
         facets.add(facet);
 
@@ -138,7 +141,8 @@ public class ViewTestUtility {
         facet.setType(FacetType.STRING);
         facet.setSort(FacetOptions.FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
-        facet.setLimit(20);
+        facet.setPageSize(20);
+        facet.setPageNumber(1);
 
         facets.add(facet);
 
@@ -191,6 +195,7 @@ public class ViewTestUtility {
 
         displayView.setName(MOCK_VIEW_NAME);
         displayView.setMainContentTemplate("<div>Main</div>");
+        displayView.setMainContentTemplate("<div>Main</div>");
         displayView.setLeftScanTemplate("<div>Left Scan</div>");
         displayView.setRightScanTemplate("<div>Right Scan</div>");
         displayView.setAsideTemplate("<div>Aside</div>");
@@ -206,11 +211,18 @@ public class ViewTestUtility {
 
         displayView.setMetaTemplates(metaTemplates);
 
+        Map<String, String> embedTemplates = new HashMap<String, String>();
+        embedTemplates.put("default", "<div>Hello, Embedded!</div>");
+
+        displayView.setEmbedTemplates(embedTemplates);
+
         List<DisplayTabView> tabs = new ArrayList<DisplayTabView>();
 
         tabs.add(getMockDisplayTabView());
 
         displayView.setTabs(tabs);
+
+        displayView.setExportView(getMockExportView());
 
         return displayView;
     }
@@ -219,9 +231,9 @@ public class ViewTestUtility {
         DisplayTabView tab = new DisplayTabView();
         tab.setName("Test");
 
-        List<DisplayTabSectionView> sections = new ArrayList<DisplayTabSectionView>();
+        List<DisplaySectionView> sections = new ArrayList<DisplaySectionView>();
 
-        DisplayTabSectionView section = new DisplayTabSectionView();
+        DisplaySectionView section = new DisplaySectionView();
         section.setName("Test");
         section.setTemplate("<span>Hello, World!</span>");
 
@@ -240,7 +252,7 @@ public class ViewTestUtility {
 
         section.setLazyReferences(lazyReferences);
 
-        DisplayTabSectionSubsectionView subsection = new DisplayTabSectionSubsectionView();
+        DisplaySubsectionView subsection = new DisplaySubsectionView();
 
         subsection.setName("Test");
         subsection.setField("publications");
@@ -265,7 +277,7 @@ public class ViewTestUtility {
 
         subsection.setTemplate("<div>Subsection</div>");
 
-        List<DisplayTabSectionSubsectionView> subsections = new ArrayList<DisplayTabSectionSubsectionView>();
+        List<DisplaySubsectionView> subsections = new ArrayList<DisplaySubsectionView>();
         subsections.add(subsection);
 
         section.setSubsections(subsections);
@@ -275,6 +287,62 @@ public class ViewTestUtility {
         tab.setSections(sections);
 
         return tab;
+    }
+
+    public static ExportView getMockExportView() {
+        ExportView export = new ExportView();
+
+        export.setName("Test");
+
+        export.setContentTemplate("<html><body><span>Hello, Content!</span></body></html>");
+        export.setHeaderTemplate("<html><body><span>Hello, Header!</span></body></html>");
+
+        List<String> requiredFields = new ArrayList<String>();
+        requiredFields.add("type");
+
+        export.setRequiredFields(requiredFields);
+
+        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
+        LazyReference reference = new LazyReference();
+        reference.setCollection("persons");
+        reference.setField("publications");
+        lazyReferences.add(reference);
+
+        export.setLazyReferences(lazyReferences);
+
+        List<ExportFieldView> fieldViews = new ArrayList<ExportFieldView>();
+
+        ExportFieldView exportField = new ExportFieldView();
+
+        exportField.setName("Test");
+        exportField.setField("publications");
+
+        Filter filter = new Filter();
+        filter.setField("type");
+        filter.setValue("Test");
+
+        List<Filter> filters = new ArrayList<Filter>();
+        filters.add(filter);
+
+        exportField.setFilters(filters);
+
+        Sort sort = new Sort();
+        sort.setField("date");
+        sort.setDirection(Direction.DESC);
+        sort.setDate(true);
+
+        List<Sort> sorting = new ArrayList<Sort>();
+        sorting.add(sort);
+
+        exportField.setSort(sorting);
+
+        exportField.setLimit(10);
+
+        fieldViews.add(exportField);
+
+        export.setFieldViews(fieldViews);
+
+        return export;
     }
 
 }

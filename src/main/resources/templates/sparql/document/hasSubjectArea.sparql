@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?subjectArea rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:hasSubjectArea ?subjectArea .
+    <{{uri}}> vivo:hasSubjectArea ?subjectArea .
     ?subjectArea rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?subjectArea), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

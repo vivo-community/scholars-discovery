@@ -1,0 +1,12 @@
+<div class="text-center mb-2">
+  {{#if image}}
+  <img class="avatar" src="{{vivoUrl}}{{image}}" height="150" width="150" alt="{{name}}">
+  {{else}}
+  <img class="avatar" src="assets/images/default-avatar.png" height="150" width="150" alt="default avatar">
+  {{/if}}
+</div>
+<style>
+  img.avatar {
+    box-shadow: 2px 2px 4px -1px grey;
+  }
+</style>

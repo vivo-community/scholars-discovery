@@ -10,7 +10,7 @@ import org.apache.jena.sdb.store.DatabaseType;
 import org.apache.jena.sdb.store.LayoutType;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import edu.tamu.scholars.middleware.config.TriplestoreConfig;
+import edu.tamu.scholars.middleware.config.model.TriplestoreConfig;
 
 public class SDBTriplestore implements Triplestore {
 

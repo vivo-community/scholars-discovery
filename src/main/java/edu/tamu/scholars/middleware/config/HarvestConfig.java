@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import edu.tamu.scholars.middleware.config.model.TriplestoreConfig;
 import edu.tamu.scholars.middleware.service.SDBTriplestore;
 import edu.tamu.scholars.middleware.service.TDBTriplestore;
 import edu.tamu.scholars.middleware.service.Triplestore;

@@ -1,2 +1,3 @@
-<p><span th:text="${registration.firstName + ' ' + registration.lastName}"></span>,</p>
-<p><a th:href="${link}"><span th:text="#{confirm-registration.clickHere}"></span></a> <span th:text="#{confirm-registration.confirmationEmail}"></span> <span th:text="${registration.email}"></span>.</p>
+<p><span>{{registration.firstName}} {{registration.lastName}}</span>,</p>
+<!-- TODO: add i18n messages to context -->
+<p><span>Click </span><a href="{{link}}"><span>here</span></a><span> to confirm email {{registration.email}}</span>.</p>

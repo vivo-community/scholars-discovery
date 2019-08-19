@@ -3,9 +3,16 @@ package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +34,12 @@ import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
-import edu.tamu.scholars.middleware.discovery.argument.Facet;
-import edu.tamu.scholars.middleware.discovery.argument.Filter;
-import edu.tamu.scholars.middleware.discovery.argument.Index;
+import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
+import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
+import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 
 public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocument> implements SolrDocumentRepoCustom<D> {
 
@@ -51,7 +59,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, Optional<Index> index, List<Facet> facets, List<Filter> filters, Pageable page) {
+    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facetArguments, List<FilterArg> filters, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         if (query.equals(DEFAULT_QUERY)) {
@@ -68,26 +76,26 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         }
 
         FacetOptions facetOptions = new FacetOptions();
-        facets.forEach(facet -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
+        facetArguments.forEach(facetArg -> {
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facetArg.getPath(type()));
 
-            fieldWithFacetParameters.setLimit(facet.getLimit());
+            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 
-            fieldWithFacetParameters.setOffset(facet.getOffset());
+            fieldWithFacetParameters.setOffset(0);
 
-            fieldWithFacetParameters.setSort(facet.getSort());
+            // NOTE: solr does not return total number of facet entries, nor afford direction of sort
 
             // NOTE: other possible; method, minCount, missing, and prefix
 
             facetOptions.addFacetOnField(fieldWithFacetParameters);
         });
 
-        if (facetOptions.hasFields()) {
+        if (facetOptions.hasFacets()) {
             facetQuery.setFacetOptions(facetOptions);
         }
 
-        filters.forEach(filter -> {
-            facetQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(filter.getPath(type())).is(filter.getValue())));
+        buildFilterQueries(filters).forEach(filterQuery -> {
+            facetQuery.addFilterQuery(filterQuery);
         });
 
         facetQuery.setDefaultOperator(queryOperator);
@@ -100,7 +108,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public Cursor<D> stream(String query, Optional<Index> index, List<Filter> filters, Sort sort) {
+    public Cursor<D> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
         if (index.isPresent()) {
             simpleQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
@@ -119,7 +127,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public long count(String query, List<Filter> filters) {
+    public long count(String query, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
         return solrTemplate.count(collection(), simpleQuery, type());
     }
@@ -128,17 +136,15 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return type().getAnnotation(SolrDocument.class).collection();
     }
 
-    public abstract Class<D> type();
-
     protected Criteria getCriteria(String query) {
         return new SimpleStringCriteria(query);
     }
 
     private SimpleQuery buildSimpleQuery() {
-        return buildSimpleQuery(DEFAULT_QUERY, new ArrayList<Filter>());
+        return buildSimpleQuery(DEFAULT_QUERY, new ArrayList<FilterArg>());
     }
 
-    private SimpleQuery buildSimpleQuery(String query, List<Filter> filters) {
+    private SimpleQuery buildSimpleQuery(String query, List<FilterArg> filters) {
         SimpleQuery simpleQuery = new SimpleQuery();
 
         if (query.equals(DEFAULT_QUERY)) {
@@ -147,8 +153,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             simpleQuery.addCriteria(getCriteria(query));
         }
 
-        filters.forEach(filter -> {
-            simpleQuery.addFilterQuery(new SimpleFilterQuery(new Criteria(filter.getPath(type())).is(filter.getValue())));
+        buildFilterQueries(filters).forEach(filterQuery -> {
+            simpleQuery.addFilterQuery(filterQuery);
         });
 
         simpleQuery.setDefaultOperator(queryOperator);
@@ -158,7 +164,34 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return simpleQuery;
     }
 
-    private Criteria buildCriteria(Index index) {
+    public List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
+        return filters.stream().map(filter -> {
+            Criteria criteria;
+            String value = filter.getValue();
+            if (value.startsWith("[") && value.contains(" TO ") && value.endsWith("]")) {
+                DateFormat format = new SimpleDateFormat("yyyy");
+                String[] parts = value.substring(1, value.length() - 1).split(" TO ");
+                try {
+                    Date from = format.parse(parts[0]);
+                    Date to = format.parse(parts[1]);
+                    criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
+                } catch (ParseException e) {
+                    try {
+                        LocalDate from = DateFormatUtility.parse(parts[0]);
+                        LocalDate to = DateFormatUtility.parse(parts[1]);
+                        criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
+                    } catch (DateTimeParseException dtpe) {
+                        criteria = new SimpleStringCriteria(String.format("%s:%s", filter.getPath(type()), value));
+                    }
+                }
+            } else {
+                criteria = new Criteria(filter.getPath(type())).is(value);
+            }
+            return new SimpleFilterQuery(criteria);
+        }).collect(Collectors.toList());
+    }
+
+    private Criteria buildCriteria(IndexArg index) {
         Criteria criteria = new Criteria(index.getPath(type()));
         switch (index.getOperationKey()) {
         case BETWEEN:

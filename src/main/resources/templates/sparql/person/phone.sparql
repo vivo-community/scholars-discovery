@@ -4,7 +4,7 @@ PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 CONSTRUCT {
     ?hasTelephone vcard:telephone ?phone .
 } WHERE {
-    <[(${uri})]> obo:ARG_2000028 ?vcard .
+    <{{uri}}> obo:ARG_2000028 ?vcard .
     ?vcard vcard:hasTelephone ?hasTelephone .
     ?hasTelephone a vcard:Telephone .
     ?hasTelephone vcard:telephone ?phone .

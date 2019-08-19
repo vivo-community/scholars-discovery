@@ -5,18 +5,24 @@ import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MAX_LENGT
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MIN_LENGTH;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 
+import java.util.TimeZone;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
-import edu.tamu.scholars.middleware.config.ExportConfig;
-import edu.tamu.scholars.middleware.config.MiddlewareConfig;
+import edu.tamu.scholars.middleware.config.model.ExportConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
+@EnableAsync
+@EnableCaching
 @EnableScheduling
 @SpringBootApplication
 public class MiddlewareApplication {
@@ -37,6 +43,11 @@ public class MiddlewareApplication {
         PASSWORD_MAX_LENGTH = password.getMaxLength();
         ExportConfig export = middlewareConfig.getExport();
         EXPORT_INDIVIDUAL_KEY = export.getIndividualKey();
+    }
+
+    @PostConstruct
+    public void initializeTimeZone() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 }

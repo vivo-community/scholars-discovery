@@ -33,8 +33,11 @@ public class Facet {
     @Enumerated(EnumType.STRING)
     private Direction direction;
 
-    @Column(nullable = false, name = "default_limit")
-    private int limit;
+    @Column(nullable = false)
+    private int pageSize;
+
+    @Column(nullable = false)
+    private int pageNumber;
 
     @Column(nullable = false)
     private boolean collapsed;
@@ -46,7 +49,8 @@ public class Facet {
         type = STRING;
         sort = COUNT;
         direction = DESC;
-        limit = 10;
+        pageSize = 10;
+        pageNumber = 1;
         collapsed = true;
         hidden = false;
     }
@@ -91,12 +95,20 @@ public class Facet {
         this.direction = direction;
     }
 
-    public int getLimit() {
-        return limit;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setLimit(int limit) {
-        this.limit = limit;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     public boolean isCollapsed() {

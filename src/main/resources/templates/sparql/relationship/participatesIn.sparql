@@ -5,7 +5,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?participatesIn rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000056 ?participatesIn .
+    <{{uri}}> obo:RO_0000056 ?participatesIn .
     ?participatesIn rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?participatesIn), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

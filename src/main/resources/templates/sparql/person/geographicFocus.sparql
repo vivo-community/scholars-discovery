@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?geographicFocus rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:geographicFocus ?geographicFocus .
+    <{{uri}}> vivo:geographicFocus ?geographicFocus .
     ?geographicFocus rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?geographicFocus), "(^.*/)", "::") ) AS ?labelWithId ) .
 }
