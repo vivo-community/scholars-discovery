@@ -42,26 +42,34 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
             Optional<String> field = Optional.empty();
 
-            List<FacetEntry> entries = new ArrayList<FacetEntry>();
-
             Optional<FacetArg> facetArgument = Optional.empty();
+
+            Map<String, FacetEntry> facetEntries = new HashMap<String, FacetEntry>();
 
             for (FacetFieldEntry facetFieldEntry : facetFieldEntryPage.getContent()) {
                 if (!field.isPresent()) {
                     field = Optional.of(facetFieldEntry.getField().getName());
                     facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(facetFieldEntry.getField().getName())).findAny();
                 }
-                entries.add(new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
-            }
-            if (facetArgument.isPresent()) {
+                String key;
                 switch (facetArgument.get().getType()) {
                 case DATE_YEAR:
-                    entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(DateFormatUtility.parse(e.value).getYear(), e), Map::putAll).values());
+                    key = String.valueOf(DateFormatUtility.parse(facetFieldEntry.getValue()).getYear());
                     break;
                 case STRING:
                 default:
+                    key = facetFieldEntry.getValue();
                     break;
                 }
+                if (facetEntries.containsKey(key)) {
+                    FacetEntry facetEntry = facetEntries.get(key);
+                    facetEntries.put(key, new FacetEntry(facetFieldEntry.getValue(), facetEntry.getCount() + facetFieldEntry.getValueCount()));
+                } else {
+                    facetEntries.put(key, new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
+                }
+            }
+            if (facetArgument.isPresent()) {
+                List<FacetEntry> entries = new ArrayList<FacetEntry>(facetEntries.values());
 
                 sort(entries, facetArgument.get());
 
