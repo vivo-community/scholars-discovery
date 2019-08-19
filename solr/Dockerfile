@@ -33,18 +33,3 @@ RUN precreate-core concepts
 
 RUN chmod ugo+w -R /opt/solr/server/solr/mycores/
 
-#RUN mkdir -p  /opt/solr/server/solr/mycores/collections/data
-#RUN mkdir -p /opt/solr/server/solr/mycores/concepts/data
-#RUN mkdir -p /opt/solr/server/solr/mycores/documents/data
-#RUN mkdir -p /opt/solr/server/solr/mycores/organizations/data
-#RUN mkdir -p /opt/solr/server/solr/mycores/persons/data
-#RUN mkdir -p /opt/solr/server/solr/mycores/processes/data
-#RUN mkdir -p /opt/solr/server/solr/mycores/relationships/data
-
-#RUN precreate-core persons /opt/solr/server/solr/persons
-#RUN precreate-core organizations /opt/solr/server/solr/organizations
-#RUN precreate-core documents /opt/solr/server/solr/documents
-#RUN precreate-core relationships /opt/solr/server/solr/relationships
-#RUN precreate-core processes /opt/solr/server/solr/processes
-#RUN precreate-core collections /opt/solr/server/solr/collections
-#RUN precreate-core concepts /opt/solr/server/solr/concepts
