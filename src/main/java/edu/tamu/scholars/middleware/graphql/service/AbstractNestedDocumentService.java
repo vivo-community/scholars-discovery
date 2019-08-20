@@ -21,6 +21,7 @@ import org.springframework.data.util.ReflectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
@@ -120,8 +121,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     @SuppressWarnings("unchecked")
-    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        FacetPage<D> facetPage = repo.search(query, index, facets, filters, page);
+    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        FacetPage<D> facetPage = repo.search(query, index, facets, filters, boosts, page);
         List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
         Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
         ReflectionUtils.setField(field, facetPage, content);
@@ -129,23 +130,39 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     public DiscoveryFacetPage<ND> search(String query, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), page);
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page);
+    }
+
+    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page);
     }
 
     public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, page);
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page);
+    }
+
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, boosts, page);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), page);
+        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, filters, page);
+        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page);
+    }
+
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        return facetedSearch(query, Optional.empty(), facets, filters, boosts, page);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        FacetPage<ND> facetPage = search(query, index, facets, filters, page);
+        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page);
+    }
+
+    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        FacetPage<ND> facetPage = search(query, index, facets, filters, boosts, page);
         return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
@@ -190,8 +207,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public Cursor<ND> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, Sort sort) {
-        throw new UnsupportedOperationException("Unable to map stream");
+    public Cursor<ND> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+        throw new UnsupportedOperationException("Streaming is currently unsupported");
     }
 
     protected abstract Class<?> getOriginDocumentType();

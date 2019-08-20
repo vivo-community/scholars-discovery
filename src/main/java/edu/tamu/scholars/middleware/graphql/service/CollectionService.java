@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
@@ -73,6 +74,18 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
     }
 
     @Override
+    @GraphQLQuery(name = "collectionsSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Collection> search(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.search(query, boosts, page);
+    }
+
+    @Override
     @GraphQLQuery(name = "collectionsFilterSearch")
     // @formatter:off
     public DiscoveryFacetPage<Collection> filterSearch(
@@ -82,6 +95,19 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
     ) {
     // @formatter:on
         return super.filterSearch(query, filters, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "collectionsFilterSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Collection> filterSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.filterSearch(query, filters, boosts, page);
     }
 
     @Override
@@ -110,6 +136,20 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
     }
 
     @Override
+    @GraphQLQuery(name = "collectionsFacetedSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Collection> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, facets, filters, boosts, page);
+    }
+
+    @Override
     @GraphQLQuery(name = "collectionsFacetedSearchIndex")
     // @formatter:off
     public DiscoveryFacetPage<Collection> facetedSearch(
@@ -121,6 +161,21 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
     ) {
     // @formatter:on
         return super.facetedSearch(query, index, facets, filters, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "collectionsFacetedSearchIndex")
+    // @formatter:off
+    public DiscoveryFacetPage<Collection> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "index") Optional<IndexArg> index,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, index, facets, filters, boosts, page);
     }
 
     @Override
