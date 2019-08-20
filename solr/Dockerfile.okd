@@ -8,8 +8,7 @@ FROM solr:7.7.2-slim
 #COPY --chown=solr:solr config /opt/solr/server/solr/collections
 #COPY --chown=solr:solr config /opt/solr/server/solr/concepts
 
-RUN mkdir -p /scholars
-COPY config /scholars
+COPY config /opt/
 
 RUN chmod ugo+w -R /opt/solr/server/solr/
 RUN chmod ugo+w -R /opt/solr/server/logs/
@@ -19,7 +18,7 @@ USER solr
 
 RUN mkdir -p /opt/solr/server/solr/persons
 RUN chown -R solr /opt/solr/server/solr/persons
-COPY /scholars/config /opt/solr/server/solr/persons/
+COPY /opt/config /opt/solr/server/solr/persons/
 RUN precreate-core persons
 
 RUN mkdir -p /opt/solr/server/solr/organizations
