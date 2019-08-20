@@ -8,7 +8,7 @@ FROM solr:7.7.2-slim
 #COPY --chown=solr:solr config /opt/solr/server/solr/collections
 #COPY --chown=solr:solr config /opt/solr/server/solr/concepts
 
-COPY config /opt/
+COPY ./solr/config /opt/
 
 RUN chmod ugo+w -R /opt/solr/server/solr/
 RUN chmod ugo+w -R /opt/solr/server/logs/
