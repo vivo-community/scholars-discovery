@@ -48,6 +48,8 @@ RUN chown -R solr /opt/solr/server/solr/concepts
 COPY ./solr/config /opt/solr/server/solr/concepts
 RUN precreate-core concepts
 
+RUN chmod ugo+w -R /opt/solr/server/solr/mycores/
+
 #RUN precreate-core persons /opt/solr/server/solr/persons
 #RUN precreate-core organizations /opt/solr/server/solr/organizations
 #RUN precreate-core documents /opt/solr/server/solr/documents
