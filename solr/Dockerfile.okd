@@ -2,6 +2,12 @@ FROM solr:7.7.2-slim
 
 USER solr 
 
+# calls had to be separated into multiple commands
+# in order to support OpenShift environment.
+# COPY --chown=solr:solr config /opt/solr/server/solr/relationships 
+# First run chown -R solr to /opt/solr/server/solr
+# Second copy config folder into /opt/solr/server/persons/
+
 RUN chown -R solr /opt/solr/server/solr
 RUN chmod ugo+w -R /opt/solr/server/solr/
 RUN chmod ugo+w -R /opt/solr/server/logs/
