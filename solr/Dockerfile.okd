@@ -15,7 +15,7 @@ USER solr
 
 
 RUN mkdir -p /opt/solr/server/solr/persons
-COPY config /opt/solr/server/solr/persons
+COPY ./config /opt/solr/server/solr/persons/
 RUN chown -R solr /opt/solr/server/solr/persons
 RUN precreate-core persons
 
