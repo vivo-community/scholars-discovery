@@ -21,3 +21,5 @@ RUN precreate-core relationships
 RUN precreate-core processes
 RUN precreate-core collections
 RUN precreate-core concepts
+
+RUN chmod ugo+w -R /opt/solr/server/solr/mycores/
