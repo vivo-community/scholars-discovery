@@ -2,6 +2,10 @@ FROM solr:7.7.2-slim
 
 USER solr 
 
+RUN chown -R solr /opt/solr/server/solr
+RUN chmod ugo+w -R /opt/solr/server/solr/
+RUN chmod ugo+w -R /opt/solr/server/logs/
+
 COPY ./solr/config /opt/solr/server/solr/persons
 COPY ./solr/config /opt/solr/server/solr/organizations
 COPY ./solr/config /opt/solr/server/solr/documents
@@ -9,10 +13,6 @@ COPY ./solr/config /opt/solr/server/solr/relationships
 COPY ./solr/config /opt/solr/server/solr/processes
 COPY ./solr/config /opt/solr/server/solr/collections
 COPY ./solr/config /opt/solr/server/solr/concepts
-
-RUN chown -R solr /opt/solr/server/solr
-RUN chmod ugo+w -R /opt/solr/server/solr/
-RUN chmod ugo+w -R /opt/solr/server/logs/
 
 RUN precreate-core persons
 RUN precreate-core organizations
