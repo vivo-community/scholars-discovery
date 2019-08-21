@@ -389,40 +389,24 @@
   - name: Type
     field: type
     type: STRING
-    sort: COUNT
-    direction: DESC
+    sort: INDEX
+    direction: ASC
     pageSize: 10
     collapsed: true
     hidden: false
   - name: Within Organization
     field: organizationWithin
     type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Organization For Training
-    field: organizationForTraining
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Awards Grant
-    field: awardsGrant
-    type: STRING
-    sort: INDEX
-    direction: ASC
+    sort: COUNT
+    direction: DESC
     pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Areas
     field: affiliatedResearchAreas
     type: STRING
-    sort: INDEX
-    direction: ASC
+    sort: COUNT
+    direction: DESC
     pageSize: 10
     collapsed: true
     hidden: false

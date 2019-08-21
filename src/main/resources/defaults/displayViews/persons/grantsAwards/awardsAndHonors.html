@@ -8,7 +8,9 @@
       {{#each awardConferredBy}}
       <span> conferred by <a href="display/organizations/{{id}}">{{label}}</a></span>
       {{/each}}
+      {{#if yearAwarded}}
       <span class="badge badge-light">{{toYear yearAwarded}}</span>
+      {{/if}}
     </li>
     {{/each}}
   </ul>
