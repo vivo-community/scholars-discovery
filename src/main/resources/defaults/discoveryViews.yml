@@ -64,6 +64,13 @@
     collapsed: true
     hidden: false
   filters: []
+  boosts:
+  - field: firstName
+    value: 2
+  - field: lastName
+    value: 2
+  - field: name
+    value: 2
   sort:
   - field: name
     direction: ASC
@@ -152,6 +159,11 @@
     collapsed: true
     hidden: false
   filters: []
+  boosts:
+  - field: title
+    value: 2
+  - field: keywords
+    value: 2
   sort:
   - field: title
     direction: ASC
@@ -247,6 +259,11 @@
   filters:
   - field: type
     value: Grant
+  boosts:
+  - field: title
+    value: 2
+  - field: awardedBy
+    value: 2
   sort:
   - field: title
     direction: ASC
@@ -308,6 +325,9 @@
   filters:
   - field: type
     value: Award
+  boosts:
+  - field: name
+    value: 2
   sort:
   - field: name
     direction: ASC
@@ -349,6 +369,9 @@
   filters:
   - field: type
     value: Course
+  boosts:
+  - field: title
+    value: 2
   sort:
   - field: title
     direction: ASC
@@ -404,6 +427,7 @@
     collapsed: true
     hidden: false
   filters: []
+  boosts: []
   sort: []
   export:
     - columnHeader: Name
@@ -445,6 +469,9 @@
   filters:
   - field: type
     value: Concept
+  boosts:
+  - field: name
+    value: 2
   sort:
   - field: name
     direction: ASC

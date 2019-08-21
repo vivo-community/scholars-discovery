@@ -17,6 +17,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
+import edu.tamu.scholars.middleware.discovery.resolver.BoostArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FacetArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FilterArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.IndexArgumentResolver;
@@ -53,6 +54,7 @@ public class RepositoryRestMvcConfig extends RepositoryRestMvcConfiguration {
         resolvers.add(new IndexArgumentResolver());
         resolvers.add(new FilterArgumentResolver());
         resolvers.add(new FacetArgumentResolver());
+        resolvers.add(new BoostArgumentResolver());
         resolvers.add(new ExportArgumentResolver());
         return resolvers;
     }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions;
 
+import edu.tamu.scholars.middleware.view.model.Boost;
 import edu.tamu.scholars.middleware.view.model.DirectoryView;
 import edu.tamu.scholars.middleware.view.model.DiscoveryView;
 import edu.tamu.scholars.middleware.view.model.DisplaySectionView;
@@ -75,6 +76,17 @@ public class ViewTestUtility {
         filters.add(filter);
 
         directoryView.setFilters(filters);
+
+        List<Boost> boosts = new ArrayList<Boost>();
+
+        Boost boost = new Boost();
+
+        boost.setField("name");
+        boost.setValue(2.0f);
+
+        boosts.add(boost);
+
+        directoryView.setBoosts(boosts);
 
         List<Sort> sorting = new ArrayList<Sort>();
 
@@ -158,6 +170,17 @@ public class ViewTestUtility {
         filters.add(filter);
 
         discoveryView.setFilters(filters);
+
+        List<Boost> boosts = new ArrayList<Boost>();
+
+        Boost boost = new Boost();
+
+        boost.setField("name");
+        boost.setValue(2.0f);
+
+        boosts.add(boost);
+
+        discoveryView.setBoosts(boosts);
 
         List<Sort> sorting = new ArrayList<Sort>();
 

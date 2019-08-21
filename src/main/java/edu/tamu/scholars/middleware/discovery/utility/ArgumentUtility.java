@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
@@ -17,6 +18,7 @@ public class ArgumentUtility {
 
     private final static String FACET_QUERY_PARAM_KEY = "facets";
     private final static String FILTER_QUERY_PARAM_KEY = "filters";
+    private final static String BOOST_QUERY_PARAM_KEY = "boost";
     private final static String INDEX_QUERY_PARAM_KEY = "index";
 
     private final static String FACET_SORT_FORMAT = "%s.sort";
@@ -92,6 +94,18 @@ public class ArgumentUtility {
         });
         // @formatter:on
         return filters;
+    }
+
+    public static List<BoostArg> getBoostArguments(HttpServletRequest request) {
+        // @formatter:off
+        return Collections.list(request.getParameterNames()).stream()
+            .filter(paramName -> paramName.equals(BOOST_QUERY_PARAM_KEY))
+            .map(request::getParameterValues)
+            .map(Arrays::asList)
+            .flatMap(list -> list.stream())
+            .map(BoostArg::of)
+            .collect(Collectors.toList());
+        // @formatter:on
     }
 
     public static Optional<IndexArg> getIndexArgument(HttpServletRequest request) {

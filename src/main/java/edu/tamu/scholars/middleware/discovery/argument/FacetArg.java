@@ -44,8 +44,8 @@ public class FacetArg extends MappingArg {
         Map<String, Object> facet = (Map<String, Object>) input;
         String field = (String) facet.get("field");
         String sort = (String) facet.get("sort");
-        Integer pageSize = (Integer) facet.get("pageSize");
-        Integer pageNumber = (Integer) facet.get("pageNumber");
+        int pageSize = (int) facet.get("pageSize");
+        int pageNumber = (int) facet.get("pageNumber");
         String type = (String) facet.get("type");
         return new FacetArg(field, sort, pageSize, pageNumber, type);
     }
