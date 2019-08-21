@@ -16,4 +16,7 @@ COPY ./config /opt/solr/server/solr/mycores/processes
 COPY ./config /opt/solr/server/solr/mycores/collections
 COPY ./config /opt/solr/server/solr/mycores/concepts
 
+RUN chown -R solr:solr /opt/solr/server/solr
+RUN chmod -R ugo+w /opt/solr/server/solr/
 RUN chmod -R ugo+w /opt/solr/server/logs/
+
