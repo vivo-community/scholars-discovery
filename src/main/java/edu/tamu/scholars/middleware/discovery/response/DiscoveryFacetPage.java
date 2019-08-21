@@ -45,8 +45,6 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
                 if (facetArgument.isPresent()) {
 
-                    long startTime = System.nanoTime();
-
                     // @formatter:off
                     List<FacetEntry> entries = facetFieldEntryPage.getContent().parallelStream()
                         .map(entry -> new FacetEntry(entry.getValue(), entry.getValueCount()))
@@ -54,12 +52,6 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                         .sorted(FacetEntryComparator.of(facetArgument.get().getSort()))
                         .collect(Collectors.toList());
                     // @formatter:on
-
-                    long endTime = System.nanoTime();
-
-                    long duration = (endTime - startTime) / 1000000;
-
-                    System.out.println("\n\n" + duration + " milliseconds\n\n");
 
                     int pageSize = facetArgument.get().getPageSize();
                     int pageNumber = facetArgument.get().getPageNumber();
