@@ -8,6 +8,9 @@ RUN precreate-core processes
 RUN precreate-core collections
 RUN precreate-core concepts
 
+RUN chmod -R ugo+w /opt/solr/server/solr/
+RUN chmod -R ugo+w /opt/solr/server/logs/
+
 COPY ./config /opt/solr/server/solr/mycores/persons
 COPY ./config /opt/solr/server/solr/mycores/organizations
 COPY ./config /opt/solr/server/solr/mycores/documents
@@ -15,7 +18,4 @@ COPY ./config /opt/solr/server/solr/mycores/relationships
 COPY ./config /opt/solr/server/solr/mycores/processes
 COPY ./config /opt/solr/server/solr/mycores/collections
 COPY ./config /opt/solr/server/solr/mycores/concepts
-
-RUN chmod -R ugo+w /opt/solr/server/solr/
-RUN chmod -R ugo+w /opt/solr/server/logs/
 
