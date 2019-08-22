@@ -41,7 +41,7 @@ public class Collection extends AbstractSolrDocument {
     private String thumbnail;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "websiteUrl", key = "url") })
+    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
     @PropertySource(template = "collection/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> websites;
 
@@ -65,7 +65,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> publicationVenueFor;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "authorType", key = "type"), @Reference(value = "authorRank", key = "rank"), @Reference(value = "authorOrganization", key = "organizations") })
+    @NestedObject(properties = { @Reference(value = "authorType", key = "type"), @Reference(value = "authorRank", key = "rank"), @Reference(value = "authorOrganization", key = "organizations") })
     @PropertySource(template = "collection/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authors;
 
@@ -84,7 +84,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> authorOrganization;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "editorType", key = "type"), @Reference(value = "editorRank", key = "rank") })
+    @NestedObject(properties = { @Reference(value = "editorType", key = "type"), @Reference(value = "editorRank", key = "rank") })
     @PropertySource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
@@ -97,7 +97,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> editorRank;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "translatorType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "translatorType", key = "type") })
     @PropertySource(template = "collection/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translators;
 
@@ -110,7 +110,7 @@ public class Collection extends AbstractSolrDocument {
     private String publicationDate;
 
     @Indexed(type = "nested_string")
-    @NestedObject({ @Reference(value = "publisherType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "publisherType", key = "type") })
     @PropertySource(template = "collection/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
 
@@ -124,7 +124,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> subjectAreas;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "featureType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "featureType", key = "type") })
     @PropertySource(template = "collection/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> features;
 
@@ -133,7 +133,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> featureType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "geographicFocusType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "collection/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
@@ -142,7 +142,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> geographicFocusType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "outputOfProcessOrEventType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "outputOfProcessOrEventType", key = "type") })
     @PropertySource(template = "collection/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
@@ -171,7 +171,7 @@ public class Collection extends AbstractSolrDocument {
     private String oclcnum;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "isAboutType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "isAboutType", key = "type") })
     @PropertySource(template = "collection/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> isAbout;
 
@@ -180,7 +180,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> isAboutType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "specifiedOutputOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "collection/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
@@ -189,7 +189,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> specifiedOutputOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "mentionType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "mentionType", key = "type") })
     @PropertySource(template = "collection/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> mentions;
 
@@ -203,7 +203,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> participatesIn;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "supportedByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "supportedByType", key = "type") })
     @PropertySource(template = "collection/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedBy;
 

@@ -153,7 +153,7 @@ public class NestedDocumentGenerator {
                 }
             }
 
-            for (Reference reference : nestedObject.value()) {
+            for (Reference reference : nestedObject.properties()) {
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);
                 basicFields = basicFields.stream().filter(f -> !f.getName().equals(nestedField.getName())).collect(Collectors.toList());
             }
@@ -215,7 +215,7 @@ public class NestedDocumentGenerator {
         Optional<NestedObject> parentNestedObject = Optional.ofNullable(field.getAnnotation(NestedObject.class));
 
         if (parentNestedObject.isPresent()) {
-            for (Reference reference : parentNestedObject.get().value()) {
+            for (Reference reference : parentNestedObject.get().properties()) {
                 String fieldName = reference.key();
 
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);

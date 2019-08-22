@@ -50,7 +50,7 @@ public class Relationship extends AbstractSolrDocument {
     private String description;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "receiptOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "receiptOfType", key = "type") })
     @PropertySource(template = "relationship/receiptOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receiptOf;
 
@@ -59,7 +59,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> receiptOfType;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardOrHonorForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
     @PropertySource(template = "relationship/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorFor;
 
@@ -68,7 +68,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> awardOrHonorForType;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByPreferredLabel", key = "abbreviation") })
+    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByPreferredLabel", key = "abbreviation") })
     @PropertySource(template = "relationship/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardConferredBy;
 
@@ -85,7 +85,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> awardConferredByPreferredLabel;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation") })
+    @NestedObject(properties = { @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation") })
     @PropertySource(template = "relationship/awardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardedBy;
 
@@ -102,7 +102,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> awardedByPreferredLabel;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "grantSubcontractedThroughType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "grantSubcontractedThroughType", key = "type") })
     @PropertySource(template = "relationship/grantSubcontractedThrough", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> grantSubcontractedThrough;
 
@@ -111,7 +111,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> grantSubcontractedThroughType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "administeredByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "administeredByType", key = "type") })
     @PropertySource(template = "relationship/administeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> administeredBy;
 
@@ -120,7 +120,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> administeredByType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "geographicFocusType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "relationship/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
@@ -129,7 +129,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> geographicFocusType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "subGrantType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "subGrantType", key = "type") })
     @PropertySource(template = "relationship/subGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrant;
 
@@ -138,7 +138,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> subGrantType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "subGrantOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "subGrantOfType", key = "type") })
     @PropertySource(template = "relationship/subGrantOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrantOf;
 
@@ -147,7 +147,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> subGrantOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "providesFundingForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "providesFundingForType", key = "type") })
     @PropertySource(template = "relationship/providesFundingFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> providesFundingFor;
 
@@ -172,7 +172,7 @@ public class Relationship extends AbstractSolrDocument {
     private String localAwardId;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
+    @NestedObject(properties = { @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
     @PropertySource(template = "relationship/contributor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contributors;
 
@@ -195,7 +195,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> coPrincipalInvestigators;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "supportedPublicationOrOtherWorkType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "supportedPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "relationship/supportedPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedPublicationOrOtherWork;
 
@@ -212,7 +212,7 @@ public class Relationship extends AbstractSolrDocument {
     private String dateTimeIntervalEnd;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "subjectAreaType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "subjectAreaType", key = "type") })
     @PropertySource(template = "relationship/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
@@ -230,7 +230,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> sameAs;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "inheresInType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "inheresInType", key = "type") })
     @PropertySource(template = "relationship/inheresIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inheresIn;
 
@@ -239,7 +239,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> inheresInType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "specifiedOutputOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "relationship/isSpecifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
@@ -248,7 +248,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> specifiedOutputOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "outputOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "outputOfType", key = "type") })
     @PropertySource(template = "relationship/outputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOf;
 
@@ -257,7 +257,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> outputOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "participatesInType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "participatesInType", key = "type") })
     @PropertySource(template = "relationship/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
 

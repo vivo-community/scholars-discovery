@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.discovery.utility;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DISCOVERY_MODEL_PACKAGE;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.LABEL;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DELIMETER_REGEX;
 
 import java.lang.reflect.Field;
@@ -125,7 +124,7 @@ public class DiscoveryUtility {
         NestedObject nestedObject = field.getAnnotation(NestedObject.class);
         String referenceProperty = properties.get(0);
         if (nestedObject != null) {
-            for (Reference reference : nestedObject.value()) {
+            for (Reference reference : nestedObject.properties()) {
                 if (reference.key().equals(referenceProperty)) {
                     properties.set(0, reference.value());
                     return findProperty(type, properties);
@@ -138,7 +137,7 @@ public class DiscoveryUtility {
     }
 
     public static Field findField(Class<?> clazz, String[] path) throws InvalidValuePathException {
-        if (path.length == 1 || path[1].equals(LABEL) || path[1].equals(ID)) {
+        if (path.length >= 1) {
             return findField(clazz, path[0]);
         }
         Field field = findField(clazz, path[0]);
@@ -146,8 +145,8 @@ public class DiscoveryUtility {
     }
 
     public static Field getReferenceField(Field field, String[] path) throws InvalidValuePathException {
-        NestedObject nested = field.getAnnotation(NestedObject.class);
-        for (Reference reference : nested.value()) {
+        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+        for (Reference reference : nestedObject.properties()) {
             if (reference.key().contentEquals(path[0])) {
                 Field refField = findField(field.getDeclaringClass(), reference.value());
                 return path.length > 1 ? getReferenceField(refField, Arrays.copyOfRange(path, 1, path.length)) : refField;
