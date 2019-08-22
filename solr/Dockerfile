@@ -8,10 +8,19 @@ RUN precreate-core processes
 RUN precreate-core collections
 RUN precreate-core concepts
 
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/persons/conf
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/organizations/conf
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/documents/conf
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/relationships/conf
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/processes/conf
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/collections/conf
-COPY --chown=solr:solr config /opt/solr/server/solr/mycores/concepts/conf
+RUN chmod -R ugo+w /opt/solr/server/solr/
+RUN chmod -R ugo+w /opt/solr/server/logs/
+
+COPY config /opt/solr/server/solr/mycores/persons/conf
+COPY config /opt/solr/server/solr/mycores/organizations/conf
+COPY config /opt/solr/server/solr/mycores/documents/conf
+COPY config /opt/solr/server/solr/mycores/relationships/conf
+COPY config /opt/solr/server/solr/mycores/processes/conf
+COPY config /opt/solr/server/solr/mycores/collections/conf
+COPY config /opt/solr/server/solr/mycores/concepts/conf
+
+USER root
+
+RUN chown -R solr:solr /opt/solr/server/solr/mycores/
+
+USER solr
