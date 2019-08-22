@@ -8,6 +8,8 @@ CONSTRUCT {
     <{{uri}}> obo:RO_0000056 ?training .
     ?training obo:RO_0002234 ?info .
     ?info vivo:relates ?degree .
+    ?degree a ?type .
     ?degree rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?training), "(^.*/)", "::") ) AS ?labelWithId ) .
+    FILTER(?type IN (vivo:AcademicDegree, vivo:EducationalProcess))
 }
