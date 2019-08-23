@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
+import edu.tamu.scholars.middleware.graphql.model.relationship.Organization;
 import edu.tamu.scholars.middleware.graphql.model.relationship.ReceiptOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.AwardOrHonorFor;
 import edu.tamu.scholars.middleware.graphql.model.relationship.AwardConferredBy;
@@ -40,6 +41,8 @@ import java.util.List;
 @JsonInclude(NON_EMPTY)
 public class Relationship extends AbstractNestedDocument {
   private static final long serialVersionUID = -556210658L;
+
+  private List<Organization> organization;
 
   private List<ReceiptOf> receiptOf;
 
@@ -116,6 +119,14 @@ public class Relationship extends AbstractNestedDocument {
 
   public Relationship() {
     super();
+  }
+
+  public List<Organization> getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(List<Organization> organization) {
+    this.organization = organization;
   }
 
   public List<ReceiptOf> getReceiptOf() {

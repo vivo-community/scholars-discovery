@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.graphql.model.Relationship;
 
 public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<Relationship, edu.tamu.scholars.middleware.discovery.model.Relationship, RelationshipRepo, RelationshipService> {
 
-    @Value("classpath:mock/discovery/relationship")
+    @Value("classpath:mock/discovery/relationships")
     private Resource mocksDirectory;
 
     @Override

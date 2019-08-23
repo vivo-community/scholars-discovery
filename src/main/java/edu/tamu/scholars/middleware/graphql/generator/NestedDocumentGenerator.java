@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +26,11 @@ import org.springframework.util.FileSystemUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
@@ -37,6 +45,8 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.graphql.config.model.Composite;
+import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 import io.leangen.graphql.annotations.types.GraphQLType;
 
@@ -54,20 +64,54 @@ public class NestedDocumentGenerator {
 
     private static final ClassName STRING = ClassName.get("java.lang", "String");
 
-    public final String destinationPath;
+    private final String destinationPath;
 
-    public final String destinationPackage;
+    private final String destinationPackage;
+    
+    private final Optional<String> compositesPath;
+    
+    private final List<Composite> composites;
 
     public NestedDocumentGenerator(String destinationPath, String destinationPackage) {
         this.destinationPath = destinationPath;
         this.destinationPackage = destinationPackage;
+        this.compositesPath = Optional.empty();
+        this.composites = new ArrayList<Composite>();
+    }
+
+    public NestedDocumentGenerator(String destinationPath, String destinationPackage, String compositesPath) {
+        this.destinationPath = destinationPath;
+        this.destinationPackage = destinationPackage;
+        this.compositesPath = Optional.of(compositesPath);
+        this.composites = new ArrayList<Composite>();
     }
 
     public void generate() {
         FileSystemUtils.deleteRecursively(new File(String.format("%s%s%s", destinationPath, File.separator, destinationPackage.replace(".", "/"))));
+
+        if (compositesPath.isPresent()) {
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            Path path = Paths.get(compositesPath.get());
+            try {
+                URL url = path.toUri().toURL();
+                // @formatter:off
+                composites.addAll(mapper.readValue(url, new TypeReference<List<Composite>>() {}));
+                // @formatter:on
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
         buildAbstractNestedDocument();
+        
         for (Class<?> docType : getDiscoveryDocumentTypes()) {
-            buildNestedDocumentClass(docType);
+            buildNestedDocument(docType);
         }
     }
 
@@ -88,9 +132,6 @@ public class NestedDocumentGenerator {
                         .build())
                 .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)))
                 .addMethod(constructor())
-                .addField(STRING, "label", Modifier.PRIVATE)
-                .addMethod(getter(STRING, "label"))
-                .addMethod(setter(STRING, "label"))
                 .build();
 
         JavaFile nestedDocumentFile = JavaFile.builder(packagePath, abstractNestedDocumentClass).build();
@@ -104,12 +145,14 @@ public class NestedDocumentGenerator {
         }
     }
 
-    private void buildNestedDocumentClass(Class<?> docType) {
+    private void buildNestedDocument(Class<?> docType) {
         String packagePath = destinationPackage;
 
         String nestedPackagePath = String.format("%s.%s", destinationPackage, docType.getSimpleName().toLowerCase());
 
         String className = docType.getSimpleName();
+        
+        Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(className)).findAny();
 
         List<Field> basicFields = FieldUtils.getAllFieldsList(docType)
                 .stream()
@@ -132,13 +175,18 @@ public class NestedDocumentGenerator {
 
         for(Field field : nestedObjectFields) {
             NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+            
+            Optional<CompositeReference> compositeReference = Optional.empty();
 
-            if (nestedObject.root()) {
-                String nestedClassName = buildNestedClass(field, field.getName());
+            if (composite.isPresent()) {
+                compositeReference = composite.get().getReferences().stream().filter(r -> r.getName().equals(field.getName())).findAny();
+            }
+            
+            if(compositeReference.isPresent()) {
+
+                imports.add(String.format("%s.%s", packagePath, compositeReference.get().getType()));
                 
-                imports.add(String.format("%s.%s", nestedPackagePath, nestedClassName));
-
-                ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
+                ClassName nestedClass = ClassName.get(packagePath, compositeReference.get().getType());
 
                 if (List.class.isAssignableFrom(field.getType())) {
                     TypeName listOfNestedClass = ParameterizedTypeName.get(LIST, nestedClass);
@@ -151,8 +199,28 @@ public class NestedDocumentGenerator {
                     methods.add(getter(nestedClass, field.getName()));
                     methods.add(setter(nestedClass, field.getName()));
                 }
-            }
+            } else {
+                if (nestedObject.root()) {
+                    String nestedClassName = buildNestedClass(field, field.getName());
+                    
+                    imports.add(String.format("%s.%s", nestedPackagePath, nestedClassName));
 
+                    ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
+
+                    if (List.class.isAssignableFrom(field.getType())) {
+                        TypeName listOfNestedClass = ParameterizedTypeName.get(LIST, nestedClass);
+
+                        fields.add(field(listOfNestedClass, field.getName(), Modifier.PRIVATE));
+                        methods.add(getter(listOfNestedClass, field.getName()));
+                        methods.add(setter(listOfNestedClass, field.getName()));
+                    } else {
+                        fields.add(field(nestedClass, field.getName(), Modifier.PRIVATE));
+                        methods.add(getter(nestedClass, field.getName()));
+                        methods.add(setter(nestedClass, field.getName()));
+                    }
+                }
+            }
+            
             for (Reference reference : nestedObject.properties()) {
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);
                 basicFields = basicFields.stream().filter(f -> !f.getName().equals(nestedField.getName())).collect(Collectors.toList());
@@ -215,6 +283,10 @@ public class NestedDocumentGenerator {
         Optional<NestedObject> parentNestedObject = Optional.ofNullable(field.getAnnotation(NestedObject.class));
 
         if (parentNestedObject.isPresent()) {
+            fields.add(field(STRING, parentNestedObject.get().label(), Modifier.PRIVATE));
+            methods.add(getter(STRING, parentNestedObject.get().label()));
+            methods.add(setter(STRING, parentNestedObject.get().label()));
+
             for (Reference reference : parentNestedObject.get().properties()) {
                 String fieldName = reference.key();
 
@@ -397,10 +469,14 @@ public class NestedDocumentGenerator {
     }
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            throw new RuntimeException("Please provide two arguments: destination path and generated model destination package");
+        if (args.length < 2 || args.length > 3) {
+            throw new RuntimeException("Please provide either two arguments, destination path and generated model destination package, or three with optional composites config path.");
         }
-        new NestedDocumentGenerator(args[0], args[1]).generate();
+        if (args.length == 2) {
+            new NestedDocumentGenerator(args[0], args[1]).generate();
+        } else {
+            new NestedDocumentGenerator(args[0], args[1], args[2]).generate();
+        }
     }
 
 }

@@ -19,10 +19,20 @@ import java.lang.String;
 public class GeographicFocus extends AbstractNestedDocument {
   private static final long serialVersionUID = -1129132911L;
 
+  private String label;
+
   private String type;
 
   public GeographicFocus() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

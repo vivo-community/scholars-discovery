@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.graphql.model.Process;
 
 public class ProcessServiceTest extends AbstractNestedDocumentServiceTest<Process, edu.tamu.scholars.middleware.discovery.model.Process, ProcessRepo, ProcessService> {
 
-    @Value("classpath:mock/discovery/process")
+    @Value("classpath:mock/discovery/processes")
     private Resource mocksDirectory;
 
     @Override

@@ -19,12 +19,22 @@ import java.lang.String;
 public class AwardedBy extends AbstractNestedDocument {
   private static final long serialVersionUID = -1800827613L;
 
+  private String label;
+
   private String type;
 
   private String abbreviation;
 
   public AwardedBy() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

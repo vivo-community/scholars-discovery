@@ -1,7 +1,7 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.person.Website;
-import edu.tamu.scholars.middleware.graphql.model.person.Position;
+import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
 import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.person.HeadOf;
@@ -14,7 +14,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.Credential;
 import edu.tamu.scholars.middleware.graphql.model.person.CredentialEligibilityAttained;
 import edu.tamu.scholars.middleware.graphql.model.person.AwardsAndHonors;
 import edu.tamu.scholars.middleware.graphql.model.person.AdviseeOf;
-import edu.tamu.scholars.middleware.graphql.model.person.Publication;
+import edu.tamu.scholars.middleware.graphql.model.Document;
 import edu.tamu.scholars.middleware.graphql.model.person.CollectionOrSeriesEditorFor;
 import edu.tamu.scholars.middleware.graphql.model.person.EditorOf;
 import edu.tamu.scholars.middleware.graphql.model.person.Presentation;
@@ -58,7 +58,7 @@ public class Person extends AbstractNestedDocument {
 
   private List<Website> websites;
 
-  private List<Position> positions;
+  private List<Relationship> positions;
 
   private List<ResearchArea> researchAreas;
 
@@ -84,7 +84,7 @@ public class Person extends AbstractNestedDocument {
 
   private List<AdviseeOf> adviseeOf;
 
-  private List<Publication> publications;
+  private List<Document> publications;
 
   private List<CollectionOrSeriesEditorFor> collectionOrSeriesEditorFor;
 
@@ -218,11 +218,11 @@ public class Person extends AbstractNestedDocument {
     this.websites = websites;
   }
 
-  public List<Position> getPositions() {
+  public List<Relationship> getPositions() {
     return positions;
   }
 
-  public void setPositions(List<Position> positions) {
+  public void setPositions(List<Relationship> positions) {
     this.positions = positions;
   }
 
@@ -323,11 +323,11 @@ public class Person extends AbstractNestedDocument {
     this.adviseeOf = adviseeOf;
   }
 
-  public List<Publication> getPublications() {
+  public List<Document> getPublications() {
     return publications;
   }
 
-  public void setPublications(List<Publication> publications) {
+  public void setPublications(List<Document> publications) {
     this.publications = publications;
   }
 

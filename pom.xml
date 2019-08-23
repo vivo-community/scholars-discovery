@@ -393,6 +393,7 @@
               <arguments>
                 <argument>src/main/java</argument>
                 <argument>edu.tamu.scholars.middleware.graphql.model</argument>
+                <argument>src/main/resources/defaults/composites.yml</argument>
               </arguments>
             </configuration>
           </execution>

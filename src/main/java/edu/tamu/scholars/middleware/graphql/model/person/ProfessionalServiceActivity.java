@@ -19,6 +19,8 @@ import java.lang.String;
 public class ProfessionalServiceActivity extends AbstractNestedDocument {
   private static final long serialVersionUID = 1213880266L;
 
+  private String label;
+
   private String type;
 
   private String role;
@@ -29,6 +31,14 @@ public class ProfessionalServiceActivity extends AbstractNestedDocument {
 
   public ProfessionalServiceActivity() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

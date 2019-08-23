@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.graphql.model.Document;
 
 public class DocumentServiceTest extends AbstractNestedDocumentServiceTest<Document, edu.tamu.scholars.middleware.discovery.model.Document, DocumentRepo, DocumentService> {
 
-    @Value("classpath:mock/discovery/document")
+    @Value("classpath:mock/discovery/documents")
     private Resource mocksDirectory;
 
     @Override

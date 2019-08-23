@@ -99,6 +99,22 @@ public class DiscoveryUtility {
         return documents;
     }
 
+    public static Class<?> getDiscoveryDocumentTypeByName(String name) {
+        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
+        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
+        for (BeanDefinition beanDefinition : beanDefinitions) {
+            try {
+                if (beanDefinition.getBeanClassName().equals(String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, name))) {
+                    return Class.forName(beanDefinition.getBeanClassName());
+                }
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Unable to find class for " + beanDefinition.getBeanClassName(), e);
+            }
+        }
+        throw new RuntimeException("Unable to find class for " + name);
+    }
+
     public static String findProperty(String type, String path) {
         try {
             Class<?> documentType = Class.forName(type);

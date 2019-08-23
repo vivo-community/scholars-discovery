@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
@@ -42,30 +43,37 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
     protected List<D> mockDocuments;
 
     @BeforeAll
-    public void setup() throws SolrServerException, IOException {
-        createCore();
+    public void setup() throws IOException {
+        createCore(getCollection());
         setDocuments();
         createDocuments();
     }
 
     @AfterAll
-    public void cleanup() throws SolrServerException, IOException {
+    public void cleanup() throws IOException {
         deleteDocuments();
-        deleteCore();
+        deleteCore(getCollection());
     }
 
-    private void deleteCore() throws SolrServerException, IOException {
-        CoreAdminRequest.unloadCore(getCollection(), solrServer);
-    }
-
-    private void deleteDocuments() {
-        repo.deleteAll();
-    }
-
-    private void createCore() throws SolrServerException, IOException {
+    protected void createCore(String collection) {
         assertTrue(instanceDirectory.exists());
         assertTrue(instanceDirectory.isFile());
-        CoreAdminRequest.createCore(getCollection(), instanceDirectory.getFile().getAbsolutePath(), solrServer);
+        try {
+            File src = instanceDirectory.getFile();
+            File dest = new File(String.format("%s%s%s", src.getParentFile().getAbsolutePath(), File.separator, collection));
+            FileUtils.copyDirectory(src, dest);
+            CoreAdminRequest.createCore(collection, dest.getAbsolutePath(), solrServer);
+        } catch (SolrServerException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void deleteCore(String collection) {
+        try {
+            CoreAdminRequest.unloadCore(collection, true, solrServer);
+        } catch (SolrServerException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDocuments() throws IOException {
@@ -88,6 +96,10 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
             repo.save(mockDocument);
         });
         assertEquals(mockDocuments.size(), repo.count());
+    }
+
+    private void deleteDocuments() {
+        repo.deleteAll();
     }
 
     private File[] getMockFiles() throws IOException {

@@ -19,10 +19,20 @@ import java.lang.String;
 public class Website extends AbstractNestedDocument {
   private static final long serialVersionUID = 228493446L;
 
+  private String label;
+
   private String url;
 
   public Website() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getUrl() {

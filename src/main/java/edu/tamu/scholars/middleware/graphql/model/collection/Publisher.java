@@ -19,10 +19,20 @@ import java.lang.String;
 public class Publisher extends AbstractNestedDocument {
   private static final long serialVersionUID = -1278178222L;
 
+  private String label;
+
   private String type;
 
   public Publisher() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

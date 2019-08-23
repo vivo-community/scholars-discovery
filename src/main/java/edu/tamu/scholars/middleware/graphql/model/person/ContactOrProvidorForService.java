@@ -19,10 +19,20 @@ import java.lang.String;
 public class ContactOrProvidorForService extends AbstractNestedDocument {
   private static final long serialVersionUID = 1458750403L;
 
+  private String label;
+
   private String type;
 
   public ContactOrProvidorForService() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

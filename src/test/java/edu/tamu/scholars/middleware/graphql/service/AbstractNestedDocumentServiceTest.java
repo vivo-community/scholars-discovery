@@ -21,10 +21,13 @@ import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -32,6 +35,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 
 @SpringBootTest
@@ -40,6 +44,30 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
 
     @Autowired
     private DAO service;
+
+    @Override
+    @BeforeAll
+    public void setup() throws IOException {
+        super.setup();
+        service.getComposites().stream().filter(c -> c.getType().equals(repo.type().getSimpleName())).forEach(c -> {
+            c.getReferences().stream().forEach(r -> {
+                String collection = DiscoveryUtility.getDiscoveryDocumentTypeByName(r.getType()).getAnnotation(SolrDocument.class).collection();
+                createCore(collection);
+            });
+        });
+    }
+
+    @Override
+    @AfterAll
+    public void cleanup() throws IOException {
+        super.cleanup();
+        service.getComposites().stream().filter(c -> c.getType().equals(repo.type().getSimpleName())).forEach(c -> {
+            c.getReferences().stream().forEach(r -> {
+                String collection = DiscoveryUtility.getDiscoveryDocumentTypeByName(r.getType()).getAnnotation(SolrDocument.class).collection();
+                deleteCore(collection);
+            });
+        });
+    }
 
     @Test
     public void testGeneratedDocumentDefaultConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -72,10 +100,10 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
             mockDocuments.forEach(mockDocument -> {
                 String id = mockDocument.getId();
                 ND nestedDocument = service.findById(id).get();
-                String newLabel = String.format("%s Updated", nestedDocument.getLabel());
-                nestedDocument.setLabel(newLabel);
+                String newId = String.format("%s-updated", nestedDocument.getId());
+                nestedDocument.setId(newId);
                 nestedDocument = service.save(nestedDocument);
-                assertEquals(newLabel, nestedDocument.getLabel());
+                assertEquals(newId, nestedDocument.getId());
                 assertTrue(nestedDocument instanceof AbstractNestedDocument);
             });
         });
@@ -95,11 +123,11 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
         assertThrows(UnsupportedOperationException.class, () -> {
             List<ND> nestedDocuments = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
             nestedDocuments.forEach(nestedDocument -> {
-                nestedDocument.setLabel(String.format("%s Updated", nestedDocument.getLabel()));
+                nestedDocument.setId(String.format("%s-updated", nestedDocument.getId()));
             });
             nestedDocuments = StreamSupport.stream(service.saveAll(nestedDocuments).spliterator(), false).collect(Collectors.toList());
             nestedDocuments.forEach(nestedDocument -> {
-                assertTrue(nestedDocument.getLabel().endsWith("Updated"));
+                assertTrue(nestedDocument.getId().endsWith("-updated"));
                 assertTrue(nestedDocument instanceof AbstractNestedDocument);
             });
         });

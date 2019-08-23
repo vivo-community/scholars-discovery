@@ -19,10 +19,20 @@ import java.lang.String;
 public class TeachingActivity extends AbstractNestedDocument {
   private static final long serialVersionUID = -2025691249L;
 
+  private String label;
+
   private String role;
 
   public TeachingActivity() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getRole() {

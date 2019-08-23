@@ -19,10 +19,20 @@ import java.lang.String;
 public class Assignee extends AbstractNestedDocument {
   private static final long serialVersionUID = 554103132L;
 
+  private String label;
+
   private String type;
 
   public Assignee() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

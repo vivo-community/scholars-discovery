@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.graphql.model.Person;
 
 public class PersonServiceTest extends AbstractNestedDocumentServiceTest<Person, edu.tamu.scholars.middleware.discovery.model.Person, PersonRepo, PersonService> {
 
-    @Value("classpath:mock/discovery/person")
+    @Value("classpath:mock/discovery/persons")
     private Resource mocksDirectory;
 
     @Override

@@ -19,12 +19,22 @@ import java.lang.String;
 public class Contributor extends AbstractNestedDocument {
   private static final long serialVersionUID = -627424053L;
 
+  private String label;
+
   private String type;
 
   private String role;
 
   public Contributor() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

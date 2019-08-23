@@ -22,12 +22,22 @@ import java.util.List;
 public class EtdChairedBy extends AbstractNestedDocument {
   private static final long serialVersionUID = -1739179885L;
 
+  private String label;
+
   private String email;
 
   private List<EtdChairedByOrganization> organization;
 
   public EtdChairedBy() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getEmail() {

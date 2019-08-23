@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.graphql.model.Organization;
 
 public class OrganizationServiceTest extends AbstractNestedDocumentServiceTest<Organization, edu.tamu.scholars.middleware.discovery.model.Organization, OrganizationRepo, OrganizationService> {
 
-    @Value("classpath:mock/discovery/organization")
+    @Value("classpath:mock/discovery/organizations")
     private Resource mocksDirectory;
 
     @Override

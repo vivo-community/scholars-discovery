@@ -49,6 +49,11 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "relationship/organization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> organization;
+
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "receiptOfType", key = "type") })
     @PropertySource(template = "relationship/receiptOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -319,6 +324,14 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(List<String> organization) {
+        this.organization = organization;
     }
 
     public List<String> getReceiptOf() {

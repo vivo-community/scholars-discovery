@@ -1,16 +1,23 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,7 +26,14 @@ import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
 import org.springframework.data.util.ReflectionUtils;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
@@ -29,6 +43,7 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
+import edu.tamu.scholars.middleware.graphql.config.model.Composite;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
@@ -40,6 +55,20 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private List<SolrDocumentRepo<?>> solrDocumentRepos;
+
+    private final List<Composite> composites = new ArrayList<Composite>();
+
+    @PostConstruct
+    public void init() throws JsonParseException, JsonMappingException, IOException {
+        Resource compositesResource = new ClassPathResource("defaults/composites.yml");
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        // @formatter:off
+        composites.addAll(mapper.readValue(compositesResource.getInputStream(), new TypeReference<List<Composite>>() {}));
+        // @formatter:on
+    }
 
     @Override
     public <NS extends ND> NS save(NS nestedDocument, Duration commitWithin) {
@@ -166,6 +195,10 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
+    public List<Composite> getComposites() {
+        return composites;
+    }
+
     @Override
     public long count(String query, List<FilterArg> filters) {
         return repo.count(query, filters);
@@ -214,13 +247,31 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     protected abstract Class<?> getOriginDocumentType();
 
     private ND toNested(D document) {
-        try {
-            String json = mapper.writeValueAsString(document);
-            return mapper.readValue(json, type());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Something went wrong");
+        ObjectNode node = mapper.valueToTree(document);
+        Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
+        if (composite.isPresent()) {
+            composite.get().getReferences().parallelStream().forEach(reference -> {
+                if (node.has(reference.getName())) {
+                    JsonNode referenceNode = node.get(reference.getName());
+                    List<String> ids = new ArrayList<String>();
+                    if (referenceNode.isArray()) {
+                        Iterator<JsonNode> resourceNodes = ((ArrayNode) referenceNode).elements();
+                        while (resourceNodes.hasNext()) {
+                            ids.add(resourceNodes.next().get(ID).asText());
+                        }
+                    } else {
+                        ids.add(referenceNode.get(ID).asText());
+                    }
+                    Optional<SolrDocumentRepo<?>> service = solrDocumentRepos.stream().filter(repo -> {
+                        return repo instanceof AbstractNestedDocumentService && repo.type().getSimpleName().equals(reference.getType());
+                    }).findAny();
+                    if (service.isPresent()) {
+                        node.set(reference.getName(), mapper.valueToTree(service.get().findByIdIn(ids)));
+                    }
+                }
+            });
         }
+        return mapper.convertValue(node, type());
     }
 
 }

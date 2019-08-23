@@ -19,6 +19,8 @@ import java.lang.String;
 public class PrincipalInvestigatorOn extends AbstractNestedDocument {
   private static final long serialVersionUID = 894073283L;
 
+  private String label;
+
   private String awardedBy;
 
   private String startDate;
@@ -27,6 +29,14 @@ public class PrincipalInvestigatorOn extends AbstractNestedDocument {
 
   public PrincipalInvestigatorOn() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getAwardedBy() {
