@@ -1,5 +1,5 @@
 # build base image
-FROM maven:3-jdk-8-slim as maven
+FROM maven:3-jdk-8-slim
 
 # copy pom.xml
 COPY ./pom.xml ./pom.xml
