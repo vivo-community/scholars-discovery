@@ -5,7 +5,7 @@ FROM openjdk:8u171-jre-alpine
 WORKDIR /scholars
 
 # copy over the built artifact from the maven image
-COPY --from=maven /target/middleware*.jar ./scholars-discovery.jar
+COPY middleware*.jar ./scholars-discovery.jar
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./scholars-discovery.jar"]
