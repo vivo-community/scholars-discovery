@@ -22,5 +22,6 @@ COPY config /opt/solr/server/solr/mycores/concepts/conf
 USER root
 
 RUN chown -R solr:solr /opt/solr/server/solr/mycores/
+RUN chmod -R ugo+w /opt/solr/server/solr/mycores/
 
 USER solr
