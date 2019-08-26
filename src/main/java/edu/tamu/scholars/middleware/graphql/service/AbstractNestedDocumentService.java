@@ -207,6 +207,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
+    public List<ND> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
+        return repo.findMostRecentlyUpdate(limit, filters).stream().map(this::toNested).collect(Collectors.toList());
+    }
+
+    @Override
     public Cursor<ND> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         throw new UnsupportedOperationException("Streaming is currently unsupported");
     }

@@ -141,7 +141,12 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     @Override
     public List<D> findMostRecentlyUpdate(Integer limit) {
-        SimpleQuery simpleQuery = buildSimpleQuery(new ArrayList<FilterArg>());
+        return findMostRecentlyUpdate(limit, new ArrayList<FilterArg>());
+    }
+
+    @Override
+    public List<D> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
         simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(Sort.by(MOD_TIME_FIELD).descending());
         simpleQuery.setRows(limit);

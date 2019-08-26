@@ -22,6 +22,8 @@ public interface SolrDocumentRepoCustom<D extends AbstractSolrDocument> {
 
     public List<D> findMostRecentlyUpdate(Integer limit);
 
+    public List<D> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters);
+
     public long count(String query, List<FilterArg> filters);
 
     public Class<D> type();

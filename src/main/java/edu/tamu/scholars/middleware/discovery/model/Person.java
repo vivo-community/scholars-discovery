@@ -742,6 +742,10 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
     private String modTime;
 
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
+    private String featuredProfileDisplay;
+
     public Person() {
 
     }
@@ -2097,4 +2101,13 @@ public class Person extends AbstractSolrDocument {
     public void setModTime(String modTime) {
         this.modTime = modTime;
     }
+
+    public String getFeaturedProfileDisplay() {
+        return featuredProfileDisplay;
+    }
+
+    public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
+        this.featuredProfileDisplay = featuredProfileDisplay;
+    }
+
 }
