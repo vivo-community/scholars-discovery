@@ -4,7 +4,11 @@
     <li class="mb-2">
       <a href="display/relationships/{{id}}">{{title}}</a>
       {{#each awardedBy}}
+      {{#if awardedByPreferredLabel}}
+      <a href="display/organizations/{{id}}">{{awardedByPreferredLabel}}</a>
+      {{else}}
       <span> awarded by <a href="display/organizations/{{id}}">{{label}}</a></span>
+      {{/if}}
       {{/each}}
       {{#if dateTimeIntervalStart}}
       {{#if dateTimeIntervalEnd}}

@@ -2,13 +2,13 @@
   <ul class="list-unstyled ml-2 mr-2 mb-0">
     {{#eachSorted coPrincipalInvestigatorOn "dateTimeIntervalStart" "DESC" true }}
     <li class="mb-2">
-      {{#if awardedByPreferredLabel}}
-      <a href="display/relationships/{{id}}">{{awardedByPreferredLabel}}</a>
-      {{else}}
       <a href="display/relationships/{{id}}">{{title}}</a>
-      {{/if}}
       {{#each awardedBy}}
+      {{#if awardedByPreferredLabel}}
+      <a href="display/organizations/{{id}}">{{awardedByPreferredLabel}}</a>
+      {{else}}
       <span> awarded by <a href="display/organizations/{{id}}">{{label}}</a></span>
+      {{/if}}
       {{/each}}
       {{#if dateTimeIntervalStart}}
       {{#if dateTimeIntervalEnd}}
