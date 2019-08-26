@@ -340,7 +340,7 @@
       requiredFields:
       - teachingActivities
       subsections:
-      - name: Activities
+      - name: Courses
         field: teachingActivities
         sort:
         - field: label
@@ -361,7 +361,7 @@
       requiredFields:
       - etdChairOf
       subsections:
-      - name: Documents
+      - name: Publications
         field: etdChairOf
         sort:
         - field: publicationDate
