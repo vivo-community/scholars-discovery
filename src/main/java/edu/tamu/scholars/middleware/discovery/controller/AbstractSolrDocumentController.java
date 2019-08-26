@@ -55,8 +55,8 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     }
 
     @GetMapping("/search/recently-updated")
-    public ResponseEntity<Resources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit) {
-        return ResponseEntity.ok(new Resources<R>(assembler.toResources(repo.findMostRecentlyUpdate(limit))));
+    public ResponseEntity<Resources<R>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit, List<FilterArg> filters) {
+        return ResponseEntity.ok(new Resources<R>(assembler.toResources(repo.findMostRecentlyUpdate(limit, filters))));
     }
 
     class Count {

@@ -206,6 +206,8 @@ public class Person extends AbstractNestedDocument {
 
   private String modTime;
 
+  private String featuredProfileDisplay;
+
   public Person() {
     super();
   }
@@ -814,5 +816,13 @@ public class Person extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getFeaturedProfileDisplay() {
+    return featuredProfileDisplay;
+  }
+
+  public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
+    this.featuredProfileDisplay = featuredProfileDisplay;
   }
 }
