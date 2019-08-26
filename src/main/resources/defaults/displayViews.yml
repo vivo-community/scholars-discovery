@@ -1062,7 +1062,7 @@
       - publicationDate
     - name: publisher
       hidden: false
-      template: "defaults/displayViews/documents/overview/publishers.html"
+      template: "defaults/displayViews/documents/overview/publisher.html"
       requiredFields:
       - publisher
     - name: has subject area
@@ -1699,7 +1699,7 @@
       - publicationDate
     - name: publisher
       hidden: false
-      template: "defaults/displayViews/collections/overview/publishers.html"
+      template: "defaults/displayViews/collections/overview/publisher.html"
       requiredFields:
       - publisher
     - name: has subject area
