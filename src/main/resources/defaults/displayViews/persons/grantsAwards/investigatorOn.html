@@ -1,6 +1,6 @@
 <div class="mb-2">
   <ul class="list-unstyled ml-2 mr-2 mb-0">
-    {{#each investigatorOn}}
+    {{#eachSorted investigatorOn "dateTimeIntervalStart" "DESC" true}}
     <li class="mb-2">
       <a href="display/relationships/{{id}}">{{title}}</a>
       {{#each awardedBy}}
@@ -18,6 +18,6 @@
       {{/if}}
       {{/if}}
     </li>
-    {{/each}}
+    {{/eachSorted}}
   </ul>
 </div>
