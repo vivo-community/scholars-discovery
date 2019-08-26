@@ -107,14 +107,6 @@
       template: "defaults/displayViews/persons/academicBackground/educationAndTraining.html"
       requiredFields:
       - educationAndTraining
-      subsections:
-      - name: Education And Training
-        field: educationAndTraining
-        sort:
-        - field: endDate
-          direction: DESC
-          date: true
-        template: "defaults/displayViews/persons/academicBackground/educationAndTraining/default.html"
     - name: credentials
       hidden: false
       template: "defaults/displayViews/persons/academicBackground/credentials.html"
@@ -1685,16 +1677,6 @@
       lazyReferences:
       - field: publicationVenueFor
         collection: documents
-      subsections:
-      - name: Publications
-        field: publicationVenueFor
-        sort:
-        - field: title
-          direction: ASC
-        - field: publicationDate
-          direction: DESC
-          date: true
-        template: "defaults/displayViews/collections/overview/publicationVenueFor/default.html"
     - name: authors
       hidden: false
       template: "defaults/displayViews/collections/overview/authors.html"
