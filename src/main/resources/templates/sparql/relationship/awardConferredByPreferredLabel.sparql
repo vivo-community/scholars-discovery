@@ -1,4 +1,5 @@
 PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+PREFIX vivo: <http://vivoweb.org/ontology/core#>
 
 CONSTRUCT {
     <{{uri}}> tamu:awardConferredBy_label ?labelWithId .
