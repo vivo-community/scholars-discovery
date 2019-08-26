@@ -68,7 +68,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> awardOrHonorForType;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByPreferredLabel", key = "abbreviation") })
+    @NestedObject({ @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByAbbreviation", key = "abbreviation"), @Reference(value = "awardConferredByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardConferredBy;
 
@@ -80,12 +80,12 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/awardConferredByAbbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private List<String> awardConferredByAbbreviation;
 
-    @Indexed(type = "whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "relationship/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
     private List<String> awardConferredByPreferredLabel;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation") })
+    @NestedObject({ @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation"), @Reference(value = "awardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardedBy;
 
@@ -93,11 +93,11 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/awardedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> awardedByType;
 
-    @Indexed(type = "whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "relationship/awardedByAbbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private List<String> awardedByAbbreviation;
 
-    @Indexed(type = "whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "relationship/awardedByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardedBy_label")
     private List<String> awardedByPreferredLabel;
 
