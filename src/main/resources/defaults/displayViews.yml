@@ -302,7 +302,7 @@
       - researchOverview
     - name: principal investigator on
       hidden: false
-      template: "defaults/displayViews/persons/grantsAwards/principalInvestigator.html"
+      template: "defaults/displayViews/persons/grantsAwards/principalInvestigatorOn.html"
       requiredFields:
       - principalInvestigatorOn
       lazyReferences:

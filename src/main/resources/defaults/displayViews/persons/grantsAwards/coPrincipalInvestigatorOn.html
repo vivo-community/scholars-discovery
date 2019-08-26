@@ -1,6 +1,6 @@
 <div class="mb-2">
   <ul class="list-unstyled ml-2 mr-2 mb-0">
-    {{#each coPrincipalInvestigatorOn}}
+    {{#eachSorted coPrincipalInvestigatorOn "dateTimeIntervalStart" "DESC" true }}
     <li class="mb-2">
       <a href="display/relationships/{{id}}">{{title}}</a>
       {{#each awardedBy}}
@@ -8,6 +8,6 @@
       {{/each}}
       <span class="badge badge-light">{{toYear dateTimeIntervalStart}} - {{toYear dateTimeIntervalEnd}}</span>
     </li>
-    {{/each}}
+    {{/eachSorted}}
   </ul>
 </div>
