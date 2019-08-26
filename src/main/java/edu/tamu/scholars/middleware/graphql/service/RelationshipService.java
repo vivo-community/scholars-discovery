@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
@@ -73,15 +74,28 @@ public class RelationshipService extends AbstractNestedDocumentService<Relations
     }
 
     @Override
+    @GraphQLQuery(name = "relationshipsSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Relationship> search(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.search(query, boosts, page);
+    }
+
+    @Override
     @GraphQLQuery(name = "relationshipsFilterSearch")
     // @formatter:off
     public DiscoveryFacetPage<Relationship> filterSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
     // @formatter:on
-        return super.filterSearch(query, filters, page);
+        return super.filterSearch(query, filters, boosts, page);
     }
 
     @Override
@@ -110,6 +124,20 @@ public class RelationshipService extends AbstractNestedDocumentService<Relations
     }
 
     @Override
+    @GraphQLQuery(name = "relationshipsFacetedSearch")
+    // @formatter:off
+    public DiscoveryFacetPage<Relationship> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, facets, filters, boosts, page);
+    }
+
+    @Override
     @GraphQLQuery(name = "relationshipsFacetedSearchIndex")
     // @formatter:off
     public DiscoveryFacetPage<Relationship> facetedSearch(
@@ -121,6 +149,21 @@ public class RelationshipService extends AbstractNestedDocumentService<Relations
     ) {
     // @formatter:on
         return super.facetedSearch(query, index, facets, filters, page);
+    }
+
+    @Override
+    @GraphQLQuery(name = "relationshipsFacetedSearchIndex")
+    // @formatter:off
+    public DiscoveryFacetPage<Relationship> facetedSearch(
+        @GraphQLArgument(name = "query") String query,
+        @GraphQLArgument(name = "index") Optional<IndexArg> index,
+        @GraphQLArgument(name = "facets") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging") Pageable page
+    ) {
+    // @formatter:on
+        return super.facetedSearch(query, index, facets, filters, boosts, page);
     }
 
     @Override

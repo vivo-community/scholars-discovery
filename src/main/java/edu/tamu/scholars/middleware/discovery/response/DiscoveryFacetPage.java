@@ -3,17 +3,13 @@ package edu.tamu.scholars.middleware.discovery.response;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
-import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
@@ -40,40 +36,23 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
         List<Facet> facets = new ArrayList<Facet>();
 
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
-            Optional<String> field = Optional.empty();
 
-            Optional<FacetArg> facetArgument = Optional.empty();
+            if (!facetFieldEntryPage.getContent().isEmpty()) {
 
-            Map<String, FacetEntry> facetEntries = new HashMap<String, FacetEntry>();
+                String field = facetFieldEntryPage.getContent().get(0).getField().getName();
 
-            for (FacetFieldEntry facetFieldEntry : facetFieldEntryPage.getContent()) {
-                if (!field.isPresent()) {
-                    field = Optional.of(facetFieldEntry.getField().getName());
-                    facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(facetFieldEntry.getField().getName())).findAny();
-                }
-                String key;
-                switch (facetArgument.get().getType()) {
-                case DATE_YEAR:
-                    key = String.valueOf(DateFormatUtility.parse(facetFieldEntry.getValue()).getYear());
-                    break;
-                case STRING:
-                default:
-                    key = facetFieldEntry.getValue();
-                    break;
-                }
-                if (facetEntries.containsKey(key)) {
-                    FacetEntry facetEntry = facetEntries.get(key);
-                    facetEntries.put(key, new FacetEntry(facetFieldEntry.getValue(), facetEntry.getCount() + facetFieldEntry.getValueCount()));
-                } else {
-                    facetEntries.put(key, new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
-                }
-            }
-            if (facetArgument.isPresent()) {
-                List<FacetEntry> entries = new ArrayList<FacetEntry>(facetEntries.values());
+                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(field)).findAny();
 
-                sort(entries, facetArgument.get());
+                if (facetArgument.isPresent()) {
 
-                if (field.isPresent()) {
+                    // @formatter:off
+                    List<FacetEntry> entries = facetFieldEntryPage.getContent().parallelStream()
+                        .map(entry -> new FacetEntry(entry.getValue(), entry.getValueCount()))
+                        .collect(Collectors.toMap(FacetEntry::getValue, fe -> fe, FacetEntry::merge)).values().parallelStream()
+                        .sorted(FacetEntryComparator.of(facetArgument.get().getSort()))
+                        .collect(Collectors.toList());
+                    // @formatter:on
+
                     int pageSize = facetArgument.get().getPageSize();
                     int pageNumber = facetArgument.get().getPageNumber();
                     int offset = pageSize * (pageNumber - 1);
@@ -86,41 +65,47 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     int start = offset;
                     int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
 
-                    facets.add(new Facet(field.get(), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
+                    facets.add(new Facet(field, DiscoveryPage.from(entries.subList(start, end), pageInfo)));
                 }
+
             }
 
         });
         return facets;
     }
 
-    private static void sort(List<FacetEntry> entries, FacetArg facetArg) {
-        FacetSortArg facetSort = facetArg.getSort();
-        FacetSort property = facetSort.getProperty();
-        Sort.Direction direction = facetSort.getDirection();
-        if (property.equals(FacetSort.COUNT) && direction.equals(Sort.Direction.DESC)) {
-            return;
+    private static class FacetEntryComparator implements Comparator<FacetEntry> {
+
+        private final FacetSortArg facetSort;
+
+        private FacetEntryComparator(FacetSortArg facetSort) {
+            this.facetSort = facetSort;
         }
-        Collections.sort(entries, new Comparator<FacetEntry>() {
-            public int compare(FacetEntry e1, FacetEntry e2) {
-                if (property.equals(FacetSort.COUNT)) {
-                    return direction.equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
-                }
+
+        @Override
+        public int compare(FacetEntry e1, FacetEntry e2) {
+            if (facetSort.getProperty().equals(FacetSort.COUNT)) {
+                return facetSort.getDirection().equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
+            }
+            try {
+                LocalDate ld1 = DateFormatUtility.parse(e1.value);
+                LocalDate ld2 = DateFormatUtility.parse(e2.value);
+                return facetSort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
+            } catch (DateTimeParseException dtpe) {
                 try {
-                    LocalDate ld1 = DateFormatUtility.parse(e1.value);
-                    LocalDate ld2 = DateFormatUtility.parse(e2.value);
-                    return direction.equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
-                } catch (DateTimeParseException dtpe) {
-                    try {
-                        Double d1 = Double.parseDouble(e1.value);
-                        Double d2 = Double.parseDouble(e2.value);
-                        return direction.equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
-                    } catch (NumberFormatException nfe) {
-                        return direction.equals(Direction.ASC) ? e1.value.compareTo(e2.value) : e2.value.compareTo(e1.value);
-                    }
+                    Double d1 = Double.parseDouble(e1.value);
+                    Double d2 = Double.parseDouble(e2.value);
+                    return facetSort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
+                } catch (NumberFormatException nfe) {
+                    return facetSort.getDirection().equals(Direction.ASC) ? e1.value.compareTo(e2.value) : e2.value.compareTo(e1.value);
                 }
             }
-        });
+        }
+
+        private static FacetEntryComparator of(FacetSortArg facetSort) {
+            return new FacetEntryComparator(facetSort);
+        }
+
     }
 
     public List<Facet> getFacets() {
@@ -167,6 +152,10 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
         public long getCount() {
             return count;
+        }
+
+        public static FacetEntry merge(FacetEntry src, FacetEntry dest) {
+            return new FacetEntry(src.value, src.count + dest.count);
         }
 
     }

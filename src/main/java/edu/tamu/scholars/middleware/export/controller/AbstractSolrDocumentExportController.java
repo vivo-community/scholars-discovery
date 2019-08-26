@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -39,13 +40,14 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
         @SortDefault Sort sort,
         Optional<IndexArg> index,
         List<FilterArg> filters,
+        List<BoostArg> boosts,
         List<ExportArg> export
     ) throws UnknownExporterTypeException {
         Exporter exporter = ExporterRegistry.getExporter(type);
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(repo.type().getAnnotation(SolrDocument.class).collection()))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
-            .body(exporter.streamSolrResponse(repo.stream(query, index, filters, sort), export));
+            .body(exporter.streamSolrResponse(repo.stream(query, index, filters, boosts, sort), export));
     }
     // @formatter:on
 

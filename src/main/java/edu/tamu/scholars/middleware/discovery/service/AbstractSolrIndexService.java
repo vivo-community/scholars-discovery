@@ -124,7 +124,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
     private void batchSave(List<D> documents) {
         try {
             repo.saveAll(documents);
-            logger.info(String.format("Completed %s batch of %s", name(), indexBatchSize));
+            logger.info(String.format("Completed %s batch of %s", name(), documents.size()));
         } catch (Exception e1) {
             logger.warn("Failed to batch save. Attempting individually.");
             if (logger.isDebugEnabled()) {

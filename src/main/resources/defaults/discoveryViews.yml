@@ -64,6 +64,13 @@
     collapsed: true
     hidden: false
   filters: []
+  boosts:
+  - field: firstName
+    value: 2
+  - field: lastName
+    value: 2
+  - field: name
+    value: 2
   sort:
   - field: name
     direction: ASC
@@ -152,6 +159,11 @@
     collapsed: true
     hidden: false
   filters: []
+  boosts:
+  - field: title
+    value: 2
+  - field: keywords
+    value: 2
   sort:
   - field: title
     direction: ASC
@@ -247,6 +259,11 @@
   filters:
   - field: type
     value: Grant
+  boosts:
+  - field: title
+    value: 2
+  - field: awardedBy
+    value: 2
   sort:
   - field: title
     direction: ASC
@@ -308,6 +325,9 @@
   filters:
   - field: type
     value: Award
+  boosts:
+  - field: name
+    value: 2
   sort:
   - field: name
     direction: ASC
@@ -349,6 +369,9 @@
   filters:
   - field: type
     value: Course
+  boosts:
+  - field: title
+    value: 2
   sort:
   - field: title
     direction: ASC
@@ -366,44 +389,29 @@
   - name: Type
     field: type
     type: STRING
-    sort: COUNT
-    direction: DESC
+    sort: INDEX
+    direction: ASC
     pageSize: 10
     collapsed: true
     hidden: false
   - name: Within Organization
     field: organizationWithin
     type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Organization For Training
-    field: organizationForTraining
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Awards Grant
-    field: awardsGrant
-    type: STRING
-    sort: INDEX
-    direction: ASC
+    sort: COUNT
+    direction: DESC
     pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Areas
     field: affiliatedResearchAreas
     type: STRING
-    sort: INDEX
-    direction: ASC
+    sort: COUNT
+    direction: DESC
     pageSize: 10
     collapsed: true
     hidden: false
   filters: []
+  boosts: []
   sort: []
   export:
     - columnHeader: Name
@@ -445,6 +453,9 @@
   filters:
   - field: type
     value: Concept
+  boosts:
+  - field: name
+    value: 2
   sort:
   - field: name
     direction: ASC

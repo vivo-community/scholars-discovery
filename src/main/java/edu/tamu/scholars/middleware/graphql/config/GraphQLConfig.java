@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
@@ -154,6 +155,23 @@ public class GraphQLConfig {
             @Override
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
                 Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("field", "Facet field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("sort", "Facet sort", new TypedElement(GenericTypeReflector.annotate(FacetSort.class)), GenericTypeReflector.annotate(FacetSort.class), FacetSort.COUNT));
+                fields.add(new InputField("pageSize", "Facet page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
+                fields.add(new InputField("pageNumber", "Facet page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 1));
+                fields.add(new InputField("type", "Facet type", new TypedElement(GenericTypeReflector.annotate(FacetType.class)), GenericTypeReflector.annotate(FacetType.class), FacetType.STRING));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return FacetArg.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("field", "Filter field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 fields.add(new InputField("value", "Filter value", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 return fields;
@@ -168,17 +186,14 @@ public class GraphQLConfig {
             @Override
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
                 Set<InputField> fields = new HashSet<>();
-                fields.add(new InputField("field", "Facet field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
-                fields.add(new InputField("sort", "Facet sort", new TypedElement(GenericTypeReflector.annotate(FacetSort.class)), GenericTypeReflector.annotate(FacetSort.class), FacetSort.COUNT));
-                fields.add(new InputField("pageSize", "Facet page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
-                fields.add(new InputField("pageNumber", "Facet page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 1));
-                fields.add(new InputField("type", "Facet type", new TypedElement(GenericTypeReflector.annotate(FacetType.class)), GenericTypeReflector.annotate(FacetType.class), FacetType.STRING));
+                fields.add(new InputField("field", "Boost field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("value", "Boost value", new TypedElement(GenericTypeReflector.annotate(Float.class)), GenericTypeReflector.annotate(Float.class), null));
                 return fields;
             }
 
             @Override
             public boolean supports(AnnotatedType type) {
-                return FacetArg.class.equals(type.getType());
+                return BoostArg.class.equals(type.getType());
             }
         }).prepend(new InputFieldBuilder() {
 

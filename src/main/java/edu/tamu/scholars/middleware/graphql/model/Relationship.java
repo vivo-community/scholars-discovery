@@ -94,7 +94,7 @@ public class Relationship extends AbstractNestedDocument {
 
   private String description;
 
-  private List<String> awardConferredByPreferredLabel;
+  private List<String> awardConferredByAbbreviation;
 
   private List<String> awardedByPreferredLabel;
 
@@ -328,12 +328,12 @@ public class Relationship extends AbstractNestedDocument {
     this.description = description;
   }
 
-  public List<String> getAwardConferredByPreferredLabel() {
-    return awardConferredByPreferredLabel;
+  public List<String> getAwardConferredByAbbreviation() {
+    return awardConferredByAbbreviation;
   }
 
-  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
-    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+  public void setAwardConferredByAbbreviation(List<String> awardConferredByAbbreviation) {
+    this.awardConferredByAbbreviation = awardConferredByAbbreviation;
   }
 
   public List<String> getAwardedByPreferredLabel() {

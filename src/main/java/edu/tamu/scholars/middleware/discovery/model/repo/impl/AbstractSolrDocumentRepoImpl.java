@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
@@ -49,6 +52,10 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     private static final String MOD_TIME_FIELD = "modTime";
 
+    private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
+
+    private static final DateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy");
+
     @Value("${spring.data.solr.parser:edismax}")
     private String queryParser;
 
@@ -59,23 +66,26 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facetArguments, List<FilterArg> filters, Pageable page) {
+    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facetArguments, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
-        if (query.equals(DEFAULT_QUERY)) {
-            facetQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
-        } else {
-            Criteria criteria = getCriteria(query);
-            facetQuery.addCriteria(criteria);
-            Sort scoreSort = Sort.by(SCORE_FIELD).descending().and(page.getSort());
-            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), scoreSort);
+        Criteria criteria = getQueryCriteria(query);
+
+        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+
+        if (boostCriteria.isPresent()) {
+            criteria = boostCriteria.get().or(criteria);
+            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by(SCORE_FIELD).descending().and(page.getSort()));
         }
+
+        facetQuery.addCriteria(criteria);
 
         if (index.isPresent()) {
             facetQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
         }
 
         FacetOptions facetOptions = new FacetOptions();
+
         facetArguments.forEach(facetArg -> {
             FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facetArg.getPath(type()));
 
@@ -108,19 +118,31 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public Cursor<D> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, Sort sort) {
-        SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
+    public Cursor<D> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+
+        Criteria criteria = getQueryCriteria(query);
+
+        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+
+        if (boostCriteria.isPresent()) {
+            criteria = boostCriteria.get().or(criteria);
+            sort = Sort.by(SCORE_FIELD).descending().and(sort);
+        }
+
         if (index.isPresent()) {
             simpleQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
         }
-        Sort scoreSort = Sort.by(SCORE_FIELD).descending().and(sort);
-        simpleQuery.addSort(scoreSort.and(Sort.by(Direction.ASC, ID)));
+
+        simpleQuery.addCriteria(criteria);
+        simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 
     @Override
     public List<D> findMostRecentlyUpdate(Integer limit) {
-        SimpleQuery simpleQuery = buildSimpleQuery();
+        SimpleQuery simpleQuery = buildSimpleQuery(new ArrayList<FilterArg>());
+        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(Sort.by(MOD_TIME_FIELD).descending());
         simpleQuery.setRows(limit);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
@@ -128,7 +150,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     @Override
     public long count(String query, List<FilterArg> filters) {
-        SimpleQuery simpleQuery = buildSimpleQuery(query, filters);
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+        simpleQuery.addCriteria(getQueryCriteria(query));
         return solrTemplate.count(collection(), simpleQuery, type());
     }
 
@@ -136,49 +159,40 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return type().getAnnotation(SolrDocument.class).collection();
     }
 
-    protected Criteria getCriteria(String query) {
-        return new SimpleStringCriteria(query);
+    private Criteria getQueryCriteria(String query) {
+        return query.equals(DEFAULT_QUERY) ? new Criteria(WILDCARD).expression(WILDCARD) : new SimpleStringCriteria(query);
     }
 
-    private SimpleQuery buildSimpleQuery() {
-        return buildSimpleQuery(DEFAULT_QUERY, new ArrayList<FilterArg>());
+    private Optional<Criteria> getBoostCriteria(String query, List<BoostArg> boosts) {
+        return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getField()).is(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
     }
 
-    private SimpleQuery buildSimpleQuery(String query, List<FilterArg> filters) {
+    private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
         SimpleQuery simpleQuery = new SimpleQuery();
-
-        if (query.equals(DEFAULT_QUERY)) {
-            simpleQuery.addCriteria(new Criteria(WILDCARD).expression(WILDCARD));
-        } else {
-            simpleQuery.addCriteria(getCriteria(query));
-        }
-
         buildFilterQueries(filters).forEach(filterQuery -> {
             simpleQuery.addFilterQuery(filterQuery);
         });
-
         simpleQuery.setDefaultOperator(queryOperator);
-
         simpleQuery.setDefType(queryParser);
-
         return simpleQuery;
     }
 
-    public List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
+    private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
         return filters.stream().map(filter -> {
             Criteria criteria;
             String value = filter.getValue();
-            if (value.startsWith("[") && value.contains(" TO ") && value.endsWith("]")) {
-                DateFormat format = new SimpleDateFormat("yyyy");
-                String[] parts = value.substring(1, value.length() - 1).split(" TO ");
+            Matcher rangeMatcher = RANGE_PATTERN.matcher(value);
+            if (rangeMatcher.matches()) {
+                String start = rangeMatcher.group(1);
+                String end = rangeMatcher.group(2);
                 try {
-                    Date from = format.parse(parts[0]);
-                    Date to = format.parse(parts[1]);
+                    Date from = YEAR_DATE_FORMAT.parse(start);
+                    Date to = YEAR_DATE_FORMAT.parse(end);
                     criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
                 } catch (ParseException e) {
                     try {
-                        LocalDate from = DateFormatUtility.parse(parts[0]);
-                        LocalDate to = DateFormatUtility.parse(parts[1]);
+                        LocalDate from = DateFormatUtility.parse(start);
+                        LocalDate to = DateFormatUtility.parse(end);
                         criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
                     } catch (DateTimeParseException dtpe) {
                         criteria = new SimpleStringCriteria(String.format("%s:%s", filter.getPath(type()), value));

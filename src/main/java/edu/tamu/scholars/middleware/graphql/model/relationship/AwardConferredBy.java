@@ -21,6 +21,8 @@ public class AwardConferredBy extends AbstractNestedDocument {
 
   private String type;
 
+  private String abbreviation;
+
   public AwardConferredBy() {
     super();
   }
@@ -31,5 +33,13 @@ public class AwardConferredBy extends AbstractNestedDocument {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public String getAbbreviation() {
+    return abbreviation;
+  }
+
+  public void setAbbreviation(String abbreviation) {
+    this.abbreviation = abbreviation;
   }
 }
