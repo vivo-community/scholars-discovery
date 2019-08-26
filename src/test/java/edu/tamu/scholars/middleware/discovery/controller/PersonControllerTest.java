@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
 
 public class PersonControllerTest extends AbstractSolrDocumentControllerTest<Person, PersonRepo> {
 
-    @Value("classpath:mock/discovery/person")
+    @Value("classpath:mock/discovery/persons")
     private Resource mocksDirectory;
 
     @Override

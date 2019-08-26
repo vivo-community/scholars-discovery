@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
 
 public class ConceptExportControllerTest extends AbstractSolrDocumentExportControllerTest<Concept, ConceptRepo> {
 
-    @Value("classpath:mock/discovery/concept")
+    @Value("classpath:mock/discovery/concepts")
     private Resource mocksDirectory;
 
     @Override

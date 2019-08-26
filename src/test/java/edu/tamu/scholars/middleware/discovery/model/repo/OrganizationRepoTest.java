@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Organization;
 
 public class OrganizationRepoTest extends AbstractSolrDocumentRepoTest<Organization, OrganizationRepo> {
 
-    @Value("classpath:mock/discovery/organization")
+    @Value("classpath:mock/discovery/organizations")
     private Resource mocksDirectory;
 
     @Override

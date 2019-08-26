@@ -8,7 +8,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.ProcessRepo;
 
 public class ProcessControllerTest extends AbstractSolrDocumentControllerTest<Process, ProcessRepo> {
 
-    @Value("classpath:mock/discovery/process")
+    @Value("classpath:mock/discovery/processes")
     private Resource mocksDirectory;
 
     @Override

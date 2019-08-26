@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -37,6 +36,7 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
+import graphql.language.Field;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -88,7 +88,7 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
     public void testFindById() throws IOException {
         mockDocuments.forEach(mockDocument -> {
             String id = mockDocument.getId();
-            Optional<ND> nestedDocument = service.findById(id);
+            Optional<ND> nestedDocument = service.findById(id, getGraphQLEnvironmentFields());
             assertTrue(nestedDocument.isPresent());
             assertTrue(nestedDocument.get() instanceof AbstractNestedDocument);
         });
@@ -99,7 +99,7 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
         assertThrows(UnsupportedOperationException.class, () -> {
             mockDocuments.forEach(mockDocument -> {
                 String id = mockDocument.getId();
-                ND nestedDocument = service.findById(id).get();
+                ND nestedDocument = service.findById(id, getGraphQLEnvironmentFields()).get();
                 String newId = String.format("%s-updated", nestedDocument.getId());
                 nestedDocument.setId(newId);
                 nestedDocument = service.save(nestedDocument);
@@ -111,7 +111,7 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
 
     @Test
     public void testFindAll() throws IOException {
-        List<ND> nestedDocuments = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
+        List<ND> nestedDocuments = StreamSupport.stream(service.findAll(getGraphQLEnvironmentFields()).spliterator(), false).collect(Collectors.toList());
         assertEquals(3, nestedDocuments.size());
         nestedDocuments.forEach(nestedDocument -> {
             assertTrue(nestedDocument instanceof AbstractNestedDocument);
@@ -135,6 +135,8 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
 
     // TODO: test other methods of AbstractNestedDocumentService
 
+    protected abstract List<Field> getGraphQLEnvironmentFields();
+
     protected abstract Class<?> getNestedDocumentType();
 
     private AbstractNestedDocument testGeneratedDocument(Class<?> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -144,9 +146,9 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
 
         Set<String> setOfStrings = new HashSet<String>(listOfStrings);
 
-        List<Field> fields = FieldUtils.getAllFieldsList(type).stream().filter(field -> !field.getName().equals("serialVersionUID")).filter(field -> !field.getName().startsWith("$")).collect(Collectors.toList());
+        List<java.lang.reflect.Field> fields = FieldUtils.getAllFieldsList(type).stream().filter(field -> !field.getName().equals("serialVersionUID")).filter(field -> !field.getName().startsWith("$")).collect(Collectors.toList());
 
-        for (Field field : fields) {
+        for (java.lang.reflect.Field field : fields) {
             String property = field.getName();
             if (AbstractNestedDocument.class.isAssignableFrom(field.getType())) {
                 AbstractNestedDocument nestedDocument = testGeneratedDocument(field.getType());

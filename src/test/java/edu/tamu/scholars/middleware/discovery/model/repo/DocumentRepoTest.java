@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Document;
 
 public class DocumentRepoTest extends AbstractSolrDocumentRepoTest<Document, DocumentRepo> {
 
-    @Value("classpath:mock/discovery/document")
+    @Value("classpath:mock/discovery/documents")
     private Resource mocksDirectory;
 
     @Override

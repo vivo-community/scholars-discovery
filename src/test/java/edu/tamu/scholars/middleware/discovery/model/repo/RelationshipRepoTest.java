@@ -7,7 +7,7 @@ import edu.tamu.scholars.middleware.discovery.model.Relationship;
 
 public class RelationshipRepoTest extends AbstractSolrDocumentRepoTest<Relationship, RelationshipRepo> {
 
-    @Value("classpath:mock/discovery/relationship")
+    @Value("classpath:mock/discovery/relationships")
     private Resource mocksDirectory;
 
     @Override

@@ -3,7 +3,6 @@ package edu.tamu.scholars.middleware.graphql.service;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,6 +44,7 @@ import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
+import graphql.language.Field;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
 @GraphQLApi
@@ -85,18 +85,22 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return repo.count();
     }
 
+    public Iterable<ND> findAll(Sort sort, List<Field> fields) {
+        return StreamSupport.stream(repo.findAll(sort).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
+    }
+
     @Override
     public Iterable<ND> findAll(Sort sort) {
-        return StreamSupport.stream(repo.findAll(sort).spliterator(), false).map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
     }
 
-    public DiscoveryPage<ND> findAllPaged(Pageable page) {
-        return DiscoveryPage.from(findAll(page));
+    public DiscoveryPage<ND> findAll(Pageable page, List<Field> fields) {
+        return DiscoveryPage.from(repo.findAll(page).map(document -> toNested(document, fields)));
     }
 
     @Override
-    public Page<ND> findAll(Pageable page) {
-        return repo.findAll(page).map(this::toNested);
+    public Page<ND> findAll(Pageable pageable) {
+        throw new UnsupportedOperationException("");
     }
 
     @Override
@@ -104,18 +108,18 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
-    @Override
-    public Optional<ND> findById(String id) {
+    public Optional<ND> findById(String id, List<Field> fields) {
         Optional<ND> nestedDocument = Optional.empty();
         Optional<D> document = repo.findById(id);
         if (document.isPresent()) {
-            nestedDocument = Optional.of(toNested(document.get()));
+            nestedDocument = Optional.of(toNested(document.get(), fields));
         }
         return nestedDocument;
     }
 
-    public ND getById(String id) {
-        return findById(id).get();
+    @Override
+    public Optional<ND> findById(String id) {
+        throw new UnsupportedOperationException("");
     }
 
     @Override
@@ -123,14 +127,22 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return repo.existsById(id);
     }
 
+    public Iterable<ND> findAll(List<Field> fields) {
+        return StreamSupport.stream(repo.findAll().spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
+    }
+
     @Override
     public Iterable<ND> findAll() {
-        return StreamSupport.stream(repo.findAll().spliterator(), false).map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
+    }
+
+    public Iterable<ND> findAllById(Iterable<String> ids, List<Field> fields) {
+        return StreamSupport.stream(repo.findAllById(ids).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
     public Iterable<ND> findAllById(Iterable<String> ids) {
-        return StreamSupport.stream(repo.findAllById(ids).spliterator(), false).map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
     }
 
     @Override
@@ -148,50 +160,54 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
         FacetPage<D> facetPage = repo.search(query, index, facets, filters, boosts, page);
-        List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
-        Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
+        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+        java.lang.reflect.Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
         ReflectionUtils.setField(field, facetPage, content);
         return (FacetPage<ND>) facetPage;
     }
 
-    public DiscoveryFacetPage<ND> search(String query, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page);
+    @Override
+    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        throw new UnsupportedOperationException("");
     }
 
-    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page);
+    public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page);
+    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
     }
 
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, boosts, page);
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
     }
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page);
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, boosts, page, fields);
     }
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, filters, boosts, page);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page, fields);
     }
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), facets, filters, boosts, page, fields);
     }
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
-        FacetPage<ND> facetPage = search(query, index, facets, filters, boosts, page);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page, fields);
+    }
+
+    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        FacetPage<ND> facetPage = search(query, index, facets, filters, boosts, page, fields);
         return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
@@ -214,29 +230,49 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
+    public List<ND> findByType(String type, List<Field> fields) {
+        return repo.findByType(type).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+    }
+
     @Override
     public List<ND> findByType(String type) {
-        return repo.findByType(type).stream().map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
+    }
+
+    public List<ND> findByIdIn(List<String> ids, List<Field> fields) {
+        return repo.findByIdIn(ids).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
     public List<ND> findByIdIn(List<String> ids) {
-        return repo.findByIdIn(ids).stream().map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
+    }
+
+    public List<ND> findBySyncIds(String syncId, List<Field> fields) {
+        return repo.findBySyncIds(syncId).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
     public List<ND> findBySyncIds(String syncId) {
-        return repo.findBySyncIds(syncId).stream().map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
+    }
+
+    public List<ND> findBySyncIdsIn(List<String> syncIds, List<Field> fields) {
+        return repo.findBySyncIdsIn(syncIds).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
-        return repo.findBySyncIdsIn(syncIds).stream().map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
+    }
+
+    public List<ND> findMostRecentlyUpdate(Integer limit, List<Field> fields) {
+        return repo.findMostRecentlyUpdate(limit).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
     public List<ND> findMostRecentlyUpdate(Integer limit) {
-        return repo.findMostRecentlyUpdate(limit).stream().map(this::toNested).collect(Collectors.toList());
+        throw new UnsupportedOperationException("");
     }
 
     @Override
@@ -246,7 +282,9 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     protected abstract Class<?> getOriginDocumentType();
 
-    private ND toNested(D document) {
+    private ND toNested(D document, List<Field> fields) {
+        // TODO: only fetch reference if a requested field
+        // TODO: recursively dereference
         ObjectNode node = mapper.valueToTree(document);
         Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
         if (composite.isPresent()) {
