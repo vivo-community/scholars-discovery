@@ -66,7 +66,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facetArguments, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         Criteria criteria = getQueryCriteria(query);
@@ -86,8 +86,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
         FacetOptions facetOptions = new FacetOptions();
 
-        facetArguments.forEach(facetArg -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facetArg.getPath(type()));
+        facets.forEach(facet -> {
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
 
             fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 

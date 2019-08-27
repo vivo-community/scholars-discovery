@@ -5,7 +5,7 @@
       <a href="display/relationships/{{id}}">{{title}}</a>
       {{#each awardedBy}}
       {{#if preferredLabel}}
-      <a href="display/organizations/{{id}}">{{preferredLabel}}</a>
+      <span> awarded by <a href="display/organizations/{{id}}">{{preferredLabel}}</a></span>
       {{else}}
       <span> awarded by <a href="display/organizations/{{id}}">{{label}}</a></span>
       {{/if}}
