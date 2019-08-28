@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.repo.ProcessRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
@@ -135,35 +133,6 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     ) {
     // @formatter:on
         return super.facetedSearch(query, facets, filters, boosts, page);
-    }
-
-    @Override
-    @GraphQLQuery(name = "processesFacetedSearchIndex")
-    // @formatter:off
-    public DiscoveryFacetPage<Process> facetedSearch(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "index") Optional<IndexArg> index,
-        @GraphQLArgument(name = "facets") List<FacetArg> facets,
-        @GraphQLArgument(name = "filters") List<FilterArg> filters,
-        @GraphQLArgument(name = "paging") Pageable page
-    ) {
-    // @formatter:on
-        return super.facetedSearch(query, index, facets, filters, page);
-    }
-
-    @Override
-    @GraphQLQuery(name = "processesFacetedSearchIndex")
-    // @formatter:off
-    public DiscoveryFacetPage<Process> facetedSearch(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "index") Optional<IndexArg> index,
-        @GraphQLArgument(name = "facets") List<FacetArg> facets,
-        @GraphQLArgument(name = "filters") List<FilterArg> filters,
-        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
-        @GraphQLArgument(name = "paging") Pageable page
-    ) {
-    // @formatter:on
-        return super.facetedSearch(query, index, facets, filters, boosts, page);
     }
 
     @Override

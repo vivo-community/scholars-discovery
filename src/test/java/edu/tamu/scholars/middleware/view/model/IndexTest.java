@@ -8,8 +8,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import edu.tamu.scholars.middleware.model.OpKey;
 
 @ExtendWith(SpringExtension.class)
 public class IndexTest {
@@ -25,7 +26,7 @@ public class IndexTest {
         Index index = new Index();
 
         index.setField("test");
-        index.setOperationKey(OperationKey.ENDS_WITH);
+        index.setOpKey(OpKey.ENDS_WITH);
 
         List<String> options = new ArrayList<String>();
         for (char letter = 'A'; letter <= 'Z'; letter++) {
@@ -35,7 +36,7 @@ public class IndexTest {
         index.setOptions(options);
 
         assertEquals("test", index.getField());
-        assertEquals(OperationKey.ENDS_WITH, index.getOperationKey());
+        assertEquals(OpKey.ENDS_WITH, index.getOpKey());
 
         assertEquals(26, index.getOptions().size());
 

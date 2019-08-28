@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.assembler.AbstractSolrDocumentResourceAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.FacetPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -39,13 +37,12 @@ public abstract class AbstractSolrDocumentController<D extends AbstractSolrDocum
     public ResponseEntity<PagedResources<R>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
         @PageableDefault Pageable pageable,
-        Optional<IndexArg> index,
         List<FacetArg> facets,
         List<FilterArg> filters,
         List<BoostArg> boosts
     ) {
     // @formatter:on
-        FacetPage<D> page = repo.search(query, index, facets, filters, boosts, pageable);
+        FacetPage<D> page = repo.search(query, facets, filters, boosts, pageable);
         return ResponseEntity.ok(pagedResourcesAssembler.toResource(page, assembler));
     }
 

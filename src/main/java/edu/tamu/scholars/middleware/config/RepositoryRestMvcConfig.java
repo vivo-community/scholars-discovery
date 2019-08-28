@@ -20,7 +20,6 @@ import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
 import edu.tamu.scholars.middleware.discovery.resolver.BoostArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FacetArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FilterArgumentResolver;
-import edu.tamu.scholars.middleware.discovery.resolver.IndexArgumentResolver;
 import edu.tamu.scholars.middleware.export.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
 
@@ -51,7 +50,6 @@ public class RepositoryRestMvcConfig extends RepositoryRestMvcConfiguration {
     @Override
     protected List<HandlerMethodArgumentResolver> defaultMethodArgumentResolvers() {
         List<HandlerMethodArgumentResolver> resolvers = new ArrayList<>(super.defaultMethodArgumentResolvers());
-        resolvers.add(new IndexArgumentResolver());
         resolvers.add(new FilterArgumentResolver());
         resolvers.add(new FacetArgumentResolver());
         resolvers.add(new BoostArgumentResolver());
