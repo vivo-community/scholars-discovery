@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions;
 
+import edu.tamu.scholars.middleware.model.OpKey;
 import edu.tamu.scholars.middleware.view.model.Boost;
 import edu.tamu.scholars.middleware.view.model.DirectoryView;
 import edu.tamu.scholars.middleware.view.model.DiscoveryView;
@@ -101,7 +101,7 @@ public class ViewTestUtility {
         Index index = new Index();
 
         index.setField("name");
-        index.setOperationKey(OperationKey.ENDS_WITH);
+        index.setOpKey(OpKey.ENDS_WITH);
 
         directoryView.setIndex(index);
 

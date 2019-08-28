@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.export.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.export.argument.ExportArg;
@@ -38,7 +36,6 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
         @RequestParam(value = "type", required = false, defaultValue = "csv") String type,
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
         @SortDefault Sort sort,
-        Optional<IndexArg> index,
         List<FilterArg> filters,
         List<BoostArg> boosts,
         List<ExportArg> export
@@ -47,7 +44,7 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(repo.type().getAnnotation(SolrDocument.class).collection()))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
-            .body(exporter.streamSolrResponse(repo.stream(query, index, filters, boosts, sort), export));
+            .body(exporter.streamSolrResponse(repo.stream(query, filters, boosts, sort), export));
     }
     // @formatter:on
 
