@@ -1,0 +1,14 @@
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
+PREFIX vivo: <http://vivoweb.org/ontology/core#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ 
+CONSTRUCT {
+    ?grant vitro:mostSpecificType ?mostSpecificTypeWithId .
+} WHERE {
+    <{{uri}}> obo:RO_0000053 ?role .
+    ?role a vivo:ResearcherRole .
+    ?role vitro:mostSpecificType ?mostSpecificType .
+    ?role vivo:relatedBy ?grant .
+    BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?grant), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
+}

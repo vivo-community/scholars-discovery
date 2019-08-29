@@ -292,27 +292,42 @@
       template: "defaults/displayViews/persons/grantsAwards/researchOverview.html"
       requiredFields:
       - researchOverview
-    - name: principal investigator on
+    - name: researcher on
       hidden: false
-      template: "defaults/displayViews/persons/grantsAwards/principalInvestigatorOn.html"
+      template: "defaults/displayViews/persons/grantsAwards/researcherOn.html"
       requiredFields:
-      - principalInvestigatorOn
-      lazyReferences:
-      - field: principalInvestigatorOn
-        collection: relationships
-    - name: co-principal investigator on
-      hidden: false
-      template: "defaults/displayViews/persons/grantsAwards/coPrincipalInvestigatorOn.html"
-      requiredFields:
-      - coPrincipalInvestigatorOn
-      lazyReferences:
-      - field: coPrincipalInvestigatorOn
-        collection: relationships
-    - name: investigator on
-      hidden: true
-      template: "defaults/displayViews/persons/grantsAwards/investigatorOn.html"
-      requiredFields:
-      - investigatorOn
+      - researcherOn
+      subsections:
+      - name: Principal Investigator
+        field: researcherOn
+        filters:
+        - field: role
+          value: PrincipalInvestigatorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Co-Principal Investigator
+        field: researcherOn
+        filters:
+        - field: role
+          value: CoPrincipalInvestigatorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Investigator
+        field: researcherOn
+        filters:
+        - field: role
+          value: InvestigatorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Researcher
+        field: researcherOn
+        filters:
+        - field: role
+          value: ResearcherRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Collaborator
+        field: researcherOn
+        filters:
+        - field: role
+          value: CollaboratorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
     - name: other research activities
       hidden: false
       template: "defaults/displayViews/persons/grantsAwards/otherResearchActivities.html"

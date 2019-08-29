@@ -32,26 +32,17 @@
     </ul>
   </div>
   {{/if}}
-  {{#if principalInvestigators}}
+  {{#if contributors}}
   <div>
-    <span class="label">Principal Investigators:</span>
+    <span class="label">Contributors:</span>
   </div>
   <div>
     <ul>
-      {{#each principalInvestigators}}
-      <li><span><a href="display/persons/{{id}}">{{label}}</a></span></li>
-      {{/each}}
-    </ul>
-  </div>
-  {{/if}}
-  {{#if coPrincipalInvestigators}}
-  <div>
-    <span class="label">Co-Principal Investigators:</span>
-  </div>
-  <div>
-    <ul>
-      {{#each coPrincipalInvestigators}}
-      <li><span><a href="display/persons/{{id}}">{{label}}</a></span></li>
+      {{#each contributors}}
+      <li>
+        <a href="display/persons/{{id}}">{{label}}</a>
+        <span class="badge badge-light">{{formalize role}}</span>
+      </li>
       {{/each}}
     </ul>
   </div>

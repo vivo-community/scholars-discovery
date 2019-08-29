@@ -419,56 +419,39 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/researchOverview", predicate = "http://vivoweb.org/ontology/core#researchOverview")
     private String researchOverview;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "principalInvestigatorOnAwardedBy", key = "awardedBy"), @Reference(value = "principalInvestigatorOnStartDate", key = "startDate"), @Reference(value = "principalInvestigatorOnEndDate", key = "endDate") })
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/principalInvestigatorOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> principalInvestigatorOn;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
-    @PropertySource(template = "person/principalInvestigatorOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> principalInvestigatorOnAwardedBy;
-
-    @Indexed(type = "nested_dates")
-    @PropertySource(template = "person/principalInvestigatorOnStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> principalInvestigatorOnStartDate;
-
-    @Indexed(type = "nested_dates")
-    @PropertySource(template = "person/principalInvestigatorOnEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> principalInvestigatorOnEndDate;
-
-    @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "coPrincipalInvestigatorOnAwardedBy", key = "awardedBy"), @Reference(value = "coPrincipalInvestigatorOnStartDate", key = "startDate"), @Reference(value = "coPrincipalInvestigatorOnEndDate", key = "endDate") })
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/coPrincipalInvestigatorOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> coPrincipalInvestigatorOn;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @PropertySource(template = "person/coPrincipalInvestigatorOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> coPrincipalInvestigatorOnAwardedBy;
-
-    @Indexed(type = "nested_dates")
-    @PropertySource(template = "person/coPrincipalInvestigatorOnStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> coPrincipalInvestigatorOnStartDate;
-
-    @Indexed(type = "nested_dates")
-    @PropertySource(template = "person/coPrincipalInvestigatorOnEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> coPrincipalInvestigatorOnEndDate;
+    @NestedObject({ @Reference(value = "researcherOnAwardedBy", key = "awardedBy"), @Reference(value = "researcherOnRole", key = "role"), @Reference(value = "researcherOnStartDate", key = "startDate"), @Reference(value = "researcherOnEndDate", key = "endDate") })
+    @PropertySource(template = "person/researcherOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> researcherOn;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "investigatorOnAwardedBy", key = "awardedBy"), @Reference(value = "investigatorOnStartDate", key = "startDate"), @Reference(value = "investigatorOnEndDate", key = "endDate") })
-    @PropertySource(template = "person/investigatorOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> investigatorOn;
+    @NestedObject(root = false, value = { @Reference(value = "researcherOnAwardedByPreferredLabel", key = "preferredLabel") })
+    @PropertySource(template = "person/researcherOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> researcherOnAwardedBy;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @PropertySource(template = "person/investigatorOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> investigatorOnAwardedBy;
+    @PropertySource(template = "person/researcherOnAwardedByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardedBy_label")
+    private List<String> researcherOnAwardedByPreferredLabel;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/researcherOnRole", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> researcherOnRole;
 
     @Indexed(type = "nested_dates")
-    @PropertySource(template = "person/investigatorOnStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> investigatorOnStartDate;
+    @PropertySource(template = "person/researcherOnStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> researcherOnStartDate;
 
     @Indexed(type = "nested_dates")
-    @PropertySource(template = "person/investigatorOnEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> investigatorOnEndDate;
+    @PropertySource(template = "person/researcherOnEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> researcherOnEndDate;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @NestedObject({ @Reference(value = "otherResearchActivityRole", key = "role"), @Reference(value = "otherResearchActivityStartDate", key = "startDate"), @Reference(value = "otherResearchActivityEndDate", key = "endDate") })
@@ -1494,30 +1477,6 @@ public class Person extends AbstractSolrDocument {
         this.principalInvestigatorOn = principalInvestigatorOn;
     }
 
-    public List<String> getPrincipalInvestigatorOnAwardedBy() {
-        return principalInvestigatorOnAwardedBy;
-    }
-
-    public void setPrincipalInvestigatorOnAwardedBy(List<String> principalInvestigatorOnAwardedBy) {
-        this.principalInvestigatorOnAwardedBy = principalInvestigatorOnAwardedBy;
-    }
-
-    public List<String> getPrincipalInvestigatorOnStartDate() {
-        return principalInvestigatorOnStartDate;
-    }
-
-    public void setPrincipalInvestigatorOnStartDate(List<String> principalInvestigatorOnStartDate) {
-        this.principalInvestigatorOnStartDate = principalInvestigatorOnStartDate;
-    }
-
-    public List<String> getPrincipalInvestigatorOnEndDate() {
-        return principalInvestigatorOnEndDate;
-    }
-
-    public void setPrincipalInvestigatorOnEndDate(List<String> principalInvestigatorOnEndDate) {
-        this.principalInvestigatorOnEndDate = principalInvestigatorOnEndDate;
-    }
-
     public List<String> getCoPrincipalInvestigatorOn() {
         return coPrincipalInvestigatorOn;
     }
@@ -1526,60 +1485,52 @@ public class Person extends AbstractSolrDocument {
         this.coPrincipalInvestigatorOn = coPrincipalInvestigatorOn;
     }
 
-    public List<String> getCoPrincipalInvestigatorOnAwardedBy() {
-        return coPrincipalInvestigatorOnAwardedBy;
+    public List<String> getResearcherOn() {
+        return researcherOn;
     }
 
-    public void setCoPrincipalInvestigatorOnAwardedBy(List<String> coPrincipalInvestigatorOnAwardedBy) {
-        this.coPrincipalInvestigatorOnAwardedBy = coPrincipalInvestigatorOnAwardedBy;
+    public void setResearcherOn(List<String> researcherOn) {
+        this.researcherOn = researcherOn;
     }
 
-    public List<String> getCoPrincipalInvestigatorOnStartDate() {
-        return coPrincipalInvestigatorOnStartDate;
+    public List<String> getResearcherOnAwardedBy() {
+        return researcherOnAwardedBy;
     }
 
-    public void setCoPrincipalInvestigatorOnStartDate(List<String> coPrincipalInvestigatorOnStartDate) {
-        this.coPrincipalInvestigatorOnStartDate = coPrincipalInvestigatorOnStartDate;
+    public void setResearcherOnAwardedBy(List<String> researcherOnAwardedBy) {
+        this.researcherOnAwardedBy = researcherOnAwardedBy;
     }
 
-    public List<String> getCoPrincipalInvestigatorOnEndDate() {
-        return coPrincipalInvestigatorOnEndDate;
+    public List<String> getResearcherOnAwardedByPreferredLabel() {
+        return researcherOnAwardedByPreferredLabel;
     }
 
-    public void setCoPrincipalInvestigatorOnEndDate(List<String> coPrincipalInvestigatorOnEndDate) {
-        this.coPrincipalInvestigatorOnEndDate = coPrincipalInvestigatorOnEndDate;
+    public void setResearcherOnAwardedByPreferredLabel(List<String> researcherOnAwardedByPreferredLabel) {
+        this.researcherOnAwardedByPreferredLabel = researcherOnAwardedByPreferredLabel;
     }
 
-    public List<String> getInvestigatorOn() {
-        return investigatorOn;
+    public List<String> getResearcherOnRole() {
+        return researcherOnRole;
     }
 
-    public void setInvestigatorOn(List<String> investigatorOn) {
-        this.investigatorOn = investigatorOn;
+    public void setResearcherOnRole(List<String> researcherOnRole) {
+        this.researcherOnRole = researcherOnRole;
     }
 
-    public List<String> getInvestigatorOnAwardedBy() {
-        return investigatorOnAwardedBy;
+    public List<String> getResearcherOnStartDate() {
+        return researcherOnStartDate;
     }
 
-    public void setInvestigatorOnAwardedBy(List<String> investigatorOnAwardedBy) {
-        this.investigatorOnAwardedBy = investigatorOnAwardedBy;
+    public void setResearcherOnStartDate(List<String> researcherOnStartDate) {
+        this.researcherOnStartDate = researcherOnStartDate;
     }
 
-    public List<String> getInvestigatorOnStartDate() {
-        return investigatorOnStartDate;
+    public List<String> getResearcherOnEndDate() {
+        return researcherOnEndDate;
     }
 
-    public void setInvestigatorOnStartDate(List<String> investigatorOnStartDate) {
-        this.investigatorOnStartDate = investigatorOnStartDate;
-    }
-
-    public List<String> getInvestigatorOnEndDate() {
-        return investigatorOnEndDate;
-    }
-
-    public void setInvestigatorOnEndDate(List<String> investigatorOnEndDate) {
-        this.investigatorOnEndDate = investigatorOnEndDate;
+    public void setResearcherOnEndDate(List<String> researcherOnEndDate) {
+        this.researcherOnEndDate = researcherOnEndDate;
     }
 
     public List<String> getOtherResearchActivities() {
