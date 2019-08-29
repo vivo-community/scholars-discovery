@@ -59,78 +59,50 @@
     hidden: true
     sections:
     - name: HR job title
-      hidden: false
       template: "defaults/displayViews/persons/overview/hrJobTitle.html"
-      requiredFields:
-      - hrJobTitle
+      field: hrJobTitle
   - name: About
-    hidden: false
     sections:
     - name: overview
-      hidden: false
       template: "defaults/displayViews/persons/about/overview.html"
-      requiredFields:
-      - overview
+      field: overview
   - name: Affiliation
-    hidden: false
     sections:
     - name: head of
-      hidden: false
       template: "defaults/displayViews/persons/affiliation/headOf.html"
-      requiredFields:
-      - headOf
+      field: headOf
     - name: member of
-      hidden: false
       template: "defaults/displayViews/persons/affiliation/memberOf.html"
-      requiredFields:
-      - memberOf
+      field: memberOf
     - name: has collaborator
-      hidden: false
       template: "defaults/displayViews/persons/affiliation/hasCollaborator.html"
-      requiredFields:
-      - hasCollaborator
+      field: hasCollaborator
     - name: clinical activities
-      hidden: false
       template: "defaults/displayViews/persons/affiliation/clinicalActivities.html"
-      requiredFields:
-      - clinicalActivities
+      field: clinicalActivities
     - name: attended event
-      hidden: false
       template: "defaults/displayViews/persons/affiliation/attendedEvent.html"
-      requiredFields:
-      - attendedEvents
+      field: attendedEvents
   - name: Academic Background
-    hidden: false
     sections:
     - name: education and training
-      hidden: false
       template: "defaults/displayViews/persons/academicBackground/educationAndTraining.html"
-      requiredFields:
-      - educationAndTraining
+      field: educationAndTraining
     - name: credentials
-      hidden: false
       template: "defaults/displayViews/persons/academicBackground/credentials.html"
-      requiredFields:
-      - credentials
+      field: credentials
     - name: credential eligibility attained
-      hidden: false
       template: "defaults/displayViews/persons/academicBackground/credentialEligibilityAttained.html"
-      requiredFields:
-      - credentialEligibilityAttained
+      field: credentialEligibilityAttained
     - name: advisee of
-      hidden: false
       template: "defaults/displayViews/persons/academicBackground/adviseeOf.html"
-      requiredFields:
-      - adviseeOf
+      field: adviseeOf
   - name: Publications
-    hidden: false
     sections:
     - name: selected publications
-      hidden: false
       shared: true
       template: "defaults/displayViews/persons/publications/selectedPublications.html"
-      requiredFields:
-      - publications
+      field: publications
       lazyReferences:
       - field: publications
         collection: documents
@@ -220,15 +192,11 @@
           date: true
         template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
     - name: collection or series editor for
-      hidden: false
       template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
-      requiredFields:
-      - collectionOrSeriesEditorFor
+      field: collectionOrSeriesEditorFor
     - name: editor of
-      hidden: false
       template: "defaults/displayViews/persons/publications/editorOf.html"
-      requiredFields:
-      - editorOf
+      field: editorOf
       subsections:
       - name: Books
         field: editorOf
@@ -240,34 +208,23 @@
           direction: ASC
         template: "defaults/displayViews/persons/publications/editorOf/default.html"
     - name: presentations
-      hidden: false
       template: "defaults/displayViews/persons/publications/presentations.html"
-      requiredFields:
-      - presentations
+      field: presentations
     - name: featured in
-      hidden: false
       template: "defaults/displayViews/persons/publications/featuredIn.html"
-      requiredFields:
-      - featuredIn
+      field: featuredIn
     - name: assignee for patent
-      hidden: false
       template: "defaults/displayViews/persons/publications/assigneeForPatent.html"
-      requiredFields:
-      - assigneeForPatent
+      field: assigneeForPatent
     - name: translator of
-      hidden: false
       template: "defaults/displayViews/persons/publications/translatorOf.html"
-      requiredFields:
-      - translatorOf
+      field: translatorOf
   - name: Patents
-    hidden: false
     sections:
     - name: patents
-      hidden: false
       shared: true
       template: "defaults/displayViews/persons/publications/patents.html"
-      requiredFields:
-      - publications
+      field: publications
       lazyReferences:
       - field: publications
         collection: documents
@@ -285,310 +242,221 @@
           date: true
         template: "defaults/displayViews/persons/publications/patents/default.html"
   - name: Grants/Awards
-    hidden: false
     sections:
     - name: research overview
-      hidden: false
       template: "defaults/displayViews/persons/grantsAwards/researchOverview.html"
-      requiredFields:
-      - researchOverview
-    - name: principal investigator on
-      hidden: false
-      template: "defaults/displayViews/persons/grantsAwards/principalInvestigatorOn.html"
-      requiredFields:
-      - principalInvestigatorOn
-      lazyReferences:
-      - field: principalInvestigatorOn
-        collection: relationships
-    - name: co-principal investigator on
-      hidden: false
-      template: "defaults/displayViews/persons/grantsAwards/coPrincipalInvestigatorOn.html"
-      requiredFields:
-      - coPrincipalInvestigatorOn
-      lazyReferences:
-      - field: coPrincipalInvestigatorOn
-        collection: relationships
-    - name: investigator on
-      hidden: true
-      template: "defaults/displayViews/persons/grantsAwards/investigatorOn.html"
-      requiredFields:
-      - investigatorOn
+      field: researchOverview
+    - name: researcher on
+      template: "defaults/displayViews/persons/grantsAwards/researcherOn.html"
+      field: researcherOn
+      subsections:
+      - name: Principal Investigator
+        field: researcherOn
+        filters:
+        - field: role
+          value: PrincipalInvestigatorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Co-Principal Investigator
+        field: researcherOn
+        filters:
+        - field: role
+          value: CoPrincipalInvestigatorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Investigator
+        field: researcherOn
+        filters:
+        - field: role
+          value: InvestigatorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Researcher
+        field: researcherOn
+        filters:
+        - field: role
+          value: ResearcherRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
+      - name: Collaborator
+        field: researcherOn
+        filters:
+        - field: role
+          value: CollaboratorRole
+        template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
     - name: other research activities
-      hidden: false
       template: "defaults/displayViews/persons/grantsAwards/otherResearchActivities.html"
-      requiredFields:
-      - otherResearchActivities
+      field: otherResearchActivities
     - name: awards and honors
-      hidden: false
+      paginated: true
       template: "defaults/displayViews/persons/grantsAwards/awardsAndHonors.html"
-      requiredFields:
-      - awardsAndHonors
+      field: awardsAndHonors
+      sort:
+        - field: yearAwarded
+          direction: DESC
+          date: true
       lazyReferences:
       - field: awardsAndHonors
         collection: relationships
   - name: Recent Courses
-    hidden: false
     sections:
     - name: teaching overview
-      hidden: false
       template: "defaults/displayViews/persons/recentCourses/teachingOverview.html"
-      requiredFields:
-      - teachingOverview
+      field: teachingOverview
     - name: teaching activities
-      hidden: false
+      paginated: true
       template: "defaults/displayViews/persons/recentCourses/teachingActivities.html"
-      requiredFields:
-      - teachingActivities
-      subsections:
-      - name: Courses
-        field: teachingActivities
-        sort:
+      field: teachingActivities
+      sort:
         - field: label
           direction: ASC
-        template: "defaults/displayViews/persons/recentCourses/teachingActivities/default.html"
     - name: advisees
-      hidden: false
       template: "defaults/displayViews/persons/recentCourses/advisees.html"
-      requiredFields:
-      - advisee
+      field: advisee
   - name: Works By Students
-    hidden: false
     sections:
     - name: chaired theses and dissertations
-      hidden: false
       shared: true
+      paginated: true
       template: "defaults/displayViews/persons/worksByStudents/chairedThesesAndDissertations.html"
-      requiredFields:
-      - etdChairOf
-      subsections:
-      - name: Publications
-        field: etdChairOf
-        sort:
+      field: etdChairOf
+      sort:
         - field: publicationDate
           direction: DESC
           date: true
-        template: "defaults/displayViews/persons/worksByStudents/chairedThesesAndDissertations/default.html"
   - name: Service
-    hidden: false
     sections:
     - name: outreach overview
-      hidden: false
       template: "defaults/displayViews/persons/service/outreachOverview.html"
-      requiredFields:
-      - outreachOverview
+      field: outreachOverview
     - name: reviewer of
-      hidden: false
       template: "defaults/displayViews/persons/service/reviewerOf.html"
-      requiredFields:
-      - reviewerOf
+      field: reviewerOf
     - name: contact or provider for service
-      hidden: false
       template: "defaults/displayViews/persons/service/contactOrProviderForService.html"
-      requiredFields:
-      - contactOrProvidorForService
+      field: contactOrProvidorForService
     - name: organizer of event
-      hidden: false
       template: "defaults/displayViews/persons/service/organizerOfEvent.html"
-      requiredFields:
-      - organizerOfEvent
+      field: organizerOfEvent
     - name: professional service activities
-      hidden: false
       template: "defaults/displayViews/persons/service/professionalServiceActivities.html"
-      requiredFields:
-      - professionalServiceActivities
+      field: professionalServiceActivities
     - name: outreach and community service activities
-      hidden: false
       template: "defaults/displayViews/persons/service/outreachAndCommunityServiceActivities.html"
-      requiredFields:
-      - outreachAndCommunityServiceActivities
+      field: outreachAndCommunityServiceActivities
     - name: performs technique
-      hidden: false
       template: "defaults/displayViews/persons/service/performsTechnique.html"
-      requiredFields:
-      - performsTechnique
+      field: performsTechnique
     - name: has expertise in technique
-      hidden: false
       template: "defaults/displayViews/persons/service/hasExpertiseInTechnique.html"
-      requiredFields:
-      - hasExpertiseInTechnique
+      field: hasExpertiseInTechnique
   - name: Identity
     hidden: true
     sections:
     - name: ISNI
-      hidden: false
       template: "defaults/displayViews/persons/identity/isni.html"
-      requiredFields:
-      - isni
+      field: isni
     - name: NETID
-      hidden: false
       template: "defaults/displayViews/persons/identity/netid.html"
-      requiredFields:
-      - netid
+      field: netid
     - name: ResearcherID
-      hidden: false
       template: "defaults/displayViews/persons/identity/researcherId.html"
-      requiredFields:
-      - researcherId
+      field: researcherId
     - name: Twitter
-      hidden: false
       template: "defaults/displayViews/persons/identity/twitter.html"
-      requiredFields:
-      - twitter
+      field: twitter
     - name: UID
-      hidden: false
       template: "defaults/displayViews/persons/identity/uid.html"
-      requiredFields:
-      - uid
+      field: uid
     - name: UIN
-      hidden: false
       template: "defaults/displayViews/persons/identity/uin.html"
-      requiredFields:
-      - uin
+      field: uin
     - name: YouTube
-      hidden: false
       template: "defaults/displayViews/persons/identity/youTube.html"
-      requiredFields:
-      - youtube
+      field: youtube
     - name: same as
-      hidden: false
       template: "defaults/displayViews/persons/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs
     - name: ORCID iD
-      hidden: false
       template: "defaults/displayViews/persons/identity/orcidId.html"
-      requiredFields:
-      - orcidId
+      field: orcidId
     - name: eRA Commons ID
-      hidden: false
       template: "defaults/displayViews/persons/identity/eraCommonsId.html"
-      requiredFields:
-      - eraCommonsId
+      field: eraCommonsId
     - name: ISI Researcher ID
-      hidden: false
       template: "defaults/displayViews/persons/identity/isiResearcherId.html"
-      requiredFields:
-      - isiResearcherId
+      field: isiResearcherId
     - name: Scopus ID
-      hidden: false
       template: "defaults/displayViews/persons/identity/scopusId.html"
-      requiredFields:
-      - scopusId
+      field: scopusId
     - name: health care provider ID
-      hidden: false
       template: "defaults/displayViews/persons/identity/healthCareProviderId.html"
-      requiredFields:
-      - healthCareProviderId
+      field: healthCareProviderId
   - name: Contact
-    hidden: false
     sections:
     - name: Email
-      hidden: false
       template: "defaults/displayViews/persons/contact/email.html"
-      requiredFields:
-      - email
+      field: email
     - name: First Name
-      hidden: false
       template: "defaults/displayViews/persons/contact/firstName.html"
-      requiredFields:
-      - firstName
+      field: firstName
     - name: Last Name
-      hidden: false
       template: "defaults/displayViews/persons/contact/lastName.html"
-      requiredFields:
-      - lastName
+      field: lastName
     - name: middle name or initial
-      hidden: false
       template: "defaults/displayViews/persons/contact/middleNameOrInitial.html"
-      requiredFields:
-      - middleName
+      field: middleName
     - name: full name
-      hidden: false
       template: "defaults/displayViews/persons/contact/fullName.html"
-      requiredFields:
-      - fullName
+      field: fullName
     - name: mailing address
-      hidden: false
       template: "defaults/displayViews/persons/contact/mailingAddress.html"
+      field: streetAddress
       requiredFields:
-      - streetAddress
       - locality
       - region
       - postalCode
       - country
     - name: geographic location
-      hidden: false
       template: "defaults/displayViews/persons/contact/geographicLocation.html"
-      requiredFields:
-      - geographicLocation
+      field: geographicLocation
     - name: located in facility
-      hidden: false
       template: "defaults/displayViews/persons/contact/locatedInFacility.html"
-      requiredFields:
-      - locatedInFacility
+      field: locatedInFacility
     - name: fax
-      hidden: false
       template: "defaults/displayViews/persons/contact/fax.html"
-      requiredFields:
-      - fax
+      field: fax
   - name: Other
-    hidden: false
     sections:
     - name: bearer of
-      hidden: false
       template: "defaults/displayViews/persons/other/bearerOf.html"
-      requiredFields:
-      - bearerOf
+      field: bearerOf
     - name: has collaborator
-      hidden: false
       template: "defaults/displayViews/persons/other/hasCollaborator.html"
-      requiredFields:
-      - hasCollaborator
+      field: hasCollaborator
     - name: has contact info
-      hidden: false
       template: "defaults/displayViews/persons/other/hasContactInfo.html"
-      requiredFields:
-      - hasContactInfo
+      field: hasContactInfo
     - name: has output
-      hidden: false
       template: "defaults/displayViews/persons/other/hasOutput.html"
-      requiredFields:
-      - hasOutput
+      field: hasOutput
     - name: is specified output of
-      hidden: false
       template: "defaults/displayViews/persons/other/isSpecifiedOutputOf.html"
-      requiredFields:
-      - isSpecifiedOutputOf
+      field: isSpecifiedOutputOf
     - name: output of
-      hidden: false
       template: "defaults/displayViews/persons/other/outputOf.html"
-      requiredFields:
-      - outputOf
+      field: outputOf
     - name: participates in
-      hidden: false
       template: "defaults/displayViews/persons/other/participatesIn.html"
-      requiredFields:
-      - participatesIn
+      field: participatesIn
     - name: patient id
-      hidden: false
       template: "defaults/displayViews/persons/other/patientId.html"
-      requiredFields:
-      - patientId
+      field: patientId
     - name: realized in
-      hidden: false
       template: "defaults/displayViews/persons/other/realizedIn.html"
-      requiredFields:
-      - realizedIn
+      field: realizedIn
     - name: related by
-      hidden: false
       template: "defaults/displayViews/persons/other/relatedBy.html"
-      requiredFields:
-      - relatedBy
+      field: relatedBy
     - name: relates
-      hidden: false
       template: "defaults/displayViews/persons/other/relates.html"
-      requiredFields:
-      - relates
+      field: relates
 
 - name: Organizations
   types:
@@ -619,69 +487,67 @@
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
+  - name: Grants/Awards
+    sections:
+    - name: awards grant
+      paginated: true
+      template: "defaults/displayViews/organizations/grantsAwards/awardsGrant.html"
+      field: awardsGrant
+      sort:
+        - field: date
+          direction: DESC
+          date: true
+    - name: administers grant
+      template: "defaults/displayViews/organizations/grantsAwards/administersGrant.html"
+      field: administersGrant
+    - name: subcontracts grant
+      template: "defaults/displayViews/organizations/grantsAwards/subcontractsGrant.html"
+      field: subcontractsGrant
+    - name: performs human study
+      template: "defaults/displayViews/organizations/grantsAwards/performsHumanStudy.html"
+      field: performsHumanStudy
   - name: Overview
-    hidden: false
     sections:
     - name: offers degree
-      hidden: false
       template: "defaults/displayViews/organizations/overview/offersDegree.html"
-      requiredFields:
-      - degrees
+      field: degrees
     - name: abbreviation
-      hidden: false
       template: "defaults/displayViews/organizations/overview/abbreviation.html"
-      requiredFields:
-      - abbreviation
+      field: abbreviation
     - name: date/time interval
-      hidden: false
       template: "defaults/displayViews/organizations/overview/dateTimeInterval.html"
-      requiredFields:
-      - dateTimeInterval
+      field: dateTimeInterval
     - name: sponsors award or honor
-      hidden: false
       template: "defaults/displayViews/organizations/overview/sponsorsAwardOrHonor.html"
-      requiredFields:
-      - sponsorsAwardOrHonor
+      field: sponsorsAwardOrHonor
       lazyReferences:
       - field: sponsorsAwardOrHonor
         collection: relationships
     - name: award or honor given
-      hidden: false
+      paginated: true
       template: "defaults/displayViews/organizations/overview/awardOrHonorGiven.html"
-      requiredFields:
-      - awardOrHonorGiven
-      lazyReferences:
-      - field: awardOrHonorGiven
-        collection: relationships
-      subsections:
-      - name: Award Or Honor
-        field: awardOrHonorGiven
-        sort:
+      field: awardOrHonorGiven
+      sort:
         - field: yearAwarded
           direction: DESC
           date: true
-        template: "defaults/displayViews/organizations/overview/awardOrHonorGiven/default.html"
+      lazyReferences:
+      - field: awardOrHonorGiven
+        collection: relationships
     - name: awards and honors received
-      hidden: false
       template: "defaults/displayViews/organizations/overview/awardsAndHonorsReceived.html"
-      requiredFields:
-      - awardsAndHonorsReceived
+      field: awardsAndHonorsReceived
       lazyReferences:
       - field: awardsAndHonorsReceived
         collection: relationships
     - name: keywords
-      hidden: false
       template: "defaults/displayViews/organizations/overview/keywords.html"
-      requiredFields:
-      - keywords
+      field: keywords
   - name: Affiliation
-    hidden: false
     sections:
     - name: organization for training
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/organizationForTraining.html"
-      requiredFields:
-      - organizationForTraining
+      field: organizationForTraining
       subsections:
       - name: Organization For Training
         field: organizationForTraining
@@ -690,10 +556,8 @@
           direction: ASC
         template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
     - name: people
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/people.html"
-      requiredFields:
-      - people
+      field: people
       subsections:
       - name: People
         field: people
@@ -702,58 +566,37 @@
           direction: ASC
         template: "defaults/displayViews/organizations/affiliation/people/default.html"
     - name: has sub-organization
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/hasSubOrganization.html"
-      requiredFields:
-      - hasSubOrganizations
+      field: hasSubOrganizations
     - name: organization within
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/organizationWithin.html"
-      requiredFields:
-      - organizationWithin
+      field: organizationWithin
     - name: lead organization of
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/leadOrganizationOf.html"
-      requiredFields:
-      - leadOrganizationOf
+      field: leadOrganizationOf
     - name: has collaborating organization or group
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/hasCollaboratingOrganizationOrGroup.html"
-      requiredFields:
-      - hasCollaboratingOrganizationOrGroup
+      field: hasCollaboratingOrganizationOrGroup
     - name: has affiliated organization
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/hasAffiliatedOrganization.html"
-      requiredFields:
-      - hasAffiliatedOrganizations
+      field: hasAffiliatedOrganizations
     - name: member of
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/memberOf.html"
-      requiredFields:
-      - memberOf
+      field: memberOf
     - name: clinical activities
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/clinicalActivities.html"
-      requiredFields:
-      - clinicalActivities
+      field: clinicalActivities
     - name: convener of event
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/convenerOfEvent.html"
-      requiredFields:
-      - convenerOfEvent
+      field: convenerOfEvent
     - name: attended event
-      hidden: false
       template: "defaults/displayViews/organizations/affiliation/attendedEvent.html"
-      requiredFields:
-      - attendedEvents
+      field: attendedEvents
   - name: Publications
-    hidden: false
     sections:
     - name: selected publications
-      hidden: false
       template: "defaults/displayViews/organizations/publications/selectedPublications.html"
-      requiredFields:
-      - publications
+      field: publications
       lazyReferences:
       - field: publications
         collection: documents
@@ -795,200 +638,109 @@
           date: true
         template: "defaults/displayViews/organizations/publications/selectedPublications/chapter.html"
     - name: publisher of
-      hidden: false
       template: "defaults/displayViews/organizations/publications/publisherOf.html"
-      requiredFields:
-      - publisherOf
+      field: publisherOf
     - name: presentations
-      hidden: false
       template: "defaults/displayViews/organizations/publications/presentations.html"
-      requiredFields:
-      - presentations
+      field: presentations
     - name: featured in
-      hidden: false
       template: "defaults/displayViews/organizations/publications/featuredIn.html"
-      requiredFields:
-      - featuredIn
+      field: featuredIn
     - name: assignee for patent
-      hidden: false
       template: "defaults/displayViews/organizations/publications/assigneeForPatent.html"
-      requiredFields:
-      - assigneeForPatent
+      field: assigneeForPatent
     - name: translator of
-      hidden: false
       template: "defaults/displayViews/organizations/publications/translatorOf.html"
-      requiredFields:
-      - translatorOf
-  - name: Grants/Awards
-    hidden: false
-    sections:
-    - name: awards grant
-      hidden: false
-      template: "defaults/displayViews/organizations/grantsAwards/awardsGrant.html"
-      requiredFields:
-      - awardsGrant
-    - name: administers grant
-      hidden: false
-      template: "defaults/displayViews/organizations/grantsAwards/administersGrant.html"
-      requiredFields:
-      - administersGrant
-    - name: subcontracts grant
-      hidden: false
-      template: "defaults/displayViews/organizations/grantsAwards/subcontractsGrant.html"
-      requiredFields:
-      - subcontractsGrant
-    - name: performs human study
-      hidden: false
-      template: "defaults/displayViews/organizations/grantsAwards/performsHumanStudy.html"
-      requiredFields:
-      - performsHumanStudy
+      field: translatorOf
   - name: Service
-    hidden: false
     sections:
     - name: contract or provider for service
-      hidden: false
       template: "defaults/displayViews/organizations/service/contractOrProviderForService.html"
-      requiredFields:
-      - contractOrProviderForService
+      field: contractOrProviderForService
     - name: outreach and community service activities
-      hidden: false
       template: "defaults/displayViews/organizations/service/outreachAndCommunityServiceActivities.html"
-      requiredFields:
-      - outreachAndCommunityServiceActivities
+      field: outreachAndCommunityServiceActivities
     - name: has equipment
-      hidden: false
       template: "defaults/displayViews/organizations/service/hasEquipment.html"
-      requiredFields:
-      - hasEquipment
+      field: hasEquipment
     - name: offers course
-      hidden: false
       template: "defaults/displayViews/organizations/service/offersCourse.html"
-      requiredFields:
-      - courses
+      field: courses
   - name: Identity
-    hidden: false
     sections:
     - name: OrgID
-      hidden: false
       template: "defaults/displayViews/organizations/identity/orgID.html"
-      requiredFields:
-      - orgId
+      field: orgId
     - name: same as
-      hidden: false
       template: "defaults/displayViews/organizations/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs
   - name: Contact
-    hidden: false
     sections:
     - name: phone
-      hidden: false
       template: "defaults/displayViews/organizations/contact/phone.html"
-      requiredFields:
-      - phone
+      field: phone
     - name: fax
-      hidden: false
       template: "defaults/displayViews/organizations/contact/fax.html"
-      requiredFields:
-      - fax
+      field: fax
     - name: email address
-      hidden: false
       template: "defaults/displayViews/organizations/contact/emailAddress.html"
-      requiredFields:
-      - emailAddress
+      field: emailAddress
     - name: mailing address
-      hidden: false
       template: "defaults/displayViews/organizations/contact/mailingAddress.html"
-      requiredFields:
-      - mailingAddress
+      field: mailingAddress
     - name: geographic location
-      hidden: false
       template: "defaults/displayViews/organizations/contact/geographicLocation.html"
-      requiredFields:
-      - geographicLocation
+      field: geographicLocation
     - name: located in facility
-      hidden: false
       template: "defaults/displayViews/organizations/contact/locatedInFacility.html"
-      requiredFields:
-      - locatedAtFacilities
+      field: locatedAtFacilities
     - name: predecessor organization
-      hidden: false
       template: "defaults/displayViews/organizations/contact/predecessorOrganization.html"
-      requiredFields:
-      - predecessorOrganizations
+      field: predecessorOrganizations
     - name: successor organization
-      hidden: false
       template: "defaults/displayViews/organizations/contact/successorOrganization.html"
-      requiredFields:
-      - successorOrganizations
+      field: successorOrganizations
     - name: governing authority for
-      hidden: false
       template: "defaults/displayViews/organizations/contact/governingAuthorityFor.html"
-      requiredFields:
-      - governingAuthorityFor
+      field: governingAuthorityFor
   - name: Other
-    hidden: false
     sections:
     - name: bearer of
-      hidden: false
       template: "defaults/displayViews/organizations/other/bearerOf.html"
-      requiredFields:
-      - bearerOf
+      field: bearerOf
     - name: has collaborator
-      hidden: false
       template: "defaults/displayViews/organizations/other/hasCollaborator.html"
-      requiredFields:
-      - hasCollaborator
+      field: hasCollaborator
     - name: has contact info
-      hidden: false
       template: "defaults/displayViews/organizations/other/hasContactInfo.html"
-      requiredFields:
-      - hasContactInfo
+      field: hasContactInfo
     - name: has part
-      hidden: false
       template: "defaults/displayViews/organizations/other/hasPart.html"
-      requiredFields:
-      - hasPart
+      field: hasPart
     - name: is specific output of
-      hidden: false
       template: "defaults/displayViews/organizations/other/isSpecificOutputOf.html"
-      requiredFields:
-      - isSpecificOutputOf
+      field: isSpecificOutputOf
     - name: located in
-      hidden: false
       template: "defaults/displayViews/organizations/other/locatedIn.html"
-      requiredFields:
-      - locatedIn
+      field: locatedIn
     - name: output of
-      hidden: false
       template: "defaults/displayViews/organizations/other/outputOf.html"
-      requiredFields:
-      - outputOf
+      field: outputOf
     - name: part of
-      hidden: false
       template: "defaults/displayViews/organizations/other/partOf.html"
-      requiredFields:
-      - partOf
+      field: partOf
     - name: participates in
-      hidden: false
       template: "defaults/displayViews/organizations/other/participatesIn.html"
-      requiredFields:
-      - participatesIn
+      field: participatesIn
     - name: related by
-      hidden: false
       template: "defaults/displayViews/organizations/other/relatedBy.html"
-      requiredFields:
-      - relatedBy
+      field: relatedBy
     - name: relates
-      hidden: false
       template: "defaults/displayViews/organizations/other/relates.html"
-      requiredFields:
-      - relates
+      field: relates
     - name: uses
-      hidden: false
       template: "defaults/displayViews/organizations/other/uses.html"
-      requiredFields:
-      - uses
+      field: uses
 
 - name: Documents
   types:
@@ -1010,273 +762,168 @@
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
-    hidden: false
     sections:
     - name: abstract
-      hidden: false
       template: "defaults/displayViews/documents/overview/abstract.html"
-      requiredFields:
-      - abstract
+      field: abstract
     - name: authors
-      hidden: false
       template: "defaults/displayViews/documents/overview/authors.html"
-      requiredFields:
-      - authors
+      field: authors
     - name: author list (cited authors)
-      hidden: false
       template: "defaults/displayViews/documents/overview/authorList.html"
-      requiredFields:
-      - authorList
+      field: authorList
     - name: editor list (cited editors)
-      hidden: false
       template: "defaults/displayViews/documents/overview/editorList.html"
-      requiredFields:
-      - editorList
+      field: editorList
     - name: editors
-      hidden: false
       template: "defaults/displayViews/documents/overview/editors.html"
-      requiredFields:
-      - editors
+      field: editors
     - name: etd chair
-      hidden: false
       template: "defaults/displayViews/documents/overview/etdChair.html"
-      requiredFields:
-      - etdChairedBy
+      field: etdChairedBy
       lazyReferences:
       - field: etdChairedBy
         collection: persons
     - name: translator
-      hidden: false
       template: "defaults/displayViews/documents/overview/translator.html"
-      requiredFields:
-      - translators
+      field: translators
     - name: status
-      hidden: false
       template: "defaults/displayViews/documents/overview/status.html"
-      requiredFields:
-      - status
+      field: status
     - name: publication date
-      hidden: false
       template: "defaults/displayViews/documents/overview/publicationDate.html"
-      requiredFields:
-      - publicationDate
+      field: publicationDate
     - name: publisher
-      hidden: false
       template: "defaults/displayViews/documents/overview/publisher.html"
-      requiredFields:
-      - publisher
+      field: publisher
     - name: has subject area
-      hidden: false
       template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
-      requiredFields:
-      - subjectAreas
+      field: subjectAreas
     - name: has restriction
-      hidden: false
       template: "defaults/displayViews/documents/overview/hasRestriction.html"
-      requiredFields:
-      - restrictions
+      field: restrictions
     - name: has document part
-      hidden: false
       template: "defaults/displayViews/documents/overview/hasDocumentPart.html"
-      requiredFields:
-      - documentParts
+      field: documentParts
     - name: features
-      hidden: false
       template: "defaults/displayViews/documents/overview/features.html"
-      requiredFields:
-      - features
+      field: features
     - name: published in
-      hidden: false
       template: "defaults/displayViews/documents/overview/publishedIn.html"
-      requiredFields:
-      - publicationVenue
+      field: publicationVenue
     - name: geographic focus
-      hidden: false
       template: "defaults/displayViews/documents/overview/geographicFocus.html"
-      requiredFields:
-      - geographicFocus
+      field: geographicFocus
     - name: documentation for project or resource
-      hidden: false
       template: "defaults/displayViews/documents/overview/documentationForProjectOrResource.html"
-      requiredFields:
-      - documentationForProjectOrResource
+      field: documentationForProjectOrResource
     - name: output of process or event
-      hidden: false
       template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
-      requiredFields:
-      - outputOfProcessOrEvent
+      field: outputOfProcessOrEvent
     - name: presented at event
-      hidden: false
       template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
-      requiredFields:
-      - presentedAt
+      field: presentedAt
     - name: keywords
-      hidden: false
       template: "defaults/displayViews/documents/overview/keywords.html"
-      requiredFields:
-      - keywords
+      field: keywords
   - name: Identity
-    hidden: false
     sections:
     - name: EAN International-Uniform Code Council (EAN-UCC) 13
-      hidden: false
       template: "defaults/displayViews/documents/identity/eanInternationalUniformCodeCouncil.html"
-      requiredFields:
-      - eanucc13
+      field: eanucc13
     - name: NIH Manuscript Submission System ID
-      hidden: false
       template: "defaults/displayViews/documents/identity/nihManuscriptSubmissionSystemId.html"
-      requiredFields:
-      - nihmsid
+      field: nihmsid
     - name: PubMed Central ID
-      hidden: false
       template: "defaults/displayViews/documents/identity/pubMedCentralId.html"
-      requiredFields:
-      - pmcid
+      field: pmcid
     - name: identifier
-      hidden: false
       template: "defaults/displayViews/documents/identity/identifier.html"
-      requiredFields:
-      - identifier
+      field: identifier
     - name: same as
-      hidden: false
       template: "defaults/displayViews/documents/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs
     - name: Digital Object Identifier (DOI)
-      hidden: false
       template: "defaults/displayViews/documents/identity/digitalObjectIdentifier.html"
-      requiredFields:
-      - doi
+      field: doi
     - name: Online Computer Library Center (OCLC) number
-      hidden: false
       template: "defaults/displayViews/documents/identity/onlineComputerLibraryCenter.html"
-      requiredFields:
-      - oclcnum
+      field: oclcnum
     - name: PubMed ID
-      hidden: false
       template: "defaults/displayViews/documents/identity/pubMedId.html"
-      requiredFields:
-      - pmid
+      field: pmid
   - name: Related Documents
-    hidden: false
     sections:
     - name: cited by
-      hidden: false
       template: "defaults/displayViews/documents/relatedDocuments/citedBy.html"
-      requiredFields:
-      - citedBy
+      field: citedBy
     - name: cites
-      hidden: false
       template: "defaults/displayViews/documents/relatedDocuments/cites.html"
-      requiredFields:
-      - cites
+      field: cites
     - name: cites as data source
-      hidden: false
       template: "defaults/displayViews/documents/relatedDocuments/citesAsDataSource.html"
-      requiredFields:
-      - citesAsDataSource
+      field: citesAsDataSource
     - name: has translation
-      hidden: false
       template: "defaults/displayViews/documents/relatedDocuments/hasTranslation.html"
-      requiredFields:
-      - translations
+      field: translations
     - name: translation of
-      hidden: false
       template: "defaults/displayViews/documents/relatedDocuments/translationOf.html"
-      requiredFields:
-      - translationOf
+      field: translationOf
   - name: Additional Document Info
-    hidden: false
     sections:
     - name: has global citation frequency
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/hasGlobalCitationFrequency.html"
-      requiredFields:
-      - hasGlobalCitationFrequency
+      field: hasGlobalCitationFrequency
     - name: number of pages
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/numberOfPages.html"
-      requiredFields:
-      - numberOfPages
+      field: numberOfPages
     - name: start page
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/startPage.html"
-      requiredFields:
-      - pageStart
+      field: pageStart
     - name: end page
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/endPage.html"
-      requiredFields:
-      - pageEnd
+      field: pageEnd
     - name: volume
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/volume.html"
-      requiredFields:
-      - volume
+      field: volume
     - name: issue
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/issue.html"
-      requiredFields:
-      - issue
+      field: issue
     - name: reproduced in
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/reproducedIn.html"
-      requiredFields:
-      - reproducedIn
+      field: reproducedIn
     - name: reproduces
-      hidden: false
       template: "defaults/displayViews/documents/additionalDocumentInfo/reproduces.html"
-      requiredFields:
-      - reproduces
+      field: reproduces
   - name: Other
-    hidden: false
     sections:
     - name: is about
-      hidden: false
       template: "defaults/displayViews/documents/other/isAbout.html"
-      requiredFields:
-      - isAbout
+      field: isAbout
     - name: is specified output of
-      hidden: false
       template: "defaults/displayViews/documents/other/isSpecifiedOutputOf.html"
-      requiredFields:
-      - specifiedOutputOf
+      field: specifiedOutputOf
     - name: is template
-      hidden: false
       template: "defaults/displayViews/documents/other/isTemplate.html"
-      requiredFields:
-      - isTemplate
+      field: isTemplate
     - name: mentions
-      hidden: false
       template: "defaults/displayViews/documents/other/mentions.html"
-      requiredFields:
-      - mention
+      field: mention
     - name: output of
-      hidden: false
       template: "defaults/displayViews/documents/other/outputOf.html"
-      requiredFields:
-      - outputOf
+      field: outputOf
     - name: participates in
-      hidden: false
       template: "defaults/displayViews/documents/other/participatesIn.html"
-      requiredFields:
-      - participatesIn
+      field: participatesIn
     - name: related by
-      hidden: false
       template: "defaults/displayViews/documents/other/relatedBy.html"
-      requiredFields:
-      - relatedBy
+      field: relatedBy
     - name: supported by
-      hidden: false
       template: "defaults/displayViews/documents/other/supportedBy.html"
-      requiredFields:
-      - supportedBy
+      field: supportedBy
     - name: date/time value
-      hidden: false
       template: "defaults/displayViews/documents/other/dateTimeValue.html"
-      requiredFields:
-      - dateTimeValue
+      field: dateTimeValue
 
 - name: Relationships
   types:
@@ -1289,222 +936,138 @@
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
-    hidden: false
     sections:
     - name: description
-      hidden: false
       template: "defaults/displayViews/relationships/overview/description.html"
-      requiredFields:
-      - description
+      field: description
     - name: receipt of
-      hidden: false
       template: "defaults/displayViews/relationships/overview/receiptOf.html"
-      requiredFields:
-      - receiptOf
+      field: receiptOf
     - name: award or honor for
-      hidden: false
       template: "defaults/displayViews/relationships/overview/awardOrHonorFor.html"
-      requiredFields:
-      - awardOrHonorFor
+      field: awardOrHonorFor
     - name: date/time interval
-      hidden: false
       template: "defaults/displayViews/relationships/overview/dateTimeInterval.html"
+      field: dateTimeIntervalStart
       requiredFields:
-      - dateTimeIntervalStart
       - dateTimeIntervalEnd
     - name: year awarded
-      hidden: false
       template: "defaults/displayViews/relationships/overview/yearAwarded.html"
-      requiredFields:
-      - yearAwarded
+      field: yearAwarded
     - name: abstract
-      hidden: false
       template: "defaults/displayViews/relationships/overview/abstract.html"
-      requiredFields:
-      - abstract
+      field: abstract
     - name: has subject area
-      hidden: false
       template: "defaults/displayViews/relationships/overview/hasSubjectArea.html"
-      requiredFields:
-      - subjectAreas
+      field: subjectAreas
     - name: awarded by
-      hidden: false
       template: "defaults/displayViews/relationships/overview/awardedBy.html"
-      requiredFields:
-      - awardedBy
+      field: awardedBy
     - name: awarded by (preferred label)
-      hidden: false
       template: "defaults/displayViews/relationships/overview/awardedByPreferredLabel.html"
-      requiredFields:
-      - awardedByPreferredLabel
+      field: awardedByPreferredLabel
     - name: award conferred by
-      hidden: false
       template: "defaults/displayViews/relationships/overview/awardConferredBy.html"
-      requiredFields:
-      - awardConferredBy
+      field: awardConferredBy
     - name: award conferred by (preferred label)
-      hidden: false
       template: "defaults/displayViews/relationships/overview/awardConferredByPreferredLabel.html"
-      requiredFields:
-      - awardConferredByPreferredLabel
+      field: awardConferredByPreferredLabel
     - name: administered by
-      hidden: false
       template: "defaults/displayViews/relationships/overview/administeredBy.html"
-      requiredFields:
-      - administeredBy
+      field: administeredBy
     - name: administered by (preferred label)
-      hidden: false
       template: "defaults/displayViews/relationships/overview/administeredByPreferredLabel.html"
-      requiredFields:
-      - administeredByPreferredLabel
+      field: administeredByPreferredLabel
     - name: subcontracted through
-      hidden: false
       template: "defaults/displayViews/relationships/overview/subcontractedThrough.html"
-      requiredFields:
-      - grantSubcontractedThrough
+      field: grantSubcontractedThrough
     - name: geographic focus
-      hidden: false
       template: "defaults/displayViews/relationships/overview/geographicFocus.html"
-      requiredFields:
-      - geographicFocus
+      field: geographicFocus
     - name: has sub grant
-      hidden: false
       template: "defaults/displayViews/relationships/overview/hasSubGrant.html"
-      requiredFields:
-      - hasSubGrant
+      field: hasSubGrant
     - name: sub grant of
-      hidden: false
       template: "defaults/displayViews/relationships/overview/subGrantOf.html"
-      requiredFields:
-       - subGrantOf
+      field: subGrantOf
     - name: provides funding for
-      hidden: false
       template: "defaults/displayViews/relationships/overview/providesFundingFor.html"
-      requiredFields:
-      - providesFundingFor
+      field: providesFundingFor
     - name: total award amount
-      hidden: false
       template: "defaults/displayViews/relationships/overview/totalAwardAmount.html"
-      requiredFields:
-      - totalAwardAmount
+      field: totalAwardAmount
     - name: direct costs
-      hidden: false
       template: "defaults/displayViews/relationships/overview/directCosts.html"
-      requiredFields:
-      - directCosts
+      field: directCosts
     - name: sponsor award ID
-      hidden: false
       template: "defaults/displayViews/relationships/overview/sponsorAwardId.html"
-      requiredFields:
-      - sponsorAwardId
+      field: sponsorAwardId
     - name: local award ID
-      hidden: false
       template: "defaults/displayViews/relationships/overview/localAwardId.html"
-      requiredFields:
-      - localAwardId
+      field: localAwardId
   - name: Affiliation
-    hidden: false
     sections:
     - name: contributor
-      hidden: false
       template: "defaults/displayViews/relationships/affiliation/contributor.html"
-      requiredFields:
-      - contributors
+      field: contributors
   - name: Publications
-    hidden: false
     sections:
     - name: supported publications or other works
-      hidden: false
       template: "defaults/displayViews/relationships/publications/supportedPublicationsOrOtherWorks.html"
-      requiredFields:
-      - supportedPublicationOrOtherWork
+      field: supportedPublicationOrOtherWork
   - name: Identity
-    hidden: false
     sections:
     - name: same as
-      hidden: false
       template: "defaults/displayViews/relationships/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs
   - name: Other
-    hidden: false
     sections:
     - name: assigned by
-      hidden: false
       template: "defaults/displayViews/relationships/other/assignedBy.html"
-      requiredFields:
-      - assignedBy
+      field: assignedBy
     - name: inheres in
-      hidden: false
       template: "defaults/displayViews/relationships/other/inheresIn.html"
-      requiredFields:
-      - inheresIn
+      field: inheresIn
     - name: is specified output of
-      hidden: false
       template: "defaults/displayViews/relationships/other/isSpecifiedOutputOf.html"
-      requiredFields:
-      - specifiedOutputOf
+      field: specifiedOutputOf
     - name: output of
-      hidden: false
       template: "defaults/displayViews/relationships/other/outputOf.html"
-      requiredFields:
-      - outputOf
+      field: outputOf
     - name: participates in
-      hidden: false
       template: "defaults/displayViews/relationships/other/participatesIn.html"
-      requiredFields:
-      - participatesIn
+      field: participatesIn
     - name: relates
-      hidden: false
       template: "defaults/displayViews/relationships/other/relates.html"
-      requiredFields:
-      - relates
+      field: relates
   - name: Identity
-    hidden: false
     sections:
     - name: same as
-      hidden: false
       template: "defaults/displayViews/relationships/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs
   - name: Other
-    hidden: false
     sections:
     - name: assigned by
-      hidden: false
       template: "defaults/displayViews/relationships/other/assignedBy.html"
-      requiredFields:
-      - assignedBy
+      field: assignedBy
     - name: inheres in
-      hidden: false
       template: "defaults/displayViews/relationships/other/inheresIn.html"
-      requiredFields:
-      - inheresIn
+      field: inheresIn
     - name: is specified output of
-      hidden: false
       template: "defaults/displayViews/relationships/other/isSpecifiedOutputOf.html"
-      requiredFields:
-      - specifiedOutputOf
+      field: specifiedOutputOf
     - name: output of
-      hidden: false
       template: "defaults/displayViews/relationships/other/outputOf.html"
-      requiredFields:
-      - outputOf
+      field: outputOf
     - name: participates in
-      hidden: false
       template: "defaults/displayViews/relationships/other/participatesIn.html"
-      requiredFields:
-      - participatesIn
+      field: participatesIn
     - name: relates
-      hidden: false
       template: "defaults/displayViews/relationships/other/relates.html"
-      requiredFields:
-      - relates
+      field: relates
     - name: date/time value
-      hidden: false
       template: "defaults/displayViews/relationships/other/dateTimeValue.html"
-      requiredFields:
-      - dateTimeValue
+      field: dateTimeValue
 
 - name: Processes
   types:
@@ -1516,136 +1079,86 @@
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
-    hidden: false
     sections:
     - name: description
-      hidden: false
       template: "defaults/displayViews/processes/overview/description.html"
-      requiredFields:
-      - description
+      field: description
     - name: offered by
-      hidden: false
       template: "defaults/displayViews/processes/overview/offeredBy.html"
-      requiredFields:
-      - offeredBy
+      field: offeredBy
     - name: date/time interval
-      hidden: false
       template: "defaults/displayViews/processes/overview/dateTimeInterval.html"
+      field: dateTimeIntervalStart
       requiredFields:
-      - dateTimeIntervalStart
       - dateTimeIntervalEnd
     - name: occurs within event
-      hidden: false
       template: "defaults/displayViews/processes/overview/occursWithinEvent.html"
-      requiredFields:
-      - occursWithinEvent
+      field: occursWithinEvent
     - name: includes event
-      hidden: false
       template: "defaults/displayViews/processes/overview/includesEvent.html"
-      requiredFields:
-      - includesEvent
+      field: includesEvent
     - name: in event series
-      hidden: false
       template: "defaults/displayViews/processes/overview/inEventSeries.html"
-      requiredFields:
-      - inEventSeries
+      field: inEventSeries
     - name: participant
-      hidden: false
       template: "defaults/displayViews/processes/overview/participants.html"
-      requiredFields:
-      - participants
+      field: participants
     - name: has subject area
-      hidden: false
       template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
-      requiredFields:
-      - subjectAreas
+      field: subjectAreas
     - name: has prerequisite
-      hidden: false
       template: "defaults/displayViews/processes/overview/hasPrerequisite.html"
-      requiredFields:
-      - hasPrerequisite
+      field: hasPrerequisite
     - name: prerequisite for
-      hidden: false
       template: "defaults/displayViews/processes/overview/prerequisiteFor.html"
-      requiredFields:
-      - prerequisiteFor
+      field: prerequisiteFor
     - name: credits
-      hidden: false
       template: "defaults/displayViews/processes/overview/credits.html"
-      requiredFields:
-      - credits
+      field: credits
     - name: geographic focus
-      hidden: false
       template: "defaults/displayViews/processes/overview/geographicFocus.html"
-      requiredFields:
-      - geographicFocus
+      field: geographicFocus
   - name: Publications
-    hidden: false
     sections:
     - name: output publications or other works
-      hidden: false
       template: "defaults/displayViews/processes/publications/outputPublicationsOrOtherWorks.html"
-      requiredFields:
-      - outputPublicationOrOtherWork
+      field: outputPublicationOrOtherWork
     - name: related documents
-      hidden: false
       template: "defaults/displayViews/processes/publications/relatedDocuments.html"
-      requiredFields:
-      - relatedDocument
+      field: relatedDocument
   - name: Identity
-    hidden: false
     sections:
     - name: same as
-      hidden: false
       template: "defaults/displayViews/processes/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs
   - name: Contact
-    hidden: false
     sections:
     - name: contact information
-      hidden: false
       template: "defaults/displayViews/processes/contact/contactInformation.html"
-      requiredFields:
-      - contactInformation
+      field: contactInformation
     - name: held in facility
-      hidden: false
       template: "defaults/displayViews/processes/contact/heldInFacility.html"
-      requiredFields:
-      - heldInFacility
+      field: heldInFacility
     - name: held in geographic location
-      hidden: false
       template: "defaults/displayViews/processes/contact/heldInGeographicLocation.html"
-      requiredFields:
-      - heldInGeographicLocation
+      field: heldInGeographicLocation
   - name: Other
-    hidden: false
     sections:
     - name: has input
-      hidden: false
       template: "defaults/displayViews/processes/other/hasInput.html"
-      requiredFields:
-      - hasInput
+      field: hasInput
     - name: has output
-      hidden: false
       template: "defaults/displayViews/processes/other/hasOutput.html"
-      requiredFields:
-      - hasOutput
+      field: hasOutput
     - name: has participant
-      hidden: false
       template: "defaults/displayViews/processes/other/hasParticipant.html"
-      requiredFields:
-      - hasParticipant
+      field: hasParticipant
     - name: located in
-      hidden: false
       template: "defaults/displayViews/processes/other/locatedIn.html"
-      requiredFields:
-      - locatedIn
+      field: locatedIn
     - name: realizes
-      hidden: false
       template: "defaults/displayViews/processes/other/realizes.html"
-      requiredFields:
-      - realizes
+      field: realizes
 
 - name: Collections
   types:
@@ -1657,147 +1170,92 @@
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
-    hidden: false
     sections:
     - name: abstract
-      hidden: false
       template: "defaults/displayViews/collections/overview/abstract.html"
-      requiredFields:
-      - abstract
+      field: abstract
     - name: abbreviation
-      hidden: false
       template: "defaults/displayViews/collections/overview/abbreviation.html"
-      requiredFields:
-      - abbreviation
+      field: abbreviation
     - name: publication venue for
-      hidden: false
       template: "defaults/displayViews/collections/overview/publicationVenueFor.html"
-      requiredFields:
-      - publicationVenueFor
+      field: publicationVenueFor
       lazyReferences:
       - field: publicationVenueFor
         collection: documents
     - name: authors
-      hidden: false
       template: "defaults/displayViews/collections/overview/authors.html"
-      requiredFields:
-      - authors
+      field: authors
     - name: editors
-      hidden: false
       template: "defaults/displayViews/collections/overview/editors.html"
-      requiredFields:
-      - editors
+      field: editors
     - name: translator
-      hidden: false
       template: "defaults/displayViews/collections/overview/translator.html"
-      requiredFields:
-      - translators
+      field: translators
     - name: publication date
-      hidden: false
       template: "defaults/displayViews/collections/overview/publicationDate.html"
-      requiredFields:
-      - publicationDate
+      field: publicationDate
     - name: publisher
-      hidden: false
       template: "defaults/displayViews/collections/overview/publisher.html"
-      requiredFields:
-      - publisher
+      field: publisher
     - name: has subject area
-      hidden: false
       template: "defaults/displayViews/collections/overview/hasSubjectArea.html"
-      requiredFields:
-      - subjectAreas
+      field: subjectAreas
     - name: features
-      hidden: false
       template: "defaults/displayViews/collections/overview/features.html"
-      requiredFields:
-      - features
+      field: features
     - name: geographic focus
-      hidden: false
       template: "defaults/displayViews/collections/overview/geographicFocus.html"
-      requiredFields:
-      - geographicFocus
+      field: geographicFocus
     - name: output of process or event
-      hidden: false
       template: "defaults/displayViews/collections/overview/outputOfProcessOrEvent.html"
-      requiredFields:
-      - outputOfProcessOrEvent
+      field: outputOfProcessOrEvent
     - name: keywords
-      hidden: false
       template: "defaults/displayViews/collections/overview/keywords.html"
-      requiredFields:
-      - keywords
+      field: keywords
   - name: Identity
-    hidden: false
     sections:
     - name: International Standard Serial Number (ISSN)
-      hidden: false
       template: "defaults/displayViews/collections/identity/issn.html"
-      requiredFields:
-      - issn
+      field: issn
     - name: Electronic International Standard Serial Number (EISSN)
-      hidden: false
       template: "defaults/displayViews/collections/identity/eissn.html"
-      requiredFields:
-      - eissn
+      field: eissn
     - name: Digital Object Identifier (DOI)
-      hidden: false
       template: "defaults/displayViews/collections/identity/doi.html"
-      requiredFields:
-      - doi
+      field: doi
     - name: Online Computer Library Center (OCLC) number
-      hidden: false
       template: "defaults/displayViews/collections/identity/oclcnumber.html"
-      requiredFields:
-      - oclcnumber
+      field: oclcnumber
   - name: Other
-    hidden: false
     sections:
     - name: is about
-      hidden: false
       template: "defaults/displayViews/collections/other/isAbout.html"
-      requiredFields:
-      - isAbout
+      field: isAbout
     - name: is specified output of
-      hidden: false
       template: "defaults/displayViews/collections/other/isSpecifiedOutputOf.html"
-      requiredFields:
-      - specifiedOutputOf
+      field: specifiedOutputOf
     - name: is template
-      hidden: false
       template: "defaults/displayViews/collections/other/isTemplate.html"
-      requiredFields:
-      - isTemplate
+      field: isTemplate
     - name: mentions
-      hidden: false
       template: "defaults/displayViews/collections/other/mentions.html"
-      requiredFields:
-      - mention
+      field: mention
     - name: output of
-      hidden: false
       template: "defaults/displayViews/collections/other/outputOf.html"
-      requiredFields:
-      - outputOf
+      field: outputOf
     - name: participates in
-      hidden: false
       template: "defaults/displayViews/collections/other/participatesIn.html"
-      requiredFields:
-      - participatesIn
+      field: participatesIn
     - name: related by
-      hidden: false
       template: "defaults/displayViews/collections/other/relatedBy.html"
-      requiredFields:
-      - relatedBy
+      field: relatedBy
     - name: supported by
-      hidden: false
       template: "defaults/displayViews/collections/other/supportedBy.html"
-      requiredFields:
-      - supportedBy
+      field: supportedBy
     - name: date/time value
-      hidden: false
       template: "defaults/displayViews/collections/other/dateTimeValue.html"
-      requiredFields:
-      - dateTimeValue
+      field: dateTimeValue
 
 - name: Concepts
   types:
@@ -1810,48 +1268,34 @@
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
   - name: Overview
-    hidden: false
     sections:
     - name: research area of
-      hidden: false
       template: "defaults/displayViews/concepts/overview/researchAreaOf.html"
-      requiredFields:
-      - researchAreaOf
+      field: researchAreaOf
     - name: award conferred by
-      hidden: false
       template: "defaults/displayViews/concepts/overview/awardConferredBy.html"
-      requiredFields:
-      - awardConferredBy
+      field: awardConferredBy
     - name: award conferred by (preferred label)
-      hidden: false
       template: "defaults/displayViews/concepts/overview/awardConferredByPreferredLabel.html"
-      requiredFields:
-      - awardConferredByPreferredLabel
+      field: awardConferredByPreferredLabel
     - name: broader concept
-      hidden: false
       template: "defaults/displayViews/concepts/overview/broaderConcept.html"
-      requiredFields:
-      - broaderConcepts
+      field: broaderConcepts
     - name: narrower concept
-      hidden: false
       template: "defaults/displayViews/concepts/overview/narrowerConcept.html"
-      requiredFields:
-      - narrowerConcepts
+      field: narrowerConcepts
     - name: related concept
-      hidden: false
       template: "defaults/displayViews/concepts/overview/relatedConcept.html"
-      requiredFields:
-      - relatedConcepts
+      field: relatedConcepts
     - name: receipts
-      hidden: false
+      paginated: true
       template: "defaults/displayViews/concepts/overview/receipts.html"
-      requiredFields:
-      - receipts
+      field: receipts
+      sort:
+        - field: recipientName
+          direction: ASC
   - name: Identity
-    hidden: false
     sections:
     - name: same as
-      hidden: false
       template: "defaults/displayViews/concepts/identity/sameAs.html"
-      requiredFields:
-      - sameAs
+      field: sameAs

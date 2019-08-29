@@ -6,9 +6,9 @@ CONSTRUCT {
     ?awardedBy rdfs:label ?labelWithId .
 } WHERE {
     <{{uri}}> obo:RO_0000053 ?role .
-    ?role a vivo:PrincipalInvestigatorRole .
+    ?role a vivo:ResearcherRole .
     ?role vivo:relatedBy ?grant .
     ?grant vivo:assignedBy ?awardedBy .
     ?awardedBy rdfs:label ?label .
-    BIND( CONCAT( STR(?label), REPLACE(STR(?grant), "(^.*/)", "::") ) AS ?labelWithId ) .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?grant), "(^.*/)", "::"), REPLACE(STR(?awardedBy), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

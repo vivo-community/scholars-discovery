@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.graphql.model.person;
 
+import edu.tamu.scholars.middleware.graphql.model.person.ResearcherOnAwardedBy;
+
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,28 +15,38 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "PersonCoPrincipalInvestigatorOn"
+    name = "PersonResearcherOn"
 )
 @JsonInclude(NON_EMPTY)
-public class CoPrincipalInvestigatorOn extends AbstractNestedDocument {
-  private static final long serialVersionUID = 216177783L;
+public class ResearcherOn extends AbstractNestedDocument {
+  private static final long serialVersionUID = 86706970L;
 
-  private String awardedBy;
+  private ResearcherOnAwardedBy awardedBy;
+
+  private String role;
 
   private String startDate;
 
   private String endDate;
 
-  public CoPrincipalInvestigatorOn() {
+  public ResearcherOn() {
     super();
   }
 
-  public String getAwardedBy() {
+  public ResearcherOnAwardedBy getAwardedBy() {
     return awardedBy;
   }
 
-  public void setAwardedBy(String awardedBy) {
+  public void setAwardedBy(ResearcherOnAwardedBy awardedBy) {
     this.awardedBy = awardedBy;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
   }
 
   public String getStartDate() {
