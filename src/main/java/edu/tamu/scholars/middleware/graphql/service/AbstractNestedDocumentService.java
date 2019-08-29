@@ -175,6 +175,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
+    public List<ND> findBySyncIds(String syncId) {
+        return repo.findBySyncIds(syncId).stream().map(this::toNested).collect(Collectors.toList());
+    }
+
+    @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
         return repo.findBySyncIdsIn(syncIds).stream().map(this::toNested).collect(Collectors.toList());
     }
