@@ -493,6 +493,10 @@
       paginated: true
       template: "defaults/displayViews/organizations/grantsAwards/awardsGrant.html"
       field: awardsGrant
+      sort:
+        - field: date
+          direction: DESC
+          date: true
     - name: administers grant
       template: "defaults/displayViews/organizations/grantsAwards/administersGrant.html"
       field: administersGrant
