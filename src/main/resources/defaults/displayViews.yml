@@ -1292,7 +1292,7 @@
       template: "defaults/displayViews/concepts/overview/receipts.html"
       field: receipts
       sort:
-        - field: receiptRecipientName
+        - field: recipientName
           direction: ASC
   - name: Identity
     sections:
