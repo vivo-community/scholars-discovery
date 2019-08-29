@@ -4,6 +4,6 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?status rdfs:label ?label .
 } WHERE {
-    <[(${uri})]> bibo:status ?status .
+    <{{uri}}> bibo:status ?status .
     ?status rdfs:label ?label .
 }

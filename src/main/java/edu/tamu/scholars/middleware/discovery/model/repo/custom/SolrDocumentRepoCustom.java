@@ -23,4 +23,6 @@ public interface SolrDocumentRepoCustom<D extends AbstractSolrDocument> {
 
     public long count(String query, List<FilterArg> filters);
 
+    public Class<D> type();
+
 }

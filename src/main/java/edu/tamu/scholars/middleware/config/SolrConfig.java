@@ -23,7 +23,7 @@ public class SolrConfig {
 
     @Bean
     public SolrClient solrClient() {
-        return new HttpSolrClient.Builder(solrHost).build();
+        return new HttpSolrClient.Builder(solrHost).withConnectionTimeout(900000).withSocketTimeout(900000).build();
     }
 
     @Bean

@@ -6,7 +6,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?date vivo:dateTime ?dateTimeWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000053 ?role .
+    <{{uri}}> obo:RO_0000053 ?role .
     ?role a vivo:ResearcherRole .
     ?role vitro:mostSpecificType ?mostSpecificType .
     {

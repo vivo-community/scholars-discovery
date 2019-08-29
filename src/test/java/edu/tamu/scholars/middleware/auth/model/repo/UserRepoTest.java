@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.tamu.scholars.middleware.auth.UserIntegrationTest;
 import edu.tamu.scholars.middleware.auth.model.Role;
 import edu.tamu.scholars.middleware.auth.model.User;
-import edu.tamu.scholars.middleware.config.MiddlewareConfig;
+import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)

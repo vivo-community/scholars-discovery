@@ -7,7 +7,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?organization rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> tamu:ETDChairedBy ?chair .
+    <{{uri}}> tamu:ETDChairedBy ?chair .
     ?chair vivo:relatedBy ?position .
     ?position a vivo:Position .
     ?position vivo:relatedBy ?organization .

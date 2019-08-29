@@ -52,7 +52,8 @@ public class DirectoryViewTest {
         assertEquals(FacetType.STRING, directoryView.getFacets().get(0).getType());
         assertEquals(FacetOptions.FacetSort.COUNT, directoryView.getFacets().get(0).getSort());
         assertEquals(Sort.Direction.DESC, directoryView.getFacets().get(0).getDirection());
-        assertEquals(20, directoryView.getFacets().get(0).getLimit());
+        assertEquals(20, directoryView.getFacets().get(0).getPageSize());
+        assertEquals(1, directoryView.getFacets().get(0).getPageNumber());
         assertTrue(directoryView.getFacets().get(0).isCollapsed());
         assertFalse(directoryView.getFacets().get(0).isHidden());
 
@@ -71,10 +72,8 @@ public class DirectoryViewTest {
         assertEquals(2, directoryView.getExport().size());
         assertEquals("Id", directoryView.getExport().get(0).getColumnHeader());
         assertEquals("id", directoryView.getExport().get(0).getValuePath());
-        assertEquals("||", directoryView.getExport().get(0).getDelimiter());
         assertEquals("Name", directoryView.getExport().get(1).getColumnHeader());
         assertEquals("name", directoryView.getExport().get(1).getValuePath());
-        assertEquals("||", directoryView.getExport().get(1).getDelimiter());
     }
 
 }

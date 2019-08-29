@@ -12,7 +12,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Organization
@@ -20,7 +20,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Research Area
@@ -28,7 +28,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters: []
@@ -91,7 +91,7 @@
     type: STRING
     sort: INDEX
     direction: ASC
-    limit: 10
+    pageSize: 10
     collapsed: false
     hidden: false
   filters: []
@@ -144,7 +144,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Year
@@ -152,7 +152,7 @@
     type: DATE_YEAR
     sort: INDEX
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   - name: Author Organization
@@ -160,7 +160,7 @@
     type: STRING
     sort: COUNT
     direction: DESC
-    limit: 10
+    pageSize: 10
     collapsed: true
     hidden: false
   filters: []

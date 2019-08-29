@@ -5,7 +5,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?specifiedOutputOf vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> obo:OBI_0000312 ?specifiedOutputOf .
+    <{{uri}}> obo:OBI_0000312 ?specifiedOutputOf .
     ?specifiedOutputOf vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?specifiedOutputOf), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }

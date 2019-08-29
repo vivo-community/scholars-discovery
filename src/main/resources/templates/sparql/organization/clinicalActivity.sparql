@@ -5,7 +5,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?activity rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> obo:RO_0000053 ?role .
+    <{{uri}}> obo:RO_0000053 ?role .
     ?role a vivo:ClinicalRole .
     ?role vivo:relatedBy ?activity .
     ?activity rdfs:label ?label .

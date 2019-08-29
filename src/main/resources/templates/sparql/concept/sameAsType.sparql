@@ -4,7 +4,7 @@ PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 CONSTRUCT {
     ?sameAs vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
-    <[(${uri})]> owl:sameAs ?sameAs .
+    <{{uri}}> owl:sameAs ?sameAs .
     ?sameAs vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?sameAs), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }

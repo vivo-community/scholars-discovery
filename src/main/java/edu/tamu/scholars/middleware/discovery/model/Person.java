@@ -13,8 +13,8 @@ import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
@@ -85,7 +85,7 @@ public class Person extends AbstractSolrDocument {
     @NestedMultiValuedProperty
     @NestedObject(root = false)
     @Indexed(type = "nested_strings")
-    @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    @PropertySource(template = "person/positionOrganizationParent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> positionOrganizationParent;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
@@ -110,7 +110,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/hrJobTitle", predicate = "http://vivoweb.org/ontology/core#hrJobTitle")
     private String hrJobTitle;
 
-    @Indexed(type = "delimited_strings")
+    @Indexed(type = "whole_strings")
     @PropertySource(template = "person/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
@@ -725,7 +725,7 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/fax", predicate = "http://www.w3.org/2006/vcard/ns#fax")
     private String fax;
 
-    @NestedObject({ @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key="publicationDate") })
+    @NestedObject({ @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key = "publicationDate") })
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "person/etdChairOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairOf;

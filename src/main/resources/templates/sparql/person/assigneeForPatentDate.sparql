@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?date vivo:dateTime ?dateTimeWithId .
 } WHERE {
-    <[(${uri})]> vivo:assigneeFor ?patent .
+    <{{uri}}> vivo:assigneeFor ?patent .
     ?patent ?dateTimeValue ?date .
     ?date vivo:dateTime ?dateTime .
     BIND( CONCAT( STR(?dateTime), REPLACE(STR(?patent), "(^.*/)", "::") ) AS ?dateTimeWithId ) .

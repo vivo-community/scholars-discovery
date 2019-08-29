@@ -52,8 +52,8 @@ graphql:
   spqr:
     base-packages:
     - edu.tamu.scholars.middleware.discovery.model
+    - edu.tamu.scholars.middleware.discovery.response
     - edu.tamu.scholars.middleware.graphql.model
-    - edu.tamu.scholars.middleware.graphql.type
     gui:
       enabled: false
 
@@ -71,6 +71,7 @@ logging:
   path:
 
 server:
+  connection-timeout: 30000
   port: 9001
   servlet:
     contextPath:
@@ -81,6 +82,7 @@ spring:
       authorize-hal-browser: false
       return-body-on-create: true
       return-body-on-update: true
+      max-page-size: 1000
     solr:
       operator: AND
       parser: edismax
@@ -112,11 +114,12 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create
     open-in-view: false
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
+        auto_close_session: true
         show_sql: false
     show-sql: false
   mail:
@@ -139,3 +142,17 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: always
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      sensitive: false
+      enabled: true
+    info:
+      sensitive: false
+      enabled: true

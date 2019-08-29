@@ -5,7 +5,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?location rdfs:label ?label .
 } WHERE {
-    <[(${uri})]> obo:RO_0001025 ?location .
+    <{{uri}}> obo:RO_0001025 ?location .
     ?location a vivo:GeographicLocation .
     ?location rdfs:label ?label .
 }

@@ -369,7 +369,6 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/governingAuthorityFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> governingAuthorityFor;
 
-    // NOTE: unidirectional from Concept vivo:researchAreaOf
     @NestedObject
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "organization/affiliatedResearchArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)

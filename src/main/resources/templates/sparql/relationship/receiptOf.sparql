@@ -4,7 +4,7 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?relates rdfs:label ?labelWithId .
 } WHERE {
-    <[(${uri})]> vivo:relates ?relates . 
+    <{{uri}}> vivo:relates ?relates . 
     ?relates rdfs:label ?label ; a vivo:Award .
     BIND( CONCAT( STR(?label), REPLACE(STR(?relates), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

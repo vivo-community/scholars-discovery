@@ -19,41 +19,31 @@
     <ul>
       {{#each authors}}
       <li>
-        <div class="comma-seperated">
-          <span><a href="display/persons/{{id}}">{{label}}</a></span>
-          {{#each organizations}}
-          <span><a href="display/organizations/{{id}}">{{label}}</a></span>
-          {{/each}}
-        </div>
+        <span><a href="display/persons/{{id}}">{{label}}{{#if organizations}}, {{/if}}</a></span>
+        {{#each organizations}}
+        <span><a href="display/organizations/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+        {{/each}}
       </li>
       {{/each}}
     </ul>
   </div>
   {{/if}}
 </div>
-<div class="d-flex">
+<div class="d-inline-flex">
   {{#if doi}}
-  <span clsas="mr-1"><a href="https://dx.doi.org/{{doi}}"><img src="assets/images/doi-badge.jpg" width="100" alt="doi badge"></a></span>
+  <span class="mr-1"><a href="https://dx.doi.org/{{doi}}"><img src="assets/images/doi-badge.jpg" width="100" alt="doi badge"></a></span>
   {{/if}}
   {{#if pmcid}}
-  <span clsas="mr-1"><a href="https://www.ncbi.nlm.nih.gov/pubmed/{{pmcid}}"><img src="assets/images/pubmed-badge.jpg" width="100" alt="pubmed badge"></a></span>
+  <span class="mr-1"><a href="https://www.ncbi.nlm.nih.gov/pubmed/{{pmcid}}"><img src="assets/images/pubmed-badge.jpg" width="100" alt="pubmed badge"></a></span>
   {{/if}}
   {{#if uri}}
-  <span clsas="mr-1"><a href="{{uri}}"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge"></a></span>
+  <span class="mr-1"><a href="{{uri}}"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge"></a></span>
   {{/if}}
 </div>
 <style>
   .label {
     font-weight: 550;
     margin-right: 2px;
-  }
-
-  .comma-seperated span:after {
-    content: ", ";
-  }
-
-  .comma-seperated span:last-child:after {
-    content: "";
   }
 
   .badge {

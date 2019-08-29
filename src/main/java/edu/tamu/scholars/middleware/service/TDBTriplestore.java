@@ -5,7 +5,7 @@ import org.apache.jena.tdb.TDB;
 import org.apache.jena.tdb.TDBFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import edu.tamu.scholars.middleware.config.TriplestoreConfig;
+import edu.tamu.scholars.middleware.config.model.TriplestoreConfig;
 
 public class TDBTriplestore implements Triplestore {
 

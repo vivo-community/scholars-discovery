@@ -3,6 +3,6 @@ PREFIX vivo: <http://vivoweb.org/ontology/core#>
 CONSTRUCT {
     ?date vivo:dateTime ?dateTime .
 } WHERE {
-    <[(${uri})]> vivo:dateTimeValue ?date .
+    <{{uri}}> vivo:dateTimeValue ?date .
     ?date vivo:dateTime ?dateTime .
 }

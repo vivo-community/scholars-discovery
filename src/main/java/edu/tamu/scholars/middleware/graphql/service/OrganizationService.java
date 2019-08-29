@@ -11,9 +11,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.Organization;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLFacetPage;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLPage;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
@@ -57,14 +57,14 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
 
     @Override
     @GraphQLQuery(name = "organizationsPaged")
-    public GraphQLPage<Organization> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
+    public DiscoveryPage<Organization> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
         return super.findAllPaged(page);
     }
 
     @Override
     @GraphQLQuery(name = "organizationsSearch")
     // @formatter:off
-    public GraphQLFacetPage<Organization> search(
+    public DiscoveryFacetPage<Organization> search(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
@@ -75,7 +75,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     @Override
     @GraphQLQuery(name = "organizationsFilterSearch")
     // @formatter:off
-    public GraphQLFacetPage<Organization> filterSearch(
+    public DiscoveryFacetPage<Organization> filterSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
         @GraphQLArgument(name = "paging") Pageable page
@@ -87,7 +87,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     @Override
     @GraphQLQuery(name = "organizationsFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Organization> facetedSearch(
+    public DiscoveryFacetPage<Organization> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "paging") Pageable page
@@ -99,7 +99,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     @Override
     @GraphQLQuery(name = "organizationsFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Organization> facetedSearch(
+    public DiscoveryFacetPage<Organization> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
@@ -112,7 +112,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     @Override
     @GraphQLQuery(name = "organizationsFacetedSearchIndex")
     // @formatter:off
-    public GraphQLFacetPage<Organization> facetedSearch(
+    public DiscoveryFacetPage<Organization> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "index") Optional<IndexArg> index,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
@@ -142,7 +142,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Organization> type() {
         return Organization.class;
     }
 

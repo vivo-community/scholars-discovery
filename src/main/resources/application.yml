@@ -52,8 +52,8 @@ graphql:
   spqr:
     base-packages:
     - edu.tamu.scholars.middleware.discovery.model
+    - edu.tamu.scholars.middleware.discovery.response
     - edu.tamu.scholars.middleware.graphql.model
-    - edu.tamu.scholars.middleware.graphql.type
     gui:
       # NOTE: should be false for production
       enabled: true
@@ -72,6 +72,7 @@ logging:
   path:
 
 server:
+  connection-timeout: 900000
   port: 9000
   servlet:
     context-path:
@@ -83,6 +84,7 @@ spring:
       authorize-hal-browser: false
       return-body-on-create: true
       return-body-on-update: true
+      max-page-size: 10000
     solr:
       host: http://localhost:8983/solr
       operator: AND
@@ -144,3 +146,17 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: always
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      sensitive: false
+      enabled: true
+    info:
+      sensitive: false
+      enabled: true

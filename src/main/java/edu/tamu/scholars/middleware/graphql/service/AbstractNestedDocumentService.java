@@ -26,9 +26,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLFacetPage;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLPage;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
 @GraphQLApi
@@ -42,12 +42,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public <NS extends ND> NS save(NS nestedDocument, Duration commitWithin) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public <NS extends ND> Iterable<NS> saveAll(Iterable<NS> nestedDocuments, Duration commitWithin) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -60,8 +60,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return StreamSupport.stream(repo.findAll(sort).spliterator(), false).map(this::toNested).collect(Collectors.toList());
     }
 
-    public GraphQLPage<ND> findAllPaged(Pageable page) {
-        return GraphQLPage.from(findAll(page));
+    public DiscoveryPage<ND> findAllPaged(Pageable page) {
+        return DiscoveryPage.from(findAll(page));
     }
 
     @Override
@@ -71,7 +71,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public <NS extends ND> Iterable<NS> saveAll(Iterable<NS> nestedDocuments) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -105,17 +105,17 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public void deleteById(String id) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public void deleteAll(Iterable<? extends ND> nestedDocuments) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public void deleteAll() {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -128,25 +128,25 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return (FacetPage<ND>) facetPage;
     }
 
-    public GraphQLFacetPage<ND> search(String query, Pageable page) {
+    public DiscoveryFacetPage<ND> search(String query, Pageable page) {
         return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), page);
     }
 
-    public GraphQLFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
         return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, page);
     }
 
-    public GraphQLFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
         return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), page);
     }
 
-    public GraphQLFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
         return facetedSearch(query, Optional.empty(), facets, filters, page);
     }
 
-    public GraphQLFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
+    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
         FacetPage<ND> facetPage = search(query, index, facets, filters, page);
-        return GraphQLFacetPage.from(facetPage, facets, getOriginDocumentType());
+        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
     @Override
@@ -156,12 +156,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public <NS extends ND> NS save(NS nestedDocument) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
     public void delete(ND nestedDocument) {
-        throw new UnsupportedOperationException(String.format("%s is read only", getNestedDocumentType()));
+        throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
     @Override
@@ -194,15 +194,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         throw new UnsupportedOperationException("Unable to map stream");
     }
 
-    protected abstract Class<?> getNestedDocumentType();
-
     protected abstract Class<?> getOriginDocumentType();
 
-    @SuppressWarnings("unchecked")
     private ND toNested(D document) {
         try {
-            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(document);
-            return (ND) mapper.readValue(json, getNestedDocumentType());
+            String json = mapper.writeValueAsString(document);
+            return mapper.readValue(json, type());
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Something went wrong");

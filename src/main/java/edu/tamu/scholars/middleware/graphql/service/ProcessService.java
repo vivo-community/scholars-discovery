@@ -11,9 +11,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.repo.ProcessRepo;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.Process;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLFacetPage;
-import edu.tamu.scholars.middleware.graphql.type.GraphQLPage;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
@@ -57,14 +57,14 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
 
     @Override
     @GraphQLQuery(name = "processesPaged")
-    public GraphQLPage<Process> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
+    public DiscoveryPage<Process> findAllPaged(@GraphQLArgument(name = "paging") Pageable page) {
         return super.findAllPaged(page);
     }
 
     @Override
     @GraphQLQuery(name = "processesSearch")
     // @formatter:off
-    public GraphQLFacetPage<Process> search(
+    public DiscoveryFacetPage<Process> search(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "paging") Pageable page
     ) {
@@ -75,7 +75,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     @Override
     @GraphQLQuery(name = "processesFilterSearch")
     // @formatter:off
-    public GraphQLFacetPage<Process> filterSearch(
+    public DiscoveryFacetPage<Process> filterSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
         @GraphQLArgument(name = "paging") Pageable page
@@ -87,7 +87,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     @Override
     @GraphQLQuery(name = "processesFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Process> facetedSearch(
+    public DiscoveryFacetPage<Process> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "paging") Pageable page
@@ -99,7 +99,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     @Override
     @GraphQLQuery(name = "processesFacetedSearch")
     // @formatter:off
-    public GraphQLFacetPage<Process> facetedSearch(
+    public DiscoveryFacetPage<Process> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
         @GraphQLArgument(name = "filters") List<FilterArg> filters,
@@ -112,7 +112,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     @Override
     @GraphQLQuery(name = "processesFacetedSearchIndex")
     // @formatter:off
-    public GraphQLFacetPage<Process> facetedSearch(
+    public DiscoveryFacetPage<Process> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "index") Optional<IndexArg> index,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
@@ -142,7 +142,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process, edu.t
     }
 
     @Override
-    protected Class<?> getNestedDocumentType() {
+    public Class<Process> type() {
         return Process.class;
     }
 
