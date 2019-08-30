@@ -21,6 +21,10 @@ import java.lang.String;
 public class EducationAndTraining extends AbstractNestedDocument {
   private static final long serialVersionUID = 1693135772L;
 
+  private String name;
+
+  private String info;
+
   private EducationAndTrainingOrganization organization;
 
   private String field;
@@ -33,6 +37,22 @@ public class EducationAndTraining extends AbstractNestedDocument {
 
   public EducationAndTraining() {
     super();
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getInfo() {
+    return info;
+  }
+
+  public void setInfo(String info) {
+    this.info = info;
   }
 
   public EducationAndTrainingOrganization getOrganization() {

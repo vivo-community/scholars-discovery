@@ -1,0 +1,10 @@
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX vivo: <http://vivoweb.org/ontology/core#>
+ 
+CONSTRUCT {
+    ?training vivo:supplementalInformation ?infoWithId
+} WHERE {
+    <{{uri}}> obo:RO_0000056 ?training .
+    ?training vivo:supplementalInformation ?info
+    BIND( CONCAT( STR(?info), REPLACE(STR(?training), "(^.*/)", "::") ) AS ?infoWithId ) .
+}

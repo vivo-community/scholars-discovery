@@ -201,10 +201,18 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/attendedEventEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> attendedEventEndDate;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "educationAndTrainingOrganization", key = "organization"), @Reference(value = "educationAndTrainingMajorField", key = "field"), @Reference(value = "educationAndTrainingDegreeAbbreviation", key = "abbreviation"), @Reference(value = "educationAndTrainingStartDate", key = "startDate"), @Reference(value = "educationAndTrainingEndDate", key = "endDate") })
-    @PropertySource(template = "person/educationAndTraining", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @Indexed(type = "nested_strings")
+    @NestedObject(value = { @Reference(value = "educationAndTrainingName", key = "name"), @Reference(value = "educationAndTrainingInfo", key = "info"), @Reference(value = "educationAndTrainingOrganization", key = "organization"), @Reference(value = "educationAndTrainingMajorField", key = "field"), @Reference(value = "educationAndTrainingDegreeAbbreviation", key = "abbreviation"), @Reference(value = "educationAndTrainingStartDate", key = "startDate"), @Reference(value = "educationAndTrainingEndDate", key = "endDate") })
+    @PropertySource(template = "person/educationAndTraining", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> educationAndTraining;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @PropertySource(template = "person/educationAndTrainingName", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> educationAndTrainingName;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @PropertySource(template = "person/educationAndTrainingInfo", predicate = "http://vivoweb.org/ontology/core#supplementalInformation")
+    private List<String> educationAndTrainingInfo;
 
     @NestedObject(root = false)
     @Indexed(type = "nested_strings", copyTo = "_text_")
@@ -1067,6 +1075,22 @@ public class Person extends AbstractSolrDocument {
 
     public void setEducationAndTraining(List<String> educationAndTraining) {
         this.educationAndTraining = educationAndTraining;
+    }
+
+    public List<String> getEducationAndTrainingName() {
+        return educationAndTrainingName;
+    }
+
+    public void setEducationAndTrainingName(List<String> educationAndTrainingName) {
+        this.educationAndTrainingName = educationAndTrainingName;
+    }
+
+    public List<String> getEducationAndTrainingInfo() {
+        return educationAndTrainingInfo;
+    }
+
+    public void setEducationAndTrainingInfo(List<String> educationAndTrainingInfo) {
+        this.educationAndTrainingInfo = educationAndTrainingInfo;
     }
 
     public List<String> getEducationAndTrainingOrganization() {

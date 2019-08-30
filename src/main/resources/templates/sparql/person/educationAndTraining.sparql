@@ -1,13 +1,10 @@
 PREFIX obo: <http://purl.obolibrary.org/obo/>
-PREFIX vivo: <http://vivoweb.org/ontology/core#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
- 
+PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
+
 CONSTRUCT {
-    ?training rdfs:label ?labelWithId .
+    ?training vitro:mostSpecificType ?mostSpecificTypeWithId .
 } WHERE {
     <{{uri}}> obo:RO_0000056 ?training .
-    ?training obo:RO_0002234 ?info .
-    ?info vivo:relates ?degree .
-    ?degree rdfs:label ?label .
-    BIND( CONCAT( STR(?label), REPLACE(STR(?training), "(^.*/)", "::") ) AS ?labelWithId ) .
+    ?training vitro:mostSpecificType ?mostSpecificType .
+    BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?training), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
 }
