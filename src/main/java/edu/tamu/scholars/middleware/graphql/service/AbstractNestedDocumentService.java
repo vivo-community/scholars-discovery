@@ -37,7 +37,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
@@ -91,7 +90,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Iterable<ND> findAll(Sort sort) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find all without GraphQL query fields is not supported.");
     }
 
     public DiscoveryPage<ND> findAll(Pageable page, List<Field> fields) {
@@ -100,7 +99,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Page<ND> findAll(Pageable pageable) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find all  without GraphQL query fields is not supported.");
     }
 
     @Override
@@ -119,7 +118,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Optional<ND> findById(String id) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find by id without GraphQL query fields is not supported.");
     }
 
     @Override
@@ -133,7 +132,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Iterable<ND> findAll() {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find all without GraphQL query fields is not supported.");
     }
 
     public Iterable<ND> findAllById(Iterable<String> ids, List<Field> fields) {
@@ -142,7 +141,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Iterable<ND> findAllById(Iterable<String> ids) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find all by id without GraphQL query fields is not supported.");
     }
 
     @Override
@@ -161,8 +160,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @SuppressWarnings("unchecked")
-    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        FacetPage<D> facetPage = repo.search(query, index, facets, filters, boosts, page);
+    public FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        FacetPage<D> facetPage = repo.search(query, facets, filters, boosts, page);
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
         java.lang.reflect.Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
         ReflectionUtils.setField(field, facetPage, content);
@@ -170,45 +169,36 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
-        throw new UnsupportedOperationException("");
+    public FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        throw new UnsupportedOperationException("Search without GraphQL query fields is not supported.");
     }
 
     public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+        return facetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
+        return facetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
     }
 
     public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
+        return facetedSearch(query, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, boosts, page, fields);
+        return facetedSearch(query, new ArrayList<FacetArg>(), filters, boosts, page, fields);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+        return facetedSearch(query, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page, fields);
+        return facetedSearch(query, facets, filters, new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), facets, filters, boosts, page, fields);
-    }
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return facetedSearch(query, Optional.empty(), facets, filters, new ArrayList<BoostArg>(), page, fields);
-    }
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        FacetPage<ND> facetPage = search(query, index, facets, filters, boosts, page, fields);
-        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
+        return facetedSearch(query, facets, filters, boosts, page, fields);
     }
 
     public List<Composite> getComposites() {
@@ -236,7 +226,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public List<ND> findByType(String type) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find by type without GraphQL query fields is not supported.");
     }
 
     public List<ND> findByIdIn(List<String> ids, List<Field> fields) {
@@ -245,7 +235,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public List<ND> findByIdIn(List<String> ids) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find by id in without GraphQL query fields is not supported.");
     }
 
     public List<ND> findBySyncIds(String syncId, List<Field> fields) {
@@ -254,7 +244,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public List<ND> findBySyncIds(String syncId) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find by sync ids without GraphQL query fields is not supported.");
     }
 
     public List<ND> findBySyncIdsIn(List<String> syncIds, List<Field> fields) {
@@ -263,20 +253,25 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
-        throw new UnsupportedOperationException("");
-    }
-
-    public List<ND> findMostRecentlyUpdate(Integer limit, List<Field> fields) {
-        return repo.findMostRecentlyUpdate(limit).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+        throw new UnsupportedOperationException("Find by sync ids in without GraphQL query fields is not supported.");
     }
 
     @Override
     public List<ND> findMostRecentlyUpdate(Integer limit) {
-        throw new UnsupportedOperationException("");
+        throw new UnsupportedOperationException("Find most recently update without GraphQL query fields is not supported.");
     }
 
     @Override
-    public Cursor<ND> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+    public List<ND> findMostRecentlyUpdate(Integer limit, List<FilterArg> filter) {
+        throw new UnsupportedOperationException("Find most recently update without GraphQL query fields is not supported.");
+    }
+
+    public List<ND> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters, List<Field> fields) {
+        return repo.findMostRecentlyUpdate(limit, filters).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Cursor<ND> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         throw new UnsupportedOperationException("Streaming is currently unsupported");
     }
 

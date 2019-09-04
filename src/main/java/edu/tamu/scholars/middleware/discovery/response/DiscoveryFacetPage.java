@@ -48,7 +48,7 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     // @formatter:off
                     List<FacetEntry> entries = facetFieldEntryPage.getContent().parallelStream()
                         .map(entry -> new FacetEntry(entry.getValue(), entry.getValueCount()))
-                        .collect(Collectors.toMap(FacetEntry::getValue, fe -> fe, FacetEntry::merge)).values().parallelStream()
+                        .collect(Collectors.toMap(FacetEntry::getValueKey, fe -> fe, FacetEntry::merge)).values().parallelStream()
                         .sorted(FacetEntryComparator.of(facetArgument.get().getSort()))
                         .collect(Collectors.toList());
                     // @formatter:on
@@ -148,6 +148,15 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
         public String getValue() {
             return value;
+        }
+
+        public String getValueKey() {
+            try {
+                LocalDate ldv = DateFormatUtility.parse(value);
+                return String.valueOf(ldv.getYear());
+            } catch (DateTimeParseException dtpe) {
+                return value;
+            }
         }
 
         public long getCount() {

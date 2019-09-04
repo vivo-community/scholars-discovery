@@ -93,10 +93,14 @@ public class Concept extends AbstractSolrDocument {
     @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 
-    @NestedObject
+    @NestedObject(properties = { @Reference(value = "receiptRecipientName", key = "recipientName") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "concept/receipts", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "concept/receiptRecipientName", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> receiptRecipientName;
 
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "broaderConceptType", key = "type") })
@@ -272,6 +276,14 @@ public class Concept extends AbstractSolrDocument {
 
     public void setReceipts(List<String> receipts) {
         this.receipts = receipts;
+    }
+
+    public List<String> getReceiptRecipientName() {
+        return receiptRecipientName;
+    }
+
+    public void setReceiptRecipientName(List<String> receiptRecipientName) {
+        this.receiptRecipientName = receiptRecipientName;
     }
 
     public List<String> getBroaderConcepts() {

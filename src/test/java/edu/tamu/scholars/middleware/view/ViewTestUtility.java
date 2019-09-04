@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions;
 
+import edu.tamu.scholars.middleware.model.OpKey;
 import edu.tamu.scholars.middleware.view.model.Boost;
 import edu.tamu.scholars.middleware.view.model.DirectoryView;
 import edu.tamu.scholars.middleware.view.model.DiscoveryView;
@@ -101,7 +101,7 @@ public class ViewTestUtility {
         Index index = new Index();
 
         index.setField("name");
-        index.setOperationKey(OperationKey.ENDS_WITH);
+        index.setOpKey(OpKey.ENDS_WITH);
 
         directoryView.setIndex(index);
 
@@ -259,6 +259,26 @@ public class ViewTestUtility {
         DisplaySectionView section = new DisplaySectionView();
         section.setName("Test");
         section.setTemplate("<span>Hello, World!</span>");
+        
+        section.setField("name");
+
+        Filter sectionFilter = new Filter();
+        sectionFilter.setField("type");
+        sectionFilter.setValue("Test");
+
+        List<Filter> sectionFilters = new ArrayList<Filter>();
+        sectionFilters.add(sectionFilter);
+
+        section.setFilters(sectionFilters);
+
+        Sort sectionSort = new Sort();
+        sectionSort.setField("name");
+        sectionSort.setDirection(Direction.ASC);
+
+        List<Sort> sectionSorting = new ArrayList<Sort>();
+        sectionSorting.add(sectionSort);
+
+        section.setSort(sectionSorting);
 
         List<String> requiredFields = new ArrayList<String>();
         requiredFields.add("type");
@@ -280,23 +300,23 @@ public class ViewTestUtility {
         subsection.setName("Test");
         subsection.setField("publications");
 
-        Filter filter = new Filter();
-        filter.setField("type");
-        filter.setValue("Test");
+        Filter subsectionFilter = new Filter();
+        subsectionFilter.setField("type");
+        subsectionFilter.setValue("Test");
 
-        List<Filter> filters = new ArrayList<Filter>();
-        filters.add(filter);
+        List<Filter> subsectionFilters = new ArrayList<Filter>();
+        subsectionFilters.add(subsectionFilter);
 
-        subsection.setFilters(filters);
+        subsection.setFilters(subsectionFilters);
 
-        Sort sort = new Sort();
-        sort.setField("date");
-        sort.setDirection(Direction.DESC);
+        Sort subsectionSort = new Sort();
+        subsectionSort.setField("date");
+        subsectionSort.setDirection(Direction.DESC);
 
-        List<Sort> sorting = new ArrayList<Sort>();
-        sorting.add(sort);
+        List<Sort> subsectionSorting = new ArrayList<Sort>();
+        subsectionSorting.add(subsectionSort);
 
-        subsection.setSort(sorting);
+        subsection.setSort(subsectionSorting);
 
         subsection.setTemplate("<div>Subsection</div>");
 

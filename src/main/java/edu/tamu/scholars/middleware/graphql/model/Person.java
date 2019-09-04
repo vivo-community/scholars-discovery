@@ -21,9 +21,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.Presentation;
 import edu.tamu.scholars.middleware.graphql.model.person.FeaturedIn;
 import edu.tamu.scholars.middleware.graphql.model.person.AssigneeForPatent;
 import edu.tamu.scholars.middleware.graphql.model.person.TranslatorOf;
-import edu.tamu.scholars.middleware.graphql.model.person.PrincipalInvestigatorOn;
-import edu.tamu.scholars.middleware.graphql.model.person.CoPrincipalInvestigatorOn;
-import edu.tamu.scholars.middleware.graphql.model.person.InvestigatorOn;
+import edu.tamu.scholars.middleware.graphql.model.person.ResearcherOn;
 import edu.tamu.scholars.middleware.graphql.model.person.OtherResearchActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.TeachingActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.Advisee;
@@ -98,11 +96,7 @@ public class Person extends AbstractNestedDocument {
 
   private List<TranslatorOf> translatorOf;
 
-  private List<PrincipalInvestigatorOn> principalInvestigatorOn;
-
-  private List<CoPrincipalInvestigatorOn> coPrincipalInvestigatorOn;
-
-  private List<InvestigatorOn> investigatorOn;
+  private List<ResearcherOn> researcherOn;
 
   private List<OtherResearchActivity> otherResearchActivities;
 
@@ -153,6 +147,10 @@ public class Person extends AbstractNestedDocument {
   private List<String> keywords;
 
   private String researchOverview;
+
+  private List<String> principalInvestigatorOn;
+
+  private List<String> coPrincipalInvestigatorOn;
 
   private String teachingOverview;
 
@@ -205,6 +203,8 @@ public class Person extends AbstractNestedDocument {
   private String fax;
 
   private String modTime;
+
+  private String featuredProfileDisplay;
 
   public Person() {
     super();
@@ -380,29 +380,12 @@ public class Person extends AbstractNestedDocument {
     this.translatorOf = translatorOf;
   }
 
-  public List<PrincipalInvestigatorOn> getPrincipalInvestigatorOn() {
-    return principalInvestigatorOn;
+  public List<ResearcherOn> getResearcherOn() {
+    return researcherOn;
   }
 
-  public void setPrincipalInvestigatorOn(List<PrincipalInvestigatorOn> principalInvestigatorOn) {
-    this.principalInvestigatorOn = principalInvestigatorOn;
-  }
-
-  public List<CoPrincipalInvestigatorOn> getCoPrincipalInvestigatorOn() {
-    return coPrincipalInvestigatorOn;
-  }
-
-  public void setCoPrincipalInvestigatorOn(
-      List<CoPrincipalInvestigatorOn> coPrincipalInvestigatorOn) {
-    this.coPrincipalInvestigatorOn = coPrincipalInvestigatorOn;
-  }
-
-  public List<InvestigatorOn> getInvestigatorOn() {
-    return investigatorOn;
-  }
-
-  public void setInvestigatorOn(List<InvestigatorOn> investigatorOn) {
-    this.investigatorOn = investigatorOn;
+  public void setResearcherOn(List<ResearcherOn> researcherOn) {
+    this.researcherOn = researcherOn;
   }
 
   public List<OtherResearchActivity> getOtherResearchActivities() {
@@ -606,6 +589,22 @@ public class Person extends AbstractNestedDocument {
 
   public void setResearchOverview(String researchOverview) {
     this.researchOverview = researchOverview;
+  }
+
+  public List<String> getPrincipalInvestigatorOn() {
+    return principalInvestigatorOn;
+  }
+
+  public void setPrincipalInvestigatorOn(List<String> principalInvestigatorOn) {
+    this.principalInvestigatorOn = principalInvestigatorOn;
+  }
+
+  public List<String> getCoPrincipalInvestigatorOn() {
+    return coPrincipalInvestigatorOn;
+  }
+
+  public void setCoPrincipalInvestigatorOn(List<String> coPrincipalInvestigatorOn) {
+    this.coPrincipalInvestigatorOn = coPrincipalInvestigatorOn;
   }
 
   public String getTeachingOverview() {
@@ -814,5 +813,13 @@ public class Person extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getFeaturedProfileDisplay() {
+    return featuredProfileDisplay;
+  }
+
+  public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
+    this.featuredProfileDisplay = featuredProfileDisplay;
   }
 }

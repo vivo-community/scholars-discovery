@@ -39,7 +39,6 @@ import org.springframework.data.solr.core.query.result.FacetPage;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.utility.DateFormatUtility;
@@ -66,7 +65,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     private SolrTemplate solrTemplate;
 
     @Override
-    public FacetPage<D> search(String query, Optional<IndexArg> index, List<FacetArg> facetArguments, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+    public FacetPage<D> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         Criteria criteria = getQueryCriteria(query);
@@ -80,14 +79,10 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
         facetQuery.addCriteria(criteria);
 
-        if (index.isPresent()) {
-            facetQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
-        }
-
         FacetOptions facetOptions = new FacetOptions();
 
-        facetArguments.forEach(facetArg -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facetArg.getPath(type()));
+        facets.forEach(facet -> {
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
 
             fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 
@@ -118,7 +113,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     @Override
-    public Cursor<D> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+    public Cursor<D> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
 
         Criteria criteria = getQueryCriteria(query);
@@ -130,10 +125,6 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
             sort = Sort.by(SCORE_FIELD).descending().and(sort);
         }
 
-        if (index.isPresent()) {
-            simpleQuery.addFilterQuery(new SimpleFilterQuery(buildCriteria(index.get())));
-        }
-
         simpleQuery.addCriteria(criteria);
         simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
@@ -141,7 +132,12 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     @Override
     public List<D> findMostRecentlyUpdate(Integer limit) {
-        SimpleQuery simpleQuery = buildSimpleQuery(new ArrayList<FilterArg>());
+        return findMostRecentlyUpdate(limit, new ArrayList<FilterArg>());
+    }
+
+    @Override
+    public List<D> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
         simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(Sort.by(MOD_TIME_FIELD).descending());
         simpleQuery.setRows(limit);
@@ -178,9 +174,15 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        return filters.stream().map(filter -> {
-            Criteria criteria;
-            String value = filter.getValue();
+        return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
+    }
+
+    private Criteria buildCriteria(FilterArg filter) {
+        String field = filter.getPath(type());
+        String value = filter.getValue();
+        Criteria criteria = new Criteria(field);
+        switch (filter.getOpKey()) {
+        case BETWEEN:
             Matcher rangeMatcher = RANGE_PATTERN.matcher(value);
             if (rangeMatcher.matches()) {
                 String start = rangeMatcher.group(1);
@@ -188,59 +190,41 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
                 try {
                     Date from = YEAR_DATE_FORMAT.parse(start);
                     Date to = YEAR_DATE_FORMAT.parse(end);
-                    criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
+                    criteria.between(from, to, true, false);
                 } catch (ParseException e) {
                     try {
                         LocalDate from = DateFormatUtility.parse(start);
                         LocalDate to = DateFormatUtility.parse(end);
-                        criteria = new Criteria(filter.getPath(type())).between(from, to, true, false);
+                        criteria.between(from, to, true, false);
                     } catch (DateTimeParseException dtpe) {
-                        criteria = new SimpleStringCriteria(String.format("%s:%s", filter.getPath(type()), value));
+                        criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
                     }
                 }
             } else {
-                criteria = new Criteria(filter.getPath(type())).is(value);
+                criteria.is(value);
             }
-            return new SimpleFilterQuery(criteria);
-        }).collect(Collectors.toList());
-    }
-
-    private Criteria buildCriteria(IndexArg index) {
-        Criteria criteria = new Criteria(index.getPath(type()));
-        switch (index.getOperationKey()) {
-        case BETWEEN:
-            // NOTE: not supported yet
             break;
         case CONTAINS:
-            criteria.contains(index.getOption());
+            criteria.contains(value);
             break;
         case ENDS_WITH:
-            criteria.endsWith(index.getOption());
+            criteria.endsWith(value);
             break;
         case EQUALS:
-            criteria.is(index.getOption());
+            criteria.is(value);
             break;
         case EXPRESSION:
-            criteria.expression(index.getOption());
-            break;
-        case FUNCTION:
-            // NOTE: not supported
+            criteria.expression(value);
             break;
         case FUZZY:
-            // NOTE: more arguments can be used for fuzzy compare
-            criteria.fuzzy(index.getOption());
+            // NOTE: more arguments can be used for fuzzy compare, yet unsupported
+            criteria.fuzzy(value);
             break;
-        case NEAR:
-            // NOTE: not supported yet
-            break;
-        case SLOPPY:
-            // NOTE: not supported
+        case NOT_EQUALS:
+            criteria.is(value).not();
             break;
         case STARTS_WITH:
-            criteria.startsWith(index.getOption());
-            break;
-        case WITHIN:
-            // NOTE: not supported yet
+            criteria.startsWith(value);
             break;
         default:
             break;
