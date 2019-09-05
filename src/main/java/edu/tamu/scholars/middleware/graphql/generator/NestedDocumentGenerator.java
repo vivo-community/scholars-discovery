@@ -119,9 +119,6 @@ public class NestedDocumentGenerator {
         String packagePath = destinationPackage;
         String className = DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME;
 
-        // NOTE: currently the semantic identifier, i.e name, title, etc, of a nested object is label
-        // TODO: make the semantic identifier configurable using @NestedObject annotation
-
         TypeSpec abstractNestedDocumentClass = builder(className, Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addSuperinterface(Serializable.class)
                 .superclass(AbstractSolrDocument.class)

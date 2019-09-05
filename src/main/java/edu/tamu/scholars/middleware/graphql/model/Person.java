@@ -38,6 +38,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
@@ -205,6 +206,9 @@ public class Person extends AbstractNestedDocument {
   private String modTime;
 
   private String featuredProfileDisplay;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Person() {
     super();
@@ -821,5 +825,13 @@ public class Person extends AbstractNestedDocument {
 
   public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
     this.featuredProfileDisplay = featuredProfileDisplay;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

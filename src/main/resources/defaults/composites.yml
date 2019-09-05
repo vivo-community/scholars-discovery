@@ -1,8 +1,0 @@
----
-
-- type: Person
-  references:
-  - name: publications
-    type: Document
-  - name: positions
-    type: Relationship

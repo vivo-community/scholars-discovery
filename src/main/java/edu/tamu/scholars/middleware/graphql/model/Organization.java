@@ -6,7 +6,7 @@ import edu.tamu.scholars.middleware.graphql.model.organization.SponsorsAwardOrHo
 import edu.tamu.scholars.middleware.graphql.model.organization.AwardOrHonorGiven;
 import edu.tamu.scholars.middleware.graphql.model.organization.AwardOrHonorReceived;
 import edu.tamu.scholars.middleware.graphql.model.organization.OrganizationForTraining;
-import edu.tamu.scholars.middleware.graphql.model.organization.People;
+import edu.tamu.scholars.middleware.graphql.model.Person;
 import edu.tamu.scholars.middleware.graphql.model.organization.HasSubOrganization;
 import edu.tamu.scholars.middleware.graphql.model.organization.OrganizationWithin;
 import edu.tamu.scholars.middleware.graphql.model.organization.LeadOrganizationOf;
@@ -40,6 +40,7 @@ import edu.tamu.scholars.middleware.graphql.model.organization.AffiliatedResearc
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
@@ -68,7 +69,7 @@ public class Organization extends AbstractNestedDocument {
 
   private List<OrganizationForTraining> organizationForTraining;
 
-  private List<People> people;
+  private List<Person> people;
 
   private List<HasSubOrganization> hasSubOrganizations;
 
@@ -166,6 +167,9 @@ public class Organization extends AbstractNestedDocument {
 
   private String modTime;
 
+  @JsonProperty("class")
+  private String clazz;
+
   public Organization() {
     super();
   }
@@ -218,11 +222,11 @@ public class Organization extends AbstractNestedDocument {
     this.organizationForTraining = organizationForTraining;
   }
 
-  public List<People> getPeople() {
+  public List<Person> getPeople() {
     return people;
   }
 
-  public void setPeople(List<People> people) {
+  public void setPeople(List<Person> people) {
     this.people = people;
   }
 
@@ -612,5 +616,13 @@ public class Organization extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

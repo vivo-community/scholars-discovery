@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -23,6 +22,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
 
+import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage.Facet;
 
@@ -56,8 +56,8 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
         FacetPagedResource(PagedResources<R> pagedResources, FacetPage<S> facetPage, HttpServletRequest request) {
             super(pagedResources.getContent(), pagedResources.getMetadata(), pagedResources.getLinks());
             Class<?> type = solrDocumentRepos.stream().filter(repo -> {
-                Optional<SolrDocument> annotation = Optional.ofNullable(repo.type().getAnnotation(SolrDocument.class));
-                return annotation.isPresent() && request.getRequestURI().substring(request.getContextPath().length() + 1).startsWith(annotation.get().collection());
+                Optional<CollectionSource> collectionSource = Optional.ofNullable(repo.type().getAnnotation(CollectionSource.class));
+                return collectionSource.isPresent() && request.getRequestURI().substring(request.getContextPath().length() + 1).startsWith(collectionSource.get().name());
             }).map(repo -> repo.type()).findAny().get();
             this.facets = buildFacets(facetPage, getFacetArguments(request), type);
         }

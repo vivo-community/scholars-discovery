@@ -37,7 +37,6 @@ import org.docx4j.wml.SectPr.PgMar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -46,6 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.export.exception.ExportException;
@@ -191,8 +191,8 @@ public class DocxExporter implements Exporter {
 
     private List<AbstractSolrDocument> fetchLazyReference(String collection, List<String> ids) {
         SolrDocumentRepo<?> solrDocumentRepo = solrDocumentRepos.stream().filter(repo -> {
-            Optional<SolrDocument> annotation = Optional.ofNullable(repo.type().getAnnotation(SolrDocument.class));
-            return annotation.isPresent() && annotation.get().collection().equals(collection);
+            Optional<CollectionSource> collectionSource = Optional.ofNullable(repo.type().getAnnotation(CollectionSource.class));
+            return collectionSource.isPresent() && collection.equals(collectionSource.get().name());
         }).findAny().get();
         List<AbstractSolrDocument> documents = new ArrayList<AbstractSolrDocument>();
         while (ids.size() >= MAX_DOCUMENT_BATCH_SIZE) {

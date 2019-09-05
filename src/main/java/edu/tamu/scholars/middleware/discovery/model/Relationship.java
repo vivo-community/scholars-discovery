@@ -19,8 +19,8 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "relationships")
-@CollectionSource(predicate = "http://vivoweb.org/ontology/core#Relationship")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "relationships", predicate = "http://vivoweb.org/ontology/core#Relationship")
 public class Relationship extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")

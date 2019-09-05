@@ -113,6 +113,9 @@ public class Relationship extends AbstractNestedDocument {
 
   private String modTime;
 
+  @JsonProperty("class")
+  private String clazz;
+
   public Relationship() {
     super();
   }
@@ -397,5 +400,13 @@ public class Relationship extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

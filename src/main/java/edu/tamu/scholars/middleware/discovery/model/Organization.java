@@ -17,8 +17,8 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "organizations")
-@CollectionSource(predicate = "http://xmlns.com/foaf/0.1/Organization")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "organizations", predicate = "http://xmlns.com/foaf/0.1/Organization")
 public class Organization extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")

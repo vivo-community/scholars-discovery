@@ -20,13 +20,10 @@ import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -34,7 +31,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
-import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import graphql.language.Field;
 
@@ -44,30 +40,6 @@ public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNeste
 
     @Autowired
     private DAO service;
-
-    @Override
-    @BeforeAll
-    public void setup() throws IOException {
-        super.setup();
-        service.getComposites().stream().filter(c -> c.getType().equals(repo.type().getSimpleName())).forEach(c -> {
-            c.getReferences().stream().forEach(r -> {
-                String collection = DiscoveryUtility.getDiscoveryDocumentTypeByName(r.getType()).getAnnotation(SolrDocument.class).collection();
-                createCore(collection);
-            });
-        });
-    }
-
-    @Override
-    @AfterAll
-    public void cleanup() throws IOException {
-        super.cleanup();
-        service.getComposites().stream().filter(c -> c.getType().equals(repo.type().getSimpleName())).forEach(c -> {
-            c.getReferences().stream().forEach(r -> {
-                String collection = DiscoveryUtility.getDiscoveryDocumentTypeByName(r.getType()).getAnnotation(SolrDocument.class).collection();
-                deleteCore(collection);
-            });
-        });
-    }
 
     @Test
     public void testGeneratedDocumentDefaultConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {

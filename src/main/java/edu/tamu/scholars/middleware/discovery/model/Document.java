@@ -20,8 +20,8 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "documents")
-@CollectionSource(predicate = "http://purl.org/ontology/bibo/Document")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "documents", predicate = "http://purl.org/ontology/bibo/Document")
 public class Document extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")

@@ -1,23 +1,11 @@
 FROM solr:7.7.2-slim
 
-RUN precreate-core persons
-RUN precreate-core organizations
-RUN precreate-core documents
-RUN precreate-core relationships
-RUN precreate-core processes
-RUN precreate-core collections
-RUN precreate-core concepts
+RUN precreate-core discovery
 
 RUN chmod -R ugo+w /opt/solr/server/solr/
 RUN chmod -R ugo+w /opt/solr/server/logs/
 
-COPY config /opt/solr/server/solr/mycores/persons/conf
-COPY config /opt/solr/server/solr/mycores/organizations/conf
-COPY config /opt/solr/server/solr/mycores/documents/conf
-COPY config /opt/solr/server/solr/mycores/relationships/conf
-COPY config /opt/solr/server/solr/mycores/processes/conf
-COPY config /opt/solr/server/solr/mycores/collections/conf
-COPY config /opt/solr/server/solr/mycores/concepts/conf
+COPY config /opt/solr/server/solr/mycores/discovery/conf
 
 USER root
 

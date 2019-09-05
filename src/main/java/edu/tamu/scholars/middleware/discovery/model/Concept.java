@@ -18,8 +18,8 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "concepts")
-@CollectionSource(predicate = "http://www.w3.org/2004/02/skos/core#Concept")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "concepts", predicate = "http://www.w3.org/2004/02/skos/core#Concept")
 public class Concept extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")

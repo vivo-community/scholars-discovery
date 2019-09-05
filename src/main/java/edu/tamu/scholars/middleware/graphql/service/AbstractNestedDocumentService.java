@@ -27,6 +27,7 @@ import org.springframework.data.util.ReflectionUtils;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,12 +43,17 @@ import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
+import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import graphql.language.Field;
+import graphql.language.Selection;
+import graphql.language.SelectionSet;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
 @GraphQLApi
-public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> implements SolrDocumentRepo<ND> {
+public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> implements NestedDocumentService<ND> {
+
+    private final static int MAX_BATCH_SIZE = 500;
 
     @Autowired
     private R repo;
@@ -56,16 +62,18 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     private ObjectMapper mapper;
 
     @Autowired
-    private List<SolrDocumentRepo<?>> solrDocumentRepos;
+    private List<NestedDocumentService<?>> nestedDocumentServices;
 
     private final List<Composite> composites = new ArrayList<Composite>();
 
     @PostConstruct
     public void init() throws JsonParseException, JsonMappingException, IOException {
-        Resource compositesResource = new ClassPathResource("defaults/composites.yml");
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        Resource compositesResource = new ClassPathResource("graphql/composites.yml");
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
         // @formatter:off
-        composites.addAll(mapper.readValue(compositesResource.getInputStream(), new TypeReference<List<Composite>>() {}));
+        composites.addAll(yamlMapper.readValue(compositesResource.getInputStream(), new TypeReference<List<Composite>>() {}));
         // @formatter:on
     }
 
@@ -90,7 +98,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Iterable<ND> findAll(Sort sort) {
-        throw new UnsupportedOperationException("Find all without GraphQL query fields is not supported.");
+        return findAll(sort, new ArrayList<Field>());
     }
 
     public DiscoveryPage<ND> findAll(Pageable page, List<Field> fields) {
@@ -98,8 +106,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public Page<ND> findAll(Pageable pageable) {
-        throw new UnsupportedOperationException("Find all  without GraphQL query fields is not supported.");
+    public Page<ND> findAll(Pageable page) {
+        return repo.findAll(page).map(document -> toNested(document, new ArrayList<Field>()));
     }
 
     @Override
@@ -118,7 +126,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Optional<ND> findById(String id) {
-        throw new UnsupportedOperationException("Find by id without GraphQL query fields is not supported.");
+        return findById(id, new ArrayList<Field>());
     }
 
     @Override
@@ -132,7 +140,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Iterable<ND> findAll() {
-        throw new UnsupportedOperationException("Find all without GraphQL query fields is not supported.");
+        return findAll(new ArrayList<Field>());
     }
 
     public Iterable<ND> findAllById(Iterable<String> ids, List<Field> fields) {
@@ -141,7 +149,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public Iterable<ND> findAllById(Iterable<String> ids) {
-        throw new UnsupportedOperationException("Find all by id without GraphQL query fields is not supported.");
+        return findAllById(ids, new ArrayList<Field>());
     }
 
     @Override
@@ -174,31 +182,36 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields) {
-        return facetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return facetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
     }
 
     public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return facetedSearch(query, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return facetedSearch(query, new ArrayList<FacetArg>(), filters, boosts, page, fields);
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, boosts, page, fields);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields) {
-        return facetedSearch(query, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+        return discoveryFacetedSearch(query, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return facetedSearch(query, facets, filters, new ArrayList<BoostArg>(), page, fields);
+        return discoveryFacetedSearch(query, facets, filters, new ArrayList<BoostArg>(), page, fields);
     }
 
     public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return facetedSearch(query, facets, filters, boosts, page, fields);
+        return discoveryFacetedSearch(query, facets, filters, boosts, page, fields);
+    }
+
+    public DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        FacetPage<ND> facetPage = search(query, facets, filters, boosts, page, fields);
+        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
     }
 
     public List<Composite> getComposites() {
@@ -226,16 +239,17 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public List<ND> findByType(String type) {
-        throw new UnsupportedOperationException("Find by type without GraphQL query fields is not supported.");
+        return findByType(type, new ArrayList<Field>());
     }
 
+    @Override
     public List<ND> findByIdIn(List<String> ids, List<Field> fields) {
         return repo.findByIdIn(ids).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
     public List<ND> findByIdIn(List<String> ids) {
-        throw new UnsupportedOperationException("Find by id in without GraphQL query fields is not supported.");
+        return repo.findByIdIn(ids).stream().map(document -> toNested(document, new ArrayList<Field>())).collect(Collectors.toList());
     }
 
     public List<ND> findBySyncIds(String syncId, List<Field> fields) {
@@ -244,7 +258,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     @Override
     public List<ND> findBySyncIds(String syncId) {
-        throw new UnsupportedOperationException("Find by sync ids without GraphQL query fields is not supported.");
+        return repo.findBySyncIds(syncId).stream().map(document -> toNested(document, new ArrayList<Field>())).collect(Collectors.toList());
     }
 
     public List<ND> findBySyncIdsIn(List<String> syncIds, List<Field> fields) {
@@ -278,13 +292,11 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     protected abstract Class<?> getOriginDocumentType();
 
     private ND toNested(D document, List<Field> fields) {
-        // TODO: only fetch reference if a requested field
-        // TODO: recursively dereference
         ObjectNode node = mapper.valueToTree(document);
         Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
         if (composite.isPresent()) {
             composite.get().getReferences().parallelStream().forEach(reference -> {
-                if (node.has(reference.getName())) {
+                if (node.has(reference.getName()) && dereference(reference, fields)) {
                     JsonNode referenceNode = node.get(reference.getName());
                     List<String> ids = new ArrayList<String>();
                     if (referenceNode.isArray()) {
@@ -295,16 +307,59 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
                     } else {
                         ids.add(referenceNode.get(ID).asText());
                     }
-                    Optional<SolrDocumentRepo<?>> service = solrDocumentRepos.stream().filter(repo -> {
-                        return repo instanceof AbstractNestedDocumentService && repo.type().getSimpleName().equals(reference.getType());
+
+                    Optional<NestedDocumentService<?>> nestedDocumentService = nestedDocumentServices.stream().filter(service -> {
+                        return service.type().getSimpleName().equals(reference.getType());
                     }).findAny();
-                    if (service.isPresent()) {
-                        node.set(reference.getName(), mapper.valueToTree(service.get().findByIdIn(ids)));
+
+                    if (nestedDocumentService.isPresent()) {
+                        List<AbstractNestedDocument> references = new ArrayList<AbstractNestedDocument>();
+                        while (ids.size() >= MAX_BATCH_SIZE) {
+                            references.addAll(nestedDocumentService.get().findByIdIn(ids.subList(0, MAX_BATCH_SIZE), fields));
+                            ids = ids.subList(MAX_BATCH_SIZE, ids.size());
+                        }
+                        references.addAll(nestedDocumentService.get().findByIdIn(ids, fields));
+                        node.set(reference.getName(), mapper.valueToTree(references));
                     }
+                } else {
+                    node.remove(reference.getName());
                 }
             });
         }
         return mapper.convertValue(node, type());
+    }
+
+    @SuppressWarnings("rawtypes")
+    private boolean dereference(CompositeReference reference, List<Field> fields) {
+        for (Field field : fields) {
+            List<Selection> selections = field.getSelectionSet().getSelections();
+            boolean dereference = checkSelections(reference, selections);
+            if (dereference) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private boolean checkSelections(CompositeReference reference, List<Selection> selections) {
+        for (Selection selection : selections) {
+            boolean dereference = checkSelection(reference, (Field) selection);
+            if (dereference) {
+                return true;
+            }
+            if (!selection.getChildren().isEmpty()) {
+                List<SelectionSet> sets = selection.getChildren();
+                for (SelectionSet set : sets) {
+                    return checkSelections(reference, set.getSelections());
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkSelection(CompositeReference reference, Field field) {
+        return field.getName().equals(reference.getName());
     }
 
 }

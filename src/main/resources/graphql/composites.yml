@@ -1,0 +1,13 @@
+---
+
+- type: Person
+  references:
+    - name: publications
+      type: Document
+    - name: positions
+      type: Relationship
+
+- type: Organization
+  references:
+    - name: people
+      type: Person

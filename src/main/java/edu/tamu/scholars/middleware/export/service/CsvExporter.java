@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -25,6 +24,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.tamu.scholars.middleware.config.model.ExportConfig;
+import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.export.argument.ExportArg;
@@ -99,8 +99,8 @@ public class CsvExporter implements Exporter {
                 idField.setAccessible(true);
                 Object idValue = idField.get(document);
                 if (config.isIncludeCollection()) {
-                    SolrDocument solrDocument = document.getClass().getAnnotation(SolrDocument.class);
-                    String collection = solrDocument.collection();
+                    CollectionSource collectionSource = document.getClass().getAnnotation(CollectionSource.class);
+                    String collection = collectionSource.name();
                     row.add(String.format("%s/%s/%s", config.getIndividualBaseUri(), collection, idValue));
                 } else {
                     row.add(String.format("%s/%s", config.getIndividualBaseUri(), idValue));
