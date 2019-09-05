@@ -19,10 +19,20 @@ import java.lang.String;
 public class AwardConferredBy extends AbstractNestedDocument {
   private static final long serialVersionUID = 828499878L;
 
+  private String label;
+
   private String type;
 
   public AwardConferredBy() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "processes")
-@CollectionSource(predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "processes", predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
 public class Process extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
@@ -38,7 +38,7 @@ public class Process extends AbstractSolrDocument {
     private String thumbnail;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "websiteUrl", key = "url") })
+    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
     @PropertySource(template = "process/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> websites;
 
@@ -51,7 +51,7 @@ public class Process extends AbstractSolrDocument {
     private String description;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "offeredByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "offeredByType", key = "type") })
     @PropertySource(template = "process/offeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> offeredBy;
 
@@ -83,7 +83,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> inEventSeries;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "participantRole", key = "role") })
+    @NestedObject(properties = { @Reference(value = "participantRole", key = "role") })
     @PropertySource(template = "process/participant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participants;
 
@@ -97,7 +97,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> subjectAreas;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "hasPrerequisiteType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "hasPrerequisiteType", key = "type") })
     @PropertySource(template = "process/hasPrerequisite", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasPrerequisite;
 
@@ -106,7 +106,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> hasPrerequisiteType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "prerequisiteForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "prerequisiteForType", key = "type") })
     @PropertySource(template = "process/prerequisiteFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> prerequisiteFor;
 
@@ -119,7 +119,7 @@ public class Process extends AbstractSolrDocument {
     private String credits;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "geographicFocusType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "process/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
@@ -128,7 +128,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> geographicFocusType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "outputPublicationOrOtherWorkType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "outputPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "process/outputPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputPublicationOrOtherWork;
 
@@ -137,7 +137,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> outputPublicationOrOtherWorkType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "relatedDocumentType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "relatedDocumentType", key = "type") })
     @PropertySource(template = "process/relatedDocument", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedDocuments;
 
@@ -160,7 +160,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> heldInGeographicLocation;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "hasOutputType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "hasOutputType", key = "type") })
     @PropertySource(template = "process/hasOutput", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasOutput;
 
@@ -169,7 +169,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> hasOutputType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "hasParticipantType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "hasParticipantType", key = "type") })
     @PropertySource(template = "process/hasParticipant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasParticipant;
 

@@ -19,10 +19,20 @@ import java.lang.String;
 public class Receipt extends AbstractNestedDocument {
   private static final long serialVersionUID = -1142246644L;
 
+  private String label;
+
   private String recipientName;
 
   public Receipt() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getRecipientName() {

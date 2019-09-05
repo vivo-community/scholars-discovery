@@ -54,18 +54,14 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
         deleteCore();
     }
 
-    private void deleteCore() throws SolrServerException, IOException {
-        CoreAdminRequest.unloadCore(getCollection(), solrServer);
-    }
-
-    private void deleteDocuments() {
-        repo.deleteAll();
-    }
-
-    private void createCore() throws SolrServerException, IOException {
+    protected void createCore() throws SolrServerException, IOException {
         assertTrue(instanceDirectory.exists());
         assertTrue(instanceDirectory.isFile());
         CoreAdminRequest.createCore(getCollection(), instanceDirectory.getFile().getAbsolutePath(), solrServer);
+    }
+
+    private void deleteCore() throws SolrServerException, IOException {
+        CoreAdminRequest.unloadCore(getCollection(), solrServer);
     }
 
     private void setDocuments() throws IOException {
@@ -84,10 +80,12 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
 
     private void createDocuments() {
         assertEquals(0, repo.count());
-        mockDocuments.forEach(mockDocument -> {
-            repo.save(mockDocument);
-        });
+        repo.saveAll(mockDocuments);
         assertEquals(mockDocuments.size(), repo.count());
+    }
+
+    private void deleteDocuments() {
+        repo.deleteAll();
     }
 
     private File[] getMockFiles() throws IOException {

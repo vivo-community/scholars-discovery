@@ -14,6 +14,7 @@ import edu.tamu.scholars.middleware.graphql.model.concept.SameAs;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
@@ -63,6 +64,9 @@ public class Concept extends AbstractNestedDocument {
   private String yearAwarded;
 
   private String modTime;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Concept() {
     super();
@@ -202,5 +206,13 @@ public class Concept extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

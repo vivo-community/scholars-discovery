@@ -19,6 +19,8 @@ import java.lang.String;
 public class AttendedEvent extends AbstractNestedDocument {
   private static final long serialVersionUID = 204588078L;
 
+  private String label;
+
   private String type;
 
   private String startDate;
@@ -27,6 +29,14 @@ public class AttendedEvent extends AbstractNestedDocument {
 
   public AttendedEvent() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

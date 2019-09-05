@@ -19,6 +19,8 @@ import java.lang.String;
 public class ClinicalActivity extends AbstractNestedDocument {
   private static final long serialVersionUID = 1477642581L;
 
+  private String label;
+
   private String type;
 
   private String role;
@@ -29,6 +31,14 @@ public class ClinicalActivity extends AbstractNestedDocument {
 
   public ClinicalActivity() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

@@ -19,10 +19,20 @@ import java.lang.String;
 public class SubcontractsGrant extends AbstractNestedDocument {
   private static final long serialVersionUID = 1293379686L;
 
+  private String label;
+
   private String date;
 
   public SubcontractsGrant() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getDate() {

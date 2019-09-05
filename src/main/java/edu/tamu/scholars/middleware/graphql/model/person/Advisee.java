@@ -19,6 +19,8 @@ import java.lang.String;
 public class Advisee extends AbstractNestedDocument {
   private static final long serialVersionUID = 81968906L;
 
+  private String label;
+
   private String type;
 
   private String candidacy;
@@ -29,6 +31,14 @@ public class Advisee extends AbstractNestedDocument {
 
   public Advisee() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

@@ -6,8 +6,6 @@ public class DiscoveryConstants {
 
     public static final String ID = "id";
 
-    public static final String LABEL = "label";
-
     public static final String NESTED_DELIMITER = "::";
 
     public static final String REQUEST_PARAM_DELIMETER = ",";

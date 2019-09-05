@@ -21,6 +21,8 @@ import java.lang.String;
 public class MemberOf extends AbstractNestedDocument {
   private static final long serialVersionUID = -1692072156L;
 
+  private String label;
+
   private String type;
 
   private MemberOfOrganization organization;
@@ -31,6 +33,14 @@ public class MemberOf extends AbstractNestedDocument {
 
   public MemberOf() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

@@ -22,12 +22,22 @@ import java.util.List;
 public class ResearchAreaOf extends AbstractNestedDocument {
   private static final long serialVersionUID = 1209049451L;
 
+  private String label;
+
   private String title;
 
   private List<ResearchAreaOfOrganization> organizations;
 
   public ResearchAreaOf() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getTitle() {

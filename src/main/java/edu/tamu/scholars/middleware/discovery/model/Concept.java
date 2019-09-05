@@ -18,8 +18,8 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "concepts")
-@CollectionSource(predicate = "http://www.w3.org/2004/02/skos/core#Concept")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "concepts", predicate = "http://www.w3.org/2004/02/skos/core#Concept")
 public class Concept extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
@@ -39,7 +39,7 @@ public class Concept extends AbstractSolrDocument {
     private String thumbnail;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "websiteUrl", key = "url") })
+    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
     @PropertySource(template = "concept/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> websites;
 
@@ -53,7 +53,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> associatedDepartments;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "researchAreaOfTitle", key = "title"), @Reference(value = "researchAreaOfOrganization", key = "organizations") })
+    @NestedObject(properties = { @Reference(value = "researchAreaOfTitle", key = "title"), @Reference(value = "researchAreaOfOrganization", key = "organizations") })
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
 
@@ -68,7 +68,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> researchAreaOfOrganization;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardOrHonorForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
     @PropertySource(template = "concept/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorFor;
 
@@ -77,7 +77,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> awardOrHonorForType;
 
     @Indexed(type = "nested_string", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardConferredByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
     @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String awardConferredBy;
 
@@ -93,7 +93,7 @@ public class Concept extends AbstractSolrDocument {
     @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 
-    @NestedObject({ @Reference(value = "receiptRecipientName", key = "recipientName") })
+    @NestedObject(properties = { @Reference(value = "receiptRecipientName", key = "recipientName") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "concept/receipts", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
@@ -103,7 +103,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> receiptRecipientName;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "broaderConceptType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "broaderConceptType", key = "type") })
     @PropertySource(template = "concept/broaderConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> broaderConcepts;
 
@@ -112,7 +112,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> broaderConceptType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "narrowerConceptType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "narrowerConceptType", key = "type") })
     @PropertySource(template = "concept/narrowerConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> narrowerConcepts;
 
@@ -121,7 +121,7 @@ public class Concept extends AbstractSolrDocument {
     private List<String> narrowerConceptType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "relatedConceptType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "relatedConceptType", key = "type") })
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
 

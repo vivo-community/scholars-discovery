@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "organizations")
-@CollectionSource(predicate = "http://xmlns.com/foaf/0.1/Organization")
+@SolrDocument(collection = "discovery")
+@CollectionSource(name = "organizations", predicate = "http://xmlns.com/foaf/0.1/Organization")
 public class Organization extends AbstractSolrDocument {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
@@ -37,7 +37,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
     private String thumbnail;
 
-    @NestedObject({ @Reference(value = "websiteUrl", key = "url") })
+    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> websites;
@@ -63,7 +63,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/date", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String date;
 
-    @NestedObject({ @Reference(value = "sponsorsAwardOrHonorType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "sponsorsAwardOrHonorType", key = "type") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/sponsorsAwardOrHonor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sponsorsAwardOrHonor;
@@ -72,7 +72,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/sponsorsAwardOrHonorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> sponsorsAwardOrHonorType;
 
-    @NestedObject({ @Reference(value = "awardOrHonorGivenDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "awardOrHonorGivenDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/awardOrHonorGiven", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorGiven;
@@ -81,7 +81,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/awardOrHonorGivenDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> awardOrHonorGivenDate;
 
-    @NestedObject({ @Reference(value = "awardOrHonorReceivedDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "awardOrHonorReceivedDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/awardOrHonorReceived", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorReceived;
@@ -94,7 +94,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @NestedObject({ @Reference(value = "organizationForTrainingTrainee", key = "trainee"), @Reference(value = "organizationForTrainingStartDate", key = "startDate"), @Reference(value = "organizationForTrainingEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "organizationForTrainingTrainee", key = "trainee"), @Reference(value = "organizationForTrainingStartDate", key = "startDate"), @Reference(value = "organizationForTrainingEndDate", key = "endDate") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/organizationForTraining", predicate = "http://vivoweb.org/ontology/core#majorField")
     private List<String> organizationForTraining;
@@ -112,7 +112,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/organizationForTrainingEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> organizationForTrainingEndDate;
 
-    @NestedObject({ @Reference(value = "peopleType", key = "type"), @Reference(value = "peopleTitle", key = "title") })
+    @NestedObject(properties = { @Reference(value = "peopleType", key = "type"), @Reference(value = "peopleTitle", key = "title") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/people", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> people;
@@ -160,7 +160,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/clinicalActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> clinicalActivities;
 
-    @NestedObject({ @Reference(value = "convenerOfEventDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "convenerOfEventDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/convenerOfEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> convenerOfEvents;
@@ -169,7 +169,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/convenerOfEventDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> convenerOfEventDate;
 
-    @NestedObject({ @Reference(value = "attendedEventDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "attendedEventDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/attendedEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> attendedEvents;
@@ -178,7 +178,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/attendedEventDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> attendedEventDate;
 
-    @NestedObject({ @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/selectedPublication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
@@ -191,7 +191,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/selectedPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> selectedPublicationDate;
 
-    @NestedObject({ @Reference(value = "publisherOfType", key = "type"), @Reference(value = "publisherOfDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "publisherOfType", key = "type"), @Reference(value = "publisherOfDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/publisherOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> publisherOf;
@@ -204,7 +204,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/publisherOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> publisherOfDate;
 
-    @NestedObject({ @Reference(value = "presentationEvent", key = "event"), @Reference(value = "presentationDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "presentationEvent", key = "event"), @Reference(value = "presentationDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/presentation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentations;
@@ -217,7 +217,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/presentationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> presentationDate;
 
-    @NestedObject({ @Reference(value = "featuredInType", key = "type"), @Reference(value = "featuredInDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "featuredInType", key = "type"), @Reference(value = "featuredInDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/featuredIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> featuredIn;
@@ -230,7 +230,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/featuredInDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> featuredInDate;
 
-    @NestedObject({ @Reference(value = "assigneeForPatentDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "assigneeForPatentDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/assigneeForPatent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assigneeForPatent;
@@ -239,7 +239,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/assigneeForPatentDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> assigneeForPatentDate;
 
-    @NestedObject({ @Reference(value = "translatorOfType", key = "type"), @Reference(value = "translatorOfDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "translatorOfType", key = "type"), @Reference(value = "translatorOfDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/translatorOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translatorOf;
@@ -252,7 +252,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/translatorOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> translatorOfDate;
 
-    @NestedObject({ @Reference(value = "awardsGrantDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "awardsGrantDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/awardsGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardsGrant;
@@ -261,7 +261,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/awardsGrantDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> awardsGrantDate;
 
-    @NestedObject({ @Reference(value = "administersGrantDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "administersGrantDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/administersGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> administersGrant;
@@ -270,7 +270,7 @@ public class Organization extends AbstractSolrDocument {
     @PropertySource(template = "organization/administersGrantDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> administersGrantDate;
 
-    @NestedObject({ @Reference(value = "subcontractsGrantDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "subcontractsGrantDate", key = "date") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/subcontractsGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subcontractsGrant;

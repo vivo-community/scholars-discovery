@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.serializer;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.LABEL;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 
 import java.io.IOException;
@@ -57,9 +56,9 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
             if (value != null) {
                 JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
                 String name = jsonProperty != null ? jsonProperty.value() : field.getName();
-                NestedObject nested = field.getAnnotation(NestedObject.class);
-                if (nested != null) {
-                    if (nested.root()) {
+                NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+                if (nestedObject != null) {
+                    if (nestedObject.root()) {
                         if (List.class.isAssignableFrom(value.getClass())) {
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
@@ -93,69 +92,69 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
 
     private ObjectNode processValue(D document, Field field, String[] vParts, int index) {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
-        node.put(LABEL, vParts[0]);
-        node.put(ID, vParts[index]);
-        processNestedReferences(document, field, node, vParts, index + 1);
+        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+        if (nestedObject != null) {
+            node.put(ID, vParts[index]);
+            node.put(nestedObject.label(), vParts[0]);
+            processNestedObject(document, nestedObject, node, vParts, index + 1);
+        }
         return node;
     }
 
-    private void processNestedReferences(D document, Field field, ObjectNode node, String[] vParts, int depth) {
-        NestedObject references = field.getAnnotation(NestedObject.class);
-        if (references != null) {
-            for (Reference reference : references.value()) {
-                String ref = reference.value();
+    private void processNestedObject(D document, NestedObject nestedObject, ObjectNode node, String[] vParts, int depth) {
+        for (Reference reference : nestedObject.properties()) {
+            String ref = reference.value();
 
-                Field nestedField = FieldUtils.getField(document.getClass(), ref, true);
+            Field nestedField = FieldUtils.getField(document.getClass(), ref, true);
 
-                JsonProperty jsonProperty = nestedField.getAnnotation(JsonProperty.class);
-                String name = jsonProperty != null ? jsonProperty.value() : reference.key();
+            JsonProperty jsonProperty = nestedField.getAnnotation(JsonProperty.class);
+            String name = jsonProperty != null ? jsonProperty.value() : reference.key();
 
-                Object nestedValue = null;
-                try {
-                    nestedValue = nestedField.get(document);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+            Object nestedValue = null;
+            try {
+                nestedValue = nestedField.get(document);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
 
-                if (nestedValue != null) {
-                    if (List.class.isAssignableFrom(nestedValue.getClass())) {
-                        @SuppressWarnings("unchecked")
-                        List<String> nestedValues = (List<String>) nestedValue;
-                        ArrayNode array = JsonNodeFactory.instance.arrayNode();
-                        boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
-                        for (String nv : nestedValues) {
-                            String[] nvParts = nv.split(NESTED_DELIMITER);
-                            if (nv.contains(vParts[depth - 1]) && !(vParts[0].equals(nvParts[0]))) {
-                                if (nvParts.length > depth) {
-                                    ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
-                                    array.add(subNode);
-                                } else {
-                                    if (nvParts[0] != null) {
-                                        array.add(nvParts[0]);
-                                    }
-                                }
-                                if (!multiValued) {
-                                    break;
-                                }
-                            }
-                        }
-                        if (array.size() > 0) {
-                            if (multiValued) {
-                                node.set(name, array);
-                            } else {
-                                node.set(name, array.get(0));
-                            }
-                        }
-                    } else {
-                        String nv = nestedValue.toString();
+            if (nestedValue != null) {
+                if (List.class.isAssignableFrom(nestedValue.getClass())) {
+                    @SuppressWarnings("unchecked")
+                    List<String> nestedValues = (List<String>) nestedValue;
+                    ArrayNode array = JsonNodeFactory.instance.arrayNode();
+                    boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
+                    for (String nv : nestedValues) {
                         String[] nvParts = nv.split(NESTED_DELIMITER);
-                        if (nvParts.length > depth) {
-                            ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
-                            node.set(name, subNode);
-                        } else {
-                            if (nvParts[0] != null) {
-                                node.put(name, nvParts[0]);
+                        if (nv.contains(vParts[depth - 1]) && !(vParts[0].equals(nvParts[0]))) {
+                            if (nvParts.length > depth) {
+                                ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
+                                array.add(subNode);
+                            } else {
+                                if (nvParts[0] != null) {
+                                    array.add(nvParts[0]);
+                                }
                             }
+                            if (!multiValued) {
+                                break;
+                            }
+                        }
+                    }
+                    if (array.size() > 0) {
+                        if (multiValued) {
+                            node.set(name, array);
+                        } else {
+                            node.set(name, array.get(0));
+                        }
+                    }
+                } else {
+                    String nv = nestedValue.toString();
+                    String[] nvParts = nv.split(NESTED_DELIMITER);
+                    if (nvParts.length > depth) {
+                        ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
+                        node.set(name, subNode);
+                    } else {
+                        if (nvParts[0] != null) {
+                            node.put(name, nvParts[0]);
                         }
                     }
                 }

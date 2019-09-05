@@ -19,10 +19,20 @@ import java.lang.String;
 public class ConvenerOfEvent extends AbstractNestedDocument {
   private static final long serialVersionUID = -750774204L;
 
+  private String label;
+
   private String date;
 
   public ConvenerOfEvent() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getDate() {

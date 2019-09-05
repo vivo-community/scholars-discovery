@@ -47,6 +47,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     private static final String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
 
+    private static final String CLASS_FIELD = "class";
+
     private static final String SCORE_FIELD = "score";
 
     private static final String MOD_TIME_FIELD = "modTime";
@@ -174,13 +176,15 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     }
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
+        List<SimpleFilterQuery> filterQueries = filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
+        filterQueries.add(new SimpleFilterQuery(Criteria.where(CLASS_FIELD).is(type().getSimpleName())));
+        return filterQueries;
     }
 
     private Criteria buildCriteria(FilterArg filter) {
         String field = filter.getPath(type());
         String value = filter.getValue();
-        Criteria criteria = new Criteria(field);
+        Criteria criteria = Criteria.where(field);
         switch (filter.getOpKey()) {
         case BETWEEN:
             Matcher rangeMatcher = RANGE_PATTERN.matcher(value);

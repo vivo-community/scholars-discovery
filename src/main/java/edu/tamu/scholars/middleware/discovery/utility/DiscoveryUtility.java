@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.discovery.utility;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DISCOVERY_MODEL_PACKAGE;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.LABEL;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DELIMETER_REGEX;
 
 import java.lang.reflect.Field;
@@ -17,7 +16,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
@@ -30,7 +28,7 @@ public class DiscoveryUtility {
     public static List<String> getFieldNames(String collection) {
         List<String> fields = new ArrayList<String>();
         fields.add(ID);
-        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
+        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
             try {
                 Class<?> type = Class.forName(beanDefinition.getBeanClassName());
                 for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
@@ -56,11 +54,11 @@ public class DiscoveryUtility {
     }
 
     public static Optional<Class<?>> getCollectionType(String collection) {
-        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
+        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
             try {
                 Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                SolrDocument solrDocument = type.getAnnotation(SolrDocument.class);
-                if (collection.equals(solrDocument.collection())) {
+                CollectionSource collectionSource = type.getAnnotation(CollectionSource.class);
+                if (collection.equals(collectionSource.name())) {
                     return Optional.of(type);
                 }
             } catch (ClassNotFoundException e) {
@@ -71,11 +69,11 @@ public class DiscoveryUtility {
     }
 
     public static boolean isCollection(String collection) {
-        for (BeanDefinition beanDefinition : getSolrDocumentBeanDefinitions()) {
+        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
             try {
                 Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                SolrDocument solrDocument = type.getAnnotation(SolrDocument.class);
-                if (collection.equals(solrDocument.collection())) {
+                CollectionSource collectionSource = type.getAnnotation(CollectionSource.class);
+                if (collection.equals(collectionSource.name())) {
                     return true;
                 }
             } catch (ClassNotFoundException e) {
@@ -98,6 +96,22 @@ public class DiscoveryUtility {
             }
         }
         return documents;
+    }
+
+    public static Class<?> getDiscoveryDocumentTypeByName(String name) {
+        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
+        Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
+        for (BeanDefinition beanDefinition : beanDefinitions) {
+            try {
+                if (beanDefinition.getBeanClassName().equals(String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, name))) {
+                    return Class.forName(beanDefinition.getBeanClassName());
+                }
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Unable to find class for " + beanDefinition.getBeanClassName(), e);
+            }
+        }
+        throw new RuntimeException("Unable to find class for " + name);
     }
 
     public static String findProperty(String type, String path) {
@@ -125,7 +139,7 @@ public class DiscoveryUtility {
         NestedObject nestedObject = field.getAnnotation(NestedObject.class);
         String referenceProperty = properties.get(0);
         if (nestedObject != null) {
-            for (Reference reference : nestedObject.value()) {
+            for (Reference reference : nestedObject.properties()) {
                 if (reference.key().equals(referenceProperty)) {
                     properties.set(0, reference.value());
                     return findProperty(type, properties);
@@ -138,7 +152,7 @@ public class DiscoveryUtility {
     }
 
     public static Field findField(Class<?> clazz, String[] path) throws InvalidValuePathException {
-        if (path.length == 1 || path[1].equals(LABEL) || path[1].equals(ID)) {
+        if (path.length >= 1) {
             return findField(clazz, path[0]);
         }
         Field field = findField(clazz, path[0]);
@@ -146,8 +160,8 @@ public class DiscoveryUtility {
     }
 
     public static Field getReferenceField(Field field, String[] path) throws InvalidValuePathException {
-        NestedObject nested = field.getAnnotation(NestedObject.class);
-        for (Reference reference : nested.value()) {
+        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+        for (Reference reference : nestedObject.properties()) {
             if (reference.key().contentEquals(path[0])) {
                 Field refField = findField(field.getDeclaringClass(), reference.value());
                 return path.length > 1 ? getReferenceField(refField, Arrays.copyOfRange(path, 1, path.length)) : refField;
@@ -168,9 +182,9 @@ public class DiscoveryUtility {
         throw new InvalidValuePathException(String.format("Unable to resolve %s of %s", property, clazz.getSimpleName()));
     }
 
-    private static Set<BeanDefinition> getSolrDocumentBeanDefinitions() {
+    private static Set<BeanDefinition> getDiscoveryDocumentBeanDefinitions() {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(SolrDocument.class));
+        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
         return provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
     }
 
