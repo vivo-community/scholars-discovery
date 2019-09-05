@@ -295,7 +295,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         ObjectNode node = mapper.valueToTree(document);
         Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
         if (composite.isPresent()) {
-            composite.get().getReferences().parallelStream().forEach(reference -> {
+            composite.get().getReferences().stream().forEach(reference -> {
                 if (node.has(reference.getName()) && dereference(reference, fields)) {
                     JsonNode referenceNode = node.get(reference.getName());
                     List<String> ids = new ArrayList<String>();
@@ -333,8 +333,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     private boolean dereference(CompositeReference reference, List<Field> fields) {
         for (Field field : fields) {
             List<Selection> selections = field.getSelectionSet().getSelections();
-            boolean dereference = checkSelections(reference, selections);
-            if (dereference) {
+            if (checkSelections(reference, selections)) {
                 return true;
             }
         }
@@ -344,14 +343,15 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private boolean checkSelections(CompositeReference reference, List<Selection> selections) {
         for (Selection selection : selections) {
-            boolean dereference = checkSelection(reference, (Field) selection);
-            if (dereference) {
+            if (checkSelection(reference, (Field) selection)) {
                 return true;
             }
             if (!selection.getChildren().isEmpty()) {
                 List<SelectionSet> sets = selection.getChildren();
                 for (SelectionSet set : sets) {
-                    return checkSelections(reference, set.getSelections());
+                    if (checkSelections(reference, set.getSelections())) {
+                        return true;
+                    }
                 }
             }
         }

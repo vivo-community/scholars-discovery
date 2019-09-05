@@ -247,7 +247,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         syncIds.add(document.getId());
         FieldUtils.getFieldsListWithAnnotation(type(), Indexed.class).stream().filter(field -> {
             field.setAccessible(true);
-            return field.getAnnotation(Indexed.class).type().contains(NESTED);
+            return !field.getName().equals(ID) && field.getAnnotation(Indexed.class).type().startsWith(NESTED);
         }).forEach(field -> {
             try {
                 Object value = field.get(document);

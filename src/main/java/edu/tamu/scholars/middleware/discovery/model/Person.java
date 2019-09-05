@@ -18,7 +18,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "discovery")
+@SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "persons", predicate = "http://xmlns.com/foaf/0.1/Person")
 public class Person extends AbstractSolrDocument {
 

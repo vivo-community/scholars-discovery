@@ -17,7 +17,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "discovery")
+@SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "processes", predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
 public class Process extends AbstractSolrDocument {
 
