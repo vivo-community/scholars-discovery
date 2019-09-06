@@ -39,7 +39,6 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.ExportFieldView;
-import edu.tamu.scholars.middleware.view.model.LazyReference;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 @SpringBootTest
@@ -93,7 +92,7 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
     public void testSinglePageExport() throws Exception {
         // @formatter:off
         DisplayView mockDisplayView = getMockDisplayView();
-        mockDisplayView.getExportView().setLazyReferences(new ArrayList<LazyReference>());
+        mockDisplayView.getExportView().setLazyReferences(new ArrayList<String>());
         mockDisplayView.getExportView().setFieldViews(new ArrayList<ExportFieldView>());
         Mockito.when(displayViewRepo.findByTypesIn(Mockito.<List<String>>any()))
             .thenReturn(Optional.of(mockDisplayView));

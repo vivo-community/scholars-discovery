@@ -1,17 +1,12 @@
 package edu.tamu.scholars.middleware.discovery.utility;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DISCOVERY_MODEL_PACKAGE;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
@@ -19,68 +14,67 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 import edu.tamu.scholars.middleware.discovery.exception.InvalidValuePathException;
 
 public class DiscoveryUtility {
 
-    public static List<String> getFieldNames(String collection) {
-        List<String> fields = new ArrayList<String>();
-        fields.add(ID);
-        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
-            try {
-                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
-                    fields.add(field.getName());
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return fields;
-    }
+//    public static List<String> getFieldNames(String collection) {
+//        List<String> fields = new ArrayList<String>();
+//        fields.add(ID);
+//        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
+//            try {
+//                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
+//                for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
+//                    fields.add(field.getName());
+//                }
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return fields;
+//    }
 
-    public static boolean hasIndexField(String collection, String field) {
-        Optional<Class<?>> type = getCollectionType(collection);
-        if (type.isPresent()) {
-            for (Field f : FieldUtils.getFieldsListWithAnnotation(type.get(), PropertySource.class)) {
-                if (String.class.isAssignableFrom(f.getType()) && f.getName().equals(field)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    public static boolean hasIndexField(String collection, String field) {
+//        Optional<Class<?>> type = getCollectionType(collection);
+//        if (type.isPresent()) {
+//            for (Field f : FieldUtils.getFieldsListWithAnnotation(type.get(), PropertySource.class)) {
+//                if (String.class.isAssignableFrom(f.getType()) && f.getName().equals(field)) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
-    public static Optional<Class<?>> getCollectionType(String collection) {
-        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
-            try {
-                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                CollectionSource collectionSource = type.getAnnotation(CollectionSource.class);
-                if (collection.equals(collectionSource.name())) {
-                    return Optional.of(type);
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return Optional.empty();
-    }
+//    public static Optional<Class<?>> getCollectionType(String collection) {
+//        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
+//            try {
+//                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
+//                CollectionSource collectionSource = type.getAnnotation(CollectionSource.class);
+//                if (collection.equals(collectionSource.name())) {
+//                    return Optional.of(type);
+//                }
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
-    public static boolean isCollection(String collection) {
-        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
-            try {
-                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
-                CollectionSource collectionSource = type.getAnnotation(CollectionSource.class);
-                if (collection.equals(collectionSource.name())) {
-                    return true;
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
+//    public static boolean isCollection(String collection) {
+//        for (BeanDefinition beanDefinition : getDiscoveryDocumentBeanDefinitions()) {
+//            try {
+//                Class<?> type = Class.forName(beanDefinition.getBeanClassName());
+//                CollectionSource collectionSource = type.getAnnotation(CollectionSource.class);
+//                if (collection.equals(collectionSource.name())) {
+//                    return true;
+//                }
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return false;
+//    }
 
     public static Set<Class<?>> getDiscoveryDocumentTypes() {
         Set<Class<?>> documents = new HashSet<Class<?>>();
@@ -158,17 +152,6 @@ public class DiscoveryUtility {
         return getReferenceField(field, Arrays.copyOfRange(path, 1, path.length));
     }
 
-    public static Field getReferenceField(Field field, String[] path) throws InvalidValuePathException {
-        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
-        for (Reference reference : nestedObject.properties()) {
-            if (reference.key().contentEquals(path[0])) {
-                Field refField = findField(field.getDeclaringClass(), reference.value());
-                return path.length > 1 ? getReferenceField(refField, Arrays.copyOfRange(path, 1, path.length)) : refField;
-            }
-        }
-        throw new InvalidValuePathException(String.format("Unable to resolve %s reference %s", field.getName(), String.join(".", path)));
-    }
-
     public static Field findField(Class<?> clazz, String property) throws InvalidValuePathException {
         try {
             return clazz.getDeclaredField(property);
@@ -181,10 +164,21 @@ public class DiscoveryUtility {
         throw new InvalidValuePathException(String.format("Unable to resolve %s of %s", property, clazz.getSimpleName()));
     }
 
-    private static Set<BeanDefinition> getDiscoveryDocumentBeanDefinitions() {
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
-        return provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
+    private static Field getReferenceField(Field field, String[] path) throws InvalidValuePathException {
+        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+        for (Reference reference : nestedObject.properties()) {
+            if (reference.key().contentEquals(path[0])) {
+                Field refField = findField(field.getDeclaringClass(), reference.value());
+                return path.length > 1 ? getReferenceField(refField, Arrays.copyOfRange(path, 1, path.length)) : refField;
+            }
+        }
+        throw new InvalidValuePathException(String.format("Unable to resolve %s reference %s", field.getName(), String.join(".", path)));
     }
+
+//    private static Set<BeanDefinition> getDiscoveryDocumentBeanDefinitions() {
+//        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+//        provider.addIncludeFilter(new AnnotationTypeFilter(CollectionSource.class));
+//        return provider.findCandidateComponents(DISCOVERY_MODEL_PACKAGE);
+//    }
 
 }

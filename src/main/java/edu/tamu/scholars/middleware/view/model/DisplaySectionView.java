@@ -41,7 +41,7 @@ public class DisplaySectionView extends FieldView {
     private List<String> requiredFields;
 
     @ElementCollection
-    private List<LazyReference> lazyReferences;
+    private List<String> lazyReferences;
 
     @JoinColumn(name = "display_tab_section_id")
     @OneToMany(cascade = CascadeType.ALL)
@@ -55,7 +55,7 @@ public class DisplaySectionView extends FieldView {
         paginated = false;
         pageSize = 5;
         requiredFields = new ArrayList<String>();
-        lazyReferences = new ArrayList<LazyReference>();
+        lazyReferences = new ArrayList<String>();
         subsections = new ArrayList<DisplaySubsectionView>();
     }
 
@@ -107,11 +107,11 @@ public class DisplaySectionView extends FieldView {
         this.requiredFields = requiredFields;
     }
 
-    public List<LazyReference> getLazyReferences() {
+    public List<String> getLazyReferences() {
         return lazyReferences;
     }
 
-    public void setLazyReferences(List<LazyReference> lazyReferences) {
+    public void setLazyReferences(List<String> lazyReferences) {
         this.lazyReferences = lazyReferences;
     }
 

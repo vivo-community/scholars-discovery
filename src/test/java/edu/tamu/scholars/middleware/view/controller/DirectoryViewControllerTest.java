@@ -324,7 +324,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
     private ResultActions performUpdateDirectoryView() throws JsonProcessingException, Exception {
         DirectoryView directoryView = viewRepo.findByName(MOCK_VIEW_NAME).get();
         directoryView.setName("Organizations");
-        directoryView.setCollection("organizations");
+//        directoryView.setCollection("organizations");
 
         // @formatter:off
         return mockMvc.perform(

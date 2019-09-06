@@ -84,16 +84,12 @@ public class DisplaySectionViewTest {
         assertEquals(1, section.getRequiredFields().size());
         assertEquals("type", section.getRequiredFields().get(0));
 
-        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
-        LazyReference reference = new LazyReference();
-        reference.setCollection("persons");
-        reference.setField("publications");
-        lazyReferences.add(reference);
+        List<String> lazyReferences = new ArrayList<String>();
+        lazyReferences.add("publications");
 
         section.setLazyReferences(lazyReferences);
         assertEquals(1, section.getLazyReferences().size());
-        assertEquals("publications", section.getLazyReferences().get(0).getField());
-        assertEquals("persons", section.getLazyReferences().get(0).getCollection());
+        assertEquals("publications", section.getLazyReferences().get(0));
     }
 
 }
