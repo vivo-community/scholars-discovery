@@ -114,6 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/persons/{id}", embedConfig);
         source.registerCorsConfiguration("/processes/{id}", embedConfig);
         source.registerCorsConfiguration("/relationships/{id}", embedConfig);
+        source.registerCorsConfiguration("/individuals/{id}", embedConfig);
 
         source.registerCorsConfiguration("/collections/search/findByIdIn", embedConfig);
         source.registerCorsConfiguration("/concepts/search/findByIdIn", embedConfig);
@@ -122,6 +123,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/persons/search/findByIdIn", embedConfig);
         source.registerCorsConfiguration("/processes/search/findByIdIn", embedConfig);
         source.registerCorsConfiguration("/relationships/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/individuals/search/findByIdIn", embedConfig);
 
         CorsConfiguration primaryConfig = new CorsConfiguration();
         primaryConfig.setAllowCredentials(true);
@@ -220,7 +222,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/organizations", "/organizations/{id}", "/organizations/{id}/export", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count", "/organizations/search/recently-updated",
                         "/persons", "/persons/{id}", "/persons/{id}/export", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count", "/persons/search/recently-updated",
                         "/processes", "/processes/{id}", "/processes/{id}/export", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count", "/processes/search/recently-updated",
-                        "/relationships", "/relationships/{id}", "/relationships/{id}/export", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count", "/relationships/search/recently-updated"
+                        "/relationships", "/relationships/{id}", "/relationships/{id}/export", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count", "/relationships/search/recently-updated",
+                        "/individuals", "/individuals/{id}", "/individuals/{id}/export", "/individuals/search/findByIdIn", "/individuals/search/facet", "/individuals/search/export", "/individuals/search/count", "/individuals/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,

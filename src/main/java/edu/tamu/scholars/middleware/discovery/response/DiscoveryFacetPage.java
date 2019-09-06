@@ -27,12 +27,12 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
         this.facets = facets;
     }
 
-    public static <T> DiscoveryFacetPage<T> from(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
-        List<Facet> facets = buildFacets(facetPage, facetArguments, type);
+    public static <T> DiscoveryFacetPage<T> from(FacetPage<T> facetPage, List<FacetArg> facetArguments) {
+        List<Facet> facets = buildFacets(facetPage, facetArguments);
         return new DiscoveryFacetPage<T>(facetPage.getContent(), PageInfo.from(facetPage), facets);
     }
 
-    public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
+    public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments) {
         List<Facet> facets = new ArrayList<Facet>();
 
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
