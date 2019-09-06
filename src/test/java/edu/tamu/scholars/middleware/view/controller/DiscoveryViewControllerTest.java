@@ -12,7 +12,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
@@ -51,9 +50,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                     "discoveryViews/create",
                     requestFields(
                         describeDiscoveryView.withField("name", "The name of the Discovery View."),
-                        // describeDiscoveryView.withField("collection", "The collection of the Discovery View."),
-                        // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                        fieldWithPath("collection").description("The collection of the Discovery View."),
                         describeDiscoveryView.withField("layout", "The layout of the Discovery View."),
                         describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                         describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
@@ -69,9 +65,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                     ),
                     responseFields(
                         describeDiscoveryView.withField("name", "The name of the Discovery View."),
-                        // describeDiscoveryView.withField("collection", "The collection of the Discovery View."),
-                        // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                        fieldWithPath("collection").description("The collection of the Discovery View."),
                         describeDiscoveryView.withField("layout", "The layout of the Discovery View."),
                         describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                         describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
@@ -102,9 +95,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                     requestFields(
                         describeDiscoveryView.withField("id", "The Discovery View id."),
                         describeDiscoveryView.withField("name", "The name of the Discovery View."),
-                        // describeDiscoveryView.withField("collection", "The collection of the Discovery View."),
-                        // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                        fieldWithPath("collection").description("The collection of the Discovery View."),
                         describeDiscoveryView.withField("layout", "The layout of the Discovery View."),
                         describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                         describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
@@ -120,9 +110,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                     ),
                     responseFields(
                         describeDiscoveryView.withField("name", "The name of the Discovery View."),
-                        // describeDiscoveryView.withField("collection", "The collection of the Discovery View."),
-                        // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                        fieldWithPath("collection").description("The collection of the Discovery View."),
                         describeDiscoveryView.withField("layout", "The layout of the Discovery View."),
                         describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                         describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
@@ -146,12 +133,11 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
         // @formatter:off
         mockMvc.perform(
             patch("/discoveryViews/{id}", discoveryView.getId())
-                .content("{\"name\": \"Organizations\", \"collection\": \"organizations\"}")
+                .content("{\"name\": \"Organizations\"}")
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                     .andExpect(jsonPath("name", equalTo("Organizations")))
-                    .andExpect(jsonPath("collection", equalTo("organizations")))
                     .andDo(
                         document(
                             "discoveryViews/patch",
@@ -161,9 +147,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                             requestParameters(
                                 describeDiscoveryView.withParameter("id", "The Discovery View id.").optional(),
                                 describeDiscoveryView.withParameter("name", "The name of the Discovery View.").optional(),
-                                // describeDiscoveryView.withParameter("collection", "The collection of the Discovery View.").optional(),
-                                // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                                parameterWithName("collection").description("The collection of the Discovery View.").optional(),
                                 describeDiscoveryView.withParameter("layout", "The layout of the Discovery View.").optional(),
                                 describeDiscoveryView.withParameter("templates", "The result templates of the Discovery View.").optional(),
                                 describeDiscoveryView.withParameter("styles", "An array of result style strings of the Discovery View.").optional(),
@@ -179,9 +162,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                             ),
                             responseFields(
                                 describeDiscoveryView.withField("name", "The name of the Discovery View."),
-                                // describeDiscoveryView.withField("collection", "The collection of the Discovery View."),
-                                // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                                fieldWithPath("collection").description("The collection of the Discovery View."),
                                 describeDiscoveryView.withField("layout", "The layout of the Discovery View."),
                                 describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                                 describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
@@ -219,9 +199,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         ),
                         responseFields(
                             describeDiscoveryView.withField("name", "The name of the Discovery View."),
-                            // describeDiscoveryView.withField("collection", "The collection of the Discovery View."),
-                            // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.view.annotation.ValidDiscoveryCollection.description
-                            fieldWithPath("collection").description("The collection of the Discovery View."),
                             describeDiscoveryView.withField("layout", "The layout of the Discovery View."),
                             describeDiscoveryView.withSubsection("templates", "The result templates of the Discovery View."),
                             describeDiscoveryView.withField("styles", "An array of result style strings of the Discovery View."),
