@@ -1,6 +1,9 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.text.DateFormat;
@@ -47,12 +50,6 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     private static final String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
 
-    private static final String CLASS_FIELD = "class";
-
-    private static final String SCORE_FIELD = "score";
-
-    private static final String MOD_TIME_FIELD = "modTime";
-
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
 
     private static final DateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy");
@@ -76,7 +73,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
-            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by(SCORE_FIELD).descending().and(page.getSort()));
+            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by(SCORE).descending().and(page.getSort()));
         }
 
         facetQuery.addCriteria(criteria);
@@ -125,7 +122,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
-            sort = Sort.by(SCORE_FIELD).descending().and(sort);
+            sort = Sort.by(SCORE).descending().and(sort);
         }
 
         simpleQuery.addCriteria(criteria);
@@ -142,7 +139,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
     public List<D> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
         simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
-        simpleQuery.addSort(Sort.by(MOD_TIME_FIELD).descending());
+        simpleQuery.addSort(Sort.by(MOD_TIME).descending());
         simpleQuery.setRows(limit);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
     }
@@ -178,7 +175,7 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
 
     protected List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
         List<SimpleFilterQuery> filterQueries = filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
-        filterQueries.add(new SimpleFilterQuery(Criteria.where(CLASS_FIELD).is(type().getSimpleName())));
+        filterQueries.add(new SimpleFilterQuery(Criteria.where(CLASS).is(type().getSimpleName())));
         return filterQueries;
     }
 

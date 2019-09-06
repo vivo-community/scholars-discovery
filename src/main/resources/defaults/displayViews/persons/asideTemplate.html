@@ -5,7 +5,7 @@
     <div><span class="label">Research Areas:</span></div>
     <div class="ml-1">
       {{#each researchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     <hr />
@@ -82,7 +82,7 @@
     </div>
     <div class="ml-1">
       {{#each researchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
   </div>

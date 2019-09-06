@@ -2,7 +2,7 @@
   <span>{{authorList}}</span>
   <span>({{toYear publicationDate}}).</span>
   <span>
-    <a href="display/documents/{{id}}"><u>{{title}}</u>.</a>
+    <a href="display/{{id}}"><u>{{title}}</u>.</a>
   </span>
 
   {{#if publicationVenue}}
@@ -20,7 +20,7 @@
   <span>({{issue}}), </span>
   {{/if}}
   {{/if}}
-  
+
   {{#if pageStart}}
   {{#if pageEnd}}
   <span>{{pageStart}}-{{pageEnd}}.</span>
@@ -60,9 +60,11 @@
   .__dimensions_badge_embed__ {
     display: inline-block;
   }
+
   .__dimensions_badge_embed__ .__dimensions_png {
     opacity: 1;
   }
+
   .__dimensions_Badge_Image svg {
     display: none;
   }

@@ -1,7 +1,7 @@
 <ul>
   {{#each participants}}
   <li>
-    <span><a href="display/persons/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+    <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
     <span>{{role}}</span>
   </li>
   {{/each}}

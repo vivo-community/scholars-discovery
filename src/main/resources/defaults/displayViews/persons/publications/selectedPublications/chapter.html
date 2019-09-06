@@ -2,7 +2,7 @@
   <span>{{authorList}}</span>
   <span>({{toYear publicationDate}}).</span>
   <span>
-    <a href="display/documents/{{id}}"><u>{{title}}</u>.</a>
+    <a href="display/{{id}}"><u>{{title}}</u>.</a>
   </span>
 
   {{#if publicationVenue}}
@@ -42,7 +42,7 @@
   {{/if}}
   {{#if uri}}
   <span class="m-1"><a href="{{uri}}"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge" /></a></span>
-  {{/if}}  
+  {{/if}}
   {{#if doi}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-doi="{{doi}}"></span>
   {{else}}

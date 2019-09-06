@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.serializer;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 
@@ -35,13 +36,10 @@ public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocume
     @Override
     @SuppressWarnings("unchecked")
     public void serialize(Individual document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-
         Class<?> type = DiscoveryUtility.getDiscoveryDocumentTypeByName(document.getClazz());
-
         Map<String, List<String>> content = document.getContent();
-
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
-
+        jsonGenerator.writeObjectField(nameTransformer.transform(CLASS), document.getClazz());
         for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
             Object value = content.get(field.getName());
             if (value != null) {
@@ -64,7 +62,7 @@ public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocume
                             }
                         } else {
                             String v = value.toString();
-                            String[] vParts = v.split(NESTED_DELIMITER);
+                            String[] vParts = strip(v).split(NESTED_DELIMITER);
                             if (vParts.length > 1) {
                                 ObjectNode node = processValue(content, type, field, vParts, 1);
                                 jsonGenerator.writeObjectField(nameTransformer.transform(name), node);
@@ -99,14 +97,10 @@ public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocume
     private void processNestedObject(Map<String, List<String>> content, Class<?> type, NestedObject nestedObject, ObjectNode node, String[] vParts, int depth) {
         for (Reference reference : nestedObject.properties()) {
             String ref = reference.value();
-
             Field nestedField = FieldUtils.getField(type, ref, true);
-
             JsonProperty jsonProperty = nestedField.getAnnotation(JsonProperty.class);
             String name = jsonProperty != null ? jsonProperty.value() : reference.key();
-
             Object nestedValue = content.get(nestedField.getName());
-
             if (nestedValue != null) {
                 if (List.class.isAssignableFrom(nestedField.getType())) {
                     @SuppressWarnings("unchecked")
@@ -114,7 +108,7 @@ public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocume
                     ArrayNode array = JsonNodeFactory.instance.arrayNode();
                     boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
                     for (String nv : nestedValues) {
-                        String[] nvParts = nv.split(NESTED_DELIMITER);
+                        String[] nvParts = strip(nv).split(NESTED_DELIMITER);
                         if (nv.contains(vParts[depth - 1]) && !(vParts[0].equals(nvParts[0]))) {
                             if (nvParts.length > depth) {
                                 ObjectNode subNode = processValue(content, type, nestedField, nvParts, depth);
@@ -138,7 +132,7 @@ public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocume
                     }
                 } else {
                     String nv = nestedValue.toString();
-                    String[] nvParts = nv.split(NESTED_DELIMITER);
+                    String[] nvParts = strip(nv).split(NESTED_DELIMITER);
                     if (nvParts.length > depth) {
                         ObjectNode subNode = processValue(content, type, nestedField, nvParts, depth);
                         node.set(name, subNode);
@@ -150,6 +144,13 @@ public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocume
                 }
             }
         }
+    }
+
+    private String strip(String value) {
+        if (value.startsWith("[") && value.endsWith("]")) {
+            return value.substring(1, value.length() - 1);
+        }
+        return value;
     }
 
 }

@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <span><a href="display/{{collection}}/{{id}}">{{title}}</a></span>
+  <span><a href="display/{{id}}">{{title}}</a></span>
 </div>
 <div>
   <div>
@@ -27,7 +27,7 @@
   <div>
     <ul>
       {{#each awardedBy}}
-      <li><span><a href="display/organizations/{{id}}">{{label}}</a></span></li>
+      <li><span><a href="display/{{id}}">{{label}}</a></span></li>
       {{/each}}
     </ul>
   </div>
@@ -40,7 +40,7 @@
     <ul>
       {{#each contributors}}
       <li>
-        <a href="display/persons/{{id}}">{{label}}</a>
+        <a href="display/{{id}}">{{label}}</a>
         <span class="badge badge-light">{{formalize role}}</span>
       </li>
       {{/each}}

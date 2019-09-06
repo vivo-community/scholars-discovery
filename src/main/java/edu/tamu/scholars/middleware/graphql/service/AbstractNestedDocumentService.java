@@ -211,7 +211,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     public DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
         FacetPage<ND> facetPage = search(query, facets, filters, boosts, page, fields);
-        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
+        return DiscoveryFacetPage.from(facetPage, facets);
     }
 
     public List<Composite> getComposites() {

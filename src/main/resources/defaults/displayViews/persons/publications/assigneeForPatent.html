@@ -1,11 +1,11 @@
 <div class="mb-2">
   <ul class="list-unstyled ml-2 mr-2 mb-0">
-  {{#each assigneeForPatent}}
+    {{#each assigneeForPatent}}
     <li class="mb-2">
-      <a href="display/collections/{{id}}">{{label}}</a>
+      <a href="display/{{id}}">{{label}}</a>
       <span class="badge badge-light">{{formalize type}}</span>
       <span class="badge badge-light">{{toYear date}}</span>
     </li>
-  {{/each}}
+    {{/each}}
   </ul>
 </div>
