@@ -39,7 +39,7 @@ public class Concept extends AbstractNestedDocument {
 
   private List<AwardOrHonorFor> awardOrHonorFor;
 
-  private AwardConferredBy awardConferredBy;
+  private List<AwardConferredBy> awardConferredBy;
 
   private List<Receipt> receipts;
 
@@ -59,7 +59,7 @@ public class Concept extends AbstractNestedDocument {
 
   private String thumbnail;
 
-  private String awardConferredByPreferredLabel;
+  private List<String> awardConferredByPreferredLabel;
 
   private String yearAwarded;
 
@@ -104,11 +104,11 @@ public class Concept extends AbstractNestedDocument {
     this.awardOrHonorFor = awardOrHonorFor;
   }
 
-  public AwardConferredBy getAwardConferredBy() {
+  public List<AwardConferredBy> getAwardConferredBy() {
     return awardConferredBy;
   }
 
-  public void setAwardConferredBy(AwardConferredBy awardConferredBy) {
+  public void setAwardConferredBy(List<AwardConferredBy> awardConferredBy) {
     this.awardConferredBy = awardConferredBy;
   }
 
@@ -184,11 +184,11 @@ public class Concept extends AbstractNestedDocument {
     this.thumbnail = thumbnail;
   }
 
-  public String getAwardConferredByPreferredLabel() {
+  public List<String> getAwardConferredByPreferredLabel() {
     return awardConferredByPreferredLabel;
   }
 
-  public void setAwardConferredByPreferredLabel(String awardConferredByPreferredLabel) {
+  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
     this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
   }
 

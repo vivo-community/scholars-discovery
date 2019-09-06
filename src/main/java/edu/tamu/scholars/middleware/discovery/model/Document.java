@@ -70,8 +70,8 @@ public class Document extends AbstractSolrDocument {
 
     @NestedObject
     @Indexed(type = "nested_string")
-    @PropertySource(template = "document/publicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
-    private String publicationVenueFor;
+    @PropertySource(template = "document/hasPublicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private String hasPublicationVenueFor;
 
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "etdChairedByEmail", key = "email"), @Reference(value = "etdChairedByOrganization", key = "organization") })
@@ -545,12 +545,12 @@ public class Document extends AbstractSolrDocument {
         this.publicationVenueType = publicationVenueType;
     }
 
-    public String getPublicationVenueFor() {
-        return publicationVenueFor;
+    public String getHasPublicationVenueFor() {
+        return hasPublicationVenueFor;
     }
 
-    public void setPublicationVenueFor(String publicationVenueFor) {
-        this.publicationVenueFor = publicationVenueFor;
+    public void setHasPublicationVenueFor(String hasPublicationVenueFor) {
+        this.hasPublicationVenueFor = hasPublicationVenueFor;
     }
 
     public List<String> getEtdChairedBy() {

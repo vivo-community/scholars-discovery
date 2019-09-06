@@ -79,15 +79,15 @@ public class Concept extends AbstractSolrDocument {
     @Indexed(type = "nested_string", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
     @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private String awardConferredBy;
+    private List<String> awardConferredBy;
 
     @Indexed(type = "nested_string")
     @PropertySource(template = "concept/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private String awardConferredByType;
+    private List<String> awardConferredByType;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
-    private String awardConferredByPreferredLabel;
+    private List<String> awardConferredByPreferredLabel;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -238,27 +238,27 @@ public class Concept extends AbstractSolrDocument {
         this.awardOrHonorForType = awardOrHonorForType;
     }
 
-    public String getAwardConferredBy() {
+    public List<String> getAwardConferredBy() {
         return awardConferredBy;
     }
 
-    public void setAwardConferredBy(String awardConferredBy) {
+    public void setAwardConferredBy(List<String> awardConferredBy) {
         this.awardConferredBy = awardConferredBy;
     }
 
-    public String getAwardConferredByType() {
+    public List<String> getAwardConferredByType() {
         return awardConferredByType;
     }
 
-    public void setAwardConferredByType(String awardConferredByType) {
+    public void setAwardConferredByType(List<String> awardConferredByType) {
         this.awardConferredByType = awardConferredByType;
     }
 
-    public String getAwardConferredByPreferredLabel() {
+    public List<String> getAwardConferredByPreferredLabel() {
         return awardConferredByPreferredLabel;
     }
 
-    public void setAwardConferredByPreferredLabel(String awardConferredByPreferredLabel) {
+    public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
         this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
     }
 

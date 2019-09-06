@@ -2,7 +2,7 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.document.Website;
 import edu.tamu.scholars.middleware.graphql.model.document.PublicationVenue;
-import edu.tamu.scholars.middleware.graphql.model.document.PublicationVenueFor;
+import edu.tamu.scholars.middleware.graphql.model.document.HasPublicationVenueFor;
 import edu.tamu.scholars.middleware.graphql.model.document.EtdChairedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Author;
 import edu.tamu.scholars.middleware.graphql.model.document.Editor;
@@ -56,7 +56,7 @@ public class Document extends AbstractNestedDocument {
 
   private PublicationVenue publicationVenue;
 
-  private PublicationVenueFor publicationVenueFor;
+  private HasPublicationVenueFor hasPublicationVenueFor;
 
   private List<EtdChairedBy> etdChairedBy;
 
@@ -218,12 +218,12 @@ public class Document extends AbstractNestedDocument {
     this.publicationVenue = publicationVenue;
   }
 
-  public PublicationVenueFor getPublicationVenueFor() {
-    return publicationVenueFor;
+  public HasPublicationVenueFor getHasPublicationVenueFor() {
+    return hasPublicationVenueFor;
   }
 
-  public void setPublicationVenueFor(PublicationVenueFor publicationVenueFor) {
-    this.publicationVenueFor = publicationVenueFor;
+  public void setHasPublicationVenueFor(HasPublicationVenueFor hasPublicationVenueFor) {
+    this.hasPublicationVenueFor = hasPublicationVenueFor;
   }
 
   public List<EtdChairedBy> getEtdChairedBy() {

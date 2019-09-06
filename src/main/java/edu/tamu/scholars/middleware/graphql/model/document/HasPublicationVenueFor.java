@@ -13,15 +13,15 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "DocumentPublicationVenueFor"
+    name = "DocumentHasPublicationVenueFor"
 )
 @JsonInclude(NON_EMPTY)
-public class PublicationVenueFor extends AbstractNestedDocument {
-  private static final long serialVersionUID = -239776647L;
+public class HasPublicationVenueFor extends AbstractNestedDocument {
+  private static final long serialVersionUID = 1725894137L;
 
   private String label;
 
-  public PublicationVenueFor() {
+  public HasPublicationVenueFor() {
     super();
   }
 

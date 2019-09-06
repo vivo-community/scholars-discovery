@@ -5,6 +5,7 @@ import static edu.tamu.scholars.middleware.discovery.utility.ArgumentUtility.get
 import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
 import static org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,11 +56,15 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
 
         FacetPagedResource(PagedResources<R> pagedResources, FacetPage<S> facetPage, HttpServletRequest request) {
             super(pagedResources.getContent(), pagedResources.getMetadata(), pagedResources.getLinks());
-            Class<?> type = solrDocumentRepos.stream().filter(repo -> {
+            Optional<?> type = solrDocumentRepos.stream().filter(repo -> {
                 Optional<CollectionSource> collectionSource = Optional.ofNullable(repo.type().getAnnotation(CollectionSource.class));
                 return collectionSource.isPresent() && request.getRequestURI().substring(request.getContextPath().length() + 1).startsWith(collectionSource.get().name());
-            }).map(repo -> repo.type()).findAny().get();
-            this.facets = buildFacets(facetPage, getFacetArguments(request), type);
+            }).map(repo -> repo.type()).findAny();
+            if (type.isPresent()) {
+                this.facets = buildFacets(facetPage, getFacetArguments(request), (Class<?>) type.get());
+            } else {
+                this.facets = new ArrayList<Facet>();
+            }
         }
 
         public List<Facet> getFacets() {

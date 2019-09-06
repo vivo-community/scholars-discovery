@@ -98,6 +98,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> i
                 if (documents.size() > 0) {
                     batchSave(documents);
                 }
+                solrTemplate.commit(collection());
             } else {
                 logger.warn(String.format("No %s found!", name()));
             }
@@ -111,6 +112,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> i
         }
         try {
             solrTemplate.saveBean(collection(), createDocument(subject));
+            solrTemplate.commit(collection());
         } catch (DataAccessResourceFailureException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             logger.error(String.format("Unable to index %s: %s", name(), parse(subject)));
             logger.error(String.format("Error: %s", e.getMessage()));
