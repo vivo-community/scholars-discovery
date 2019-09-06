@@ -295,7 +295,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         ObjectNode node = mapper.valueToTree(document);
         Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
         if (composite.isPresent()) {
-            composite.get().getReferences().stream().forEach(reference -> {
+            composite.get().getReferences().parallelStream().forEach(reference -> {
                 if (node.has(reference.getName()) && dereference(reference, fields)) {
                     JsonNode referenceNode = node.get(reference.getName());
                     List<String> ids = new ArrayList<String>();

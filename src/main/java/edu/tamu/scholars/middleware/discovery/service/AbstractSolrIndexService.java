@@ -27,8 +27,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.mapping.Indexed;
-import org.springframework.data.solr.repository.SolrCrudRepository;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
@@ -36,7 +37,7 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
 import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.service.Triplestore;
 
-public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R extends SolrCrudRepository<D, String>> implements SolrIndexService {
+public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> implements SolrIndexService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -58,8 +59,9 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
     private Triplestore triplestore;
 
     @Autowired
-    private R repo;
+    private SolrTemplate solrTemplate;
 
+    @Override
     public void index() {
         CollectionSource source = type().getAnnotation(CollectionSource.class);
         String query = templateService.templateSparql(COLLECTION_SPARQL_TEMPLATE, source.predicate());
@@ -102,12 +104,13 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         }
     }
 
+    @Override
     public void index(String subject) {
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Indexing %s %s", name(), subject));
         }
         try {
-            repo.save(createDocument(subject));
+            solrTemplate.saveBean(collection(), createDocument(subject));
         } catch (DataAccessResourceFailureException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             logger.error(String.format("Unable to index %s: %s", name(), parse(subject)));
             logger.error(String.format("Error: %s", e.getMessage()));
@@ -123,7 +126,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
 
     private void batchSave(List<D> documents) {
         try {
-            repo.saveAll(documents);
+            solrTemplate.saveBeans(collection(), documents);
             logger.info(String.format("Completed %s batch of %s", name(), documents.size()));
         } catch (Exception e1) {
             logger.warn("Failed to batch save. Attempting individually.");
@@ -132,7 +135,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
             }
             documents.forEach(document -> {
                 try {
-                    repo.save(document);
+                    solrTemplate.saveBean(collection(), document);
                 } catch (Exception e2) {
                     logger.warn(String.format("Failed to save document with id %s", document.getId()));
                     if (logger.isDebugEnabled()) {
@@ -144,8 +147,14 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument, R
         documents.clear();
     }
 
+    @Override
     public String name() {
         return type().getSimpleName();
+    }
+
+    @Override
+    public String collection() {
+        return type().getAnnotation(SolrDocument.class).collection();
     }
 
     private D createDocument(String subject) throws InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
