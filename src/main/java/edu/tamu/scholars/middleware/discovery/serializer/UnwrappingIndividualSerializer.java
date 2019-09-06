@@ -6,13 +6,13 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_D
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -23,50 +23,40 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 
-public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends AbstractSolrDocument> extends JsonSerializer<D> {
+public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocumentSerializer<Individual> {
 
-    protected final NameTransformer nameTransformer;
-
-    public AbstractUnwrappingSolrDocumentSerializer(final NameTransformer nameTransformer) {
-        this.nameTransformer = nameTransformer;
+    public UnwrappingIndividualSerializer(NameTransformer nameTransformer) {
+        super(nameTransformer);
     }
 
     @Override
-    public boolean isUnwrappingSerializer() {
-        return true;
-    }
+    @SuppressWarnings("unchecked")
+    public void serialize(Individual document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
 
-    @Override
-    public void serialize(D document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+        Class<?> type = DiscoveryUtility.getDiscoveryDocumentTypeByName(document.getClazz());
+
+        Map<String, List<String>> content = document.getContent();
 
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
 
-        for (Field field : FieldUtils.getFieldsListWithAnnotation(document.getClass(), PropertySource.class)) {
-            field.setAccessible(true);
-
-            Object value = null;
-            try {
-                value = field.get(document);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
+        for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
+            Object value = content.get(field.getName());
             if (value != null) {
                 JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
                 String name = jsonProperty != null ? jsonProperty.value() : field.getName();
                 NestedObject nestedObject = field.getAnnotation(NestedObject.class);
                 if (nestedObject != null) {
                     if (nestedObject.root()) {
-                        if (List.class.isAssignableFrom(value.getClass())) {
-                            @SuppressWarnings("unchecked")
+                        if (List.class.isAssignableFrom(field.getType())) {
                             List<String> values = (List<String>) value;
                             ArrayNode array = JsonNodeFactory.instance.arrayNode();
                             for (String v : values) {
                                 String[] vParts = v.split(NESTED_DELIMITER);
                                 if (vParts.length > 1) {
-                                    array.add(processValue(document, field, vParts, 1));
+                                    array.add(processValue(content, type, field, vParts, 1));
                                 }
                             }
                             if (array.size() > 0) {
@@ -76,49 +66,49 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                             String v = value.toString();
                             String[] vParts = v.split(NESTED_DELIMITER);
                             if (vParts.length > 1) {
-                                ObjectNode node = processValue(document, field, vParts, 1);
+                                ObjectNode node = processValue(content, type, field, vParts, 1);
                                 jsonGenerator.writeObjectField(nameTransformer.transform(name), node);
                             }
                         }
                     }
                 } else {
                     if (!value.toString().contains(NESTED_DELIMITER)) {
-                        jsonGenerator.writeObjectField(nameTransformer.transform(name), value);
+                        if (List.class.isAssignableFrom(field.getType())) {
+                            jsonGenerator.writeObjectField(nameTransformer.transform(name), value);
+                        } else {
+                            List<String> values = (List<String>) value;
+                            jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
+                        }
                     }
                 }
             }
         }
     }
 
-    private ObjectNode processValue(D document, Field field, String[] vParts, int index) {
+    private ObjectNode processValue(Map<String, List<String>> content, Class<?> type, Field field, String[] vParts, int index) {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         NestedObject nestedObject = field.getAnnotation(NestedObject.class);
         if (nestedObject != null) {
             node.put(ID, vParts[index]);
             node.put(nestedObject.label(), vParts[0]);
-            processNestedObject(document, nestedObject, node, vParts, index + 1);
+            processNestedObject(content, type, nestedObject, node, vParts, index + 1);
         }
         return node;
     }
 
-    private void processNestedObject(D document, NestedObject nestedObject, ObjectNode node, String[] vParts, int depth) {
+    private void processNestedObject(Map<String, List<String>> content, Class<?> type, NestedObject nestedObject, ObjectNode node, String[] vParts, int depth) {
         for (Reference reference : nestedObject.properties()) {
             String ref = reference.value();
 
-            Field nestedField = FieldUtils.getField(document.getClass(), ref, true);
+            Field nestedField = FieldUtils.getField(type, ref, true);
 
             JsonProperty jsonProperty = nestedField.getAnnotation(JsonProperty.class);
             String name = jsonProperty != null ? jsonProperty.value() : reference.key();
 
-            Object nestedValue = null;
-            try {
-                nestedValue = nestedField.get(document);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            Object nestedValue = content.get(nestedField.getName());
 
             if (nestedValue != null) {
-                if (List.class.isAssignableFrom(nestedValue.getClass())) {
+                if (List.class.isAssignableFrom(nestedField.getType())) {
                     @SuppressWarnings("unchecked")
                     List<String> nestedValues = (List<String>) nestedValue;
                     ArrayNode array = JsonNodeFactory.instance.arrayNode();
@@ -127,7 +117,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                         String[] nvParts = nv.split(NESTED_DELIMITER);
                         if (nv.contains(vParts[depth - 1]) && !(vParts[0].equals(nvParts[0]))) {
                             if (nvParts.length > depth) {
-                                ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
+                                ObjectNode subNode = processValue(content, type, nestedField, nvParts, depth);
                                 array.add(subNode);
                             } else {
                                 if (nvParts[0] != null) {
@@ -150,7 +140,7 @@ public abstract class AbstractUnwrappingSolrDocumentSerializer<D extends Abstrac
                     String nv = nestedValue.toString();
                     String[] nvParts = nv.split(NESTED_DELIMITER);
                     if (nvParts.length > depth) {
-                        ObjectNode subNode = processValue(document, nestedField, nvParts, depth);
+                        ObjectNode subNode = processValue(content, type, nestedField, nvParts, depth);
                         node.set(name, subNode);
                     } else {
                         if (nvParts[0] != null) {

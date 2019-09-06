@@ -84,7 +84,8 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         FacetOptions facetOptions = new FacetOptions();
 
         facets.forEach(facet -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
+            // FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getPath(type()));
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getField());
 
             fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
 
@@ -175,14 +176,15 @@ public abstract class AbstractSolrDocumentRepoImpl<D extends AbstractSolrDocumen
         return simpleQuery;
     }
 
-    private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
+    protected List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
         List<SimpleFilterQuery> filterQueries = filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
         filterQueries.add(new SimpleFilterQuery(Criteria.where(CLASS_FIELD).is(type().getSimpleName())));
         return filterQueries;
     }
 
-    private Criteria buildCriteria(FilterArg filter) {
-        String field = filter.getPath(type());
+    protected Criteria buildCriteria(FilterArg filter) {
+        // String field = filter.getPath(type());
+        String field = filter.getField();
         String value = filter.getValue();
         Criteria criteria = Criteria.where(field);
         switch (filter.getOpKey()) {

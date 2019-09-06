@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.discovery.utility;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DISCOVERY_MODEL_PACKAGE;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DELIMETER_REGEX;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -114,42 +113,42 @@ public class DiscoveryUtility {
         throw new RuntimeException("Unable to find class for " + name);
     }
 
-    public static String findProperty(String type, String path) {
-        try {
-            Class<?> documentType = Class.forName(type);
-            return findProperty(documentType, path);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new RuntimeException(String.format("Unable to find class %s", type), e);
-        }
-    }
+//    public static String findProperty(String type, String path) {
+//        try {
+//            Class<?> documentType = Class.forName(type);
+//            return findProperty(documentType, path);
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException(String.format("Unable to find class %s", type), e);
+//        }
+//    }
 
-    public static String findProperty(Class<?> type, String path) {
-        List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
-        return findProperty(type, properties);
-    }
+//    public static String findProperty(Class<?> type, String path) {
+//        List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
+//        return findProperty(type, properties);
+//    }
 
-    public static String findProperty(Class<?> type, List<String> properties) {
-        String property = properties.get(0);
-        Field field = FieldUtils.getField(type, property, true);
-        properties.remove(0);
-        if (properties.isEmpty()) {
-            return field.getName();
-        }
-        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
-        String referenceProperty = properties.get(0);
-        if (nestedObject != null) {
-            for (Reference reference : nestedObject.properties()) {
-                if (reference.key().equals(referenceProperty)) {
-                    properties.set(0, reference.value());
-                    return findProperty(type, properties);
-                }
-            }
-            throw new RuntimeException(String.format("Unable to find reference property %s of class %s", referenceProperty, type.getSimpleName()));
-        } else {
-            throw new RuntimeException(String.format("No nested object annotation found on property %s of class %s", property, type.getSimpleName()));
-        }
-    }
+//    public static String findProperty(Class<?> type, List<String> properties) {
+//        String property = properties.get(0);
+//        Field field = FieldUtils.getField(type, property, true);
+//        properties.remove(0);
+//        if (properties.isEmpty()) {
+//            return field.getName();
+//        }
+//        NestedObject nestedObject = field.getAnnotation(NestedObject.class);
+//        String referenceProperty = properties.get(0);
+//        if (nestedObject != null) {
+//            for (Reference reference : nestedObject.properties()) {
+//                if (reference.key().equals(referenceProperty)) {
+//                    properties.set(0, reference.value());
+//                    return findProperty(type, properties);
+//                }
+//            }
+//            throw new RuntimeException(String.format("Unable to find reference property %s of class %s", referenceProperty, type.getSimpleName()));
+//        } else {
+//            throw new RuntimeException(String.format("No nested object annotation found on property %s of class %s", property, type.getSimpleName()));
+//        }
+//    }
 
     public static Field findField(Class<?> clazz, String[] path) throws InvalidValuePathException {
         if (path.length >= 1) {

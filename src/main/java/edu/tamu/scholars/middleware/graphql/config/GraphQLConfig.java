@@ -1,7 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.config;
 
-import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
-
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -242,7 +240,8 @@ public class GraphQLConfig {
             List<Sort.Order> orders = new ArrayList<>();
             for (Map<String, Object> order : (List<Map<String, Object>>) sort.get("orders")) {
                 Sort.Direction direction = (Sort.Direction) order.get("direction");
-                String property = findProperty(type, (String) order.get("property"));
+                // String property = findProperty(type, (String) order.get("property"));
+                String property = (String) order.get("property");
                 orders.add(new Sort.Order(direction, property));
             }
             return Sort.by(orders);

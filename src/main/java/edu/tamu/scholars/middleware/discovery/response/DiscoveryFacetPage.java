@@ -41,7 +41,8 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
                 String field = facetFieldEntryPage.getContent().get(0).getField().getName();
 
-                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(field)).findAny();
+                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getField().equals(field)).findAny();
+                // Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(field)).findAny();
 
                 if (facetArgument.isPresent()) {
 
