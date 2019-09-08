@@ -274,7 +274,7 @@
     </fieldType>
 
     <!-- Scholars date type -->
-    <fieldType name="date" class="solr.TextField" sortMissingLast="true" multiValued="true">
+    <fieldType name="date" class="solr.TextField" sortMissingLast="true">
       <analyzer type="index">
         <tokenizer class="solr.KeywordTokenizerFactory"/>
       </analyzer>
