@@ -22,7 +22,7 @@ public class OrganizationControllerTest extends AbstractSolrDocumentControllerTe
 
     @Override
     protected String getPath() {
-        return "/individuals";
+        return "/individual";
     }
 
 }

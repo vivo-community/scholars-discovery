@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.export.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -44,9 +43,8 @@ public abstract class AbstractSolrDocumentExportController implements ResourcePr
         List<ExportArg> export
     ) throws UnknownExporterTypeException {
         Exporter exporter = exporterRegistry.getExporter(type);
-        Optional<String> clazz = filters.stream().filter(filter -> filter.getField().equals("class")).map(filter -> filter.getValue()).findAny();
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(clazz.isPresent() ? clazz.get() : "individuals"))
+            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition("individual"))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
             .body(exporter.streamSolrResponse(repo.stream(query, filters, boosts, sort), export));
     }

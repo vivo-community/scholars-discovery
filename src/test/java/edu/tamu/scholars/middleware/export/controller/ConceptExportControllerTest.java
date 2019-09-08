@@ -22,7 +22,7 @@ public class ConceptExportControllerTest extends AbstractSolrDocumentExportContr
 
     @Override
     protected String getPath() {
-        return "/individuals";
+        return "/individual";
     }
 
 }

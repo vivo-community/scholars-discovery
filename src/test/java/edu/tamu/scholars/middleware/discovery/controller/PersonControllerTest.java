@@ -22,7 +22,7 @@ public class PersonControllerTest extends AbstractSolrDocumentControllerTest<Per
 
     @Override
     protected String getPath() {
-        return "/individuals";
+        return "/individual";
     }
 
 }

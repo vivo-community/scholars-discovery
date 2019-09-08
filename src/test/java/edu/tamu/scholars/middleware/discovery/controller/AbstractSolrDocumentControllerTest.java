@@ -104,7 +104,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     @Test
     public void testSearchSolrDocumentsFacetPage() throws Exception {
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/facet")
+        mockMvc.perform(get(getPath() + "/search/faceted")
             .param("query", "*")
             .param("facets", "type")
             .param("type.limit", "5")
@@ -121,7 +121,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                 .andExpect(jsonPath("page.number", equalTo(1)))
                 .andDo(
                     document(
-                        getPath().substring(1) + "/facet-search",
+                        getPath().substring(1) + "/faceted-search",
                         requestParameters(
                             parameterWithName("query").description("The search query."),
                             parameterWithName("facets").description("The facet fields."),

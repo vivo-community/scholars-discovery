@@ -107,9 +107,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         source.registerCorsConfiguration("/displayViews/search/findByName", embedConfig);
 
-        source.registerCorsConfiguration("/individuals/{id}", embedConfig);
+        source.registerCorsConfiguration("/individual/{id}", embedConfig);
 
-        source.registerCorsConfiguration("/individuals/search/findByIdIn", embedConfig);
+        source.registerCorsConfiguration("/individual/search/findByIdIn", embedConfig);
 
         CorsConfiguration primaryConfig = new CorsConfiguration();
         primaryConfig.setAllowCredentials(true);
@@ -202,7 +202,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
-                        "/individuals", "/individuals/{id}", "/individuals/{id}/export", "/individuals/search/findByIdIn", "/individuals/search/facet", "/individuals/search/export", "/individuals/search/count", "/individuals/search/recently-updated"
+                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/faceted", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,

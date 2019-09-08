@@ -24,7 +24,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 
 @RepositoryRestController
-@RequestMapping("/individuals")
+@RequestMapping("/individual")
 public class IndividualController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class IndividualController {
     @Autowired
     private FacetPagedResourcesAssembler<Individual> pagedResourcesAssembler;
 
-    @GetMapping("/search/facet")
+    @GetMapping("/search/faceted")
     // @formatter:off
     public ResponseEntity<PagedResources<IndividualResource>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,

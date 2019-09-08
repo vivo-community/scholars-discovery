@@ -4,7 +4,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 
-@RepositoryRestResource
+@RepositoryRestResource(path = "individual", collectionResourceRel = "individual")
 public interface IndividualRepo extends SolrDocumentRepo<Individual> {
 
 }
