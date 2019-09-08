@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Organization;
-import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 
-public class OrganizationControllerTest extends AbstractSolrDocumentControllerTest<Organization, OrganizationRepo> {
+public class OrganizationControllerTest extends AbstractSolrDocumentControllerTest<Organization> {
 
     @Value("classpath:mock/discovery/organizations")
     private Resource mocksDirectory;
@@ -23,7 +22,7 @@ public class OrganizationControllerTest extends AbstractSolrDocumentControllerTe
 
     @Override
     protected String getPath() {
-        return "/organizations";
+        return "/individuals";
     }
 
 }

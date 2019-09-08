@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.graphql.model.concept;
+package edu.tamu.scholars.middleware.graphql.model.common;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -13,11 +13,11 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "ConceptWebsite"
+    name = "CommonWebsite"
 )
 @JsonInclude(NON_EMPTY)
 public class Website extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1000201873L;
+  private static final long serialVersionUID = -967714370L;
 
   private String label;
 

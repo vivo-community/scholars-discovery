@@ -36,7 +36,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.ExportFieldView;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
@@ -45,7 +44,7 @@ import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractSolrDocumentExportControllerTest<D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> extends AbstractSolrDocumentIntegrationTest<D, R> {
+public abstract class AbstractSolrDocumentExportControllerTest<D extends AbstractSolrDocument> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Autowired
     private MockMvc mockMvc;

@@ -5,7 +5,7 @@ import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Concept;
 
-public class ConceptRepoTest extends AbstractSolrDocumentRepoTest<Concept, ConceptRepo> {
+public class ConceptRepoTest extends AbstractSolrDocumentRepoTest<Concept> {
 
     @Value("classpath:mock/discovery/concepts")
     private Resource mocksDirectory;

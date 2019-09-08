@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.person.Website;
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
 import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
@@ -32,8 +31,9 @@ import edu.tamu.scholars.middleware.graphql.model.person.ProfessionalServiceActi
 import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunityServiceActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
-import edu.tamu.scholars.middleware.graphql.model.person.SameAs;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -54,8 +54,6 @@ import java.util.List;
 @JsonInclude(NON_EMPTY)
 public class Person extends AbstractNestedDocument {
   private static final long serialVersionUID = -3444805L;
-
-  private List<Website> websites;
 
   private List<Relationship> positions;
 
@@ -119,17 +117,13 @@ public class Person extends AbstractNestedDocument {
 
   private List<HasExpertiseInTechnique> hasExpertiseInTechnique;
 
-  private List<SameAs> sameAs;
-
   private List<EtdChairOf> etdChairOf;
 
+  private List<Website> websites;
+
+  private List<SameAs> sameAs;
+
   private String name;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   private String primaryEmail;
 
@@ -203,23 +197,21 @@ public class Person extends AbstractNestedDocument {
 
   private String fax;
 
-  private String modTime;
-
   private String featuredProfileDisplay;
+
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
+  private String modTime;
 
   @JsonProperty("class")
   private String clazz;
 
   public Person() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public List<Relationship> getPositions() {
@@ -475,14 +467,6 @@ public class Person extends AbstractNestedDocument {
     this.hasExpertiseInTechnique = hasExpertiseInTechnique;
   }
 
-  public List<SameAs> getSameAs() {
-    return sameAs;
-  }
-
-  public void setSameAs(List<SameAs> sameAs) {
-    this.sameAs = sameAs;
-  }
-
   public List<EtdChairOf> getEtdChairOf() {
     return etdChairOf;
   }
@@ -491,36 +475,28 @@ public class Person extends AbstractNestedDocument {
     this.etdChairOf = etdChairOf;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
+  public List<SameAs> getSameAs() {
+    return sameAs;
+  }
+
+  public void setSameAs(List<SameAs> sameAs) {
+    this.sameAs = sameAs;
+  }
+
   public String getName() {
     return name;
   }
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getPrimaryEmail() {
@@ -811,20 +787,44 @@ public class Person extends AbstractNestedDocument {
     this.fax = fax;
   }
 
-  public String getModTime() {
-    return modTime;
-  }
-
-  public void setModTime(String modTime) {
-    this.modTime = modTime;
-  }
-
   public String getFeaturedProfileDisplay() {
     return featuredProfileDisplay;
   }
 
   public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
     this.featuredProfileDisplay = featuredProfileDisplay;
+  }
+
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
+
+  public String getModTime() {
+    return modTime;
+  }
+
+  public void setModTime(String modTime) {
+    this.modTime = modTime;
   }
 
   public String getClazz() {

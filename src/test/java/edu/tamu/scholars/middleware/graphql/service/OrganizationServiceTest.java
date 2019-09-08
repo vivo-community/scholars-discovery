@@ -6,11 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 import edu.tamu.scholars.middleware.graphql.model.Organization;
 import graphql.language.Field;
 
-public class OrganizationServiceTest extends AbstractNestedDocumentServiceTest<Organization, edu.tamu.scholars.middleware.discovery.model.Organization, OrganizationRepo, OrganizationService> {
+public class OrganizationServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.Organization, Organization, OrganizationService> {
 
     @Value("classpath:mock/discovery/organizations")
     private Resource mocksDirectory;

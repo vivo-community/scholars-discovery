@@ -107,22 +107,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         source.registerCorsConfiguration("/displayViews/search/findByName", embedConfig);
 
-        source.registerCorsConfiguration("/collections/{id}", embedConfig);
-        source.registerCorsConfiguration("/concepts/{id}", embedConfig);
-        source.registerCorsConfiguration("/documents/{id}", embedConfig);
-        source.registerCorsConfiguration("/organizations/{id}", embedConfig);
-        source.registerCorsConfiguration("/persons/{id}", embedConfig);
-        source.registerCorsConfiguration("/processes/{id}", embedConfig);
-        source.registerCorsConfiguration("/relationships/{id}", embedConfig);
         source.registerCorsConfiguration("/individuals/{id}", embedConfig);
 
-        source.registerCorsConfiguration("/collections/search/findByIdIn", embedConfig);
-        source.registerCorsConfiguration("/concepts/search/findByIdIn", embedConfig);
-        source.registerCorsConfiguration("/documents/search/findByIdIn", embedConfig);
-        source.registerCorsConfiguration("/organizations/search/findByIdIn", embedConfig);
-        source.registerCorsConfiguration("/persons/search/findByIdIn", embedConfig);
-        source.registerCorsConfiguration("/processes/search/findByIdIn", embedConfig);
-        source.registerCorsConfiguration("/relationships/search/findByIdIn", embedConfig);
         source.registerCorsConfiguration("/individuals/search/findByIdIn", embedConfig);
 
         CorsConfiguration primaryConfig = new CorsConfiguration();
@@ -216,13 +202,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
-                        "/collections", "/collections/{id}", "/collections/{id}/export", "/collections/search/findByIdIn", "/collections/search/facet", "/collections/search/export", "/collections/search/count", "/collections/search/recently-updated",
-                        "/concepts", "/concepts/{id}", "/concepts/{id}/export", "/concepts/search/findByIdIn", "/concepts/search/facet", "/concepts/search/export", "/concepts/search/count", "/concepts/search/recently-updated",
-                        "/documents", "/documents/{id}", "/documents/{id}/export", "/documents/search/findByIdIn", "/documents/search/facet", "/documents/search/export", "/documents/search/count", "/documents/search/recently-updated",
-                        "/organizations", "/organizations/{id}", "/organizations/{id}/export", "/organizations/search/findByIdIn", "/organizations/search/facet", "/organizations/search/export", "/organizations/search/count", "/organizations/search/recently-updated",
-                        "/persons", "/persons/{id}", "/persons/{id}/export", "/persons/search/findByIdIn", "/persons/search/facet", "/persons/search/export", "/persons/search/count", "/persons/search/recently-updated",
-                        "/processes", "/processes/{id}", "/processes/{id}/export", "/processes/search/findByIdIn", "/processes/search/facet", "/processes/search/export", "/processes/search/count", "/processes/search/recently-updated",
-                        "/relationships", "/relationships/{id}", "/relationships/{id}/export", "/relationships/search/findByIdIn", "/relationships/search/facet", "/relationships/search/export", "/relationships/search/count", "/relationships/search/recently-updated",
                         "/individuals", "/individuals/{id}", "/individuals/{id}/export", "/individuals/search/findByIdIn", "/individuals/search/facet", "/individuals/search/export", "/individuals/search/count", "/individuals/search/recently-updated"
                     )
                     .permitAll()

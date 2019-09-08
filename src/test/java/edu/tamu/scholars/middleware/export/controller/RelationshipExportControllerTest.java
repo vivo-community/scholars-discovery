@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Relationship;
-import edu.tamu.scholars.middleware.discovery.model.repo.RelationshipRepo;
 
-public class RelationshipExportControllerTest extends AbstractSolrDocumentExportControllerTest<Relationship, RelationshipRepo> {
+public class RelationshipExportControllerTest extends AbstractSolrDocumentExportControllerTest<Relationship> {
 
     @Value("classpath:mock/discovery/relationships")
     private Resource mocksDirectory;
@@ -23,7 +22,7 @@ public class RelationshipExportControllerTest extends AbstractSolrDocumentExport
 
     @Override
     protected String getPath() {
-        return "/relationships";
+        return "/individuals";
     }
 
 }

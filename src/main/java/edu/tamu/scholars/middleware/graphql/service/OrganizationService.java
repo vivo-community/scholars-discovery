@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.model.repo.OrganizationRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.exception.DocumentNotFoundException;
@@ -21,7 +20,7 @@ import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Service
-public class OrganizationService extends AbstractNestedDocumentService<Organization, edu.tamu.scholars.middleware.discovery.model.Organization, OrganizationRepo> {
+public class OrganizationService extends AbstractNestedDocumentService<Organization> {
 
     @Override
     @GraphQLQuery(name = "organizationExistsById")

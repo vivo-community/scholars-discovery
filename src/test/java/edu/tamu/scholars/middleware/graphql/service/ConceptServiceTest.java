@@ -6,11 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
 import edu.tamu.scholars.middleware.graphql.model.Concept;
 import graphql.language.Field;
 
-public class ConceptServiceTest extends AbstractNestedDocumentServiceTest<Concept, edu.tamu.scholars.middleware.discovery.model.Concept, ConceptRepo, ConceptService> {
+public class ConceptServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.Concept, Concept, ConceptService> {
 
     @Value("classpath:mock/discovery/concepts")
     private Resource mocksDirectory;

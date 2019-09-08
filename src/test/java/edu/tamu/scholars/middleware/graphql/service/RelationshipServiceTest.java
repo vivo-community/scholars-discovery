@@ -6,11 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-import edu.tamu.scholars.middleware.discovery.model.repo.RelationshipRepo;
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import graphql.language.Field;
 
-public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<Relationship, edu.tamu.scholars.middleware.discovery.model.Relationship, RelationshipRepo, RelationshipService> {
+public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.Relationship, Relationship, RelationshipService> {
 
     @Value("classpath:mock/discovery/relationships")
     private Resource mocksDirectory;

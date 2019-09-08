@@ -16,10 +16,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractSolrDocumentRepoTest<D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> extends AbstractSolrDocumentIntegrationTest<D, R> {
+public abstract class AbstractSolrDocumentRepoTest<D extends AbstractSolrDocument> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Test
     public void testCreate() {
@@ -31,14 +32,14 @@ public abstract class AbstractSolrDocumentRepoTest<D extends AbstractSolrDocumen
     public void testFindById() throws IOException {
         mockDocuments.forEach(mockDocument -> {
             String id = mockDocument.getId();
-            Optional<D> document = repo.findById(id);
+            Optional<Individual> document = repo.findById(id);
             assertTrue(document.isPresent());
         });
     }
 
     @Test
-    public void testDAOFindAll() throws IOException {
-        List<D> documents = StreamSupport.stream(repo.findAll().spliterator(), false).collect(Collectors.toList());
+    public void testFindAll() throws IOException {
+        List<Individual> documents = StreamSupport.stream(repo.findAll().spliterator(), false).collect(Collectors.toList());
         assertEquals(3, documents.size());
     }
 

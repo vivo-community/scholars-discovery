@@ -5,7 +5,7 @@ import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Process;
 
-public class ProcessRepoTest extends AbstractSolrDocumentRepoTest<Process, ProcessRepo> {
+public class ProcessRepoTest extends AbstractSolrDocumentRepoTest<Process> {
 
     @Value("classpath:mock/discovery/processes")
     private Resource mocksDirectory;

@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.export.exception.ExportException;
 import edu.tamu.scholars.middleware.service.TemplateService;
@@ -105,15 +106,14 @@ public class DocxExporter implements Exporter {
     }
 
     @Override
-    public <D extends AbstractSolrDocument> StreamingResponseBody streamIndividual(D document) {
-        final ObjectNode node = mapper.valueToTree(document);
+    public StreamingResponseBody streamIndividual(Individual document) {
 
-        final List<String> types = StreamSupport.stream(node.get("type").spliterator(), false).map(type -> type.asText()).collect(Collectors.toList());
+        final List<String> type = document.getType();
 
-        Optional<DisplayView> displayView = displayViewRepo.findByTypesIn(types);
+        Optional<DisplayView> displayView = displayViewRepo.findByTypesIn(type);
 
         if (!displayView.isPresent()) {
-            throw new ExportException(String.format("Could not find a display view for types: %s", String.join(", ", types)));
+            throw new ExportException(String.format("Could not find a display view for types: %s", String.join(", ", type)));
         }
 
         Optional<ExportView> exportView = Optional.ofNullable(displayView.get().getExportView());
@@ -131,7 +131,7 @@ public class DocxExporter implements Exporter {
                 pkg.getMainDocumentPart().addTargetPart(ndp);
                 ndp.unmarshalDefaultNumbering();
 
-                ObjectNode json = processDocument(node, exportView.get());
+                ObjectNode json = processDocument(document, exportView.get());
 
                 String contentHtml = handlebarsService.template(exportView.get().getContentTemplate(), json);
 
@@ -151,7 +151,10 @@ public class DocxExporter implements Exporter {
         };
     }
 
-    private <D extends AbstractSolrDocument> ObjectNode processDocument(ObjectNode node, ExportView view) {
+    private <D extends AbstractSolrDocument> ObjectNode processDocument(Individual document, ExportView view) {
+        final ObjectNode node = mapper.valueToTree(document);
+        node.put("vivoUrl", vivoUrl);
+        node.put("uiUrl", uiUrl);
         checkRequireFields(node, view.getRequiredFields());
         fetchLazyReferences(node, view.getLazyReferences());
         view.getFieldViews().forEach(fieldView -> {
@@ -159,9 +162,15 @@ public class DocxExporter implements Exporter {
             sort(node, fieldView);
             limit(node, fieldView);
         });
-        node.put("vivoUrl", vivoUrl);
-        node.put("uiUrl", uiUrl);
         return node;
+    }
+
+    private void checkRequireFields(ObjectNode node, List<String> requiredFields) {
+        for (String field : requiredFields) {
+            if (!node.hasNonNull(field)) {
+                throw new ExportException(String.format("Required field %s not found", field));
+            }
+        }
     }
 
     private void fetchLazyReferences(ObjectNode node, List<String> lazyReferences) {
@@ -176,14 +185,6 @@ public class DocxExporter implements Exporter {
             ArrayNode references = node.putArray(lazyReference);
             references.addAll((ArrayNode) mapper.valueToTree(fetchLazyReference(ids)));
         });
-    }
-
-    private void checkRequireFields(ObjectNode node, List<String> requiredFields) {
-        for (String field : requiredFields) {
-            if (!node.hasNonNull(field)) {
-                throw new ExportException(String.format("Required field %s not found", field));
-            }
-        }
     }
 
     private List<AbstractSolrDocument> fetchLazyReference(List<String> ids) {

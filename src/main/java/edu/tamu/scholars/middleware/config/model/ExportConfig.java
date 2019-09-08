@@ -11,8 +11,6 @@ public class ExportConfig {
 
     private String individualBaseUri = "http://localhost:4200/display";
 
-    private boolean includeCollection = true;
-
     public String getIndividualKey() {
         return individualKey;
     }
@@ -27,14 +25,6 @@ public class ExportConfig {
 
     public void setIndividualBaseUri(String individualBaseUri) {
         this.individualBaseUri = individualBaseUri;
-    }
-
-    public boolean isIncludeCollection() {
-        return includeCollection;
-    }
-
-    public void setIncludeCollection(boolean includeCollection) {
-        this.includeCollection = includeCollection;
     }
 
 }

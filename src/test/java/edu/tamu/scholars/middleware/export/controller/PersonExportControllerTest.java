@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Person;
-import edu.tamu.scholars.middleware.discovery.model.repo.PersonRepo;
 
-public class PersonExportControllerTest extends AbstractSolrDocumentExportControllerTest<Person, PersonRepo> {
+public class PersonExportControllerTest extends AbstractSolrDocumentExportControllerTest<Person> {
 
     @Value("classpath:mock/discovery/persons")
     private Resource mocksDirectory;
@@ -23,7 +22,7 @@ public class PersonExportControllerTest extends AbstractSolrDocumentExportContro
 
     @Override
     protected String getPath() {
-        return "/persons";
+        return "/individuals";
     }
 
 }

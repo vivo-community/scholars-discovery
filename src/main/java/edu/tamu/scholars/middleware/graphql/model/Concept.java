@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.concept.Website;
 import edu.tamu.scholars.middleware.graphql.model.concept.AssociatedDepartment;
 import edu.tamu.scholars.middleware.graphql.model.concept.ResearchAreaOf;
 import edu.tamu.scholars.middleware.graphql.model.concept.AwardOrHonorFor;
@@ -9,7 +8,8 @@ import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
-import edu.tamu.scholars.middleware.graphql.model.concept.SameAs;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -31,8 +31,6 @@ import java.util.List;
 public class Concept extends AbstractNestedDocument {
   private static final long serialVersionUID = 1522676418L;
 
-  private List<Website> websites;
-
   private List<AssociatedDepartment> associatedDepartments;
 
   private List<ResearchAreaOf> researchAreaOf;
@@ -49,19 +47,21 @@ public class Concept extends AbstractNestedDocument {
 
   private List<RelatedConcept> relatedConcepts;
 
+  private List<Website> websites;
+
   private List<SameAs> sameAs;
 
   private String name;
+
+  private List<String> awardConferredByPreferredLabel;
+
+  private String yearAwarded;
 
   private List<String> type;
 
   private String image;
 
   private String thumbnail;
-
-  private List<String> awardConferredByPreferredLabel;
-
-  private String yearAwarded;
 
   private String modTime;
 
@@ -70,14 +70,6 @@ public class Concept extends AbstractNestedDocument {
 
   public Concept() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public List<AssociatedDepartment> getAssociatedDepartments() {
@@ -144,6 +136,14 @@ public class Concept extends AbstractNestedDocument {
     this.relatedConcepts = relatedConcepts;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -158,6 +158,22 @@ public class Concept extends AbstractNestedDocument {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public List<String> getAwardConferredByPreferredLabel() {
+    return awardConferredByPreferredLabel;
+  }
+
+  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
+    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+  }
+
+  public String getYearAwarded() {
+    return yearAwarded;
+  }
+
+  public void setYearAwarded(String yearAwarded) {
+    this.yearAwarded = yearAwarded;
   }
 
   public List<String> getType() {
@@ -182,22 +198,6 @@ public class Concept extends AbstractNestedDocument {
 
   public void setThumbnail(String thumbnail) {
     this.thumbnail = thumbnail;
-  }
-
-  public List<String> getAwardConferredByPreferredLabel() {
-    return awardConferredByPreferredLabel;
-  }
-
-  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
-    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
-  }
-
-  public String getYearAwarded() {
-    return yearAwarded;
-  }
-
-  public void setYearAwarded(String yearAwarded) {
-    this.yearAwarded = yearAwarded;
   }
 
   public String getModTime() {

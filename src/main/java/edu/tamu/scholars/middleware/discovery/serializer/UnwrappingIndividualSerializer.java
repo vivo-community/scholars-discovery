@@ -14,6 +14,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -27,10 +28,17 @@ import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 
-public class UnwrappingIndividualSerializer extends AbstractUnwrappingSolrDocumentSerializer<Individual> {
+public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
-    public UnwrappingIndividualSerializer(NameTransformer nameTransformer) {
-        super(nameTransformer);
+    protected final NameTransformer nameTransformer;
+
+    public UnwrappingIndividualSerializer(final NameTransformer nameTransformer) {
+        this.nameTransformer = nameTransformer;
+    }
+
+    @Override
+    public boolean isUnwrappingSerializer() {
+        return true;
     }
 
     @Override

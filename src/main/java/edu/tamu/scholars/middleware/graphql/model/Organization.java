@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.organization.Website;
 import edu.tamu.scholars.middleware.graphql.model.organization.Degree;
 import edu.tamu.scholars.middleware.graphql.model.organization.SponsorsAwardOrHonor;
 import edu.tamu.scholars.middleware.graphql.model.organization.AwardOrHonorGiven;
@@ -30,12 +29,13 @@ import edu.tamu.scholars.middleware.graphql.model.organization.ContractOrProvide
 import edu.tamu.scholars.middleware.graphql.model.organization.OutreachAndCommunityServiceActivity;
 import edu.tamu.scholars.middleware.graphql.model.organization.HasEquipment;
 import edu.tamu.scholars.middleware.graphql.model.organization.Course;
-import edu.tamu.scholars.middleware.graphql.model.organization.SameAs;
 import edu.tamu.scholars.middleware.graphql.model.organization.LocatedAtFacility;
 import edu.tamu.scholars.middleware.graphql.model.organization.PredecessorOrganization;
 import edu.tamu.scholars.middleware.graphql.model.organization.SuccessorOrganization;
 import edu.tamu.scholars.middleware.graphql.model.organization.GoverningAuthorityFor;
 import edu.tamu.scholars.middleware.graphql.model.organization.AffiliatedResearchArea;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -56,8 +56,6 @@ import java.util.List;
 @JsonInclude(NON_EMPTY)
 public class Organization extends AbstractNestedDocument {
   private static final long serialVersionUID = 884563225L;
-
-  private List<Website> websites;
 
   private List<Degree> degrees;
 
@@ -117,8 +115,6 @@ public class Organization extends AbstractNestedDocument {
 
   private List<Course> courses;
 
-  private List<SameAs> sameAs;
-
   private List<LocatedAtFacility> locatedAtFacilities;
 
   private List<PredecessorOrganization> predecessorOrganizations;
@@ -129,13 +125,11 @@ public class Organization extends AbstractNestedDocument {
 
   private List<AffiliatedResearchArea> affiliatedResearchAreas;
 
+  private List<Website> websites;
+
+  private List<SameAs> sameAs;
+
   private String name;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   private String overview;
 
@@ -165,6 +159,12 @@ public class Organization extends AbstractNestedDocument {
 
   private String geographicLocation;
 
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
   private String modTime;
 
   @JsonProperty("class")
@@ -172,14 +172,6 @@ public class Organization extends AbstractNestedDocument {
 
   public Organization() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public List<Degree> getDegrees() {
@@ -418,14 +410,6 @@ public class Organization extends AbstractNestedDocument {
     this.courses = courses;
   }
 
-  public List<SameAs> getSameAs() {
-    return sameAs;
-  }
-
-  public void setSameAs(List<SameAs> sameAs) {
-    this.sameAs = sameAs;
-  }
-
   public List<LocatedAtFacility> getLocatedAtFacilities() {
     return locatedAtFacilities;
   }
@@ -466,36 +450,28 @@ public class Organization extends AbstractNestedDocument {
     this.affiliatedResearchAreas = affiliatedResearchAreas;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
+  public List<SameAs> getSameAs() {
+    return sameAs;
+  }
+
+  public void setSameAs(List<SameAs> sameAs) {
+    this.sameAs = sameAs;
+  }
+
   public String getName() {
     return name;
   }
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getOverview() {
@@ -608,6 +584,30 @@ public class Organization extends AbstractNestedDocument {
 
   public void setGeographicLocation(String geographicLocation) {
     this.geographicLocation = geographicLocation;
+  }
+
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
   }
 
   public String getModTime() {

@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
-import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpHeaders;
@@ -18,17 +17,21 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
+import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
+import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 import edu.tamu.scholars.middleware.export.argument.ExportArg;
 import edu.tamu.scholars.middleware.export.exception.UnknownExporterTypeException;
 import edu.tamu.scholars.middleware.export.service.Exporter;
 import edu.tamu.scholars.middleware.export.service.ExporterRegistry;
 
-public abstract class AbstractSolrDocumentExportController<D extends AbstractSolrDocument, SDR extends SolrDocumentRepo<D>> implements ResourceProcessor<Resource<D>> {
+public abstract class AbstractSolrDocumentExportController implements ResourceProcessor<IndividualResource> {
 
     @Autowired
-    private SDR repo;
+    private IndividualRepo repo;
+
+    @Autowired
+    private ExporterRegistry exporterRegistry;
 
     @GetMapping("/search/export")
     // @formatter:off
@@ -40,10 +43,10 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
         List<BoostArg> boosts,
         List<ExportArg> export
     ) throws UnknownExporterTypeException {
-        Exporter exporter = ExporterRegistry.getExporter(type);
+        Exporter exporter = exporterRegistry.getExporter(type);
         Optional<String> clazz = filters.stream().filter(filter -> filter.getField().equals("class")).map(filter -> filter.getValue()).findAny();
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(clazz.isPresent() ? clazz.get() : "export"))
+            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(clazz.isPresent() ? clazz.get() : "individuals"))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
             .body(exporter.streamSolrResponse(repo.stream(query, filters, boosts, sort), export));
     }
@@ -56,8 +59,8 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
         @RequestParam(value = "type", required = false, defaultValue = "docx") String type
     ) throws UnknownExporterTypeException, IllegalArgumentException, IllegalAccessException {
         // TODO: throw not found exception if not found
-        D document = repo.findById(id).get();
-        Exporter exporter = ExporterRegistry.getExporter(type);
+        Individual document = repo.findById(id).get();
+        Exporter exporter = exporterRegistry.getExporter(type);
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(id))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
@@ -66,9 +69,9 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
     // @formatter:on
 
     @Override
-    public Resource<D> process(Resource<D> resource) {
-        // @formatter:off
+    public IndividualResource process(IndividualResource resource) {
         try {
+            // @formatter:off
             resource.add(
               ControllerLinkBuilder.linkTo(
                 ControllerLinkBuilder
@@ -76,10 +79,10 @@ public abstract class AbstractSolrDocumentExportController<D extends AbstractSol
                   .export(resource.getContent().getId(), "docx")
               ).withRel("export")
             );
+            // @formatter:on
         } catch (UnknownExporterTypeException | IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        // @formatter:on
         return resource;
     }
 

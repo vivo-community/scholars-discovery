@@ -20,15 +20,17 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.mapping.SolrDocument;
+import org.springframework.data.solr.core.query.SimpleQuery;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> {
+public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolrDocument> {
 
     @Value("classpath:solr/discovery")
     private Resource instanceDirectory;
@@ -37,7 +39,10 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
     private EmbeddedSolrServer solrServer;
 
     @Autowired
-    protected R repo;
+    protected IndividualRepo repo;
+
+    @Autowired
+    protected SolrTemplate solrTemplate;
 
     protected List<D> mockDocuments;
 
@@ -80,8 +85,9 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
 
     private void createDocuments() {
         assertEquals(0, repo.count());
-        repo.saveAll(mockDocuments);
-        assertEquals(mockDocuments.size(), repo.count());
+        solrTemplate.saveBeans(getCollection(), mockDocuments);
+        solrTemplate.commit(getCollection());
+        assertEquals(mockDocuments.size(), solrTemplate.count(getCollection(), new SimpleQuery("*")));
     }
 
     private void deleteDocuments() {

@@ -5,7 +5,7 @@ import org.springframework.core.io.Resource;
 
 import edu.tamu.scholars.middleware.discovery.model.Document;
 
-public class DocumentRepoTest extends AbstractSolrDocumentRepoTest<Document, DocumentRepo> {
+public class DocumentRepoTest extends AbstractSolrDocumentRepoTest<Document> {
 
     @Value("classpath:mock/discovery/documents")
     private Resource mocksDirectory;

@@ -20,23 +20,11 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "persons", predicate = "http://xmlns.com/foaf/0.1/Person")
-public class Person extends AbstractSolrDocument {
+public class Person extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "person/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "person/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "person/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "person/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
 
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/primaryEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
@@ -49,15 +37,6 @@ public class Person extends AbstractSolrDocument {
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/phone", predicate = "http://www.w3.org/2006/vcard/ns#telephone")
     private String phone;
-
-    @Indexed(type = "whole_strings")
-    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
-    @PropertySource(template = "person/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> websites;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "person/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> websiteUrl;
 
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/orcidId", predicate = "http://vivoweb.org/ontology/core#orcidId", parse = true)
@@ -647,11 +626,6 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/youtube", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#youtube")
     private String youtube;
 
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "person/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/eraCommonsId", predicate = "http://vivoweb.org/ontology/core#eRACommonsId")
     private String eraCommonsId;
@@ -729,10 +703,6 @@ public class Person extends AbstractSolrDocument {
     @PropertySource(template = "person/etdChairOfPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> etdChairOfPublicationDate;
 
-    @Indexed(type = "pdate")
-    @PropertySource(template = "person/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
-
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
     private String featuredProfileDisplay;
@@ -747,30 +717,6 @@ public class Person extends AbstractSolrDocument {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
     public String getPrimaryEmail() {
@@ -795,22 +741,6 @@ public class Person extends AbstractSolrDocument {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public List<String> getWebsites() {
-        return websites;
-    }
-
-    public void setWebsites(List<String> websites) {
-        this.websites = websites;
-    }
-
-    public List<String> getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(List<String> websiteUrl) {
-        this.websiteUrl = websiteUrl;
     }
 
     public String getOrcidId() {
@@ -1909,14 +1839,6 @@ public class Person extends AbstractSolrDocument {
         this.youtube = youtube;
     }
 
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
     public String getEraCommonsId() {
         return eraCommonsId;
     }
@@ -2067,14 +1989,6 @@ public class Person extends AbstractSolrDocument {
 
     public void setEtdChairOfPublicationDate(List<String> etdChairOfPublicationDate) {
         this.etdChairOfPublicationDate = etdChairOfPublicationDate;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
     public String getFeaturedProfileDisplay() {

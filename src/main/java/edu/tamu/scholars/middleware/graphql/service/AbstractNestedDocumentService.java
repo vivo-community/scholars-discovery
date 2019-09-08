@@ -13,7 +13,7 @@ import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang.reflect.FieldUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -23,7 +23,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
-import org.springframework.data.util.ReflectionUtils;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -38,8 +37,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
+import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
@@ -51,12 +50,12 @@ import graphql.language.SelectionSet;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
 @GraphQLApi
-public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> implements NestedDocumentService<ND> {
+public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument> implements NestedDocumentService<ND> {
 
     private final static int MAX_BATCH_SIZE = 500;
 
     @Autowired
-    private R repo;
+    private IndividualRepo repo;
 
     @Autowired
     private ObjectMapper mapper;
@@ -117,7 +116,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     public Optional<ND> findById(String id, List<Field> fields) {
         Optional<ND> nestedDocument = Optional.empty();
-        Optional<D> document = repo.findById(id);
+        Optional<Individual> document = repo.findById(id);
         if (document.isPresent()) {
             nestedDocument = Optional.of(toNested(document.get(), fields));
         }
@@ -167,13 +166,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         throw new UnsupportedOperationException(String.format("%s is read only", type()));
     }
 
-    @SuppressWarnings("unchecked")
     public FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        FacetPage<D> facetPage = repo.search(query, facets, filters, boosts, page);
+        FacetPage<Individual> facetPage = repo.search(query, facets, filters, boosts, page);
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
-        java.lang.reflect.Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
-        ReflectionUtils.setField(field, facetPage, content);
-        return (FacetPage<ND>) facetPage;
+        FacetPage<ND> results = new SolrResultPage<ND>(content);
+        BeanUtils.copyProperties(facetPage, results, "content");
+        return results;
     }
 
     @Override
@@ -291,7 +289,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     protected abstract Class<?> getOriginDocumentType();
 
-    private ND toNested(D document, List<Field> fields) {
+    private ND toNested(Individual document, List<Field> fields) {
         ObjectNode node = mapper.valueToTree(document);
         Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
         if (composite.isPresent()) {

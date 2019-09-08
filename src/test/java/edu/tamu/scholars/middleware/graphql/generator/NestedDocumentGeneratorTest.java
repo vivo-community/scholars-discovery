@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.FileSystemUtils;
 
-import edu.tamu.scholars.middleware.graphql.generator.NestedDocumentGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 @ExtendWith(SpringExtension.class)
 public class NestedDocumentGeneratorTest {
@@ -30,9 +32,8 @@ public class NestedDocumentGeneratorTest {
     }
 
     @Test
-    public void testGenerate() {
-        NestedDocumentGenerator generator = new NestedDocumentGenerator(destinationPath, destinationPackage);
-        generator.generate();
+    public void testGenerate() throws JsonParseException, JsonMappingException, IOException {
+        new NestedDocumentGenerator(destinationPath, destinationPackage).generate();
         assertFilesCreated();
     }
 

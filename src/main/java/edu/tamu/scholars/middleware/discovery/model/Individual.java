@@ -17,10 +17,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
-public class Individual extends AbstractSolrDocument {
-
-    @Indexed(type = "whole_strings")
-    private List<String> type;
+public class Individual extends Common {
 
     @Dynamic
     @Field("*")
@@ -29,14 +26,6 @@ public class Individual extends AbstractSolrDocument {
 
     public Individual() {
 
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
     }
 
     public Map<String, List<String>> getContent() {

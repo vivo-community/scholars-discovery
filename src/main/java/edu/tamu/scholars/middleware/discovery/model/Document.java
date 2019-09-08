@@ -22,32 +22,11 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "documents", predicate = "http://purl.org/ontology/bibo/Document")
-public class Document extends AbstractSolrDocument {
+public class Document extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "document/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "document/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "document/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "document/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
-
-    @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
-    @PropertySource(template = "document/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> websites;
-
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "document/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> websiteUrl;
 
     @Field("abstract")
     @JsonProperty("abstract")
@@ -452,15 +431,6 @@ public class Document extends AbstractSolrDocument {
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "document/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "document/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
-
     public Document() {
 
     }
@@ -471,46 +441,6 @@ public class Document extends AbstractSolrDocument {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public List<String> getWebsites() {
-        return websites;
-    }
-
-    public void setWebsites(List<String> websites) {
-        this.websites = websites;
-    }
-
-    public List<String> getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(List<String> websiteUrl) {
-        this.websiteUrl = websiteUrl;
     }
 
     public String getAbstractText() {
@@ -1247,22 +1177,6 @@ public class Document extends AbstractSolrDocument {
 
     public void setReceipts(List<String> receipts) {
         this.receipts = receipts;
-    }
-
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

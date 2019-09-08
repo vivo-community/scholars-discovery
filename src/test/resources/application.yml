@@ -28,7 +28,6 @@ middleware:
     batchSize: 1000
   export:
     individualKey: individual
-    includeCollection: true
     individualBaseUri: http://localhost:4200/display
 
 ui:

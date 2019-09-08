@@ -21,23 +21,11 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "relationships", predicate = "http://vivoweb.org/ontology/core#Relationship")
-public class Relationship extends AbstractSolrDocument {
+public class Relationship extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "relationship/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "relationship/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "relationship/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "relationship/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
 
     @Field("abstract")
     @Indexed(type = "whole_string", value = "abstract", copyTo = "_text_")
@@ -229,11 +217,6 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "relationship/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "inheresInType", key = "type") })
     @PropertySource(template = "relationship/inheresIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -270,10 +253,6 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/participatesInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> participatesInType;
 
-    @Indexed(type = "pdate")
-    @PropertySource(template = "relationship/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
-
     public Relationship() {
 
     }
@@ -284,30 +263,6 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
     public String getAbstractText() {
@@ -654,14 +609,6 @@ public class Relationship extends AbstractSolrDocument {
         this.yearAwarded = yearAwarded;
     }
 
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
     public List<String> getInheresIn() {
         return inheresIn;
     }
@@ -724,14 +671,6 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setParticipatesInType(List<String> participatesInType) {
         this.participatesInType = participatesInType;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

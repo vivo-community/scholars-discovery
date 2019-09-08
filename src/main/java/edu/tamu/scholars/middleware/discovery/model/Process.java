@@ -19,32 +19,11 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "processes", predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
-public class Process extends AbstractSolrDocument {
+public class Process extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "process/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "process/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "process/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "process/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
-
-    @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
-    @PropertySource(template = "process/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> websites;
-
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "process/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> websiteUrl;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "process/description", predicate = "http://vivoweb.org/ontology/core#description")
@@ -177,15 +156,6 @@ public class Process extends AbstractSolrDocument {
     @PropertySource(template = "process/hasParticipantType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> hasParticipantType;
 
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "process/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "process/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
-
     public Process() {
 
     }
@@ -196,46 +166,6 @@ public class Process extends AbstractSolrDocument {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public List<String> getWebsites() {
-        return websites;
-    }
-
-    public void setWebsites(List<String> websites) {
-        this.websites = websites;
-    }
-
-    public List<String> getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(List<String> websiteUrl) {
-        this.websiteUrl = websiteUrl;
     }
 
     public String getDescription() {
@@ -468,22 +398,6 @@ public class Process extends AbstractSolrDocument {
 
     public void setHasParticipantType(List<String> hasParticipantType) {
         this.hasParticipantType = hasParticipantType;
-    }
-
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

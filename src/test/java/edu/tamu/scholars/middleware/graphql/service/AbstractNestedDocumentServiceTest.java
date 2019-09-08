@@ -30,13 +30,12 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import graphql.language.Field;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractNestedDocumentServiceTest<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>, DAO extends AbstractNestedDocumentService<ND, D, R>> extends AbstractSolrDocumentIntegrationTest<D, R> {
+public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDocument, ND extends AbstractNestedDocument, DAO extends AbstractNestedDocumentService<ND>> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Autowired
     private DAO service;
