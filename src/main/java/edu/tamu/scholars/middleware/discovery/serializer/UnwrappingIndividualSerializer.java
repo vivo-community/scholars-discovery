@@ -3,6 +3,7 @@ package edu.tamu.scholars.middleware.discovery.serializer;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypeByName;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -26,7 +27,6 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
-import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 
 public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
@@ -42,9 +42,9 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void serialize(Individual document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-        Class<?> type = DiscoveryUtility.getDiscoveryDocumentTypeByName(document.getClazz());
+        long startTime = System.nanoTime();
+        Class<?> type = getDiscoveryDocumentTypeByName(document.getClazz());
         Map<String, List<String>> content = document.getContent();
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
         jsonGenerator.writeObjectField(nameTransformer.transform(CLASS), document.getClazz());
@@ -57,6 +57,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                 if (nestedObject != null) {
                     if (nestedObject.root()) {
                         if (List.class.isAssignableFrom(field.getType())) {
+                            @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
                             ArrayNode array = JsonNodeFactory.instance.arrayNode();
                             for (String v : values) {
@@ -82,6 +83,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                         if (List.class.isAssignableFrom(field.getType())) {
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), value);
                         } else {
+                            @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
                         }
@@ -89,6 +91,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                 }
             }
         }
+        System.out.println("\nTook " + (double) (System.nanoTime() - startTime) / (double) 1000000 + " milliseconds to serialize " + document.getId() + "\n");
     }
 
     private ObjectNode processValue(Map<String, List<String>> content, Class<?> type, Field field, String[] vParts, int index) {

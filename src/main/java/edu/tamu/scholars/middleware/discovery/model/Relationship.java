@@ -196,11 +196,11 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/supportedPublicationOrOtherWorkType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> supportedPublicationOrOtherWorkType;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "relationship/dateTimeIntervalStart", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalStart;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "relationship/dateTimeIntervalEnd", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalEnd;
 
@@ -213,7 +213,7 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/hasSubjectAreaType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> subjectAreaType;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "relationship/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 

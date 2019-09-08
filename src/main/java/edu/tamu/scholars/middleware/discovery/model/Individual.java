@@ -21,7 +21,7 @@ public class Individual extends Common {
 
     @Dynamic
     @Field("*")
-    @Indexed(readonly = true)
+    @Indexed(readonly = true, stored = false, searchable = false)
     private Map<String, List<String>> content;
 
     public Individual() {

@@ -38,7 +38,7 @@ public class Organization extends Common {
     @PropertySource(template = "organization/abbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private String abbreviation;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "organization/date", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String date;
 

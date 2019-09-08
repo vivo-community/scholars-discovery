@@ -20,7 +20,7 @@ public abstract class AbstractSolrDocument {
 
     @Field("class")
     @JsonProperty("class")
-    @Indexed(type = "whole_string", value = "class", required = true)
+    @Indexed(type = "string", value = "class", required = true)
     private String clazz = this.getClass().getSimpleName();
 
     @Indexed

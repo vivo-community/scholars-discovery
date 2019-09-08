@@ -84,7 +84,7 @@ public class Collection extends Common {
     @PropertySource(template = "collection/translatorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> translatorType;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "collection/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String publicationDate;
 

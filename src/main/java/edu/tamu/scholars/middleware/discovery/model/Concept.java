@@ -68,7 +68,7 @@ public class Concept extends Common {
     @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
     private List<String> awardConferredByPreferredLabel;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 

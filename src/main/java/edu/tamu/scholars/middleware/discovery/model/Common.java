@@ -38,7 +38,7 @@ public class Common extends AbstractSolrDocument {
     @PropertySource(template = "common/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sameAs;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "date")
     @PropertySource(template = "common/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
     private String modTime;
 

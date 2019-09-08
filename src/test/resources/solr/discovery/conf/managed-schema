@@ -273,6 +273,28 @@
       </analyzer>
     </fieldType>
 
+    <!-- Scholars date type -->
+    <fieldType name="date" class="solr.TextField" sortMissingLast="true" multiValued="true">
+      <analyzer type="index">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.DateRecognizerFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <!-- Scholars dates type -->
+    <fieldType name="dates" class="solr.TextField" sortMissingLast="true" multiValued="true">
+      <analyzer type="index">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.DateRecognizerFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
     <fieldType name="booleans" class="solr.BoolField" sortMissingLast="true" multiValued="true"/>

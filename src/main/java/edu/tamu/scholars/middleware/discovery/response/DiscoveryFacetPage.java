@@ -33,6 +33,7 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
     }
 
     public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments) {
+        long startTime = System.nanoTime();
         List<Facet> facets = new ArrayList<Facet>();
 
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
@@ -72,6 +73,7 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
             }
 
         });
+        System.out.println("\nTook " + (double) (System.nanoTime() - startTime) / (double) 1000000 + " milliseconds to build facets\n");
         return facets;
     }
 
