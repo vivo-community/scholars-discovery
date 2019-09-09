@@ -1,11 +1,12 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
+import static org.springframework.data.domain.Sort.Direction.ASC;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resources;
@@ -40,14 +41,13 @@ public class IndividualController {
     // @formatter:off
     public ResponseEntity<PagedResources<IndividualResource>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
-        @PageableDefault Pageable pageable,
+        @PageableDefault(page = 1, size = 10, sort = "id", direction = ASC) Pageable page,
         List<FacetArg> facets,
         List<FilterArg> filters,
         List<BoostArg> boosts
     ) {
     // @formatter:on
-        FacetPage<Individual> page = repo.search(query, facets, filters, boosts, pageable);
-        return ResponseEntity.ok(pagedResourcesAssembler.toResource(page, assembler));
+        return ResponseEntity.ok(pagedResourcesAssembler.toResource(repo.search(query, facets, filters, boosts, page), assembler));
     }
 
     @GetMapping("/search/count")
