@@ -58,8 +58,8 @@ public class CsvExporter implements Exporter {
             try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.DEFAULT.withHeader(headers))) {
                 while (cursor.hasNext()) {
                     Individual document = cursor.next();
-                    List<String> properties = export.stream().map(e -> e.getField()).collect(Collectors.toList());
-                    List<Object> row = getRow(document, properties.toArray(new String[properties.size()]));
+                    List<String> properties = export.stream().map(e -> e.getProperty()).collect(Collectors.toList());
+                    List<Object> row = getRow(document, properties);
                     printer.printRecord(row.toArray(new Object[row.size()]));
                 }
                 printer.flush();
@@ -80,7 +80,7 @@ public class CsvExporter implements Exporter {
         return columnHeaders.toArray(new String[columnHeaders.size()]);
     }
 
-    private List<Object> getRow(Individual document, String[] properties) throws InvalidValuePathException, IllegalArgumentException, IllegalAccessException {
+    private List<Object> getRow(Individual document, List<String> properties) throws InvalidValuePathException, IllegalArgumentException, IllegalAccessException {
         Map<String, List<String>> content = document.getContent();
         List<Object> row = new ArrayList<Object>();
         for (String property : properties) {
@@ -88,8 +88,14 @@ public class CsvExporter implements Exporter {
                 row.add(String.format("%s/%s", config.getIndividualBaseUri(), document.getId()));
                 continue;
             }
-            List<String> values = content.get(property);
-            String value = values.isEmpty() ? EMPTY_STRING : String.join(DELIMITER, values.stream().map(this::removeNestedIdentifiers).collect(Collectors.toList()));
+            System.out.println("\t" + property);
+            String value = EMPTY_STRING;
+            if (content.containsKey(property)) {
+                List<String> values = content.get(property);
+                if (values.size() > 0) {
+                    value = String.join(DELIMITER, values.stream().map(this::removeNestedIdentifiers).collect(Collectors.toList()));
+                }
+            }
             row.add(removeNestedIdentifiers(value));
         }
         return row;

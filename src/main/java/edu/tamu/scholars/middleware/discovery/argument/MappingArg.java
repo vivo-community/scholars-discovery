@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.argument;
 
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
+
 public abstract class MappingArg {
 
     private final String path;
@@ -8,12 +10,12 @@ public abstract class MappingArg {
         this.path = path;
     }
 
-    public String getField() {
+    public String getPath() {
         return path;
     }
 
-//    public String getPath(Class<?> type) {
-//        return findProperty(type, path);
-//    }
+    public String getProperty() {
+        return findProperty(path);
+    }
 
 }

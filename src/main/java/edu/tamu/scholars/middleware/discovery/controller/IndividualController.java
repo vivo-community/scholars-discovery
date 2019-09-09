@@ -41,7 +41,7 @@ public class IndividualController {
     // @formatter:off
     public ResponseEntity<PagedResources<IndividualResource>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
-        @PageableDefault(page = 1, size = 10, sort = "id", direction = ASC) Pageable page,
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page,
         List<FacetArg> facets,
         List<FilterArg> filters,
         List<BoostArg> boosts

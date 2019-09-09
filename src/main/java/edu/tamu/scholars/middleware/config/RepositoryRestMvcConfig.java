@@ -15,6 +15,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.data.rest.webmvc.json.MappingAwarePageableArgumentResolver;
 import org.springframework.data.rest.webmvc.json.MappingAwareSortArgumentResolver;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
@@ -64,6 +65,11 @@ public class RepositoryRestMvcConfig extends RepositoryRestMvcConfiguration {
             }
         });
         return resolvers;
+    }
+
+    @Bean
+    public PageableHandlerMethodArgumentResolverCustomizer customize() {
+        return resolver -> resolver.setOneIndexedParameters(true);
     }
 
     @Bean
