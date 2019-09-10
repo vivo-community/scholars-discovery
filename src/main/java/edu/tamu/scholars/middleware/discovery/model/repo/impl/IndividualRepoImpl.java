@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,11 +45,10 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
+import edu.tamu.scholars.middleware.model.OpKey;
 import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
-
-    private static final String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
 
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
 
@@ -61,6 +62,58 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     @Autowired
     private SolrTemplate solrTemplate;
+
+    @Override
+    public long count(String query, List<FilterArg> filters) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+        simpleQuery.addCriteria(getQueryCriteria(query));
+        return solrTemplate.count(collection(), simpleQuery, type());
+    }
+
+    @Override
+    public List<Individual> findByType(String type, List<FilterArg> filters) {
+        filters.add(FilterArg.of("type", Optional.of(type), Optional.of(OpKey.EQUALS.getKey())));
+        return findAll(filters);
+    }
+
+    @Override
+    public List<Individual> findMostRecentlyUpdate(Integer limit) {
+        return findMostRecentlyUpdate(limit, new ArrayList<FilterArg>());
+    }
+
+    @Override
+    public List<Individual> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addSort(Sort.by(MOD_TIME).descending());
+        simpleQuery.setRows(limit);
+        return solrTemplate.query(collection(), simpleQuery, type()).getContent();
+    }
+
+    @Override
+    public List<Individual> findAll(List<FilterArg> filters) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.setRows(Integer.MAX_VALUE);
+        return solrTemplate.query(collection(), simpleQuery, type()).getContent();
+    }
+
+    @Override
+    public List<Individual> findAll(List<FilterArg> filters, Sort sort) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addSort(sort);
+        simpleQuery.setRows(Integer.MAX_VALUE);
+        return solrTemplate.query(collection(), simpleQuery, type()).getContent();
+    }
+
+    @Override
+    public Page<Individual> findAll(List<FilterArg> filters, Pageable page) {
+        SimpleQuery simpleQuery = buildSimpleQuery(filters);
+        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.setPageRequest(page);
+        return solrTemplate.queryForPage(collection(), simpleQuery, type());
+    }
 
     @Override
     public FacetPage<Individual> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
@@ -133,27 +186,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         simpleQuery.addCriteria(criteria);
         simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
-    }
-
-    @Override
-    public List<Individual> findMostRecentlyUpdate(Integer limit) {
-        return findMostRecentlyUpdate(limit, new ArrayList<FilterArg>());
-    }
-
-    @Override
-    public List<Individual> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
-        SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
-        simpleQuery.addSort(Sort.by(MOD_TIME).descending());
-        simpleQuery.setRows(limit);
-        return solrTemplate.query(collection(), simpleQuery, type()).getContent();
-    }
-
-    @Override
-    public long count(String query, List<FilterArg> filters) {
-        SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(query));
-        return solrTemplate.count(collection(), simpleQuery, type());
     }
 
     public String collection() {

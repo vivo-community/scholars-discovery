@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -59,24 +57,9 @@ public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDo
     public void testFindById() throws IOException {
         mockDocuments.forEach(mockDocument -> {
             String id = mockDocument.getId();
-            Optional<ND> nestedDocument = service.findById(id, getGraphQLEnvironmentFields());
-            assertTrue(nestedDocument.isPresent());
-            assertTrue(nestedDocument.get() instanceof AbstractNestedDocument);
-        });
-    }
-
-    @Test
-    public void testSave() throws IOException {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            mockDocuments.forEach(mockDocument -> {
-                String id = mockDocument.getId();
-                ND nestedDocument = service.findById(id, getGraphQLEnvironmentFields()).get();
-                String newId = String.format("%s-updated", nestedDocument.getId());
-                nestedDocument.setId(newId);
-                nestedDocument = service.save(nestedDocument);
-                assertEquals(newId, nestedDocument.getId());
-                assertTrue(nestedDocument instanceof AbstractNestedDocument);
-            });
+            ND nestedDocument = service.getById(id, getGraphQLEnvironmentFields());
+            assertNotNull(nestedDocument);
+            assertTrue(nestedDocument instanceof AbstractNestedDocument);
         });
     }
 
@@ -86,21 +69,6 @@ public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDo
         assertEquals(3, nestedDocuments.size());
         nestedDocuments.forEach(nestedDocument -> {
             assertTrue(nestedDocument instanceof AbstractNestedDocument);
-        });
-    }
-
-    @Test
-    public void testSaveAll() throws IOException {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            List<ND> nestedDocuments = StreamSupport.stream(service.findAll().spliterator(), false).collect(Collectors.toList());
-            nestedDocuments.forEach(nestedDocument -> {
-                nestedDocument.setId(String.format("%s-updated", nestedDocument.getId()));
-            });
-            nestedDocuments = StreamSupport.stream(service.saveAll(nestedDocuments).spliterator(), false).collect(Collectors.toList());
-            nestedDocuments.forEach(nestedDocument -> {
-                assertTrue(nestedDocument.getId().endsWith("-updated"));
-                assertTrue(nestedDocument instanceof AbstractNestedDocument);
-            });
         });
     }
 

@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery;
 
+import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
+
 public class DiscoveryConstants {
 
     public static String EXPORT_INDIVIDUAL_KEY;
@@ -11,6 +13,8 @@ public class DiscoveryConstants {
     public static final String SCORE = "score";
 
     public static final String MOD_TIME = "modTime";
+
+    public static final String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);
 
     public static final String NESTED_DELIMITER = "::";
 
