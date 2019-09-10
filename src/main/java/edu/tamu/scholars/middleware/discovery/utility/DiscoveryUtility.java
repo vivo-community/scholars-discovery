@@ -59,7 +59,6 @@ public class DiscoveryUtility {
         }
         List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
         for (Class<?> type : DISCOVERY_DOCUMENT_TYPES) {
-            System.out.println(type);
             Optional<String> property = findProperty(type, properties);
             if (property.isPresent()) {
                 PROPERTY_PATHS.put(path, property.get());

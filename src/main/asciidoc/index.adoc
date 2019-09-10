@@ -23,7 +23,7 @@ The data is compiled into a profile that you can edit to best represent your sch
 
 == Discovery
 
-include::individual.adoc[]
+include::discovery.adoc[]
 
 [%hardbreaks]
 

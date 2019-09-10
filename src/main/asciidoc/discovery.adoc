@@ -2,7 +2,7 @@
 
 ==== Directory
 
-This provides a directory listing view of all the individual present in the system, based on the _request parameters_ as shown.
+This provides a directory listing view of all the individuals present in the system, based on the _request parameters_ as shown.
 
 ===== Request Parameters
 include::{snippets}/individual/directory/request-parameters.adoc[]
@@ -21,7 +21,7 @@ include::{snippets}/individual/directory/curl-request.adoc[]
 
 ==== Find By Id
 
-This will find a concept based on the _concept id_ provided as a parameter as shown in *Path Parameters*. The json response will have the specific concept as shown in the *Sample Response*.
+This will find an individual based on the _individual id_ provided as a parameter as shown in *Path Parameters*. The json response will have the specific individual as shown in the *Sample Response*.
 
 ===== Path Parameters
 include::{snippets}/individual/find-by-id/path-parameters.adoc[]
@@ -37,7 +37,7 @@ include::{snippets}/individual/find-by-id/curl-request.adoc[]
 
 ==== Find By Id In
 
-This will find a list of individual based on the _concept ids_ provided as a parameter as shown in *Request Parameters*. The json response will have the specific individual as shown in the *Sample Response*.
+This will find a list of individuals based on the _individual ids_ provided as a parameter as shown in *Request Parameters*. The json response will have the list of individuals as shown in the *Sample Response*.
 
 ===== Request Parameters
 include::{snippets}/individual/find-by-id-in/request-parameters.adoc[]
@@ -53,7 +53,7 @@ include::{snippets}/individual/find-by-id-in/curl-request.adoc[]
 
 ==== Search
 
-This search will return a json response listing all the individual, based on the query parameters as shown in *Request Parameters*.
+This search will return a json response listing all the individuals, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
 include::{snippets}/individual/faceted-search/request-parameters.adoc[]
@@ -123,7 +123,7 @@ include::{snippets}/individual/count-search/curl-request.adoc[]
 
 ==== Recently Updated
 
-This will return a json response listing recently updated individual, based on the query parameters as shown in *Request Parameters*.
+This will return a json response listing recently updated individuals, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
 include::{snippets}/individual/recently-updated-search/request-parameters.adoc[]

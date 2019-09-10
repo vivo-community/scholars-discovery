@@ -88,7 +88,6 @@ public class CsvExporter implements Exporter {
                 row.add(String.format("%s/%s", config.getIndividualBaseUri(), document.getId()));
                 continue;
             }
-            System.out.println("\t" + property);
             String value = EMPTY_STRING;
             if (content.containsKey(property)) {
                 List<String> values = content.get(property);

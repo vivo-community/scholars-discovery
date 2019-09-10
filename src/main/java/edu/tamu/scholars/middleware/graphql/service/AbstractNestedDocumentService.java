@@ -305,11 +305,9 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
                     } else {
                         ids.add(referenceNode.get(ID).asText());
                     }
-
                     Optional<NestedDocumentService<?>> nestedDocumentService = nestedDocumentServices.stream().filter(service -> {
                         return service.type().getSimpleName().equals(reference.getType());
                     }).findAny();
-
                     if (nestedDocumentService.isPresent()) {
                         List<AbstractNestedDocument> references = new ArrayList<AbstractNestedDocument>();
                         while (ids.size() >= MAX_BATCH_SIZE) {
