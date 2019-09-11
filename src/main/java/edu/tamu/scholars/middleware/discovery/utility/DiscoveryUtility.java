@@ -7,10 +7,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.apache.commons.lang.reflect.FieldUtils;
@@ -25,8 +23,6 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 public class DiscoveryUtility {
 
     private final static Set<Class<?>> DISCOVERY_DOCUMENT_TYPES = new CopyOnWriteArraySet<Class<?>>();
-
-    private final static Map<String, String> PROPERTY_PATHS = new ConcurrentHashMap<String, String>();
 
     static {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
@@ -46,7 +42,8 @@ public class DiscoveryUtility {
     }
 
     public static Class<?> getDiscoveryDocumentTypeByName(String name) {
-        Optional<Class<?>> documentType = DISCOVERY_DOCUMENT_TYPES.stream().filter(type -> type.getName().equals(String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, name))).findAny();
+        String typeName = String.format("%s.%s", DISCOVERY_MODEL_PACKAGE, name);
+        Optional<Class<?>> documentType = DISCOVERY_DOCUMENT_TYPES.stream().filter(type -> type.getName().equals(typeName)).findAny();
         if (documentType.isPresent()) {
             return documentType.get();
         }
@@ -54,14 +51,10 @@ public class DiscoveryUtility {
     }
 
     public static String findProperty(String path) {
-        if (PROPERTY_PATHS.containsKey(path)) {
-            return PROPERTY_PATHS.get(path);
-        }
         List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
         for (Class<?> type : DISCOVERY_DOCUMENT_TYPES) {
             Optional<String> property = findProperty(type, properties);
             if (property.isPresent()) {
-                PROPERTY_PATHS.put(path, property.get());
                 return property.get();
             }
         }

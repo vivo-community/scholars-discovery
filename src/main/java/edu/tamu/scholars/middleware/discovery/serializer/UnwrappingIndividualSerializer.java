@@ -7,15 +7,24 @@ import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.ge
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -30,7 +39,9 @@ import edu.tamu.scholars.middleware.discovery.model.Individual;
 
 public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
-    protected final NameTransformer nameTransformer;
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    private final NameTransformer nameTransformer;
 
     public UnwrappingIndividualSerializer(final NameTransformer nameTransformer) {
         this.nameTransformer = nameTransformer;
@@ -52,39 +63,42 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             Object value = content.get(field.getName());
             if (value != null) {
                 JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
-                String name = jsonProperty != null ? jsonProperty.value() : field.getName();
+                String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
                 NestedObject nestedObject = field.getAnnotation(NestedObject.class);
                 if (nestedObject != null) {
                     if (nestedObject.root()) {
                         if (List.class.isAssignableFrom(field.getType())) {
+
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
-                            ArrayNode array = JsonNodeFactory.instance.arrayNode();
-                            for (String v : values) {
-                                String[] vParts = v.split(NESTED_DELIMITER);
-                                if (vParts.length > 1) {
-                                    array.add(processValue(content, type, field, vParts, 1));
-                                }
-                            }
+
+                            // @formatter:off
+                            ArrayNode array = values.parallelStream()
+                                .map(v -> v.split(NESTED_DELIMITER))
+                                .filter(vParts -> vParts.length > 1)
+                                .map(vParts -> processValue(content, type, field, vParts, 1))
+                                .collect(new JsonNodeArrayNodeCollector());
+                            // @formatter:on
+
                             if (array.size() > 0) {
-                                jsonGenerator.writeObjectField(nameTransformer.transform(name), array);
+                                jsonGenerator.writeObjectField(name, array);
                             }
                         } else {
-                            String v = value.toString();
-                            String[] vParts = strip(v).split(NESTED_DELIMITER);
+                            String[] vParts = strip(value.toString()).split(NESTED_DELIMITER);
                             if (vParts.length > 1) {
-                                ObjectNode node = processValue(content, type, field, vParts, 1);
-                                jsonGenerator.writeObjectField(nameTransformer.transform(name), node);
+                                jsonGenerator.writeObjectField(name, processValue(content, type, field, vParts, 1));
                             }
                         }
                     }
                 } else {
                     if (!value.toString().contains(NESTED_DELIMITER)) {
                         if (List.class.isAssignableFrom(field.getType())) {
-                            jsonGenerator.writeObjectField(nameTransformer.transform(name), value);
+                            jsonGenerator.writeObjectField(name, value);
                         } else {
+
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
+
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
                         }
                     }
@@ -114,39 +128,42 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             Object nestedValue = content.get(nestedField.getName());
             if (nestedValue != null) {
                 if (List.class.isAssignableFrom(nestedField.getType())) {
+
                     @SuppressWarnings("unchecked")
                     List<String> nestedValues = (List<String>) nestedValue;
-                    ArrayNode array = JsonNodeFactory.instance.arrayNode();
-                    boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
-                    for (String nv : nestedValues) {
-                        String[] nvParts = strip(nv).split(NESTED_DELIMITER);
-                        if (nv.contains(vParts[depth - 1]) && !(vParts[0].equals(nvParts[0]))) {
-                            if (nvParts.length > depth) {
-                                ObjectNode subNode = processValue(content, type, nestedField, nvParts, depth);
-                                array.add(subNode);
-                            } else {
-                                if (nvParts[0] != null) {
-                                    array.add(nvParts[0]);
-                                }
-                            }
-                            if (!multiValued) {
-                                break;
-                            }
-                        }
-                    }
-                    if (array.size() > 0) {
-                        if (multiValued) {
-                            node.set(name, array);
+
+                    if (nestedValues.size() > 0) {
+                        boolean multiValued = nestedField.getAnnotation(NestedMultiValuedProperty.class) != null;
+
+                        ArrayNode array;
+
+                        // @formatter:off
+                        if (strip(nestedValues.get(0)).split(NESTED_DELIMITER).length > depth) {
+                            array = nestedValues.parallelStream()
+                                .filter(nv -> nv.contains(vParts[depth - 1]) && !(vParts[0].equals(strip(nv).split(NESTED_DELIMITER)[0])))
+                                .map(nv -> processValue(content, type, nestedField, strip(nv).split(NESTED_DELIMITER), depth))
+                                .collect(new JsonNodeArrayNodeCollector());
                         } else {
-                            node.set(name, array.get(0));
+                            array = nestedValues.parallelStream()
+                                .filter(nv -> nv.contains(vParts[depth - 1]) && !(vParts[0].equals(strip(nv).split(NESTED_DELIMITER)[0])))
+                                .map(nv -> strip(nv).split(NESTED_DELIMITER)[0])
+                                .collect(new StringArrayNodeCollector());
+                        }
+                        // @formatter:on
+
+                        if (array.size() > 0) {
+                            if (multiValued) {
+                                node.set(name, array);
+                            } else {
+                                node.set(name, array.get(0));
+                            }
                         }
                     }
+
                 } else {
-                    String nv = nestedValue.toString();
-                    String[] nvParts = strip(nv).split(NESTED_DELIMITER);
+                    String[] nvParts = strip(nestedValue.toString()).split(NESTED_DELIMITER);
                     if (nvParts.length > depth) {
-                        ObjectNode subNode = processValue(content, type, nestedField, nvParts, depth);
-                        node.set(name, subNode);
+                        node.set(name, processValue(content, type, nestedField, nvParts, depth));
                     } else {
                         if (nvParts[0] != null) {
                             node.put(name, nvParts[0]);
@@ -162,6 +179,70 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             return value.substring(1, value.length() - 1);
         }
         return value;
+    }
+
+    private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {
+
+        @Override
+        public Supplier<ArrayNode> supplier() {
+            return mapper::createArrayNode;
+        }
+
+        @Override
+        public BiConsumer<ArrayNode, JsonNode> accumulator() {
+            return ArrayNode::add;
+        }
+
+        @Override
+        public BinaryOperator<ArrayNode> combiner() {
+            return (x, y) -> {
+                x.addAll(y);
+                return x;
+            };
+        }
+
+        @Override
+        public Function<ArrayNode, ArrayNode> finisher() {
+            return accumulator -> accumulator;
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return EnumSet.of(Characteristics.UNORDERED);
+        }
+
+    }
+
+    private class StringArrayNodeCollector implements Collector<String, ArrayNode, ArrayNode> {
+
+        @Override
+        public Supplier<ArrayNode> supplier() {
+            return mapper::createArrayNode;
+        }
+
+        @Override
+        public BiConsumer<ArrayNode, String> accumulator() {
+            return ArrayNode::add;
+        }
+
+        @Override
+        public BinaryOperator<ArrayNode> combiner() {
+            return (x, y) -> {
+                x.addAll(y);
+                return x;
+            };
+        }
+
+        @Override
+        public Function<ArrayNode, ArrayNode> finisher() {
+            return accumulator -> accumulator;
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return EnumSet.of(Characteristics.UNORDERED);
+        }
+
     }
 
 }
