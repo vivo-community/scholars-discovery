@@ -54,7 +54,6 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
     @Override
     public void serialize(Individual document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-        long startTime = System.nanoTime();
         Class<?> type = getDiscoveryDocumentTypeByName(document.getClazz());
         Map<String, List<String>> content = document.getContent();
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
@@ -105,7 +104,6 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                 }
             }
         }
-        System.out.println("\nTook " + (double) (System.nanoTime() - startTime) / (double) 1000000 + " milliseconds to serialize " + document.getId() + "\n");
     }
 
     private ObjectNode processValue(Map<String, List<String>> content, Class<?> type, Field field, String[] vParts, int index) {
