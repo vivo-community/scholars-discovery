@@ -124,7 +124,7 @@ public class Document extends Common {
     @PropertySource(template = "document/status", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String status;
 
-    @Indexed(type = "date")
+    @Indexed(type = "pdate")
     @PropertySource(template = "document/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String publicationDate;
 
@@ -137,11 +137,11 @@ public class Document extends Common {
     @PropertySource(template = "document/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private String publisherType;
 
-    @Indexed(type = "date")
+    @Indexed(type = "pdate")
     @PropertySource(template = "document/dateFiled", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateFiled;
 
-    @Indexed(type = "date")
+    @Indexed(type = "pdate")
     @PropertySource(template = "document/dateIssued", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateIssued;
 
