@@ -1,8 +1,8 @@
-<a href="display/relationships/{{id}}">{{label}}</a>
+<a href="display/{{id}}">{{label}}</a>
 {{#if awardedBy.preferredLabel}}
-<span> awarded by <a href="display/organizations/{{awardedBy.id}}">{{awardedBy.preferredLabel}}</a></span>
+<span> awarded by <a href="display/{{awardedBy.id}}">{{awardedBy.preferredLabel}}</a></span>
 {{else}}
-<span> awarded by <a href="display/organizations/{{awardedBy.id}}">{{awardedBy.label}}</a></span>
+<span> awarded by <a href="display/{{awardedBy.id}}">{{awardedBy.label}}</a></span>
 {{/if}}
 {{#if startDate}}
 {{#if endDate}}

@@ -32,7 +32,7 @@ public class ExportView extends View {
     private List<String> requiredFields;
 
     @ElementCollection
-    private List<LazyReference> lazyReferences;
+    private List<String> lazyReferences;
 
     @JoinColumn(name = "export_field_id")
     @OneToMany(cascade = CascadeType.ALL)
@@ -42,7 +42,7 @@ public class ExportView extends View {
     public ExportView() {
         super();
         requiredFields = new ArrayList<String>();
-        lazyReferences = new ArrayList<LazyReference>();
+        lazyReferences = new ArrayList<String>();
         fieldViews = new ArrayList<ExportFieldView>();
     }
 
@@ -70,11 +70,11 @@ public class ExportView extends View {
         this.requiredFields = requiredFields;
     }
 
-    public List<LazyReference> getLazyReferences() {
+    public List<String> getLazyReferences() {
         return lazyReferences;
     }
 
-    public void setLazyReferences(List<LazyReference> lazyReferences) {
+    public void setLazyReferences(List<String> lazyReferences) {
         this.lazyReferences = lazyReferences;
     }
 

@@ -15,12 +15,12 @@ import io.leangen.graphql.annotations.types.GraphQLInterface;
 public abstract class AbstractSolrDocument {
 
     @Id
-    @Indexed
+    @Indexed(required = true)
     private String id;
 
     @Field("class")
     @JsonProperty("class")
-    @Indexed(type = "whole_string", value = "class")
+    @Indexed(type = "string", value = "class", required = true)
     private String clazz = this.getClass().getSimpleName();
 
     @Indexed

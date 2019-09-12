@@ -409,9 +409,9 @@
                       and initialSize parameters are ignored.
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="512"
-                 initialSize="512"
-                 autowarmCount="0"/>
+                 size="4096"
+                 initialSize="1024"
+                 autowarmCount="1024"/>
 
     <!-- Query Result Cache
 
@@ -422,9 +422,9 @@
                        to occupy
       -->
     <queryResultCache class="solr.LRUCache"
-                      size="512"
-                      initialSize="512"
-                      autowarmCount="0"/>
+                      size="4096"
+                      initialSize="1024"
+                      autowarmCount="1024"/>
 
     <!-- Document Cache
 
@@ -433,8 +433,8 @@
          this cache will not be autowarmed.
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
-                   initialSize="512"
+                   size="8192"
+                   initialSize="4096"
                    autowarmCount="0"/>
 
     <!-- custom cache currently used by block join -->

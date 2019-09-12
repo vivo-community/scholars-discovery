@@ -5,7 +5,6 @@ import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MAX_LENGT
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MIN_LENGTH;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -126,7 +125,6 @@ public class MiddlewareApplicationTest {
     public void testExportConfig() {
         assertEquals("individual", exportConfig.getIndividualKey());
         assertEquals("http://localhost:4200/display", exportConfig.getIndividualBaseUri());
-        assertTrue(exportConfig.isIncludeCollection());
     }
 
     @Test

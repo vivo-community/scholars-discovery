@@ -242,7 +242,7 @@ public class GraphQLConfig {
             List<Sort.Order> orders = new ArrayList<>();
             for (Map<String, Object> order : (List<Map<String, Object>>) sort.get("orders")) {
                 Sort.Direction direction = (Sort.Direction) order.get("direction");
-                String property = findProperty(type, (String) order.get("property"));
+                String property = findProperty((String) order.get("property"));
                 orders.add(new Sort.Order(direction, property));
             }
             return Sort.by(orders);

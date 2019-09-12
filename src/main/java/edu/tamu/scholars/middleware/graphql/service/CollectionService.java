@@ -1,7 +1,7 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.model.repo.CollectionRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
-import edu.tamu.scholars.middleware.graphql.exception.DocumentNotFoundException;
 import edu.tamu.scholars.middleware.graphql.model.Collection;
 import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -21,7 +19,7 @@ import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Service
-public class CollectionService extends AbstractNestedDocumentService<Collection, edu.tamu.scholars.middleware.discovery.model.Collection, CollectionRepo> {
+public class CollectionService extends AbstractNestedDocumentService<Collection> {
 
     @Override
     @GraphQLQuery(name = "collectionExistsById")
@@ -29,6 +27,7 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
         return super.existsById(id);
     }
 
+    @Override
     @GraphQLQuery(name = "collectionById")
     // @formatter:off
     public Collection getById(
@@ -36,11 +35,52 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
-        Optional<Collection> document = super.findById(id, fields);
-        if (document.isPresent()) {
-            return document.get();
-        }
-        throw new DocumentNotFoundException(String.format("Could not find %s with id %s", type(), id));
+        return super.getById(id, fields);
+    }
+
+    @Override
+    @GraphQLQuery(name = "collectionsByType")
+    // @formatter:off
+    public List<Collection> findByType(
+        @GraphQLArgument(name = "type") String type,
+        @GraphQLEnvironment List<Field> fields
+    ) {
+    // @formatter:on
+        return super.findByType(type, new ArrayList<FilterArg>(), fields);
+    }
+
+    @Override
+    @GraphQLQuery(name = "collectionsByIds")
+    // @formatter:off
+    public List<Collection> findByIdIn(
+        @GraphQLArgument(name = "ids") List<String> ids,
+        @GraphQLEnvironment List<Field> fields
+    ) {
+    // @formatter:on
+        return super.findByIdIn(ids, fields);
+    }
+
+    @Override
+    @GraphQLQuery(name = "collectionsMostRecentlyUpdate")
+    // @formatter:off
+    public List<Collection> findMostRecentlyUpdate(
+        @GraphQLArgument(name = "limit") Integer limit,
+        @GraphQLEnvironment List<Field> fields
+    ) {
+    // @formatter:on
+        return super.findMostRecentlyUpdate(limit, fields);
+    }
+
+    @Override
+    @GraphQLQuery(name = "collectionsMostRecentlyUpdate")
+    // @formatter:off
+    public List<Collection> findMostRecentlyUpdate(
+        @GraphQLArgument(name = "limit") Integer limit,
+        @GraphQLArgument(name = "filters") List<FilterArg> filters,
+        @GraphQLEnvironment List<Field> fields
+    ) {
+    // @formatter:on
+        return super.findMostRecentlyUpdate(limit, filters, fields);
     }
 
     @Override
@@ -68,7 +108,7 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
-        return super.findAll(sort, fields);
+        return super.findAll(new ArrayList<FilterArg>(), sort, fields);
     }
 
     @Override
@@ -79,7 +119,7 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
-        return super.findAll(page, fields);
+        return super.findAll(new ArrayList<FilterArg>(), page, fields);
     }
 
     @Override
@@ -174,40 +214,6 @@ public class CollectionService extends AbstractNestedDocumentService<Collection,
     ) {
     // @formatter:on
         return super.facetedSearch(query, facets, filters, boosts, page, fields);
-    }
-
-    @Override
-    @GraphQLQuery(name = "collectionsByType")
-    // @formatter:off
-    public List<Collection> findByType(
-        @GraphQLArgument(name = "type") String type,
-        @GraphQLEnvironment List<Field> fields
-    ) {
-    // @formatter:on
-        return super.findByType(type, fields);
-    }
-
-    @Override
-    @GraphQLQuery(name = "collectionsByIds")
-    // @formatter:off
-    public List<Collection> findByIdIn(
-        @GraphQLArgument(name = "ids") List<String> ids,
-        @GraphQLEnvironment List<Field> fields
-    ) {
-    // @formatter:on
-        return super.findByIdIn(ids, fields);
-    }
-
-    @Override
-    @GraphQLQuery(name = "collectionsMostRecentlyUpdate")
-    // @formatter:off
-    public List<Collection> findMostRecentlyUpdate(
-        @GraphQLArgument(name = "limit") Integer limit,
-        @GraphQLArgument(name = "filters") List<FilterArg> filters,
-        @GraphQLEnvironment List<Field> fields
-    ) {
-    // @formatter:on
-        return super.findMostRecentlyUpdate(limit, filters, fields);
     }
 
     @Override

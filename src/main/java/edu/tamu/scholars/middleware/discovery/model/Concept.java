@@ -20,32 +20,11 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "concepts", predicate = "http://www.w3.org/2004/02/skos/core#Concept")
-public class Concept extends AbstractSolrDocument {
+public class Concept extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "concept/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "concept/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "concept/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "concept/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
-
-    @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
-    @PropertySource(template = "concept/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> websites;
-
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "concept/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> websiteUrl;
 
     @NestedObject
     @Indexed(type = "nested_strings")
@@ -79,15 +58,15 @@ public class Concept extends AbstractSolrDocument {
     @Indexed(type = "nested_string", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
     @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private String awardConferredBy;
+    private List<String> awardConferredBy;
 
     @Indexed(type = "nested_string")
     @PropertySource(template = "concept/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private String awardConferredByType;
+    private List<String> awardConferredByType;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
-    private String awardConferredByPreferredLabel;
+    private List<String> awardConferredByPreferredLabel;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -129,15 +108,6 @@ public class Concept extends AbstractSolrDocument {
     @PropertySource(template = "concept/relatedConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> relatedConceptType;
 
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "concept/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "concept/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
-
     public Concept() {
 
     }
@@ -148,46 +118,6 @@ public class Concept extends AbstractSolrDocument {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public List<String> getWebsites() {
-        return websites;
-    }
-
-    public void setWebsites(List<String> websites) {
-        this.websites = websites;
-    }
-
-    public List<String> getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(List<String> websiteUrl) {
-        this.websiteUrl = websiteUrl;
     }
 
     public List<String> getAssociatedDepartments() {
@@ -238,27 +168,27 @@ public class Concept extends AbstractSolrDocument {
         this.awardOrHonorForType = awardOrHonorForType;
     }
 
-    public String getAwardConferredBy() {
+    public List<String> getAwardConferredBy() {
         return awardConferredBy;
     }
 
-    public void setAwardConferredBy(String awardConferredBy) {
+    public void setAwardConferredBy(List<String> awardConferredBy) {
         this.awardConferredBy = awardConferredBy;
     }
 
-    public String getAwardConferredByType() {
+    public List<String> getAwardConferredByType() {
         return awardConferredByType;
     }
 
-    public void setAwardConferredByType(String awardConferredByType) {
+    public void setAwardConferredByType(List<String> awardConferredByType) {
         this.awardConferredByType = awardConferredByType;
     }
 
-    public String getAwardConferredByPreferredLabel() {
+    public List<String> getAwardConferredByPreferredLabel() {
         return awardConferredByPreferredLabel;
     }
 
-    public void setAwardConferredByPreferredLabel(String awardConferredByPreferredLabel) {
+    public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
         this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
     }
 
@@ -332,22 +262,6 @@ public class Concept extends AbstractSolrDocument {
 
     public void setRelatedConceptType(List<String> relatedConceptType) {
         this.relatedConceptType = relatedConceptType;
-    }
-
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.process.Website;
 import edu.tamu.scholars.middleware.graphql.model.process.OfferedBy;
 import edu.tamu.scholars.middleware.graphql.model.process.OccursWithinEvent;
 import edu.tamu.scholars.middleware.graphql.model.process.IncludesEvent;
@@ -16,7 +15,8 @@ import edu.tamu.scholars.middleware.graphql.model.process.HeldInFacility;
 import edu.tamu.scholars.middleware.graphql.model.process.HeldInGeographicLocation;
 import edu.tamu.scholars.middleware.graphql.model.process.HasOutput;
 import edu.tamu.scholars.middleware.graphql.model.process.HasParticipant;
-import edu.tamu.scholars.middleware.graphql.model.process.SameAs;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -37,8 +37,6 @@ import java.util.List;
 @JsonInclude(NON_EMPTY)
 public class Process extends AbstractNestedDocument {
   private static final long serialVersionUID = 262133449L;
-
-  private List<Website> websites;
 
   private List<OfferedBy> offeredBy;
 
@@ -70,15 +68,11 @@ public class Process extends AbstractNestedDocument {
 
   private List<HasParticipant> hasParticipant;
 
+  private List<Website> websites;
+
   private List<SameAs> sameAs;
 
   private String title;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   private String description;
 
@@ -90,6 +84,12 @@ public class Process extends AbstractNestedDocument {
 
   private String contactInformation;
 
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
   private String modTime;
 
   @JsonProperty("class")
@@ -97,14 +97,6 @@ public class Process extends AbstractNestedDocument {
 
   public Process() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public List<OfferedBy> getOfferedBy() {
@@ -228,6 +220,14 @@ public class Process extends AbstractNestedDocument {
     this.hasParticipant = hasParticipant;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -242,30 +242,6 @@ public class Process extends AbstractNestedDocument {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getDescription() {
@@ -306,6 +282,30 @@ public class Process extends AbstractNestedDocument {
 
   public void setContactInformation(String contactInformation) {
     this.contactInformation = contactInformation;
+  }
+
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
   }
 
   public String getModTime() {

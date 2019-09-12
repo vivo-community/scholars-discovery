@@ -6,7 +6,6 @@ import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLAS
 import static org.springframework.web.context.WebApplicationContext.SCOPE_REQUEST;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,8 +21,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
 
-import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage.Facet;
 
 @Service
@@ -32,9 +29,6 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
 
     @Autowired
     private HttpServletRequest request;
-
-    @Autowired
-    private List<SolrDocumentRepo<?>> solrDocumentRepos;
 
     public FacetPagedResourcesAssembler(@Nullable HateoasPageableHandlerMethodArgumentResolver resolver, @Nullable UriComponents baseUri) {
         super(resolver, baseUri);
@@ -55,11 +49,7 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
 
         FacetPagedResource(PagedResources<R> pagedResources, FacetPage<S> facetPage, HttpServletRequest request) {
             super(pagedResources.getContent(), pagedResources.getMetadata(), pagedResources.getLinks());
-            Class<?> type = solrDocumentRepos.stream().filter(repo -> {
-                Optional<CollectionSource> collectionSource = Optional.ofNullable(repo.type().getAnnotation(CollectionSource.class));
-                return collectionSource.isPresent() && request.getRequestURI().substring(request.getContextPath().length() + 1).startsWith(collectionSource.get().name());
-            }).map(repo -> repo.type()).findAny().get();
-            this.facets = buildFacets(facetPage, getFacetArguments(request), type);
+            this.facets = buildFacets(facetPage, getFacetArguments(request));
         }
 
         public List<Facet> getFacets() {

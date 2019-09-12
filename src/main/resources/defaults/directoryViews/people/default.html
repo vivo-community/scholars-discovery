@@ -8,13 +8,13 @@
   </div>
   <div class="align-self-center">
     <div>
-      <span><a href="display/persons/{{id}}">{{name}}</a></span>
+      <span><a href="display/{{id}}">{{name}}</a></span>
     </div>
     <div>
       <span>{{preferredTitle}}</span>
       {{#if positions}}
       {{#showPositionForPreferredTitle positions preferredTitle}}
-      <span><a href="display/organizations/{{id}}">{{label}}</a></span>
+      <span><a href="display/{{id}}">{{label}}</a></span>
       {{/showPositionForPreferredTitle}}
       {{/if}}
     </div>

@@ -24,7 +24,6 @@ import edu.tamu.scholars.middleware.view.model.FacetType;
 import edu.tamu.scholars.middleware.view.model.Filter;
 import edu.tamu.scholars.middleware.view.model.Index;
 import edu.tamu.scholars.middleware.view.model.Layout;
-import edu.tamu.scholars.middleware.view.model.LazyReference;
 import edu.tamu.scholars.middleware.view.model.Side;
 import edu.tamu.scholars.middleware.view.model.Sort;
 
@@ -36,7 +35,7 @@ public class ViewTestUtility {
         DirectoryView directoryView = new DirectoryView();
 
         directoryView.setName(MOCK_VIEW_NAME);
-        directoryView.setCollection("persons");
+//        directoryView.setCollection("persons");
         directoryView.setLayout(Layout.LIST);
 
         Map<String, String> templates = new HashMap<String, String>();
@@ -130,7 +129,7 @@ public class ViewTestUtility {
         DiscoveryView discoveryView = new DiscoveryView();
 
         discoveryView.setName(MOCK_VIEW_NAME);
-        discoveryView.setCollection("persons");
+//        discoveryView.setCollection("persons");
         discoveryView.setLayout(Layout.GRID);
 
         Map<String, String> templates = new HashMap<String, String>();
@@ -285,13 +284,8 @@ public class ViewTestUtility {
 
         section.setRequiredFields(requiredFields);
 
-        LazyReference lazyReference = new LazyReference();
-
-        lazyReference.setField("publications");
-        lazyReference.setCollection("documents");
-
-        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
-        lazyReferences.add(lazyReference);
+        List<String> lazyReferences = new ArrayList<String>();
+        lazyReferences.add("publications");
 
         section.setLazyReferences(lazyReferences);
 
@@ -345,11 +339,8 @@ public class ViewTestUtility {
 
         export.setRequiredFields(requiredFields);
 
-        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
-        LazyReference reference = new LazyReference();
-        reference.setCollection("persons");
-        reference.setField("publications");
-        lazyReferences.add(reference);
+        List<String> lazyReferences = new ArrayList<String>();
+        lazyReferences.add("publications");
 
         export.setLazyReferences(lazyReferences);
 

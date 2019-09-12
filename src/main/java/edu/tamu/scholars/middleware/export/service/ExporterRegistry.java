@@ -9,16 +9,12 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.export.exception.UnknownExporterTypeException;
 
 @Service
-public final class ExporterRegistry {
-
-    private static List<Exporter> exporters;
+public class ExporterRegistry {
 
     @Autowired
-    public ExporterRegistry(List<Exporter> exporters) {
-        ExporterRegistry.exporters = exporters;
-    }
+    private List<Exporter> exporters;
 
-    public static Exporter getExporter(String type) throws UnknownExporterTypeException {
+    public Exporter getExporter(String type) throws UnknownExporterTypeException {
         Optional<Exporter> exporter = exporters.stream().filter(e -> e.type().equals(type)).findAny();
         if (exporter.isPresent()) {
             return exporter.get();

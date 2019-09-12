@@ -1,2 +1,10 @@
-<a href="display/organizations/{{awardConferredBy.id}}">{{awardConferredBy.label}}</a>
-<span class="badge badge-light">{{awardConferredBy.type}}</span>
+<div class="mb-2">
+  <ul class="list-unstyled ml-2 mr-2 mb-0">
+    {{#each awardConferredBy}}
+    <li class="mb-2">
+      <a href="display/{{id}}">{{label}}</a>
+      <span class="badge badge-light">{{type}}</span>
+    </li>
+    {{/each}}
+  </ul>
+</div>

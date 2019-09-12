@@ -1,7 +1,7 @@
 <ul>
   {{#each publisherOf}}
   <li>
-    <span><a href="display/documents/{{id}}">{{label}}{{#if type}}, {{/if}}</a></span>
+    <span><a href="display/{{id}}">{{label}}{{#if type}}, {{/if}}</a></span>
     <span>{{formalize type}}{{#if date}}, {{/if}}</span>
     <span>{{toYear date}}{{label}}</span>
   </li>

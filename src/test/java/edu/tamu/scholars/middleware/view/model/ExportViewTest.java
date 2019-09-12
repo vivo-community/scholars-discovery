@@ -44,16 +44,12 @@ public class ExportViewTest {
         assertEquals(1, export.getRequiredFields().size());
         assertEquals("type", export.getRequiredFields().get(0));
 
-        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
-        LazyReference reference = new LazyReference();
-        reference.setCollection("persons");
-        reference.setField("publications");
-        lazyReferences.add(reference);
+        List<String> lazyReferences = new ArrayList<String>();
+        lazyReferences.add("publications");
 
         export.setLazyReferences(lazyReferences);
         assertEquals(1, export.getLazyReferences().size());
-        assertEquals("publications", export.getLazyReferences().get(0).getField());
-        assertEquals("persons", export.getLazyReferences().get(0).getCollection());
+        assertEquals("publications", export.getLazyReferences().get(0));
 
         List<ExportFieldView> fieldViews = new ArrayList<ExportFieldView>();
 

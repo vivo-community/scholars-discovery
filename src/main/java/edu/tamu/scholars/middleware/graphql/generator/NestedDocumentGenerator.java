@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,6 +44,7 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.Common;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
 import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
 import io.leangen.graphql.annotations.types.GraphQLInterface;
@@ -52,11 +52,7 @@ import io.leangen.graphql.annotations.types.GraphQLType;
 
 public class NestedDocumentGenerator {
 
-    private static final List<String> SINGULAR_WORDS_ENDING_WITH_S = Arrays.asList(new String[] {
-        "GeographicFocus",
-        "SameAs",
-        "AwardsAndHonors"
-    });
+    private static final List<String> SINGULAR_WORDS_ENDING_WITH_S = Arrays.asList(new String[] { "GeographicFocus", "SameAs", "AwardsAndHonors" });
 
     private static final String DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME = "AbstractNestedDocument";
 
@@ -67,9 +63,9 @@ public class NestedDocumentGenerator {
     private final String destinationPath;
 
     private final String destinationPackage;
-    
+
     private final Optional<String> compositesPath;
-    
+
     private final List<Composite> composites;
 
     public NestedDocumentGenerator(String destinationPath, String destinationPackage) {
@@ -86,30 +82,20 @@ public class NestedDocumentGenerator {
         this.composites = new ArrayList<Composite>();
     }
 
-    public void generate() {
+    public void generate() throws JsonParseException, JsonMappingException, IOException {
         FileSystemUtils.deleteRecursively(new File(String.format("%s%s%s", destinationPath, File.separator, destinationPackage.replace(".", "/"))));
 
         if (compositesPath.isPresent()) {
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             Path path = Paths.get(compositesPath.get());
-            try {
-                URL url = path.toUri().toURL();
-                // @formatter:off
-                composites.addAll(mapper.readValue(url, new TypeReference<List<Composite>>() {}));
-                // @formatter:on
-            } catch (JsonParseException e) {
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            URL url = path.toUri().toURL();
+            // @formatter:off
+            composites.addAll(mapper.readValue(url, new TypeReference<List<Composite>>() {}));
+            // @formatter:on
         }
-        
+
         buildAbstractNestedDocument();
-        
+
         for (Class<?> docType : getDiscoveryDocumentTypes()) {
             buildNestedDocument(docType);
         }
@@ -119,17 +105,18 @@ public class NestedDocumentGenerator {
         String packagePath = destinationPackage;
         String className = DISCOVERY_ABSTRACT_NESTED_DOCUMENT_CLASS_NAME;
 
+        // @formatter:off
         TypeSpec abstractNestedDocumentClass = builder(className, Modifier.PUBLIC, Modifier.ABSTRACT)
-                .addSuperinterface(Serializable.class)
-                .superclass(AbstractSolrDocument.class)
-                .addAnnotation(AnnotationSpec
-                        .builder(GraphQLInterface.class)
-                        .addMember("name", "$S", "AbstractNestedDocument")
-                        .addMember("implementationAutoDiscovery", "$L", true)
-                        .build())
-                .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)))
-                .addMethod(constructor())
-                .build();
+            .addSuperinterface(Serializable.class)
+            .superclass(AbstractSolrDocument.class)
+            .addAnnotation(AnnotationSpec.builder(GraphQLInterface.class)
+                .addMember("name", "$S", "AbstractNestedDocument")
+                .addMember("implementationAutoDiscovery", "$L", true)
+                .build())
+            .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)))
+            .addMethod(constructor())
+            .build();
+        // @formatter:on
 
         JavaFile nestedDocumentFile = JavaFile.builder(packagePath, abstractNestedDocumentClass).build();
 
@@ -147,42 +134,45 @@ public class NestedDocumentGenerator {
 
         String nestedPackagePath = String.format("%s.%s", destinationPackage, docType.getSimpleName().toLowerCase());
 
-        String className = docType.getSimpleName();
-        
-        Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(className)).findAny();
+        String commonPackagePath = String.format("%s.%s", destinationPackage, "common");
 
+        String className = docType.getSimpleName();
+
+        Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(className)).findAny();
+        // @formatter:off
         List<Field> basicFields = FieldUtils.getAllFieldsList(docType)
-                .stream()
-                .filter(field -> !field.getName().equals("id"))
-                .filter(field -> !field.getName().equals("syncIds"))
-                .filter(field -> !field.getName().startsWith("$"))
-                .collect(Collectors.toList());
+            .stream()
+            .filter(field -> !field.getName().equals("id"))
+            .filter(field -> !field.getName().equals("syncIds"))
+            .filter(field -> !field.getName().startsWith("$"))
+            .collect(Collectors.toList());
 
         List<Field> nestedObjectFields = FieldUtils.getFieldsListWithAnnotation(docType, NestedObject.class)
-                .stream()
-                .filter(field -> !field.getName().equals("id"))
-                .filter(field -> !field.getName().equals("syncIds"))
-                .filter(field -> !field.getName().startsWith("$"))
-                .collect(Collectors.toList());
+            .stream()
+            .filter(field -> !field.getName().equals("id"))
+            .filter(field -> !field.getName().equals("syncIds"))
+            .filter(field -> !field.getName().startsWith("$"))
+            .collect(Collectors.toList());
+        // @formatter:on
 
         List<FieldSpec> fields = new ArrayList<FieldSpec>();
         List<MethodSpec> methods = new ArrayList<MethodSpec>();
 
         List<String> imports = new ArrayList<String>();
 
-        for(Field field : nestedObjectFields) {
+        for (Field field : nestedObjectFields) {
             NestedObject nestedObject = field.getAnnotation(NestedObject.class);
-            
+
             Optional<CompositeReference> compositeReference = Optional.empty();
 
             if (composite.isPresent()) {
                 compositeReference = composite.get().getReferences().stream().filter(r -> r.getName().equals(field.getName())).findAny();
             }
-            
-            if(compositeReference.isPresent()) {
+
+            if (compositeReference.isPresent()) {
 
                 imports.add(String.format("%s.%s", packagePath, compositeReference.get().getType()));
-                
+
                 ClassName nestedClass = ClassName.get(packagePath, compositeReference.get().getType());
 
                 if (List.class.isAssignableFrom(field.getType())) {
@@ -199,8 +189,8 @@ public class NestedDocumentGenerator {
             } else {
                 if (nestedObject.root()) {
                     String nestedClassName = buildNestedClass(field, field.getName());
-                    
-                    imports.add(String.format("%s.%s", nestedPackagePath, nestedClassName));
+
+                    imports.add(String.format("%s.%s", field.getDeclaringClass().equals(Common.class) ? commonPackagePath : nestedPackagePath, nestedClassName));
 
                     ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
 
@@ -217,7 +207,7 @@ public class NestedDocumentGenerator {
                     }
                 }
             }
-            
+
             for (Reference reference : nestedObject.properties()) {
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);
                 basicFields = basicFields.stream().filter(f -> !f.getName().equals(nestedField.getName())).collect(Collectors.toList());
@@ -232,9 +222,7 @@ public class NestedDocumentGenerator {
 
             Optional<JsonProperty> jsonProperty = Optional.ofNullable(field.getAnnotation(JsonProperty.class));
             if (jsonProperty.isPresent()) {
-                fieldBuilder.addAnnotation(AnnotationSpec.builder(JsonProperty.class)
-                        .addMember("value", "$S", jsonProperty.get().value())
-                        .build());
+                fieldBuilder.addAnnotation(AnnotationSpec.builder(JsonProperty.class).addMember("value", "$S", jsonProperty.get().value()).build());
             }
 
             fields.add(fieldBuilder.build());
@@ -242,16 +230,16 @@ public class NestedDocumentGenerator {
             methods.add(setter(type, field.getName()));
         }
 
+        // @formatter:off
         Builder builder = builder(className, Modifier.PUBLIC)
-                .addAnnotation(AnnotationSpec
-                        .builder(GraphQLType.class)
-                        .addMember("name", "$S", className)
-                        .build())
-                .addAnnotation(AnnotationSpec
-                        .builder(JsonInclude.class)
-                        .addMember("value", "$L", NON_EMPTY)
-                        .build())
-                .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
+            .addAnnotation(AnnotationSpec.builder(GraphQLType.class)
+                .addMember("name", "$S", className)
+                .build())
+            .addAnnotation(AnnotationSpec.builder(JsonInclude.class)
+                .addMember("value", "$L", NON_EMPTY)
+                .build())
+            .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
+        // @formatter:on
 
         fields.forEach(f -> builder.addField(f));
 
@@ -288,19 +276,19 @@ public class NestedDocumentGenerator {
                 String fieldName = reference.key();
 
                 Field nestedField = FieldUtils.getField(docType, reference.value(), true);
-                
+
                 Optional<NestedObject> childNestedObject = Optional.ofNullable(nestedField.getAnnotation(NestedObject.class));
 
                 Optional<NestedMultiValuedProperty> nestedMultiValuedProperty = Optional.ofNullable(nestedField.getAnnotation(NestedMultiValuedProperty.class));
 
-                if(childNestedObject.isPresent()) {
+                if (childNestedObject.isPresent()) {
                     String nestedClassName = buildNestedClass(nestedField, reference.value());
 
                     imports.add(String.format("%s.%s", packagePath, nestedClassName));
 
                     ClassName nestedClass = ClassName.get(packagePath, nestedClassName);
 
-                    if(nestedMultiValuedProperty.isPresent()) {
+                    if (nestedMultiValuedProperty.isPresent()) {
                         TypeName listOfNestedClass = ParameterizedTypeName.get(LIST, nestedClass);
                         fields.add(field(listOfNestedClass, fieldName, Modifier.PRIVATE));
                         methods.add(getter(listOfNestedClass, fieldName));
@@ -311,7 +299,7 @@ public class NestedDocumentGenerator {
                         methods.add(setter(nestedClass, fieldName));
                     }
                 } else {
-                    if(nestedMultiValuedProperty.isPresent()) {
+                    if (nestedMultiValuedProperty.isPresent()) {
                         TypeName listOfStrings = ParameterizedTypeName.get(LIST, STRING);
                         fields.add(field(listOfStrings, fieldName, Modifier.PRIVATE));
                         methods.add(getter(listOfStrings, fieldName));
@@ -325,17 +313,16 @@ public class NestedDocumentGenerator {
             }
         }
 
+        // @formatter:off
         Builder builder = builder(className, Modifier.PUBLIC)
-                .addAnnotation(AnnotationSpec
-                        .builder(GraphQLType.class)
-                        .addMember("name", "$S", String.format("%s%s", docType.getSimpleName(), className))
-                        .build())
-                .addAnnotation(AnnotationSpec
-                        .builder(JsonInclude.class)
-                        .addMember("value", "$L", NON_EMPTY)
-                        .build())
-                .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
-
+            .addAnnotation(AnnotationSpec.builder(GraphQLType.class)
+                .addMember("name", "$S", String.format("%s%s", docType.getSimpleName(), className))
+                .build())
+            .addAnnotation(AnnotationSpec.builder(JsonInclude.class)
+                .addMember("value", "$L", NON_EMPTY)
+                .build())
+            .addField(serializeVersionUID(String.format("%s.%s", packagePath, className)));
+        // @formatter:on
         fields.forEach(f -> builder.addField(f));
 
         builder.addMethod(constructor());
@@ -351,10 +338,12 @@ public class NestedDocumentGenerator {
     }
 
     private FieldSpec serializeVersionUID(String fullClassName) {
+        // @formatter:off
         return FieldSpec
-                .builder(long.class, "serialVersionUID", Modifier.PRIVATE, Modifier.STATIC,Modifier.FINAL)
-                .initializer("$LL", Long.valueOf(fullClassName.hashCode()))
-                .build();
+            .builder(long.class, "serialVersionUID", Modifier.PRIVATE, Modifier.STATIC,Modifier.FINAL)
+            .initializer("$LL", Long.valueOf(fullClassName.hashCode()))
+            .build();
+        // @formatter:on
     }
 
     // TODO: if and when property types are imported, remove this method
@@ -364,9 +353,11 @@ public class NestedDocumentGenerator {
 
         TypeSpec nestedDocumentClass = builder.superclass(abstractNestedDocumentClass).build();
 
+        // @formatter:off
         JavaFile nestedDocumentFile = JavaFile.builder(packagePath, nestedDocumentClass)
-                .addStaticImport(Include.class, "NON_EMPTY")
-                .build();
+            .addStaticImport(Include.class, "NON_EMPTY")
+            .build();
+        // @formatter:on
 
         String[] lines = nestedDocumentFile.toString().split("\\r?\\n");
 
@@ -374,7 +365,7 @@ public class NestedDocumentGenerator {
 
         for (int l = 0; l < lines.length; l++) {
             fileAsString.append(String.format("%s\n", lines[l]));
-            if(l == 0 && imports.size() > 0) {
+            if (l == 0 && imports.size() > 0) {
                 fileAsString.append("\n");
                 imports.forEach(i -> {
                     fileAsString.append(String.format("import %s;\n", i));
@@ -411,7 +402,7 @@ public class NestedDocumentGenerator {
         File sourceDirectory = new File(destinationPath);
 
         try {
-             nestedDocumentFile.writeTo(sourceDirectory);
+            nestedDocumentFile.writeTo(sourceDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -427,52 +418,61 @@ public class NestedDocumentGenerator {
         }
         return className;
     }
-    
-    private Builder builder(String className, Modifier...modifiers) {
+
+    private Builder builder(String className, Modifier... modifiers) {
+        // @formatter:off
         return TypeSpec.classBuilder(className)
-                .addJavadoc("This file is automatically generated on compile.\n\nDo not modify this file -- YOUR CHANGES WILL BE ERASED!\n")
-                .addModifiers(modifiers);
+            .addJavadoc("This file is automatically generated on compile.\n\nDo not modify this file -- YOUR CHANGES WILL BE ERASED!\n")
+            .addModifiers(modifiers);
+        // @formatter:on
     }
 
-    private FieldSpec field(TypeName type, String name, Modifier...modifiers) {
+    private FieldSpec field(TypeName type, String name, Modifier... modifiers) {
         return FieldSpec.builder(type, name, modifiers).build();
     }
 
     private MethodSpec constructor() {
-        return MethodSpec
-                .constructorBuilder()
-                .addStatement("super()")
-                .addModifiers(Modifier.PUBLIC)
-                .build();
+        // @formatter:off
+        return MethodSpec.constructorBuilder()
+            .addStatement("super()")
+            .addModifiers(Modifier.PUBLIC)
+            .build();
+        // @formatter:on
     }
 
     private MethodSpec getter(TypeName type, String name) {
-        return MethodSpec
-                .methodBuilder(String.format("get%s%s", name.substring(0, 1).toUpperCase(), name.substring(1)))
-                .addModifiers(Modifier.PUBLIC)
-                .returns(type)
-                .addStatement("return $N", name)
-                .build();
+        // @formatter:off
+        return MethodSpec.methodBuilder(String.format("get%s%s", name.substring(0, 1).toUpperCase(), name.substring(1)))
+            .addModifiers(Modifier.PUBLIC)
+            .returns(type)
+            .addStatement("return $N", name)
+            .build();
+        // @formatter:on
     }
 
     private MethodSpec setter(TypeName type, String name) {
-        return MethodSpec
-                .methodBuilder(String.format("set%s%s", name.substring(0, 1).toUpperCase(), name.substring(1)))
-                .addModifiers(Modifier.PUBLIC)
-                .returns(void.class)
-                .addParameter(type, name)
-                .addStatement("this.$N = $N", name, name)
-                .build();
+        // @formatter:off
+        return MethodSpec.methodBuilder(String.format("set%s%s", name.substring(0, 1).toUpperCase(), name.substring(1)))
+            .addModifiers(Modifier.PUBLIC)
+            .returns(void.class)
+            .addParameter(type, name)
+            .addStatement("this.$N = $N", name, name)
+            .build();
+        // @formatter:on
     }
 
     public static void main(String[] args) {
         if (args.length < 2 || args.length > 3) {
             throw new RuntimeException("Please provide either two arguments, destination path and generated model destination package, or three with optional composites config path.");
         }
-        if (args.length == 2) {
-            new NestedDocumentGenerator(args[0], args[1]).generate();
-        } else {
-            new NestedDocumentGenerator(args[0], args[1], args[2]).generate();
+        try {
+            if (args.length == 2) {
+                new NestedDocumentGenerator(args[0], args[1]).generate();
+            } else {
+                new NestedDocumentGenerator(args[0], args[1], args[2]).generate();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

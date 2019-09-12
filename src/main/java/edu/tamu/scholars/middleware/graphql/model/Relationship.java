@@ -16,11 +16,12 @@ import edu.tamu.scholars.middleware.graphql.model.relationship.PrincipalInvestig
 import edu.tamu.scholars.middleware.graphql.model.relationship.CoPrincipalInvestigator;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SupportedPublicationOrOtherWork;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SubjectArea;
-import edu.tamu.scholars.middleware.graphql.model.relationship.SameAs;
 import edu.tamu.scholars.middleware.graphql.model.relationship.InheresIn;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SpecifiedOutputOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.OutputOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.ParticipatesIn;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -74,8 +75,6 @@ public class Relationship extends AbstractNestedDocument {
 
   private List<SubjectArea> subjectAreas;
 
-  private List<SameAs> sameAs;
-
   private List<InheresIn> inheresIn;
 
   private List<SpecifiedOutputOf> specifiedOutputOf;
@@ -84,13 +83,11 @@ public class Relationship extends AbstractNestedDocument {
 
   private List<ParticipatesIn> participatesIn;
 
+  private List<Website> websites;
+
+  private List<SameAs> sameAs;
+
   private String title;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   @JsonProperty("abstract")
   private String abstractText;
@@ -110,6 +107,12 @@ public class Relationship extends AbstractNestedDocument {
   private String dateTimeIntervalEnd;
 
   private String yearAwarded;
+
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
 
   private String modTime;
 
@@ -250,14 +253,6 @@ public class Relationship extends AbstractNestedDocument {
     this.subjectAreas = subjectAreas;
   }
 
-  public List<SameAs> getSameAs() {
-    return sameAs;
-  }
-
-  public void setSameAs(List<SameAs> sameAs) {
-    this.sameAs = sameAs;
-  }
-
   public List<InheresIn> getInheresIn() {
     return inheresIn;
   }
@@ -290,36 +285,28 @@ public class Relationship extends AbstractNestedDocument {
     this.participatesIn = participatesIn;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
+  public List<SameAs> getSameAs() {
+    return sameAs;
+  }
+
+  public void setSameAs(List<SameAs> sameAs) {
+    this.sameAs = sameAs;
+  }
+
   public String getTitle() {
     return title;
   }
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getAbstractText() {
@@ -392,6 +379,30 @@ public class Relationship extends AbstractNestedDocument {
 
   public void setYearAwarded(String yearAwarded) {
     this.yearAwarded = yearAwarded;
+  }
+
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
   }
 
   public String getModTime() {

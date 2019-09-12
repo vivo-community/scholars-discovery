@@ -7,12 +7,12 @@
     {{/if}}
   </div>
   <div class="align-self-center">
-    <div class="name"><a href="display/persons/{{id}}">{{name}}</a></div>
+    <div class="name"><a href="display/{{id}}">{{name}}</a></div>
     <div class="mt-1"><span>{{preferredTitle}}</span></div>
     {{#each positions}}
     <div>
       {{#each organizations}}
-      <span><a href="display/organizations/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     {{/each}}
@@ -22,7 +22,7 @@
     </div>
     <div>
       {{#each researchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     {{/if}}

@@ -1,0 +1,141 @@
+=== Organizations
+
+==== Page
+
+This provides a page of all the organizations present in the system, based on the _request parameters_ as shown.
+
+===== Request Parameters
+include::../{snippets}/organizations/page/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/organizations/page/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/page/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/page/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/page/curl-request.adoc[]
+
+==== Find by id
+
+This will find an organization based on the _individual id_ provided as a parameter as shown in *Path Parameters*. The json response will have the specific organization as shown in the *Sample Response*.
+
+===== Path Parameters
+include::../{snippets}/organizations/findById/path-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/findById/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/findById/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/findById/curl-request.adoc[]
+
+==== Find by id In
+
+This will find a list of organizations based on the _individual ids_ provided as a parameter as shown in *Request Parameters*. The json response will have the list of organizations as shown in the *Sample Response*.
+
+===== Request Parameters
+include::../{snippets}/organizations/search/findByIdIn/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/search/findByIdIn/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/search/findByIdIn/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/search/findByIdIn/curl-request.adoc[]
+
+==== Search
+
+This search will return a json response listing all the organizations, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/organizations/search/faceted/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/organizations/search/faceted/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/search/faceted/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/search/faceted/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/search/faceted/curl-request.adoc[]
+
+==== Export Search
+
+This export will return a stream of specified type containing the search results with the requested fields, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/organizations/search/export/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/search/export/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/search/export/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/search/export/curl-request.adoc[]
+
+==== Export Single Page
+
+This export will return a stream of specified type containing the single page built from the associated export view. An export view must be added to the display view for the type of organization.
+
+===== Path Parameters
+include::../{snippets}/organizations/export/path-parameters.adoc[]
+
+===== Request Parameters
+include::../{snippets}/organizations/export/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/export/http-request.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/export/curl-request.adoc[]
+
+==== Count
+
+This count will return a json response containing the count, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/organizations/search/count/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/organizations/search/count/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/search/count/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/search/count/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/search/count/curl-request.adoc[]
+
+==== Recently Updated
+
+This will return a json response listing recently updated organizations, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/organizations/search/recently-updated/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/organizations/search/recently-updated/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/organizations/search/recently-updated/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/organizations/search/recently-updated/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/organizations/search/recently-updated/curl-request.adoc[]
