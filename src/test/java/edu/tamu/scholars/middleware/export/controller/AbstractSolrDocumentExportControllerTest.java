@@ -55,9 +55,11 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
     @Test
     public void testSearchSolrDocumentsExport() throws Exception {
         // @formatter:off
-        MvcResult result = mockMvc.perform(get(getPath() + "/search/export")
+        MvcResult result = mockMvc.perform(get("/individual/search/export")
             .param("query", "*")
             .param("type", "csv")
+            .param("filters", "class")
+            .param("class.filter", getType().getSimpleName())
             .param("export", "id,Id")
             .param("export", "type,Type")
             .param("export", "individual,Individual"))
@@ -68,10 +70,12 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
             .andExpect(content().contentType("text/csv"))
             .andDo(
                 document(
-                    getPath().substring(1) + "/export-search",
+                    getDocPath() + "/search/export",
                     requestParameters(
                         parameterWithName("query").description("The search query"),
                         parameterWithName("type").description("The search export format type"),
+                        parameterWithName("filters").description("The filter fields."),
+                        parameterWithName("class.filter").description("Class filter value."),
                         parameterWithName("export").description("The search export fields")
                     )
                 )
@@ -81,7 +85,7 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
         InputStream csvByteStream = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
         CSVParser csvParser = CSVFormat.DEFAULT.parse(new InputStreamReader(csvByteStream));
         List<CSVRecord> records = csvParser.getRecords();
-        assertEquals(4, records.size());
+        assertEquals(mockDocuments.size() + 1, records.size());
         assertEquals("Id", records.get(0).get(0));
         assertEquals("Type", records.get(0).get(1));
         assertEquals("Individual", records.get(0).get(2));
@@ -96,7 +100,7 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
         Mockito.when(displayViewRepo.findByTypesIn(Mockito.<List<String>>any()))
             .thenReturn(Optional.of(mockDisplayView));
         String id = mockDocuments.get(0).getId();
-        MvcResult result = mockMvc.perform(get(getPath() + "/{id}/export", id)
+        MvcResult result = mockMvc.perform(get("/individual/{id}/export", id)
             .param("type", "docx"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -105,7 +109,7 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
             .andExpect(content().contentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
             .andDo(
                 document(
-                    getPath().substring(1) + "/export-single-page",
+                    getDocPath() + "/export",
                     pathParameters(
                         parameterWithName("id").description("The individual id")
                     ),
@@ -117,7 +121,5 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
             .andReturn();
         // @formatter:on
     }
-
-    protected abstract String getPath();
 
 }

@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.discovery;
 
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypeByName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,8 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
@@ -24,6 +27,7 @@ import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.SimpleQuery;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
@@ -35,6 +39,9 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
     @Value("classpath:solr/discovery")
     private Resource instanceDirectory;
 
+    @Value("classpath:mock/discovery")
+    private Resource mocksDirectoryResource;
+
     @Autowired
     private EmbeddedSolrServer solrServer;
 
@@ -44,12 +51,13 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
     @Autowired
     protected SolrTemplate solrTemplate;
 
-    protected List<D> mockDocuments;
+    protected List<D> mockDocuments = new ArrayList<D>();
+
+    protected int numberOfDocuments = 0;
 
     @BeforeAll
     public void setup() throws SolrServerException, IOException {
         createCore();
-        setDocuments();
         createDocuments();
     }
 
@@ -59,7 +67,7 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
         deleteCore();
     }
 
-    protected void createCore() throws SolrServerException, IOException {
+    private void createCore() throws SolrServerException, IOException {
         assertTrue(instanceDirectory.exists());
         assertTrue(instanceDirectory.isFile());
         CoreAdminRequest.createCore(getCollection(), instanceDirectory.getFile().getAbsolutePath(), solrServer);
@@ -69,11 +77,16 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
         CoreAdminRequest.unloadCore(getCollection(), solrServer);
     }
 
-    private void setDocuments() throws IOException {
-        mockDocuments = new ArrayList<D>();
+    private void createDocuments() throws IOException {
+        assertEquals(0, repo.count());
         ObjectMapper objectMapper = new ObjectMapper();
-        for (File file : getMockFiles()) {
-            if (file.isFile()) {
+        List<File> mockFiles = getMockFiles();
+        for (File file : mockFiles) {
+            JsonNode mockDocumentNode = objectMapper.readTree(file);
+            String name = mockDocumentNode.get("class").asText();
+            Class<?> type = getDiscoveryDocumentTypeByName(name);
+            solrTemplate.saveBean(getCollection(), objectMapper.readValue(file, type));
+            if (type.equals(getType())) {
                 @SuppressWarnings("unchecked")
                 D mockDocument = (D) objectMapper.readValue(file, getType());
                 assertNotNull(mockDocument);
@@ -81,26 +94,21 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
             }
         }
         assertTrue(mockDocuments.size() > 0);
-    }
-
-    private void createDocuments() {
-        assertEquals(0, repo.count());
-        solrTemplate.saveBeans(getCollection(), mockDocuments);
         solrTemplate.commit(getCollection());
-        assertEquals(mockDocuments.size(), solrTemplate.count(getCollection(), new SimpleQuery("*")));
+        numberOfDocuments = (int) solrTemplate.count(getCollection(), new SimpleQuery("*"));
+        assertEquals(mockFiles.size(), numberOfDocuments);
     }
 
     private void deleteDocuments() {
         repo.deleteAll();
     }
 
-    private File[] getMockFiles() throws IOException {
-        Resource mocksDirectoryResource = getMocksDirectory();
+    private List<File> getMockFiles() throws IOException {
         assertTrue(mocksDirectoryResource.exists());
         assertTrue(mocksDirectoryResource.isFile());
         File mocksDirectory = mocksDirectoryResource.getFile();
         assertTrue(mocksDirectory.isDirectory());
-        return mocksDirectory.listFiles();
+        return Files.walk(mocksDirectory.toPath(), 2).map(path -> path.toFile()).filter(file -> file.isFile()).collect(Collectors.toList());
     }
 
     private String getCollection() {
@@ -110,7 +118,15 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolr
         return collection;
     }
 
-    protected abstract Resource getMocksDirectory();
+    protected String getDocPath() {
+        String docPath = getType().getSimpleName().toLowerCase();
+        if (docPath.equals("process")) {
+            docPath += "es";
+        } else {
+            docPath += "s";
+        }
+        return docPath;
+    }
 
     protected abstract Class<?> getType();
 

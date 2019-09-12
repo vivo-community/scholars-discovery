@@ -48,32 +48,37 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     @Test
     public void testGetSolrDocumentsPage() throws Exception {
         // @formatter:off
-        mockMvc.perform(
-            get(getPath()).param("page", "0").param("size", "20").param("sort", "id"))
+        mockMvc.perform(get("/individual")
+            .param("page", "0")
+            .param("size", "10")
+            .param("sort", "id"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("page.size", equalTo(20)))
-                .andExpect(jsonPath("page.totalElements", equalTo(mockDocuments.size())))
-                .andExpect(jsonPath("page.totalPages", equalTo(1)))
+                .andExpect(jsonPath("page.size", equalTo(10)))
+                .andExpect(jsonPath("page.totalElements", equalTo(numberOfDocuments)))
+                .andExpect(jsonPath("page.totalPages", equalTo(3)))
                 .andExpect(jsonPath("page.number", equalTo(1)))
                 .andDo(
                     document(
-                        getPath().substring(1) + "/directory",
+                        getDocPath() + "/page",
                         requestParameters(
                             parameterWithName("page").description("The page number."),
                             parameterWithName("size").description("The page size."),
                             parameterWithName("sort").description("The page sort [field,asc/desc].")
                         ),
                         links(
+                            linkWithRel("first").description("First page link for this resource."),
                             linkWithRel("self").description("Canonical link for this resource."),
+                            linkWithRel("next").description("Next page link for this resource."),
+                            linkWithRel("last").description("Last page link for this resource."),
                             linkWithRel("profile").description("The ALPS profile for this resource."),
                             linkWithRel("search").description("Search link for this resource.")
                         ),
                         responseFields(
-                            subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", getPath().substring(1, getPath().length() - 1))),
-                            subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
+                            subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "individual")),
+                            subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
                         )
                     )
                 );
@@ -86,12 +91,12 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
             ConstraintDescriptionsHelper describeDocument = new ConstraintDescriptionsHelper(mockDocument.getClass());
 
             // @formatter:off
-            mockMvc.perform(get(getPath() + "/{id}", mockDocument.getId()))
+            mockMvc.perform(get("/individual/{id}", mockDocument.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andDo(
                     document(
-                        getPath().substring(1) + "/find-by-id",
+                        getDocPath() + "/findById",
                         pathParameters(
                             describeDocument.withParameter("id", String.format("The %s id.", getType().getSimpleName()))
                         )
@@ -104,12 +109,14 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     @Test
     public void testSearchSolrDocumentsFacetPage() throws Exception {
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/faceted")
+        mockMvc.perform(get("/individual/search/faceted")
             .param("query", "*")
             .param("facets", "type")
             .param("type.limit", "5")
             .param("type.offset", "0")
             .param("type.sort", "COUNT")
+            .param("filters", "class")
+            .param("class.filter", getType().getSimpleName())
             .param("page", "0")
             .param("size", "20")
             .param("sort", "id"))
@@ -121,13 +128,15 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                 .andExpect(jsonPath("page.number", equalTo(1)))
                 .andDo(
                     document(
-                        getPath().substring(1) + "/faceted-search",
+                        getDocPath() + "/search/faceted",
                         requestParameters(
                             parameterWithName("query").description("The search query."),
                             parameterWithName("facets").description("The facet fields."),
                             parameterWithName("type.limit").description("Type facet limit."),
                             parameterWithName("type.offset").description("Type facet offset."),
                             parameterWithName("type.sort").description("Type facet sort {index/count}."),
+                            parameterWithName("filters").description("The filter fields."),
+                            parameterWithName("class.filter").description("Class filter value."),
                             parameterWithName("page").description("The page number."),
                             parameterWithName("size").description("The page size."),
                             parameterWithName("sort").description("The page sort 'field,{asc/desc}'.")
@@ -136,10 +145,10 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
                             linkWithRel("self").description("Canonical link for this resource.")
                         ),
                         responseFields(
-                            subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", getPath().substring(1, getPath().length() - 1))),
-                            subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
+                            subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "individual")),
+                            subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
                         )
                     )
                 );
@@ -149,98 +158,107 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrD
     @Test
     public void testSearchSolrDocumentsCount() throws Exception {
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/count").param("query", "*"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("value", equalTo(3)))
-            .andDo(
-                document(
-                    getPath().substring(1) + "/count-search",
-                    requestParameters(
-                        parameterWithName("query").description("The search query.")
-                    ),
-                    responseFields(
-                        subsectionWithPath("value").description("The resulting count.")
+        mockMvc.perform(get("/individual/search/count")
+            .param("query", "*")
+            .param("filters", "class")
+            .param("class.filter", getType().getSimpleName()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("value", equalTo(mockDocuments.size())))
+                .andDo(
+                    document(
+                        getDocPath() + "/search/count",
+                        requestParameters(
+                            parameterWithName("query").description("The search query."),
+                            parameterWithName("filters").description("The filter fields."),
+                            parameterWithName("class.filter").description("Class filter value.")
+                        ),
+                        responseFields(
+                            subsectionWithPath("value").description("The resulting count.")
+                        )
                     )
-                )
-            );
+                );
         // @formatter:on
     }
 
     @Test
     public void testRecentlyUpdated() throws Exception {
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/recently-updated").param("limit", "2"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
-            .andExpect(jsonPath(String.format("$._embedded.%s.length()", getPath().substring(1)), equalTo(2)))
-            .andDo(
-                document(
-                    getPath().substring(1) + "/recently-updated-search",
-                    requestParameters(
-                        parameterWithName("limit").description("The number of recently updated documents to return.")
-                    ),
-                    responseFields(
-                        subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName()))
+        mockMvc.perform(get("/individual/search/recently-updated")
+            .param("limit", "2")
+            .param("filters", "class")
+            .param("class.filter", getType().getSimpleName()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(jsonPath(String.format("$._embedded.individual.length()"), equalTo(2)))
+                .andDo(
+                    document(
+                        getDocPath() + "/search/recently-updated",
+                        requestParameters(
+                            parameterWithName("limit").description("The number of recently updated documents to return."),
+                            parameterWithName("filters").description("The filter fields."),
+                            parameterWithName("class.filter").description("Class filter value.")
+                        ),
+                        responseFields(
+                            subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
+                        )
                     )
-                )
-            );
+                );
         // @formatter:on
     }
 
     @Test
-    public void testFindByIdInSolrDocument() throws Exception {
+    public void testFindByIdIn() throws Exception {
         List<String> ids = new ArrayList<String>();
         for (D mockDocument : mockDocuments) {
             ids.add(mockDocument.getId());
         }
         ConstraintDescriptionsHelper describeDocument = new ConstraintDescriptionsHelper(getType());
         // @formatter:off
-        mockMvc.perform(get(getPath() + "/search/findByIdIn").param("ids", String.join(",", ids)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
-            .andDo(
-                document(
-                    getPath().substring(1) + "/find-by-id-in",
-                    requestParameters(
-                        describeDocument.withParameter("ids", String.format("The %s ids.", getType().getSimpleName()))
-                    ),
-                    links(
-                        linkWithRel("self").description("Canonical link for this resource.")
-                    ),
-                    responseFields(
-                        subsectionWithPath("_embedded." + getPath().substring(1)).description(String.format("An array of <<resources-%s, %s resources>>.", getPath().substring(1, getPath().length() - 1), getType().getSimpleName())),
-                        subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", getPath().substring(1, getPath().length() - 1)))
+        mockMvc.perform(get("/individual/search/findByIdIn")
+            .param("ids", String.join(",", ids)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andDo(
+                    document(
+                        getDocPath() + "/search/findByIdIn",
+                        requestParameters(
+                            describeDocument.withParameter("ids", String.format("The %s ids.", getType().getSimpleName()))
+                        ),
+                        links(
+                            linkWithRel("self").description("Canonical link for this resource.")
+                        ),
+                        responseFields(
+                            subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "indiviudal", getType().getSimpleName())),
+                            subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "indiviudal"))
+                        )
                     )
-                )
-            );
+                );
         // @formatter:on
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void testPostSolrDocument() throws Exception {
-        mockMvc.perform(post(getPath()).content("{}")).andExpect(status().isMethodNotAllowed());
+    public void testPost() throws Exception {
+        mockMvc.perform(post("/individual").content("{}")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void testPutSolrDocument() throws Exception {
-        mockMvc.perform(put(getPath() + "/" + mockDocuments.get(0).getId()).content("{}")).andExpect(status().isMethodNotAllowed());
+    public void testPut() throws Exception {
+        mockMvc.perform(put("/individual/" + mockDocuments.get(0).getId()).content("{}")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void testPatchSolrDocument() throws Exception {
-        mockMvc.perform(put(getPath() + "/" + mockDocuments.get(0).getId()).content("{}")).andExpect(status().isMethodNotAllowed());
+    public void testPatch() throws Exception {
+        mockMvc.perform(put("/individual/" + mockDocuments.get(0).getId()).content("{}")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void testDeleteSolrDocument() throws Exception {
-        mockMvc.perform(delete(getPath() + "/" + mockDocuments.get(0).getId())).andExpect(status().isMethodNotAllowed());
+    public void testDelete() throws Exception {
+        mockMvc.perform(delete("/individual/" + mockDocuments.get(0).getId())).andExpect(status().isMethodNotAllowed());
     }
-
-    protected abstract String getPath();
 
 }

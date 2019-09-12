@@ -40,7 +40,7 @@ public abstract class AbstractSolrDocumentRepoTest<D extends AbstractSolrDocumen
     @Test
     public void testFindAll() throws IOException {
         List<Individual> documents = StreamSupport.stream(repo.findAll().spliterator(), false).collect(Collectors.toList());
-        assertEquals(3, documents.size());
+        assertEquals(numberOfDocuments, documents.size());
     }
 
 }

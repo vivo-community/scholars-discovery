@@ -33,10 +33,10 @@ import graphql.language.Field;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDocument, ND extends AbstractNestedDocument, DAO extends AbstractNestedDocumentService<ND>> extends AbstractSolrDocumentIntegrationTest<D> {
+public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDocument, ND extends AbstractNestedDocument, NDS extends AbstractNestedDocumentService<ND>> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Autowired
-    private DAO service;
+    private NDS service;
 
     @Test
     public void testGeneratedDocumentDefaultConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -66,7 +66,7 @@ public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDo
     @Test
     public void testFindAll() throws IOException {
         List<ND> nestedDocuments = StreamSupport.stream(service.findAll(getGraphQLEnvironmentFields()).spliterator(), false).collect(Collectors.toList());
-        assertEquals(3, nestedDocuments.size());
+        assertEquals(mockDocuments.size(), nestedDocuments.size());
         nestedDocuments.forEach(nestedDocument -> {
             assertTrue(nestedDocument instanceof AbstractNestedDocument);
         });

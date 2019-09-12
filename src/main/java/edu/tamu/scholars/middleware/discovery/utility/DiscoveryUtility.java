@@ -6,10 +6,10 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DEL
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -22,7 +22,7 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 
 public class DiscoveryUtility {
 
-    private final static Set<Class<?>> DISCOVERY_DOCUMENT_TYPES = new CopyOnWriteArraySet<Class<?>>();
+    private final static Set<Class<?>> DISCOVERY_DOCUMENT_TYPES = new HashSet<Class<?>>();
 
     static {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
