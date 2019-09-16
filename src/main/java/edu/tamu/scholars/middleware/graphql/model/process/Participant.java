@@ -19,10 +19,20 @@ import java.lang.String;
 public class Participant extends AbstractNestedDocument {
   private static final long serialVersionUID = 231634830L;
 
+  private String label;
+
   private String role;
 
   public Participant() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getRole() {

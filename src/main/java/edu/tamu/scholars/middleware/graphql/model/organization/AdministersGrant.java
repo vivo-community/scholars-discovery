@@ -19,10 +19,20 @@ import java.lang.String;
 public class AdministersGrant extends AbstractNestedDocument {
   private static final long serialVersionUID = -1944855642L;
 
+  private String label;
+
   private String date;
 
   public AdministersGrant() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getDate() {

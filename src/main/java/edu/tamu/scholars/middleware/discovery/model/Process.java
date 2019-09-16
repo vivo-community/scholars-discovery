@@ -12,46 +12,25 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "processes")
-@CollectionSource(predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
-public class Process extends AbstractSolrDocument {
+@SolrDocument(collection = "scholars-discovery")
+@CollectionSource(name = "processes", predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
+public class Process extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "process/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "process/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "process/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "process/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
-
-    @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "websiteUrl", key = "url") })
-    @PropertySource(template = "process/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> websites;
-
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "process/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> websiteUrl;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "process/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "offeredByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "offeredByType", key = "type") })
     @PropertySource(template = "process/offeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> offeredBy;
 
@@ -83,7 +62,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> inEventSeries;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "participantRole", key = "role") })
+    @NestedObject(properties = { @Reference(value = "participantRole", key = "role") })
     @PropertySource(template = "process/participant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participants;
 
@@ -97,7 +76,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> subjectAreas;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "hasPrerequisiteType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "hasPrerequisiteType", key = "type") })
     @PropertySource(template = "process/hasPrerequisite", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasPrerequisite;
 
@@ -106,7 +85,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> hasPrerequisiteType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "prerequisiteForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "prerequisiteForType", key = "type") })
     @PropertySource(template = "process/prerequisiteFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> prerequisiteFor;
 
@@ -119,7 +98,7 @@ public class Process extends AbstractSolrDocument {
     private String credits;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "geographicFocusType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "process/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
@@ -128,7 +107,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> geographicFocusType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "outputPublicationOrOtherWorkType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "outputPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "process/outputPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputPublicationOrOtherWork;
 
@@ -137,7 +116,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> outputPublicationOrOtherWorkType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "relatedDocumentType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "relatedDocumentType", key = "type") })
     @PropertySource(template = "process/relatedDocument", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedDocuments;
 
@@ -160,7 +139,7 @@ public class Process extends AbstractSolrDocument {
     private List<String> heldInGeographicLocation;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "hasOutputType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "hasOutputType", key = "type") })
     @PropertySource(template = "process/hasOutput", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasOutput;
 
@@ -169,22 +148,13 @@ public class Process extends AbstractSolrDocument {
     private List<String> hasOutputType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "hasParticipantType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "hasParticipantType", key = "type") })
     @PropertySource(template = "process/hasParticipant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasParticipant;
 
     @Indexed(type = "nested_strings")
     @PropertySource(template = "process/hasParticipantType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> hasParticipantType;
-
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "process/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "process/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
 
     public Process() {
 
@@ -196,46 +166,6 @@ public class Process extends AbstractSolrDocument {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public List<String> getWebsites() {
-        return websites;
-    }
-
-    public void setWebsites(List<String> websites) {
-        this.websites = websites;
-    }
-
-    public List<String> getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(List<String> websiteUrl) {
-        this.websiteUrl = websiteUrl;
     }
 
     public String getDescription() {
@@ -468,22 +398,6 @@ public class Process extends AbstractSolrDocument {
 
     public void setHasParticipantType(List<String> hasParticipantType) {
         this.hasParticipantType = hasParticipantType;
-    }
-
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

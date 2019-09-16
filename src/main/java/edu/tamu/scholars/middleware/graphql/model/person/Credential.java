@@ -19,10 +19,20 @@ import java.lang.String;
 public class Credential extends AbstractNestedDocument {
   private static final long serialVersionUID = -1925799766L;
 
+  private String label;
+
   private String dateIssued;
 
   public Credential() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getDateIssued() {

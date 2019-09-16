@@ -19,10 +19,20 @@ import java.lang.String;
 public class Reproduce extends AbstractNestedDocument {
   private static final long serialVersionUID = -1691910816L;
 
+  private String label;
+
   private String type;
 
   public Reproduce() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

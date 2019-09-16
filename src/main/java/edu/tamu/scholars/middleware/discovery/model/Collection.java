@@ -20,34 +20,13 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "collections")
-@CollectionSource(predicate = "http://purl.org/ontology/bibo/Collection")
-public class Collection extends AbstractSolrDocument {
+@SolrDocument(collection = "scholars-discovery")
+@CollectionSource(name = "collections", predicate = "http://purl.org/ontology/bibo/Collection")
+public class Collection extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "collection/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "collection/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
-
-    @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "websiteUrl", key = "url") })
-    @PropertySource(template = "collection/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> websites;
-
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "collection/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> websiteUrl;
 
     @Field("abstract")
     @JsonProperty("abstract")
@@ -65,7 +44,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> publicationVenueFor;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "authorType", key = "type"), @Reference(value = "authorRank", key = "rank"), @Reference(value = "authorOrganization", key = "organizations") })
+    @NestedObject(properties = { @Reference(value = "authorType", key = "type"), @Reference(value = "authorRank", key = "rank"), @Reference(value = "authorOrganization", key = "organizations") })
     @PropertySource(template = "collection/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authors;
 
@@ -84,7 +63,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> authorOrganization;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "editorType", key = "type"), @Reference(value = "editorRank", key = "rank") })
+    @NestedObject(properties = { @Reference(value = "editorType", key = "type"), @Reference(value = "editorRank", key = "rank") })
     @PropertySource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
@@ -97,7 +76,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> editorRank;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "translatorType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "translatorType", key = "type") })
     @PropertySource(template = "collection/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translators;
 
@@ -110,7 +89,7 @@ public class Collection extends AbstractSolrDocument {
     private String publicationDate;
 
     @Indexed(type = "nested_string")
-    @NestedObject({ @Reference(value = "publisherType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "publisherType", key = "type") })
     @PropertySource(template = "collection/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
 
@@ -124,7 +103,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> subjectAreas;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "featureType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "featureType", key = "type") })
     @PropertySource(template = "collection/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> features;
 
@@ -133,7 +112,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> featureType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "geographicFocusType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "collection/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
@@ -142,7 +121,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> geographicFocusType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "outputOfProcessOrEventType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "outputOfProcessOrEventType", key = "type") })
     @PropertySource(template = "collection/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
@@ -171,7 +150,7 @@ public class Collection extends AbstractSolrDocument {
     private String oclcnum;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "isAboutType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "isAboutType", key = "type") })
     @PropertySource(template = "collection/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> isAbout;
 
@@ -180,7 +159,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> isAboutType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "specifiedOutputOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "collection/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
@@ -189,7 +168,7 @@ public class Collection extends AbstractSolrDocument {
     private List<String> specifiedOutputOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "mentionType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "mentionType", key = "type") })
     @PropertySource(template = "collection/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> mentions;
 
@@ -203,22 +182,13 @@ public class Collection extends AbstractSolrDocument {
     private List<String> participatesIn;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "supportedByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "supportedByType", key = "type") })
     @PropertySource(template = "collection/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedBy;
 
     @Indexed(type = "nested_strings")
     @PropertySource(template = "collection/supportedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> supportedByType;
-
-    @NestedObject
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "collection/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "collection/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
 
     public Collection() {
 
@@ -230,46 +200,6 @@ public class Collection extends AbstractSolrDocument {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public List<String> getWebsites() {
-        return websites;
-    }
-
-    public void setWebsites(List<String> websites) {
-        this.websites = websites;
-    }
-
-    public List<String> getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(List<String> websiteUrl) {
-        this.websiteUrl = websiteUrl;
     }
 
     public String getAbstractText() {
@@ -558,22 +488,6 @@ public class Collection extends AbstractSolrDocument {
 
     public void setSupportedByType(List<String> supportedByType) {
         this.supportedByType = supportedByType;
-    }
-
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

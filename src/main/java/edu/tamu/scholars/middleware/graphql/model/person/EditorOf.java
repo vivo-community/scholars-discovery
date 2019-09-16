@@ -19,6 +19,8 @@ import java.lang.String;
 public class EditorOf extends AbstractNestedDocument {
   private static final long serialVersionUID = 560215351L;
 
+  private String label;
+
   private String type;
 
   private String publisher;
@@ -33,6 +35,14 @@ public class EditorOf extends AbstractNestedDocument {
 
   public EditorOf() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

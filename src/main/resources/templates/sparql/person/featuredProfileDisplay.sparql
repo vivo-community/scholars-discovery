@@ -1,0 +1,8 @@
+PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    <{{uri}}> tamu:FeaturedProfileDisplay ?featuredProfileDisplay .
+} WHERE {
+    <{{uri}}> tamu:FeaturedProfileDisplay ?featuredProfileDisplay .
+}

@@ -19,10 +19,20 @@ import java.lang.String;
 public class AdministeredBy extends AbstractNestedDocument {
   private static final long serialVersionUID = 1543404590L;
 
+  private String label;
+
   private String type;
 
   public AdministeredBy() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

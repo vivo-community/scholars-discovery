@@ -19,10 +19,20 @@ import java.lang.String;
 public class DocumentationForProjectOrResource extends AbstractNestedDocument {
   private static final long serialVersionUID = 1817835566L;
 
+  private String label;
+
   private String type;
 
   public DocumentationForProjectOrResource() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

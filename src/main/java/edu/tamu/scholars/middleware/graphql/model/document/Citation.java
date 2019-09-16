@@ -19,10 +19,20 @@ import java.lang.String;
 public class Citation extends AbstractNestedDocument {
   private static final long serialVersionUID = -518721932L;
 
+  private String label;
+
   private String type;
 
   public Citation() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface CollectionSource {
 
+    String name();
+
     String predicate();
 
 }

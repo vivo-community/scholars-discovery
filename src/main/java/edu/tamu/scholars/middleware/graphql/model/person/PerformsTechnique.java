@@ -19,10 +19,20 @@ import java.lang.String;
 public class PerformsTechnique extends AbstractNestedDocument {
   private static final long serialVersionUID = -1336533621L;
 
+  private String label;
+
   private String type;
 
   public PerformsTechnique() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {
