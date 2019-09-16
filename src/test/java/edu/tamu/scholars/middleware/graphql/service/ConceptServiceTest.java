@@ -1,20 +1,12 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
-import edu.tamu.scholars.middleware.discovery.model.repo.ConceptRepo;
 import edu.tamu.scholars.middleware.graphql.model.Concept;
+import graphql.language.Field;
 
-public class ConceptServiceTest extends AbstractNestedDocumentServiceTest<Concept, edu.tamu.scholars.middleware.discovery.model.Concept, ConceptRepo, ConceptService> {
-
-    @Value("classpath:mock/discovery/concept")
-    private Resource mocksDirectory;
-
-    @Override
-    protected Resource getMocksDirectory() {
-        return mocksDirectory;
-    }
+public class ConceptServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.Concept, Concept, ConceptService> {
 
     @Override
     protected Class<?> getType() {
@@ -24,6 +16,11 @@ public class ConceptServiceTest extends AbstractNestedDocumentServiceTest<Concep
     @Override
     protected Class<?> getNestedDocumentType() {
         return Concept.class;
+    }
+
+    @Override
+    protected List<Field> getGraphQLEnvironmentFields() {
+        return new ArrayList<Field>();
     }
 
 }

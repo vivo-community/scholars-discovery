@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
+import edu.tamu.scholars.middleware.graphql.model.relationship.Organization;
 import edu.tamu.scholars.middleware.graphql.model.relationship.ReceiptOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.AwardOrHonorFor;
 import edu.tamu.scholars.middleware.graphql.model.relationship.AwardConferredBy;
@@ -15,11 +16,12 @@ import edu.tamu.scholars.middleware.graphql.model.relationship.PrincipalInvestig
 import edu.tamu.scholars.middleware.graphql.model.relationship.CoPrincipalInvestigator;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SupportedPublicationOrOtherWork;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SubjectArea;
-import edu.tamu.scholars.middleware.graphql.model.relationship.SameAs;
 import edu.tamu.scholars.middleware.graphql.model.relationship.InheresIn;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SpecifiedOutputOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.OutputOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.ParticipatesIn;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -40,6 +42,8 @@ import java.util.List;
 @JsonInclude(NON_EMPTY)
 public class Relationship extends AbstractNestedDocument {
   private static final long serialVersionUID = -556210658L;
+
+  private List<Organization> organization;
 
   private List<ReceiptOf> receiptOf;
 
@@ -71,8 +75,6 @@ public class Relationship extends AbstractNestedDocument {
 
   private List<SubjectArea> subjectAreas;
 
-  private List<SameAs> sameAs;
-
   private List<InheresIn> inheresIn;
 
   private List<SpecifiedOutputOf> specifiedOutputOf;
@@ -81,22 +83,16 @@ public class Relationship extends AbstractNestedDocument {
 
   private List<ParticipatesIn> participatesIn;
 
+  private List<Website> websites;
+
+  private List<SameAs> sameAs;
+
   private String title;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   @JsonProperty("abstract")
   private String abstractText;
 
   private String description;
-
-  private List<String> awardConferredByPreferredLabel;
-
-  private List<String> awardedByPreferredLabel;
 
   private String totalAwardAmount;
 
@@ -112,10 +108,27 @@ public class Relationship extends AbstractNestedDocument {
 
   private String yearAwarded;
 
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
   private String modTime;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Relationship() {
     super();
+  }
+
+  public List<Organization> getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(List<Organization> organization) {
+    this.organization = organization;
   }
 
   public List<ReceiptOf> getReceiptOf() {
@@ -240,14 +253,6 @@ public class Relationship extends AbstractNestedDocument {
     this.subjectAreas = subjectAreas;
   }
 
-  public List<SameAs> getSameAs() {
-    return sameAs;
-  }
-
-  public void setSameAs(List<SameAs> sameAs) {
-    this.sameAs = sameAs;
-  }
-
   public List<InheresIn> getInheresIn() {
     return inheresIn;
   }
@@ -280,36 +285,28 @@ public class Relationship extends AbstractNestedDocument {
     this.participatesIn = participatesIn;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
+  public List<SameAs> getSameAs() {
+    return sameAs;
+  }
+
+  public void setSameAs(List<SameAs> sameAs) {
+    this.sameAs = sameAs;
+  }
+
   public String getTitle() {
     return title;
   }
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getAbstractText() {
@@ -326,22 +323,6 @@ public class Relationship extends AbstractNestedDocument {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public List<String> getAwardConferredByPreferredLabel() {
-    return awardConferredByPreferredLabel;
-  }
-
-  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
-    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
-  }
-
-  public List<String> getAwardedByPreferredLabel() {
-    return awardedByPreferredLabel;
-  }
-
-  public void setAwardedByPreferredLabel(List<String> awardedByPreferredLabel) {
-    this.awardedByPreferredLabel = awardedByPreferredLabel;
   }
 
   public String getTotalAwardAmount() {
@@ -400,11 +381,43 @@ public class Relationship extends AbstractNestedDocument {
     this.yearAwarded = yearAwarded;
   }
 
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
+
   public String getModTime() {
     return modTime;
   }
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

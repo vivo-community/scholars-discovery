@@ -9,5 +9,7 @@ public interface SolrIndexService {
     public Class<?> type();
 
     public String name();
+    
+    public String collection();
 
 }

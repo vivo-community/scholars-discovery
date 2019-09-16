@@ -11,10 +11,10 @@ public class SorDocumentResourcesSearchProcessor implements ResourceProcessor<Re
     @Override
     public RepositorySearchesResource process(RepositorySearchesResource resource) {
         final String search = resource.getId().getHref();
-        final Link facetSearchLink = new Link(search + "/facet{?query,index,facets,page,size,sort}").withRel("facet");
-        final Link exportSearchLink = new Link(search + "/export{?query,index,fields,export,sort}").withRel("export");
-        final Link countSearchLink = new Link(search + "/count{?query,fields}").withRel("count");
-        final Link recentSearchLink = new Link(search + "/recently-updated{?limit}").withRel("recent");
+        final Link facetSearchLink = new Link(search + "/faceted{?query,page,size,sort,facets,filters,boosts}").withRel("faceted");
+        final Link exportSearchLink = new Link(search + "/export{?type,query,sort,filters,boosts,export}").withRel("export");
+        final Link countSearchLink = new Link(search + "/count{?query,filters}").withRel("count");
+        final Link recentSearchLink = new Link(search + "/recently-updated{?limit,filters}").withRel("recently-updated");
         resource.add(facetSearchLink);
         resource.add(exportSearchLink);
         resource.add(countSearchLink);

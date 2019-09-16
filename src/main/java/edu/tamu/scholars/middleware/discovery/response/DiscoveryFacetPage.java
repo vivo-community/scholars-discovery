@@ -3,17 +3,13 @@ package edu.tamu.scholars.middleware.discovery.response;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
-import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
@@ -31,41 +27,32 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
         this.facets = facets;
     }
 
-    public static <T> DiscoveryFacetPage<T> from(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
-        List<Facet> facets = buildFacets(facetPage, facetArguments, type);
+    public static <T> DiscoveryFacetPage<T> from(FacetPage<T> facetPage, List<FacetArg> facetArguments) {
+        List<Facet> facets = buildFacets(facetPage, facetArguments);
         return new DiscoveryFacetPage<T>(facetPage.getContent(), PageInfo.from(facetPage), facets);
     }
 
-    public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments, Class<?> type) {
+    public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments) {
         List<Facet> facets = new ArrayList<Facet>();
 
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
-            Optional<String> field = Optional.empty();
 
-            List<FacetEntry> entries = new ArrayList<FacetEntry>();
+            if (!facetFieldEntryPage.getContent().isEmpty()) {
 
-            Optional<FacetArg> facetArgument = Optional.empty();
+                String field = facetFieldEntryPage.getContent().get(0).getField().getName();
 
-            for (FacetFieldEntry facetFieldEntry : facetFieldEntryPage.getContent()) {
-                if (!field.isPresent()) {
-                    field = Optional.of(facetFieldEntry.getField().getName());
-                    facetArgument = facetArguments.stream().filter(fa -> fa.getPath(type).equals(facetFieldEntry.getField().getName())).findAny();
-                }
-                entries.add(new FacetEntry(facetFieldEntry.getValue(), facetFieldEntry.getValueCount()));
-            }
-            if (facetArgument.isPresent()) {
-                switch (facetArgument.get().getType()) {
-                case DATE_YEAR:
-                    entries = new ArrayList<FacetEntry>(entries.stream().<Map<Integer, FacetEntry>>collect(HashMap::new, (m, e) -> m.put(DateFormatUtility.parse(e.value).getYear(), e), Map::putAll).values());
-                    break;
-                case STRING:
-                default:
-                    break;
-                }
+                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getProperty().equals(field)).findAny();
 
-                sort(entries, facetArgument.get());
+                if (facetArgument.isPresent()) {
 
-                if (field.isPresent()) {
+                    // @formatter:off
+                    List<FacetEntry> entries = facetFieldEntryPage.getContent().parallelStream()
+                        .map(entry -> new FacetEntry(entry.getValue(), entry.getValueCount()))
+                        .collect(Collectors.toMap(FacetEntry::getValueKey, fe -> fe, FacetEntry::merge)).values().parallelStream()
+                        .sorted(FacetEntryComparator.of(facetArgument.get().getSort()))
+                        .collect(Collectors.toList());
+                    // @formatter:on
+
                     int pageSize = facetArgument.get().getPageSize();
                     int pageNumber = facetArgument.get().getPageNumber();
                     int offset = pageSize * (pageNumber - 1);
@@ -78,41 +65,45 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     int start = offset;
                     int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
 
-                    facets.add(new Facet(field.get(), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
+                    facets.add(new Facet(field, DiscoveryPage.from(entries.subList(start, end), pageInfo)));
                 }
             }
-
         });
         return facets;
     }
 
-    private static void sort(List<FacetEntry> entries, FacetArg facetArg) {
-        FacetSortArg facetSort = facetArg.getSort();
-        FacetSort property = facetSort.getProperty();
-        Sort.Direction direction = facetSort.getDirection();
-        if (property.equals(FacetSort.COUNT) && direction.equals(Sort.Direction.DESC)) {
-            return;
+    private static class FacetEntryComparator implements Comparator<FacetEntry> {
+
+        private final FacetSortArg facetSort;
+
+        private FacetEntryComparator(FacetSortArg facetSort) {
+            this.facetSort = facetSort;
         }
-        Collections.sort(entries, new Comparator<FacetEntry>() {
-            public int compare(FacetEntry e1, FacetEntry e2) {
-                if (property.equals(FacetSort.COUNT)) {
-                    return direction.equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
-                }
+
+        @Override
+        public int compare(FacetEntry e1, FacetEntry e2) {
+            if (facetSort.getProperty().equals(FacetSort.COUNT)) {
+                return facetSort.getDirection().equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
+            }
+            try {
+                LocalDate ld1 = DateFormatUtility.parse(e1.value);
+                LocalDate ld2 = DateFormatUtility.parse(e2.value);
+                return facetSort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
+            } catch (DateTimeParseException dtpe) {
                 try {
-                    LocalDate ld1 = DateFormatUtility.parse(e1.value);
-                    LocalDate ld2 = DateFormatUtility.parse(e2.value);
-                    return direction.equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
-                } catch (DateTimeParseException dtpe) {
-                    try {
-                        Double d1 = Double.parseDouble(e1.value);
-                        Double d2 = Double.parseDouble(e2.value);
-                        return direction.equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
-                    } catch (NumberFormatException nfe) {
-                        return direction.equals(Direction.ASC) ? e1.value.compareTo(e2.value) : e2.value.compareTo(e1.value);
-                    }
+                    Double d1 = Double.parseDouble(e1.value);
+                    Double d2 = Double.parseDouble(e2.value);
+                    return facetSort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
+                } catch (NumberFormatException nfe) {
+                    return facetSort.getDirection().equals(Direction.ASC) ? e1.value.compareTo(e2.value) : e2.value.compareTo(e1.value);
                 }
             }
-        });
+        }
+
+        private static FacetEntryComparator of(FacetSortArg facetSort) {
+            return new FacetEntryComparator(facetSort);
+        }
+
     }
 
     public List<Facet> getFacets() {
@@ -157,8 +148,21 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
             return value;
         }
 
+        public String getValueKey() {
+            try {
+                LocalDate ldv = DateFormatUtility.parse(value);
+                return String.valueOf(ldv.getYear());
+            } catch (DateTimeParseException dtpe) {
+                return value;
+            }
+        }
+
         public long getCount() {
             return count;
+        }
+
+        public static FacetEntry merge(FacetEntry src, FacetEntry dest) {
+            return new FacetEntry(src.value, src.count + dest.count);
         }
 
     }

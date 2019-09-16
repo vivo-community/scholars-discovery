@@ -37,7 +37,6 @@ import org.docx4j.wml.SectPr.PgMar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -47,7 +46,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
+import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.export.exception.ExportException;
 import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.utility.DateFormatUtility;
@@ -55,7 +55,6 @@ import edu.tamu.scholars.middleware.view.model.DisplayView;
 import edu.tamu.scholars.middleware.view.model.ExportFieldView;
 import edu.tamu.scholars.middleware.view.model.ExportView;
 import edu.tamu.scholars.middleware.view.model.Filter;
-import edu.tamu.scholars.middleware.view.model.LazyReference;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 @Service
@@ -77,7 +76,7 @@ public class DocxExporter implements Exporter {
     private DisplayViewRepo displayViewRepo;
 
     @Autowired
-    private List<SolrDocumentRepo<?>> solrDocumentRepos;
+    private IndividualRepo individualRepo;
 
     @Autowired
     private TemplateService handlebarsService;
@@ -107,15 +106,14 @@ public class DocxExporter implements Exporter {
     }
 
     @Override
-    public <D extends AbstractSolrDocument> StreamingResponseBody streamIndividual(D document) {
-        final ObjectNode node = mapper.valueToTree(document);
+    public StreamingResponseBody streamIndividual(Individual document) {
 
-        final List<String> types = StreamSupport.stream(node.get("type").spliterator(), false).map(type -> type.asText()).collect(Collectors.toList());
+        final List<String> type = document.getType();
 
-        Optional<DisplayView> displayView = displayViewRepo.findByTypesIn(types);
+        Optional<DisplayView> displayView = displayViewRepo.findByTypesIn(type);
 
         if (!displayView.isPresent()) {
-            throw new ExportException(String.format("Could not find a display view for types: %s", String.join(", ", types)));
+            throw new ExportException(String.format("Could not find a display view for types: %s", String.join(", ", type)));
         }
 
         Optional<ExportView> exportView = Optional.ofNullable(displayView.get().getExportView());
@@ -133,7 +131,7 @@ public class DocxExporter implements Exporter {
                 pkg.getMainDocumentPart().addTargetPart(ndp);
                 ndp.unmarshalDefaultNumbering();
 
-                ObjectNode json = processDocument(node, exportView.get());
+                ObjectNode json = processDocument(document, exportView.get());
 
                 String contentHtml = handlebarsService.template(exportView.get().getContentTemplate(), json);
 
@@ -153,7 +151,10 @@ public class DocxExporter implements Exporter {
         };
     }
 
-    private <D extends AbstractSolrDocument> ObjectNode processDocument(ObjectNode node, ExportView view) {
+    private <D extends AbstractSolrDocument> ObjectNode processDocument(Individual document, ExportView view) {
+        final ObjectNode node = mapper.valueToTree(document);
+        node.put("vivoUrl", vivoUrl);
+        node.put("uiUrl", uiUrl);
         checkRequireFields(node, view.getRequiredFields());
         fetchLazyReferences(node, view.getLazyReferences());
         view.getFieldViews().forEach(fieldView -> {
@@ -161,24 +162,7 @@ public class DocxExporter implements Exporter {
             sort(node, fieldView);
             limit(node, fieldView);
         });
-        node.put("vivoUrl", vivoUrl);
-        node.put("uiUrl", uiUrl);
         return node;
-    }
-
-    private void fetchLazyReferences(ObjectNode node, List<LazyReference> lazyReferences) {
-        lazyReferences.forEach(lazyReference -> {
-            String collection = lazyReference.getCollection();
-            JsonNode reference = node.get(lazyReference.getField());
-            List<String> ids = new ArrayList<String>();
-            if (reference.isArray()) {
-                ids = StreamSupport.stream(reference.spliterator(), false).map(rn -> rn.get("id").asText()).collect(Collectors.toList());
-            } else {
-                ids.add(reference.get("id").asText());
-            }
-            ArrayNode references = node.putArray(lazyReference.getField());
-            references.addAll((ArrayNode) mapper.valueToTree(fetchLazyReference(collection, ids)));
-        });
     }
 
     private void checkRequireFields(ObjectNode node, List<String> requiredFields) {
@@ -189,17 +173,27 @@ public class DocxExporter implements Exporter {
         }
     }
 
-    private List<AbstractSolrDocument> fetchLazyReference(String collection, List<String> ids) {
-        SolrDocumentRepo<?> solrDocumentRepo = solrDocumentRepos.stream().filter(repo -> {
-            Optional<SolrDocument> annotation = Optional.ofNullable(repo.type().getAnnotation(SolrDocument.class));
-            return annotation.isPresent() && annotation.get().collection().equals(collection);
-        }).findAny().get();
+    private void fetchLazyReferences(ObjectNode node, List<String> lazyReferences) {
+        lazyReferences.forEach(lazyReference -> {
+            JsonNode reference = node.get(lazyReference);
+            List<String> ids = new ArrayList<String>();
+            if (reference.isArray()) {
+                ids = StreamSupport.stream(reference.spliterator(), false).map(rn -> rn.get("id").asText()).collect(Collectors.toList());
+            } else {
+                ids.add(reference.get("id").asText());
+            }
+            ArrayNode references = node.putArray(lazyReference);
+            references.addAll((ArrayNode) mapper.valueToTree(fetchLazyReference(ids)));
+        });
+    }
+
+    private List<AbstractSolrDocument> fetchLazyReference(List<String> ids) {
         List<AbstractSolrDocument> documents = new ArrayList<AbstractSolrDocument>();
         while (ids.size() >= MAX_DOCUMENT_BATCH_SIZE) {
-            documents.addAll(solrDocumentRepo.findByIdIn(ids.subList(0, MAX_DOCUMENT_BATCH_SIZE)));
+            documents.addAll(individualRepo.findByIdIn(ids.subList(0, MAX_DOCUMENT_BATCH_SIZE)));
             ids = ids.subList(MAX_DOCUMENT_BATCH_SIZE, ids.size());
         }
-        documents.addAll(solrDocumentRepo.findByIdIn(ids));
+        documents.addAll(individualRepo.findByIdIn(ids));
         return documents;
     }
 

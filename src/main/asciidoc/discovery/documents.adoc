@@ -1,0 +1,141 @@
+=== Documents
+
+==== Page
+
+This provides a page of all the documents present in the system, based on the _request parameters_ as shown.
+
+===== Request Parameters
+include::../{snippets}/documents/page/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/documents/page/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/page/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/page/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/page/curl-request.adoc[]
+
+==== Find by id
+
+This will find an document based on the _individual id_ provided as a parameter as shown in *Path Parameters*. The json response will have the specific document as shown in the *Sample Response*.
+
+===== Path Parameters
+include::../{snippets}/documents/findById/path-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/findById/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/findById/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/findById/curl-request.adoc[]
+
+==== Find by id In
+
+This will find a list of documents based on the _individual ids_ provided as a parameter as shown in *Request Parameters*. The json response will have the list of documents as shown in the *Sample Response*.
+
+===== Request Parameters
+include::../{snippets}/documents/search/findByIdIn/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/search/findByIdIn/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/search/findByIdIn/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/search/findByIdIn/curl-request.adoc[]
+
+==== Search
+
+This search will return a json response listing all the documents, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/documents/search/faceted/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/documents/search/faceted/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/search/faceted/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/search/faceted/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/search/faceted/curl-request.adoc[]
+
+==== Export Search
+
+This export will return a stream of specified type containing the search results with the requested fields, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/documents/search/export/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/search/export/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/search/export/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/search/export/curl-request.adoc[]
+
+==== Export Single Page
+
+This export will return a stream of specified type containing the single page built from the associated export view. An export view must be added to the display view for the type of document.
+
+===== Path Parameters
+include::../{snippets}/documents/export/path-parameters.adoc[]
+
+===== Request Parameters
+include::../{snippets}/documents/export/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/export/http-request.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/export/curl-request.adoc[]
+
+==== Count
+
+This count will return a json response containing the count, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/documents/search/count/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/documents/search/count/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/search/count/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/search/count/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/search/count/curl-request.adoc[]
+
+==== Recently Updated
+
+This will return a json response listing recently updated documents, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/documents/search/recently-updated/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/documents/search/recently-updated/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/documents/search/recently-updated/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/documents/search/recently-updated/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/documents/search/recently-updated/curl-request.adoc[]

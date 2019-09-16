@@ -19,10 +19,20 @@ import java.lang.String;
 public class HasPrerequisite extends AbstractNestedDocument {
   private static final long serialVersionUID = 1417745739L;
 
+  private String label;
+
   private String type;
 
   public HasPrerequisite() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

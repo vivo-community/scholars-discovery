@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
+import edu.tamu.scholars.middleware.model.OpKey;
 
 @Embeddable
 public class Index {
@@ -18,13 +18,13 @@ public class Index {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OperationKey operationKey;
+    private OpKey opKey;
 
     @ElementCollection
     private List<String> options;
 
     public Index() {
-        operationKey = OperationKey.STARTS_WITH;
+        opKey = OpKey.STARTS_WITH;
     }
 
     public String getField() {
@@ -35,12 +35,12 @@ public class Index {
         this.field = field;
     }
 
-    public OperationKey getOperationKey() {
-        return operationKey;
+    public OpKey getOpKey() {
+        return opKey;
     }
 
-    public void setOperationKey(OperationKey operationKey) {
-        this.operationKey = operationKey;
+    public void setOpKey(OpKey opKey) {
+        this.opKey = opKey;
     }
 
     public List<String> getOptions() {

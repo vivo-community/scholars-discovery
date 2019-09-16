@@ -12,6 +12,8 @@ import javax.persistence.Enumerated;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
+import edu.tamu.scholars.middleware.model.OpKey;
+
 @Embeddable
 public class Facet {
 
@@ -20,6 +22,10 @@ public class Facet {
 
     @Column(nullable = false)
     private String field;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OpKey opKey;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -46,6 +52,7 @@ public class Facet {
     private boolean hidden;
 
     public Facet() {
+        opKey = OpKey.EQUALS;
         type = STRING;
         sort = COUNT;
         direction = DESC;
@@ -69,6 +76,14 @@ public class Facet {
 
     public void setField(String field) {
         this.field = field;
+    }
+
+    public OpKey getOpKey() {
+        return opKey;
+    }
+
+    public void setOpKey(OpKey opKey) {
+        this.opKey = opKey;
     }
 
     public FacetType getType() {

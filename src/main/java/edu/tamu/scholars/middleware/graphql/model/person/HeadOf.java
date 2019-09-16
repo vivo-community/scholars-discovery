@@ -21,6 +21,8 @@ import java.lang.String;
 public class HeadOf extends AbstractNestedDocument {
   private static final long serialVersionUID = 203340202L;
 
+  private String label;
+
   private String type;
 
   private HeadOfOrganization organization;
@@ -31,6 +33,14 @@ public class HeadOf extends AbstractNestedDocument {
 
   public HeadOf() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

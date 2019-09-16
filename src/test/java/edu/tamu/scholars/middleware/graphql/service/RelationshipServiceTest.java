@@ -1,20 +1,12 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
-import edu.tamu.scholars.middleware.discovery.model.repo.RelationshipRepo;
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
+import graphql.language.Field;
 
-public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<Relationship, edu.tamu.scholars.middleware.discovery.model.Relationship, RelationshipRepo, RelationshipService> {
-
-    @Value("classpath:mock/discovery/relationship")
-    private Resource mocksDirectory;
-
-    @Override
-    protected Resource getMocksDirectory() {
-        return mocksDirectory;
-    }
+public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<edu.tamu.scholars.middleware.discovery.model.Relationship, Relationship, RelationshipService> {
 
     @Override
     protected Class<?> getType() {
@@ -24,6 +16,11 @@ public class RelationshipServiceTest extends AbstractNestedDocumentServiceTest<R
     @Override
     protected Class<?> getNestedDocumentType() {
         return Relationship.class;
+    }
+
+    @Override
+    protected List<Field> getGraphQLEnvironmentFields() {
+        return new ArrayList<Field>();
     }
 
 }

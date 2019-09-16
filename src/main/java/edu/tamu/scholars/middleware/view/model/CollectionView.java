@@ -12,15 +12,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MappedSuperclass;
 
-import edu.tamu.scholars.middleware.view.annotation.ValidCollectionExport;
-import edu.tamu.scholars.middleware.view.annotation.ValidCollectionFacets;
-import edu.tamu.scholars.middleware.view.annotation.ValidCollectionFilters;
-
 @MappedSuperclass
-@ValidCollectionFacets(message = "{CollectionView.validCollectionFacets}")
-@ValidCollectionFilters(message = "{CollectionView.validCollectionFilters}")
-@ValidCollectionExport(message = "{CollectionView.validCollectionExport}")
-public abstract class CollectionView extends ResourceView {
+//@ValidCollectionFacets(message = "{CollectionView.validCollectionFacets}")
+//@ValidCollectionFilters(message = "{CollectionView.validCollectionFilters}")
+//@ValidCollectionExport(message = "{CollectionView.validCollectionExport}")
+public abstract class CollectionView extends View {
 
     private static final long serialVersionUID = 6875458024293994230L;
 
@@ -43,6 +39,9 @@ public abstract class CollectionView extends ResourceView {
     private List<Filter> filters;
 
     @ElementCollection
+    private List<Boost> boosts;
+
+    @ElementCollection
     private List<Sort> sort;
 
     @ElementCollection
@@ -54,6 +53,7 @@ public abstract class CollectionView extends ResourceView {
         styles = new ArrayList<String>();
         facets = new ArrayList<Facet>();
         filters = new ArrayList<Filter>();
+        boosts = new ArrayList<Boost>();
         sort = new ArrayList<Sort>();
         export = new ArrayList<ExportField>();
     }
@@ -96,6 +96,14 @@ public abstract class CollectionView extends ResourceView {
 
     public void setFilters(List<Filter> filters) {
         this.filters = filters;
+    }
+
+    public List<Boost> getBoosts() {
+        return boosts;
+    }
+
+    public void setBoosts(List<Boost> boosts) {
+        this.boosts = boosts;
     }
 
     public List<Sort> getSort() {

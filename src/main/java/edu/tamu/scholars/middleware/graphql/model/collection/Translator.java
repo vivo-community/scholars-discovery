@@ -19,10 +19,20 @@ import java.lang.String;
 public class Translator extends AbstractNestedDocument {
   private static final long serialVersionUID = -315647356L;
 
+  private String label;
+
   private String type;
 
   public Translator() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

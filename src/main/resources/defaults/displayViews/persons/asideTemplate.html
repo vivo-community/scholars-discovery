@@ -5,7 +5,7 @@
     <div><span class="label">Research Areas:</span></div>
     <div class="ml-1">
       {{#each researchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     <hr />
@@ -14,7 +14,7 @@
 
   <div>
     <div class="text-nowrap">
-      <a href="{{serviceUrl}}/persons/{{id}}/export"><i class="fa fa-user"><span class="d-none">export individual record</span></i><span class="info">Single Page Bio</span></a>
+      <a href="{{serviceUrl}}/individual/{{id}}/export"><i class="fa fa-user"><span class="d-none">export individual record</span></i><span class="info">Single Page Bio</span></a>
     </div>
     {{#if email}}
     <div class="text-nowrap">
@@ -82,7 +82,7 @@
     </div>
     <div class="ml-1">
       {{#each researchAreas}}
-      <span><a href="display/concepts/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
   </div>

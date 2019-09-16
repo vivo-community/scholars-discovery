@@ -1,12 +1,17 @@
 <div class="text-center mb-2">
   {{#if image}}
-  <img class="avatar" src="{{vivoUrl}}{{image}}" height="150" width="150" alt="{{name}}">
+  <div class="person-image" style="background-image: url('{{vivoUrl}}{{image}}')"></div>
   {{else}}
-  <img class="avatar" src="assets/images/default-avatar.png" height="150" width="150" alt="default avatar">
+  <div class="person-image" style="background-image: url('assets/images/default-avatar.png')"></div>
   {{/if}}
 </div>
 <style>
-  img.avatar {
+  .person-image {
+    height: 150px;
+    width: 150px;
+    background-size: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
     box-shadow: 2px 2px 4px -1px grey;
   }
 </style>
