@@ -69,9 +69,9 @@
       - label: Off-Campus Access
         uri: https://library.tamu.edu/services/tech_troubleshooting.html
       - label: Texas A&M University
-        uri: http://tamu.edu
+        uri: https://tamu.edu
       - label: Site Policies
-        uri: http://library.tamu.edu/about/compliance.html
+        uri: https://library.tamu.edu/about/compliance.html
       - label: Accessibility
         uri: https://library.tamu.edu/services/accessibility.html
       - label: Texas CREWS
