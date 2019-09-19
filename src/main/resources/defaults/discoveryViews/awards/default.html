@@ -1,3 +1,3 @@
 <span>
-  <a href="display/{{id}}">{{name}}</a>{{#if awardConferredBy}}, conferred by <a href="display/{{awardConferredBy.id}}">{{awardConferredBy.label}}</a>{{/if}}
+  <a href="display/{{id}}">{{name}}</a>{{#each awardConferredBy}}, conferred by <a href="display/{{id}}">{{label}}</a>{{/each}}
 </span>
