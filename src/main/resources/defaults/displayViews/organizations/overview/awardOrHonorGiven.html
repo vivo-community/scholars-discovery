@@ -1,10 +1,2 @@
-<div class="mb-2">
-  <ul class="list-unstyled ml-2 mr-2 mb-0">
-    {{#each awardOrHonorGiven}}
-    <li class="mb-2">
-      <a href="display/relationships/{{id}}">{{label}}</a>
-      <span class="badge badge-light">{{toYear date}}</span>
-    </li>
-    {{/each}}
-  </ul>
-</div>
+<span>{{#each receiptOf}}<a href="display/{{id}}">{{label}}</a>{{/each}}, conferred on {{#each awardOrHonorFor}}<a href="display/{{id}}">{{label}}</a>{{/each}}, </span>
+<span class="badge badge-light">{{toYear yearAwarded}}</span>

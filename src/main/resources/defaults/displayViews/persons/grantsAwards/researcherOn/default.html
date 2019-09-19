@@ -1,0 +1,17 @@
+<a href="display/{{id}}">{{label}}</a>
+{{#if awardedBy.preferredLabel}}
+<span> awarded by <a href="display/{{awardedBy.id}}">{{awardedBy.preferredLabel}}</a></span>
+{{else}}
+<span> awarded by <a href="display/{{awardedBy.id}}">{{awardedBy.label}}</a></span>
+{{/if}}
+{{#if startDate}}
+{{#if endDate}}
+<span class="badge badge-light">{{toYear startDate}} - {{toYear endDate}}</span>
+{{else}}
+<span class="badge badge-light">{{toYear startDate}}</span>
+{{/if}}
+{{else}}
+{{#if endDate}}
+<span class="badge badge-light">{{toYear endDate}}</span>
+{{/if}}
+{{/if}}

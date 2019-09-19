@@ -1,12 +1,12 @@
 <div class="pt-2 w-100">
 
   <div class="mb-3">
-    <span class="h5 font-weight-bold">{{subsection.name}}<span class="badge badge-light ml-2">{{resources.length}}</span></span>
+    <span class="h5 font-weight-bold header-{{identifier}}">{{section.name}}<span class="badge badge-light ml-2">{{resources.length}}</span></span>
     <ul class="list-group">
       <ul class="list-group">
-        {{#subsectionPage resources page}}
-        <li class="list-group-item border-0">{{#subsectionItem this ../subsection}}{{/subsectionItem}}</li>
-        {{/subsectionPage}}
+        {{#sectionPage resources page}}
+        <li class="list-group-item border-0">{{#sectionItem this ../section}}{{/sectionItem}}</li>
+        {{/sectionPage}}
       </ul>
     </ul>
   </div>

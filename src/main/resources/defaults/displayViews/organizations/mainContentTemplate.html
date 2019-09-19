@@ -8,3 +8,20 @@
     <span class="ml-1"><a href="{{_links.self.href}}" download target="_blank"><i class="fa fa-link"><span class="d-none">individual record</span></i></a></span>
   </span>
 </div>
+{{#if affiliatedResearchAreas}}
+<div class="m2">
+  <div><span class="label">Research Areas:</span></div>
+  <div class="ml-1">
+    {{#each affiliatedResearchAreas}}
+    <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+    {{/each}}
+  </div>
+  <hr />
+</div>
+{{/if}}
+<style>
+  .label {
+    font-weight: 550;
+    margin-right: 2px;
+  }
+</style>

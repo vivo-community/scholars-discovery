@@ -19,10 +19,20 @@ import java.lang.String;
 public class HasExpertiseInTechnique extends AbstractNestedDocument {
   private static final long serialVersionUID = 1310261281L;
 
+  private String label;
+
   private String type;
 
   public HasExpertiseInTechnique() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

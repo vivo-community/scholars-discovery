@@ -19,10 +19,20 @@ import java.lang.String;
 public class NarrowerConcept extends AbstractNestedDocument {
   private static final long serialVersionUID = -954944556L;
 
+  private String label;
+
   private String type;
 
   public NarrowerConcept() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

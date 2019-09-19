@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.person.Website;
-import edu.tamu.scholars.middleware.graphql.model.person.Position;
+import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
 import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.person.HeadOf;
@@ -14,16 +13,14 @@ import edu.tamu.scholars.middleware.graphql.model.person.Credential;
 import edu.tamu.scholars.middleware.graphql.model.person.CredentialEligibilityAttained;
 import edu.tamu.scholars.middleware.graphql.model.person.AwardsAndHonors;
 import edu.tamu.scholars.middleware.graphql.model.person.AdviseeOf;
-import edu.tamu.scholars.middleware.graphql.model.person.Publication;
+import edu.tamu.scholars.middleware.graphql.model.Document;
 import edu.tamu.scholars.middleware.graphql.model.person.CollectionOrSeriesEditorFor;
 import edu.tamu.scholars.middleware.graphql.model.person.EditorOf;
 import edu.tamu.scholars.middleware.graphql.model.person.Presentation;
 import edu.tamu.scholars.middleware.graphql.model.person.FeaturedIn;
 import edu.tamu.scholars.middleware.graphql.model.person.AssigneeForPatent;
 import edu.tamu.scholars.middleware.graphql.model.person.TranslatorOf;
-import edu.tamu.scholars.middleware.graphql.model.person.PrincipalInvestigatorOn;
-import edu.tamu.scholars.middleware.graphql.model.person.CoPrincipalInvestigatorOn;
-import edu.tamu.scholars.middleware.graphql.model.person.InvestigatorOn;
+import edu.tamu.scholars.middleware.graphql.model.person.ResearcherOn;
 import edu.tamu.scholars.middleware.graphql.model.person.OtherResearchActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.TeachingActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.Advisee;
@@ -34,12 +31,14 @@ import edu.tamu.scholars.middleware.graphql.model.person.ProfessionalServiceActi
 import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunityServiceActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
-import edu.tamu.scholars.middleware.graphql.model.person.SameAs;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
@@ -56,9 +55,7 @@ import java.util.List;
 public class Person extends AbstractNestedDocument {
   private static final long serialVersionUID = -3444805L;
 
-  private List<Website> websites;
-
-  private List<Position> positions;
+  private List<Relationship> positions;
 
   private List<ResearchArea> researchAreas;
 
@@ -84,7 +81,7 @@ public class Person extends AbstractNestedDocument {
 
   private List<AdviseeOf> adviseeOf;
 
-  private List<Publication> publications;
+  private List<Document> publications;
 
   private List<CollectionOrSeriesEditorFor> collectionOrSeriesEditorFor;
 
@@ -98,11 +95,7 @@ public class Person extends AbstractNestedDocument {
 
   private List<TranslatorOf> translatorOf;
 
-  private List<PrincipalInvestigatorOn> principalInvestigatorOn;
-
-  private List<CoPrincipalInvestigatorOn> coPrincipalInvestigatorOn;
-
-  private List<InvestigatorOn> investigatorOn;
+  private List<ResearcherOn> researcherOn;
 
   private List<OtherResearchActivity> otherResearchActivities;
 
@@ -124,17 +117,13 @@ public class Person extends AbstractNestedDocument {
 
   private List<HasExpertiseInTechnique> hasExpertiseInTechnique;
 
-  private List<SameAs> sameAs;
-
   private List<EtdChairOf> etdChairOf;
 
+  private List<Website> websites;
+
+  private List<SameAs> sameAs;
+
   private String name;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   private String primaryEmail;
 
@@ -153,6 +142,10 @@ public class Person extends AbstractNestedDocument {
   private List<String> keywords;
 
   private String researchOverview;
+
+  private List<String> principalInvestigatorOn;
+
+  private List<String> coPrincipalInvestigatorOn;
 
   private String teachingOverview;
 
@@ -204,25 +197,28 @@ public class Person extends AbstractNestedDocument {
 
   private String fax;
 
+  private String featuredProfileDisplay;
+
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
   private String modTime;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Person() {
     super();
   }
 
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
-  }
-
-  public List<Position> getPositions() {
+  public List<Relationship> getPositions() {
     return positions;
   }
 
-  public void setPositions(List<Position> positions) {
+  public void setPositions(List<Relationship> positions) {
     this.positions = positions;
   }
 
@@ -323,11 +319,11 @@ public class Person extends AbstractNestedDocument {
     this.adviseeOf = adviseeOf;
   }
 
-  public List<Publication> getPublications() {
+  public List<Document> getPublications() {
     return publications;
   }
 
-  public void setPublications(List<Publication> publications) {
+  public void setPublications(List<Document> publications) {
     this.publications = publications;
   }
 
@@ -380,29 +376,12 @@ public class Person extends AbstractNestedDocument {
     this.translatorOf = translatorOf;
   }
 
-  public List<PrincipalInvestigatorOn> getPrincipalInvestigatorOn() {
-    return principalInvestigatorOn;
+  public List<ResearcherOn> getResearcherOn() {
+    return researcherOn;
   }
 
-  public void setPrincipalInvestigatorOn(List<PrincipalInvestigatorOn> principalInvestigatorOn) {
-    this.principalInvestigatorOn = principalInvestigatorOn;
-  }
-
-  public List<CoPrincipalInvestigatorOn> getCoPrincipalInvestigatorOn() {
-    return coPrincipalInvestigatorOn;
-  }
-
-  public void setCoPrincipalInvestigatorOn(
-      List<CoPrincipalInvestigatorOn> coPrincipalInvestigatorOn) {
-    this.coPrincipalInvestigatorOn = coPrincipalInvestigatorOn;
-  }
-
-  public List<InvestigatorOn> getInvestigatorOn() {
-    return investigatorOn;
-  }
-
-  public void setInvestigatorOn(List<InvestigatorOn> investigatorOn) {
-    this.investigatorOn = investigatorOn;
+  public void setResearcherOn(List<ResearcherOn> researcherOn) {
+    this.researcherOn = researcherOn;
   }
 
   public List<OtherResearchActivity> getOtherResearchActivities() {
@@ -488,14 +467,6 @@ public class Person extends AbstractNestedDocument {
     this.hasExpertiseInTechnique = hasExpertiseInTechnique;
   }
 
-  public List<SameAs> getSameAs() {
-    return sameAs;
-  }
-
-  public void setSameAs(List<SameAs> sameAs) {
-    this.sameAs = sameAs;
-  }
-
   public List<EtdChairOf> getEtdChairOf() {
     return etdChairOf;
   }
@@ -504,36 +475,28 @@ public class Person extends AbstractNestedDocument {
     this.etdChairOf = etdChairOf;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
+  public List<SameAs> getSameAs() {
+    return sameAs;
+  }
+
+  public void setSameAs(List<SameAs> sameAs) {
+    this.sameAs = sameAs;
+  }
+
   public String getName() {
     return name;
   }
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getPrimaryEmail() {
@@ -606,6 +569,22 @@ public class Person extends AbstractNestedDocument {
 
   public void setResearchOverview(String researchOverview) {
     this.researchOverview = researchOverview;
+  }
+
+  public List<String> getPrincipalInvestigatorOn() {
+    return principalInvestigatorOn;
+  }
+
+  public void setPrincipalInvestigatorOn(List<String> principalInvestigatorOn) {
+    this.principalInvestigatorOn = principalInvestigatorOn;
+  }
+
+  public List<String> getCoPrincipalInvestigatorOn() {
+    return coPrincipalInvestigatorOn;
+  }
+
+  public void setCoPrincipalInvestigatorOn(List<String> coPrincipalInvestigatorOn) {
+    this.coPrincipalInvestigatorOn = coPrincipalInvestigatorOn;
   }
 
   public String getTeachingOverview() {
@@ -808,11 +787,51 @@ public class Person extends AbstractNestedDocument {
     this.fax = fax;
   }
 
+  public String getFeaturedProfileDisplay() {
+    return featuredProfileDisplay;
+  }
+
+  public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
+    this.featuredProfileDisplay = featuredProfileDisplay;
+  }
+
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
+
   public String getModTime() {
     return modTime;
   }
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

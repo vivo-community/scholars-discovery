@@ -19,12 +19,22 @@ import java.lang.String;
 public class Presentation extends AbstractNestedDocument {
   private static final long serialVersionUID = 901353999L;
 
+  private String label;
+
   private String event;
 
   private String date;
 
   public Presentation() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getEvent() {

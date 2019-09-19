@@ -1,27 +1,29 @@
 <div class="d-flex flex-nowrap justify-content-between mb-1">
   <span>
     {{#if title}}
-    <a href="display/{{collection}}/{{id}}">{{title}}</a>
+    <a href="display/{{id}}">{{title}}</a>
     {{else}}
-    <a href="display/{{collection}}/{{id}}">No title available ({{id}})</a>
+    <a href="display/{{id}}">No title available ({{id}})</a>
     {{/if}}
   </span>
-  <span class="badge badge-light">{{formalize type}}</span>
+  <span class="badge badge-light badge-custom">{{formalize type}}</span>
 </div>
 <div>
+  {{#if publicationDate}}
   <div>
     <span class="label">Publication Date:</span>
     <span>{{toYear publicationDate}}</span>
   </div>
+  {{/if}}
   {{#if authors}}
   <div>
     <span class="label">TAMU Faculty Authors (Claimed):</span>
     <ul>
       {{#each authors}}
       <li>
-        <span><a href="display/persons/{{id}}">{{label}}{{#if organizations}}, {{/if}}</a></span>
+        <span><a href="display/{{id}}">{{label}}{{#if organizations}}, {{/if}}</a></span>
         {{#each organizations}}
-        <span><a href="display/organizations/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+        <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
         {{/each}}
       </li>
       {{/each}}
@@ -52,7 +54,7 @@
     margin-right: 2px;
   }
 
-  .badge {
+  .badge-custom {
     height: 18px;
   }
 </style>

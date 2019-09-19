@@ -19,10 +19,24 @@ import java.lang.String;
 public class AwardedBy extends AbstractNestedDocument {
   private static final long serialVersionUID = -1800827613L;
 
+  private String label;
+
   private String type;
+
+  private String abbreviation;
+
+  private String preferredLabel;
 
   public AwardedBy() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {
@@ -31,5 +45,21 @@ public class AwardedBy extends AbstractNestedDocument {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public String getAbbreviation() {
+    return abbreviation;
+  }
+
+  public void setAbbreviation(String abbreviation) {
+    this.abbreviation = abbreviation;
+  }
+
+  public String getPreferredLabel() {
+    return preferredLabel;
+  }
+
+  public void setPreferredLabel(String preferredLabel) {
+    this.preferredLabel = preferredLabel;
   }
 }

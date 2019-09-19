@@ -19,10 +19,20 @@ import java.lang.String;
 public class Feature extends AbstractNestedDocument {
   private static final long serialVersionUID = -1603271988L;
 
+  private String label;
+
   private String type;
 
   public Feature() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

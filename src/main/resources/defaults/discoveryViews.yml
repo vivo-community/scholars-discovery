@@ -1,72 +1,79 @@
 ---
-
 - name: People
-  collection: persons
   layout: GRID
   templates:
     default: "defaults/discoveryViews/people/default.html"
   styles: []
   facets:
-  - name: People
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Organization
-    field: positionOrganization
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Research Area
-    field: researchAreas
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Published In
-    field: selectedPublicationVenue
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Publisher
-    field: selectedPublicationPublisher
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Position
-    field: positions
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Research Keywords
-    field: keywords
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  filters: []
+    - name: People
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Organization
+      field: positionOrganization
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Area
+      field: researchAreas
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Published In
+      field: selectedPublicationVenue
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Publisher
+      field: selectedPublicationPublisher
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Position
+      field: positions
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Keywords
+      field: keywords
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Person
+  boosts:
+    - field: firstName
+      value: 2
+    - field: lastName
+      value: 2
+    - field: name
+      value: 2
   sort:
-  - field: name
-    direction: ASC
+    - field: name
+      direction: ASC
   export:
     - columnHeader: First name
       valuePath: firstName
@@ -84,7 +91,6 @@
       valuePath: individual
 
 - name: Publications
-  collection: documents
   layout: LIST
   templates:
     default: "defaults/discoveryViews/publications/default.html"
@@ -95,66 +101,74 @@
     Thesis: "defaults/discoveryViews/publications/default.html"
   styles: []
   facets:
-  - name: Type
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Year
-    field: publicationDate
-    type: DATE_YEAR
-    sort: INDEX
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Author
-    field: authors
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Author Organization
-    field: authorOrganization
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Published In
-    field: publicationVenue
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Publisher
-    field: publisher
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Research Keywords
-    field: keywords
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  filters: []
+    - name: Type
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Year
+      field: publicationDate
+      opKey: BETWEEN
+      type: DATE_YEAR
+      sort: INDEX
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Author
+      field: authors
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Author Organization
+      field: authorOrganization
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Published In
+      field: publicationVenue
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Publisher
+      field: publisher
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Keywords
+      field: keywords
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Document
+  boosts:
+    - field: title
+      value: 2
+    - field: keywords
+      value: 2
   sort:
-  - field: title
-    direction: ASC
+    - field: title
+      direction: ASC
   export:
     - columnHeader: Publication type
       valuePath: type
@@ -182,74 +196,82 @@
       valuePath: individual
 
 - name: Grants
-  collection: relationships
   layout: LIST
   templates:
     default: "defaults/discoveryViews/grants/default.html"
   styles: []
   facets:
-  - name: Grants
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: true
-  - name: Principal Investigator
-    field: principalInvestigators
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Co-Principal Investigator
-    field: coPrincipalInvestigators
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Awarded By
-    field: awardedBy
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Administered By
-    field: administeredBy
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Year Start
-    field: dateTimeIntervalStart
-    type: DATE_YEAR
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Year End
-    field: dateTimeIntervalEnd
-    type: DATE_YEAR
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
+    - name: Grants
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: true
+    - name: Principal Investigator
+      field: principalInvestigators
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Co-Principal Investigator
+      field: coPrincipalInvestigators
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Awarded By
+      field: awardedBy
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Administered By
+      field: administeredBy
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Year Start
+      field: dateTimeIntervalStart
+      opKey: BETWEEN
+      type: DATE_YEAR
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Year End
+      field: dateTimeIntervalEnd
+      opKey: BETWEEN
+      type: DATE_YEAR
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
-  - field: type
-    value: Grant
+    - field: class
+      value: Relationship
+    - field: type
+      value: Grant
+  boosts:
+    - field: title
+      value: 2
+    - field: awardedBy
+      value: 2
   sort:
-  - field: title
-    direction: ASC
+    - field: title
+      direction: ASC
   export:
     - columnHeader: Grant title
       valuePath: title
@@ -267,50 +289,55 @@
       valuePath: individual
 
 - name: Awards
-  collection: concepts
   layout: LIST
   templates:
     default: "defaults/discoveryViews/awards/default.html"
   styles: []
   facets:
-  - name: Awards
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: true
-  - name: Year
-    field: yearAwarded
-    type: DATE_YEAR
-    sort: INDEX
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Recipient
-    field: awardOrHonorFor
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Conferred By
-    field: awardConferredBy
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
+    - name: Awards
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: true
+    - name: Year
+      field: yearAwarded
+      opKey: BETWEEN
+      type: DATE_YEAR
+      sort: INDEX
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Recipient
+      field: awardOrHonorFor
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Conferred By
+      field: awardConferredBy
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
-  - field: type
-    value: Award
+    - field: class
+      value: Concept
+    - field: type
+      value: Award
+  boosts:
+    - field: name
+      value: 2
   sort:
-  - field: name
-    direction: ASC
+    - field: name
+      direction: ASC
   export:
     - columnHeader: Award title
       valuePath: name
@@ -324,87 +351,81 @@
       valuePath: individual
 
 - name: Courses
-  collection: processes
   layout: LIST
   templates:
     default: "defaults/discoveryViews/courses/default.html"
   styles: []
   facets:
-  - name: Courses
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: true
-  - name: Offered By
-    field: offeredBy
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
+    - name: Courses
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: true
+    - name: Offered By
+      field: offeredBy
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
-  - field: type
-    value: Course
+    - field: class
+      value: Process
+    - field: type
+      value: Course
+  boosts:
+    - field: title
+      value: 2
   sort:
-  - field: title
-    direction: ASC
+    - field: title
+      direction: ASC
   export:
     - columnHeader: Course number and title
       valuePath: title
 
 - name: Organizations
-  collection: organizations
   layout: LIST
   templates:
     default: "defaults/discoveryViews/organizations/default.html"
   styles: []
   facets:
-  - name: Type
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Within Organization
-    field: organizationWithin
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Organization For Training
-    field: organizationForTraining
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Awards Grant
-    field: awardsGrant
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Research Areas
-    field: affiliatedResearchAreas
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  filters: []
-  sort: []
+    - name: Type
+      field: type
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Within Organization
+      field: organizationWithin
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Areas
+      field: affiliatedResearchAreas
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Organization
+  boosts:
+    - field: name
+      value: 2
+  sort:
+    - field: name
+      direction: ASC
   export:
     - columnHeader: Name
       valuePath: name
@@ -412,42 +433,46 @@
       valuePath: individual
 
 - name: Concepts
-  collection: concepts
   layout: LIST
   templates:
     default: "defaults/discoveryViews/concepts/default.html"
   styles: []
   facets:
-  - name: Type
-    field: type
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: true
-  - name: Associated Department
-    field: associatedDepartments
-    type: STRING
-    sort: INDEX
-    direction: ASC
-    pageSize: 10
-    collapsed: true
-    hidden: false
-  - name: Research Area Of
-    field: researchAreaOf
-    type: STRING
-    sort: COUNT
-    direction: DESC
-    pageSize: 10
-    collapsed: true
-    hidden: false
+    - name: Type
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: true
+    - name: Associated Department
+      field: associatedDepartments
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Area Of
+      field: researchAreaOf
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
-  - field: type
-    value: Concept
+    - field: class
+      value: Concept
+    - field: type
+      value: Concept
+  boosts:
+    - field: name
+      value: 2
   sort:
-  - field: name
-    direction: ASC
+    - field: name
+      direction: ASC
   export:
     - columnHeader: Concept name
       valuePath: name

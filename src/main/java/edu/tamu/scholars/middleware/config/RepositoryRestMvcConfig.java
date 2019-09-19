@@ -13,13 +13,16 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.data.rest.webmvc.json.MappingAwarePageableArgumentResolver;
+import org.springframework.data.rest.webmvc.json.MappingAwareSortArgumentResolver;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
+import edu.tamu.scholars.middleware.discovery.resolver.BoostArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FacetArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FilterArgumentResolver;
-import edu.tamu.scholars.middleware.discovery.resolver.IndexArgumentResolver;
 import edu.tamu.scholars.middleware.export.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
 
@@ -49,12 +52,24 @@ public class RepositoryRestMvcConfig extends RepositoryRestMvcConfiguration {
 
     @Override
     protected List<HandlerMethodArgumentResolver> defaultMethodArgumentResolvers() {
-        List<HandlerMethodArgumentResolver> resolvers = new ArrayList<>(super.defaultMethodArgumentResolvers());
-        resolvers.add(new IndexArgumentResolver());
+        List<HandlerMethodArgumentResolver> resolvers = new ArrayList<>();
+        resolvers.add(pageableResolver());
+        resolvers.add(sortResolver());
         resolvers.add(new FilterArgumentResolver());
         resolvers.add(new FacetArgumentResolver());
+        resolvers.add(new BoostArgumentResolver());
         resolvers.add(new ExportArgumentResolver());
+        super.defaultMethodArgumentResolvers().forEach(resolver -> {
+            if (!(resolver instanceof MappingAwarePageableArgumentResolver || resolver instanceof MappingAwareSortArgumentResolver)) {
+                resolvers.add(resolver);
+            }
+        });
         return resolvers;
+    }
+
+    @Bean
+    public PageableHandlerMethodArgumentResolverCustomizer customize() {
+        return resolver -> resolver.setOneIndexedParameters(true);
     }
 
     @Bean

@@ -10,12 +10,12 @@ public abstract class MappingArg {
         this.path = path;
     }
 
-    public String getField() {
+    public String getPath() {
         return path;
     }
 
-    public String getPath(Class<?> type) {
-        return findProperty(type, path);
+    public String getProperty() {
+        return findProperty(path);
     }
 
 }

@@ -19,25 +19,13 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "relationships")
-@CollectionSource(predicate = "http://vivoweb.org/ontology/core#Relationship")
-public class Relationship extends AbstractSolrDocument {
+@SolrDocument(collection = "scholars-discovery")
+@CollectionSource(name = "relationships", predicate = "http://vivoweb.org/ontology/core#Relationship")
+public class Relationship extends Common {
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "relationship/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
-
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "relationship/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "relationship/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String image;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "relationship/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
-    private String thumbnail;
 
     @Field("abstract")
     @Indexed(type = "whole_string", value = "abstract", copyTo = "_text_")
@@ -49,8 +37,13 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "receiptOfType", key = "type") })
+    @PropertySource(template = "relationship/organization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> organization;
+
+    @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "receiptOfType", key = "type") })
     @PropertySource(template = "relationship/receiptOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receiptOf;
 
@@ -59,7 +52,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> receiptOfType;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardOrHonorForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
     @PropertySource(template = "relationship/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorFor;
 
@@ -68,7 +61,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> awardOrHonorForType;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardConferredByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByAbbreviation", key = "abbreviation"), @Reference(value = "awardConferredByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardConferredBy;
 
@@ -76,12 +69,16 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> awardConferredByType;
 
-    @Indexed(type = "whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @PropertySource(template = "relationship/awardConferredByAbbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
+    private List<String> awardConferredByAbbreviation;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "relationship/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
     private List<String> awardConferredByPreferredLabel;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "awardedByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation"), @Reference(value = "awardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardedBy;
 
@@ -89,12 +86,16 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/awardedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> awardedByType;
 
-    @Indexed(type = "whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @PropertySource(template = "relationship/awardedByAbbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
+    private List<String> awardedByAbbreviation;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "relationship/awardedByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardedBy_label")
     private List<String> awardedByPreferredLabel;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "grantSubcontractedThroughType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "grantSubcontractedThroughType", key = "type") })
     @PropertySource(template = "relationship/grantSubcontractedThrough", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> grantSubcontractedThrough;
 
@@ -103,7 +104,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> grantSubcontractedThroughType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "administeredByType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "administeredByType", key = "type") })
     @PropertySource(template = "relationship/administeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> administeredBy;
 
@@ -112,7 +113,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> administeredByType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "geographicFocusType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "relationship/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
@@ -121,7 +122,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> geographicFocusType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "subGrantType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "subGrantType", key = "type") })
     @PropertySource(template = "relationship/subGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrant;
 
@@ -130,7 +131,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> subGrantType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "subGrantOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "subGrantOfType", key = "type") })
     @PropertySource(template = "relationship/subGrantOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrantOf;
 
@@ -139,7 +140,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> subGrantOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "providesFundingForType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "providesFundingForType", key = "type") })
     @PropertySource(template = "relationship/providesFundingFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> providesFundingFor;
 
@@ -164,7 +165,7 @@ public class Relationship extends AbstractSolrDocument {
     private String localAwardId;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
+    @NestedObject(properties = { @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
     @PropertySource(template = "relationship/contributor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contributors;
 
@@ -187,7 +188,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> coPrincipalInvestigators;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "supportedPublicationOrOtherWorkType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "supportedPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "relationship/supportedPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedPublicationOrOtherWork;
 
@@ -204,7 +205,7 @@ public class Relationship extends AbstractSolrDocument {
     private String dateTimeIntervalEnd;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject({ @Reference(value = "subjectAreaType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "subjectAreaType", key = "type") })
     @PropertySource(template = "relationship/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
@@ -216,13 +217,8 @@ public class Relationship extends AbstractSolrDocument {
     @PropertySource(template = "relationship/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 
-    @NestedObject
     @Indexed(type = "nested_strings")
-    @PropertySource(template = "relationship/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> sameAs;
-
-    @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "inheresInType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "inheresInType", key = "type") })
     @PropertySource(template = "relationship/inheresIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inheresIn;
 
@@ -231,7 +227,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> inheresInType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "specifiedOutputOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "relationship/isSpecifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
@@ -240,7 +236,7 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> specifiedOutputOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "outputOfType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "outputOfType", key = "type") })
     @PropertySource(template = "relationship/outputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOf;
 
@@ -249,17 +245,13 @@ public class Relationship extends AbstractSolrDocument {
     private List<String> outputOfType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject({ @Reference(value = "participatesInType", key = "type") })
+    @NestedObject(properties = { @Reference(value = "participatesInType", key = "type") })
     @PropertySource(template = "relationship/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
 
     @Indexed(type = "nested_strings")
     @PropertySource(template = "relationship/participatesInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> participatesInType;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "relationship/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
-    private String modTime;
 
     public Relationship() {
 
@@ -271,30 +263,6 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
     public String getAbstractText() {
@@ -311,6 +279,14 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(List<String> organization) {
+        this.organization = organization;
     }
 
     public List<String> getReceiptOf() {
@@ -361,6 +337,14 @@ public class Relationship extends AbstractSolrDocument {
         this.awardConferredByType = awardConferredByType;
     }
 
+    public List<String> getAwardConferredByAbbreviation() {
+        return awardConferredByAbbreviation;
+    }
+
+    public void setAwardConferredByAbbreviation(List<String> awardConferredByAbbreviation) {
+        this.awardConferredByAbbreviation = awardConferredByAbbreviation;
+    }
+
     public List<String> getAwardConferredByPreferredLabel() {
         return awardConferredByPreferredLabel;
     }
@@ -383,6 +367,14 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setAwardedByType(List<String> awardedByType) {
         this.awardedByType = awardedByType;
+    }
+
+    public List<String> getAwardedByAbbreviation() {
+        return awardedByAbbreviation;
+    }
+
+    public void setAwardedByAbbreviation(List<String> awardedByAbbreviation) {
+        this.awardedByAbbreviation = awardedByAbbreviation;
     }
 
     public List<String> getAwardedByPreferredLabel() {
@@ -617,14 +609,6 @@ public class Relationship extends AbstractSolrDocument {
         this.yearAwarded = yearAwarded;
     }
 
-    public List<String> getSameAs() {
-        return sameAs;
-    }
-
-    public void setSameAs(List<String> sameAs) {
-        this.sameAs = sameAs;
-    }
-
     public List<String> getInheresIn() {
         return inheresIn;
     }
@@ -687,14 +671,6 @@ public class Relationship extends AbstractSolrDocument {
 
     public void setParticipatesInType(List<String> participatesInType) {
         this.participatesInType = participatesInType;
-    }
-
-    public String getModTime() {
-        return modTime;
-    }
-
-    public void setModTime(String modTime) {
-        this.modTime = modTime;
     }
 
 }

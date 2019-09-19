@@ -19,12 +19,22 @@ import java.lang.String;
 public class Editor extends AbstractNestedDocument {
   private static final long serialVersionUID = -635222313L;
 
+  private String label;
+
   private String type;
 
   private String rank;
 
   public Editor() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

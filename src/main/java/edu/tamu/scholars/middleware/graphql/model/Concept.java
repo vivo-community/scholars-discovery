@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.concept.Website;
 import edu.tamu.scholars.middleware.graphql.model.concept.AssociatedDepartment;
 import edu.tamu.scholars.middleware.graphql.model.concept.ResearchAreaOf;
 import edu.tamu.scholars.middleware.graphql.model.concept.AwardOrHonorFor;
@@ -9,11 +8,13 @@ import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
-import edu.tamu.scholars.middleware.graphql.model.concept.SameAs;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import java.lang.String;
 import java.util.List;
@@ -30,15 +31,13 @@ import java.util.List;
 public class Concept extends AbstractNestedDocument {
   private static final long serialVersionUID = 1522676418L;
 
-  private List<Website> websites;
-
   private List<AssociatedDepartment> associatedDepartments;
 
   private List<ResearchAreaOf> researchAreaOf;
 
   private List<AwardOrHonorFor> awardOrHonorFor;
 
-  private AwardConferredBy awardConferredBy;
+  private List<AwardConferredBy> awardConferredBy;
 
   private List<Receipt> receipts;
 
@@ -48,9 +47,15 @@ public class Concept extends AbstractNestedDocument {
 
   private List<RelatedConcept> relatedConcepts;
 
+  private List<Website> websites;
+
   private List<SameAs> sameAs;
 
   private String name;
+
+  private List<String> awardConferredByPreferredLabel;
+
+  private String yearAwarded;
 
   private List<String> type;
 
@@ -58,22 +63,13 @@ public class Concept extends AbstractNestedDocument {
 
   private String thumbnail;
 
-  private String awardConferredByPreferredLabel;
-
-  private String yearAwarded;
-
   private String modTime;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Concept() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public List<AssociatedDepartment> getAssociatedDepartments() {
@@ -100,11 +96,11 @@ public class Concept extends AbstractNestedDocument {
     this.awardOrHonorFor = awardOrHonorFor;
   }
 
-  public AwardConferredBy getAwardConferredBy() {
+  public List<AwardConferredBy> getAwardConferredBy() {
     return awardConferredBy;
   }
 
-  public void setAwardConferredBy(AwardConferredBy awardConferredBy) {
+  public void setAwardConferredBy(List<AwardConferredBy> awardConferredBy) {
     this.awardConferredBy = awardConferredBy;
   }
 
@@ -140,6 +136,14 @@ public class Concept extends AbstractNestedDocument {
     this.relatedConcepts = relatedConcepts;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -154,6 +158,22 @@ public class Concept extends AbstractNestedDocument {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public List<String> getAwardConferredByPreferredLabel() {
+    return awardConferredByPreferredLabel;
+  }
+
+  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
+    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+  }
+
+  public String getYearAwarded() {
+    return yearAwarded;
+  }
+
+  public void setYearAwarded(String yearAwarded) {
+    this.yearAwarded = yearAwarded;
   }
 
   public List<String> getType() {
@@ -180,27 +200,19 @@ public class Concept extends AbstractNestedDocument {
     this.thumbnail = thumbnail;
   }
 
-  public String getAwardConferredByPreferredLabel() {
-    return awardConferredByPreferredLabel;
-  }
-
-  public void setAwardConferredByPreferredLabel(String awardConferredByPreferredLabel) {
-    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
-  }
-
-  public String getYearAwarded() {
-    return yearAwarded;
-  }
-
-  public void setYearAwarded(String yearAwarded) {
-    this.yearAwarded = yearAwarded;
-  }
-
   public String getModTime() {
     return modTime;
   }
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

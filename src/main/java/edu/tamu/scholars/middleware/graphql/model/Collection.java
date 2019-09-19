@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.collection.Website;
 import edu.tamu.scholars.middleware.graphql.model.collection.PublicationVenueFor;
 import edu.tamu.scholars.middleware.graphql.model.collection.Author;
 import edu.tamu.scholars.middleware.graphql.model.collection.Editor;
@@ -15,7 +14,8 @@ import edu.tamu.scholars.middleware.graphql.model.collection.SpecifiedOutputOf;
 import edu.tamu.scholars.middleware.graphql.model.collection.Mention;
 import edu.tamu.scholars.middleware.graphql.model.collection.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.collection.SupportedBy;
-import edu.tamu.scholars.middleware.graphql.model.collection.SameAs;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -36,8 +36,6 @@ import java.util.List;
 @JsonInclude(NON_EMPTY)
 public class Collection extends AbstractNestedDocument {
   private static final long serialVersionUID = -1196367868L;
-
-  private List<Website> websites;
 
   private List<PublicationVenueFor> publicationVenueFor;
 
@@ -67,15 +65,11 @@ public class Collection extends AbstractNestedDocument {
 
   private List<SupportedBy> supportedBy;
 
+  private List<Website> websites;
+
   private List<SameAs> sameAs;
 
   private String name;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   @JsonProperty("abstract")
   private String abstractText;
@@ -94,18 +88,19 @@ public class Collection extends AbstractNestedDocument {
 
   private String oclcnum;
 
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
   private String modTime;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Collection() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public List<PublicationVenueFor> getPublicationVenueFor() {
@@ -220,6 +215,14 @@ public class Collection extends AbstractNestedDocument {
     this.supportedBy = supportedBy;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -234,30 +237,6 @@ public class Collection extends AbstractNestedDocument {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getAbstractText() {
@@ -324,11 +303,43 @@ public class Collection extends AbstractNestedDocument {
     this.oclcnum = oclcnum;
   }
 
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
+
   public String getModTime() {
     return modTime;
   }
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

@@ -19,10 +19,20 @@ import java.lang.String;
 public class SubGrant extends AbstractNestedDocument {
   private static final long serialVersionUID = -1369236276L;
 
+  private String label;
+
   private String type;
 
   public SubGrant() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

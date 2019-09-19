@@ -1,0 +1,141 @@
+=== Processes
+
+==== Page
+
+This provides a page of all the processes present in the system, based on the _request parameters_ as shown.
+
+===== Request Parameters
+include::../{snippets}/processes/page/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/processes/page/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/page/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/page/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/page/curl-request.adoc[]
+
+==== Find by id
+
+This will find an process based on the _individual id_ provided as a parameter as shown in *Path Parameters*. The json response will have the specific process as shown in the *Sample Response*.
+
+===== Path Parameters
+include::../{snippets}/processes/findById/path-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/findById/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/findById/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/findById/curl-request.adoc[]
+
+==== Find by id In
+
+This will find a list of processes based on the _individual ids_ provided as a parameter as shown in *Request Parameters*. The json response will have the list of processes as shown in the *Sample Response*.
+
+===== Request Parameters
+include::../{snippets}/processes/search/findByIdIn/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/search/findByIdIn/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/search/findByIdIn/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/search/findByIdIn/curl-request.adoc[]
+
+==== Search
+
+This search will return a json response listing all the processes, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/processes/search/faceted/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/processes/search/faceted/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/search/faceted/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/search/faceted/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/search/faceted/curl-request.adoc[]
+
+==== Export Search
+
+This export will return a stream of specified type containing the search results with the requested fields, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/processes/search/export/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/search/export/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/search/export/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/search/export/curl-request.adoc[]
+
+==== Export Single Page
+
+This export will return a stream of specified type containing the single page built from the associated export view. An export view must be added to the display view for the type of process.
+
+===== Path Parameters
+include::../{snippets}/processes/export/path-parameters.adoc[]
+
+===== Request Parameters
+include::../{snippets}/processes/export/request-parameters.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/export/http-request.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/export/curl-request.adoc[]
+
+==== Count
+
+This count will return a json response containing the count, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/processes/search/count/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/processes/search/count/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/search/count/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/search/count/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/search/count/curl-request.adoc[]
+
+==== Recently Updated
+
+This will return a json response listing recently updated processes, based on the query parameters as shown in *Request Parameters*.
+
+===== Request Parameters
+include::../{snippets}/processes/search/recently-updated/request-parameters.adoc[]
+
+===== Response Fields
+include::../{snippets}/processes/search/recently-updated/response-fields.adoc[]
+
+===== Sample Request
+include::../{snippets}/processes/search/recently-updated/http-request.adoc[]
+
+===== Sample Response
+include::../{snippets}/processes/search/recently-updated/http-response.adoc[]
+
+===== CURL Sample
+include::../{snippets}/processes/search/recently-updated/curl-request.adoc[]

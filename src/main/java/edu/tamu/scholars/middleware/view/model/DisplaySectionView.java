@@ -18,7 +18,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @Table(name = "display_sections")
 @AttributeOverride(name = "name", column = @Column(nullable = false))
-public class DisplaySectionView extends View {
+public class DisplaySectionView extends FieldView {
 
     private static final long serialVersionUID = 938457239875938467L;
 
@@ -28,6 +28,12 @@ public class DisplaySectionView extends View {
     @Column(nullable = false)
     private boolean shared;
 
+    @Column(nullable = false)
+    private boolean paginated;
+
+    @Column(nullable = false)
+    private int pageSize;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     public String template;
 
@@ -35,7 +41,7 @@ public class DisplaySectionView extends View {
     private List<String> requiredFields;
 
     @ElementCollection
-    private List<LazyReference> lazyReferences;
+    private List<String> lazyReferences;
 
     @JoinColumn(name = "display_tab_section_id")
     @OneToMany(cascade = CascadeType.ALL)
@@ -46,13 +52,11 @@ public class DisplaySectionView extends View {
         super();
         hidden = false;
         shared = false;
+        paginated = false;
+        pageSize = 5;
         requiredFields = new ArrayList<String>();
-        lazyReferences = new ArrayList<LazyReference>();
+        lazyReferences = new ArrayList<String>();
         subsections = new ArrayList<DisplaySubsectionView>();
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean isHidden() {
@@ -71,6 +75,22 @@ public class DisplaySectionView extends View {
         this.shared = shared;
     }
 
+    public boolean isPaginated() {
+        return paginated;
+    }
+
+    public void setPaginated(boolean paginated) {
+        this.paginated = paginated;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     public String getTemplate() {
         return template;
     }
@@ -87,11 +107,11 @@ public class DisplaySectionView extends View {
         this.requiredFields = requiredFields;
     }
 
-    public List<LazyReference> getLazyReferences() {
+    public List<String> getLazyReferences() {
         return lazyReferences;
     }
 
-    public void setLazyReferences(List<LazyReference> lazyReferences) {
+    public void setLazyReferences(List<String> lazyReferences) {
         this.lazyReferences = lazyReferences;
     }
 

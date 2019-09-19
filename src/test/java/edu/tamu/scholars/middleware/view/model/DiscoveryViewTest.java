@@ -25,6 +25,7 @@ public class DiscoveryViewTest {
         assertNotNull(discoveryView.getFilters());
         assertTrue(discoveryView.getFacets().isEmpty());
         assertTrue(discoveryView.getFilters().isEmpty());
+        assertTrue(discoveryView.getBoosts().isEmpty());
         assertTrue(discoveryView.getSort().isEmpty());
         assertTrue(discoveryView.getExport().isEmpty());
     }
@@ -36,7 +37,7 @@ public class DiscoveryViewTest {
 
         assertEquals(1L, discoveryView.getId(), 1);
         assertEquals(MOCK_VIEW_NAME, discoveryView.getName());
-        assertEquals("persons", discoveryView.getCollection());
+//        assertEquals("persons", discoveryView.getCollection());
         assertEquals(Layout.GRID, discoveryView.getLayout());
 
         assertTrue(discoveryView.getTemplates().containsKey("default"));
@@ -59,6 +60,10 @@ public class DiscoveryViewTest {
         assertEquals(1, discoveryView.getFilters().size());
         assertEquals("type", discoveryView.getFilters().get(0).getField());
         assertEquals("FacultyMember", discoveryView.getFilters().get(0).getValue());
+
+        assertEquals(1, discoveryView.getBoosts().size());
+        assertEquals("name", discoveryView.getBoosts().get(0).getField());
+        assertEquals(2.0f, discoveryView.getBoosts().get(0).getValue());
 
         assertEquals(1, discoveryView.getSort().size());
         assertEquals("name", discoveryView.getSort().get(0).getField());

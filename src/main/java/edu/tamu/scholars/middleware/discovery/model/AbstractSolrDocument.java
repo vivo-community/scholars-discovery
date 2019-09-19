@@ -3,8 +3,11 @@ package edu.tamu.scholars.middleware.discovery.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 
@@ -12,8 +15,13 @@ import io.leangen.graphql.annotations.types.GraphQLInterface;
 public abstract class AbstractSolrDocument {
 
     @Id
-    @Indexed
+    @Indexed(required = true)
     private String id;
+
+    @Field("class")
+    @JsonProperty("class")
+    @Indexed(type = "string", value = "class", required = true)
+    private String clazz = this.getClass().getSimpleName();
 
     @Indexed
     private Set<String> syncIds = new HashSet<String>();
@@ -24,6 +32,14 @@ public abstract class AbstractSolrDocument {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
     }
 
     public Set<String> getSyncIds() {

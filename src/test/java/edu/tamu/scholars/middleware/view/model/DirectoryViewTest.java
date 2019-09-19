@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import edu.tamu.scholars.middleware.model.OpKey;
 
 @ExtendWith(SpringExtension.class)
 public class DirectoryViewTest {
@@ -26,6 +27,7 @@ public class DirectoryViewTest {
         assertNotNull(directoryView.getFilters());
         assertTrue(directoryView.getFacets().isEmpty());
         assertTrue(directoryView.getFilters().isEmpty());
+        assertTrue(directoryView.getBoosts().isEmpty());
         assertTrue(directoryView.getSort().isEmpty());
         assertTrue(directoryView.getExport().isEmpty());
     }
@@ -37,7 +39,7 @@ public class DirectoryViewTest {
 
         assertEquals(1L, directoryView.getId(), 1);
         assertEquals(MOCK_VIEW_NAME, directoryView.getName());
-        assertEquals("persons", directoryView.getCollection());
+//        assertEquals("persons", directoryView.getCollection());
         assertEquals(Layout.LIST, directoryView.getLayout());
 
         assertTrue(directoryView.getTemplates().containsKey("default"));
@@ -61,13 +63,17 @@ public class DirectoryViewTest {
         assertEquals("type", directoryView.getFilters().get(0).getField());
         assertEquals("FacultyMember", directoryView.getFilters().get(0).getValue());
 
+        assertEquals(1, directoryView.getBoosts().size());
+        assertEquals("name", directoryView.getBoosts().get(0).getField());
+        assertEquals(2.0f, directoryView.getBoosts().get(0).getValue());
+
         assertEquals(1, directoryView.getSort().size());
         assertEquals("name", directoryView.getSort().get(0).getField());
         assertEquals(Direction.ASC, directoryView.getSort().get(0).getDirection());
 
         assertNotNull(directoryView.getIndex());
         assertEquals("name", directoryView.getIndex().getField());
-        assertEquals(OperationKey.ENDS_WITH, directoryView.getIndex().getOperationKey());
+        assertEquals(OpKey.ENDS_WITH, directoryView.getIndex().getOpKey());
 
         assertEquals(2, directoryView.getExport().size());
         assertEquals("Id", directoryView.getExport().get(0).getColumnHeader());

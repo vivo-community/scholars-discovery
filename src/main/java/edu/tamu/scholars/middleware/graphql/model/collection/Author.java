@@ -22,6 +22,8 @@ import java.util.List;
 public class Author extends AbstractNestedDocument {
   private static final long serialVersionUID = -733722891L;
 
+  private String label;
+
   private String type;
 
   private String rank;
@@ -30,6 +32,14 @@ public class Author extends AbstractNestedDocument {
 
   public Author() {
     super();
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public String getType() {

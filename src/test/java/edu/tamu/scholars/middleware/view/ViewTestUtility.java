@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.Criteria.OperationKey;
 import org.springframework.data.solr.core.query.FacetOptions;
 
+import edu.tamu.scholars.middleware.model.OpKey;
+import edu.tamu.scholars.middleware.view.model.Boost;
 import edu.tamu.scholars.middleware.view.model.DirectoryView;
 import edu.tamu.scholars.middleware.view.model.DiscoveryView;
 import edu.tamu.scholars.middleware.view.model.DisplaySectionView;
@@ -23,7 +24,6 @@ import edu.tamu.scholars.middleware.view.model.FacetType;
 import edu.tamu.scholars.middleware.view.model.Filter;
 import edu.tamu.scholars.middleware.view.model.Index;
 import edu.tamu.scholars.middleware.view.model.Layout;
-import edu.tamu.scholars.middleware.view.model.LazyReference;
 import edu.tamu.scholars.middleware.view.model.Side;
 import edu.tamu.scholars.middleware.view.model.Sort;
 
@@ -35,7 +35,7 @@ public class ViewTestUtility {
         DirectoryView directoryView = new DirectoryView();
 
         directoryView.setName(MOCK_VIEW_NAME);
-        directoryView.setCollection("persons");
+//        directoryView.setCollection("persons");
         directoryView.setLayout(Layout.LIST);
 
         Map<String, String> templates = new HashMap<String, String>();
@@ -76,6 +76,17 @@ public class ViewTestUtility {
 
         directoryView.setFilters(filters);
 
+        List<Boost> boosts = new ArrayList<Boost>();
+
+        Boost boost = new Boost();
+
+        boost.setField("name");
+        boost.setValue(2.0f);
+
+        boosts.add(boost);
+
+        directoryView.setBoosts(boosts);
+
         List<Sort> sorting = new ArrayList<Sort>();
 
         Sort sort = new Sort();
@@ -89,7 +100,7 @@ public class ViewTestUtility {
         Index index = new Index();
 
         index.setField("name");
-        index.setOperationKey(OperationKey.ENDS_WITH);
+        index.setOpKey(OpKey.ENDS_WITH);
 
         directoryView.setIndex(index);
 
@@ -118,7 +129,7 @@ public class ViewTestUtility {
         DiscoveryView discoveryView = new DiscoveryView();
 
         discoveryView.setName(MOCK_VIEW_NAME);
-        discoveryView.setCollection("persons");
+//        discoveryView.setCollection("persons");
         discoveryView.setLayout(Layout.GRID);
 
         Map<String, String> templates = new HashMap<String, String>();
@@ -158,6 +169,17 @@ public class ViewTestUtility {
         filters.add(filter);
 
         discoveryView.setFilters(filters);
+
+        List<Boost> boosts = new ArrayList<Boost>();
+
+        Boost boost = new Boost();
+
+        boost.setField("name");
+        boost.setValue(2.0f);
+
+        boosts.add(boost);
+
+        discoveryView.setBoosts(boosts);
 
         List<Sort> sorting = new ArrayList<Sort>();
 
@@ -236,19 +258,34 @@ public class ViewTestUtility {
         DisplaySectionView section = new DisplaySectionView();
         section.setName("Test");
         section.setTemplate("<span>Hello, World!</span>");
+        
+        section.setField("name");
+
+        Filter sectionFilter = new Filter();
+        sectionFilter.setField("type");
+        sectionFilter.setValue("Test");
+
+        List<Filter> sectionFilters = new ArrayList<Filter>();
+        sectionFilters.add(sectionFilter);
+
+        section.setFilters(sectionFilters);
+
+        Sort sectionSort = new Sort();
+        sectionSort.setField("name");
+        sectionSort.setDirection(Direction.ASC);
+
+        List<Sort> sectionSorting = new ArrayList<Sort>();
+        sectionSorting.add(sectionSort);
+
+        section.setSort(sectionSorting);
 
         List<String> requiredFields = new ArrayList<String>();
         requiredFields.add("type");
 
         section.setRequiredFields(requiredFields);
 
-        LazyReference lazyReference = new LazyReference();
-
-        lazyReference.setField("publications");
-        lazyReference.setCollection("documents");
-
-        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
-        lazyReferences.add(lazyReference);
+        List<String> lazyReferences = new ArrayList<String>();
+        lazyReferences.add("publications");
 
         section.setLazyReferences(lazyReferences);
 
@@ -257,23 +294,23 @@ public class ViewTestUtility {
         subsection.setName("Test");
         subsection.setField("publications");
 
-        Filter filter = new Filter();
-        filter.setField("type");
-        filter.setValue("Test");
+        Filter subsectionFilter = new Filter();
+        subsectionFilter.setField("type");
+        subsectionFilter.setValue("Test");
 
-        List<Filter> filters = new ArrayList<Filter>();
-        filters.add(filter);
+        List<Filter> subsectionFilters = new ArrayList<Filter>();
+        subsectionFilters.add(subsectionFilter);
 
-        subsection.setFilters(filters);
+        subsection.setFilters(subsectionFilters);
 
-        Sort sort = new Sort();
-        sort.setField("date");
-        sort.setDirection(Direction.DESC);
+        Sort subsectionSort = new Sort();
+        subsectionSort.setField("date");
+        subsectionSort.setDirection(Direction.DESC);
 
-        List<Sort> sorting = new ArrayList<Sort>();
-        sorting.add(sort);
+        List<Sort> subsectionSorting = new ArrayList<Sort>();
+        subsectionSorting.add(subsectionSort);
 
-        subsection.setSort(sorting);
+        subsection.setSort(subsectionSorting);
 
         subsection.setTemplate("<div>Subsection</div>");
 
@@ -302,11 +339,8 @@ public class ViewTestUtility {
 
         export.setRequiredFields(requiredFields);
 
-        List<LazyReference> lazyReferences = new ArrayList<LazyReference>();
-        LazyReference reference = new LazyReference();
-        reference.setCollection("persons");
-        reference.setField("publications");
-        lazyReferences.add(reference);
+        List<String> lazyReferences = new ArrayList<String>();
+        lazyReferences.add("publications");
 
         export.setLazyReferences(lazyReferences);
 

@@ -1,8 +1,7 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.document.Website;
 import edu.tamu.scholars.middleware.graphql.model.document.PublicationVenue;
-import edu.tamu.scholars.middleware.graphql.model.document.PublicationVenueFor;
+import edu.tamu.scholars.middleware.graphql.model.document.HasPublicationVenueFor;
 import edu.tamu.scholars.middleware.graphql.model.document.EtdChairedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Author;
 import edu.tamu.scholars.middleware.graphql.model.document.Editor;
@@ -30,7 +29,8 @@ import edu.tamu.scholars.middleware.graphql.model.document.Mention;
 import edu.tamu.scholars.middleware.graphql.model.document.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.document.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Receipt;
-import edu.tamu.scholars.middleware.graphql.model.document.SameAs;
+import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -52,11 +52,9 @@ import java.util.List;
 public class Document extends AbstractNestedDocument {
   private static final long serialVersionUID = 1403069441L;
 
-  private List<Website> websites;
-
   private PublicationVenue publicationVenue;
 
-  private PublicationVenueFor publicationVenueFor;
+  private HasPublicationVenueFor hasPublicationVenueFor;
 
   private List<EtdChairedBy> etdChairedBy;
 
@@ -112,15 +110,11 @@ public class Document extends AbstractNestedDocument {
 
   private List<Receipt> receipts;
 
+  private List<Website> websites;
+
   private List<SameAs> sameAs;
 
   private String title;
-
-  private List<String> type;
-
-  private String image;
-
-  private String thumbnail;
 
   @JsonProperty("abstract")
   private String abstractText;
@@ -193,18 +187,19 @@ public class Document extends AbstractNestedDocument {
 
   private String isTemplate;
 
+  private List<String> type;
+
+  private String image;
+
+  private String thumbnail;
+
   private String modTime;
+
+  @JsonProperty("class")
+  private String clazz;
 
   public Document() {
     super();
-  }
-
-  public List<Website> getWebsites() {
-    return websites;
-  }
-
-  public void setWebsites(List<Website> websites) {
-    this.websites = websites;
   }
 
   public PublicationVenue getPublicationVenue() {
@@ -215,12 +210,12 @@ public class Document extends AbstractNestedDocument {
     this.publicationVenue = publicationVenue;
   }
 
-  public PublicationVenueFor getPublicationVenueFor() {
-    return publicationVenueFor;
+  public HasPublicationVenueFor getHasPublicationVenueFor() {
+    return hasPublicationVenueFor;
   }
 
-  public void setPublicationVenueFor(PublicationVenueFor publicationVenueFor) {
-    this.publicationVenueFor = publicationVenueFor;
+  public void setHasPublicationVenueFor(HasPublicationVenueFor hasPublicationVenueFor) {
+    this.hasPublicationVenueFor = hasPublicationVenueFor;
   }
 
   public List<EtdChairedBy> getEtdChairedBy() {
@@ -440,6 +435,14 @@ public class Document extends AbstractNestedDocument {
     this.receipts = receipts;
   }
 
+  public List<Website> getWebsites() {
+    return websites;
+  }
+
+  public void setWebsites(List<Website> websites) {
+    this.websites = websites;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -454,30 +457,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public List<String> getType() {
-    return type;
-  }
-
-  public void setType(List<String> type) {
-    this.type = type;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public void setThumbnail(String thumbnail) {
-    this.thumbnail = thumbnail;
   }
 
   public String getAbstractText() {
@@ -760,11 +739,43 @@ public class Document extends AbstractNestedDocument {
     this.isTemplate = isTemplate;
   }
 
+  public List<String> getType() {
+    return type;
+  }
+
+  public void setType(List<String> type) {
+    this.type = type;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
+
   public String getModTime() {
     return modTime;
   }
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public String getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(String clazz) {
+    this.clazz = clazz;
   }
 }

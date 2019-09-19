@@ -1,91 +1,90 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.apache.commons.lang.reflect.FieldUtils;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
-import org.springframework.data.util.ReflectionUtils;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.argument.IndexArg;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
-import edu.tamu.scholars.middleware.discovery.model.repo.SolrDocumentRepo;
+import edu.tamu.scholars.middleware.discovery.model.Individual;
+import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
+import edu.tamu.scholars.middleware.graphql.config.model.Composite;
+import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
+import edu.tamu.scholars.middleware.graphql.exception.DocumentNotFoundException;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
+import edu.tamu.scholars.middleware.model.OpKey;
+import graphql.language.Field;
+import graphql.language.Selection;
+import graphql.language.SelectionSet;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
 @GraphQLApi
-public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument, D extends AbstractSolrDocument, R extends SolrDocumentRepo<D>> implements SolrDocumentRepo<ND> {
+public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDocument> implements NestedDocumentService<ND> {
+
+    private final static int MAX_BATCH_SIZE = 500;
 
     @Autowired
-    private R repo;
+    private IndividualRepo repo;
 
     @Autowired
     private ObjectMapper mapper;
 
-    @Override
-    public <NS extends ND> NS save(NS nestedDocument, Duration commitWithin) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
-    }
+    @Autowired
+    private List<NestedDocumentService<?>> nestedDocumentServices;
 
-    @Override
-    public <NS extends ND> Iterable<NS> saveAll(Iterable<NS> nestedDocuments, Duration commitWithin) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
+    private final List<Composite> composites = new ArrayList<Composite>();
+
+    @PostConstruct
+    public void init() throws JsonParseException, JsonMappingException, IOException {
+        Resource compositesResource = new ClassPathResource("graphql/composites.yml");
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+        // @formatter:off
+        composites.addAll(yamlMapper.readValue(compositesResource.getInputStream(), new TypeReference<List<Composite>>() {}));
+        // @formatter:on
     }
 
     @Override
     public long count() {
-        return repo.count();
+        return count(DEFAULT_QUERY, new ArrayList<FilterArg>());
     }
 
     @Override
-    public Iterable<ND> findAll(Sort sort) {
-        return StreamSupport.stream(repo.findAll(sort).spliterator(), false).map(this::toNested).collect(Collectors.toList());
-    }
-
-    public DiscoveryPage<ND> findAllPaged(Pageable page) {
-        return DiscoveryPage.from(findAll(page));
-    }
-
-    @Override
-    public Page<ND> findAll(Pageable page) {
-        return repo.findAll(page).map(this::toNested);
-    }
-
-    @Override
-    public <NS extends ND> Iterable<NS> saveAll(Iterable<NS> nestedDocuments) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
-    }
-
-    @Override
-    public Optional<ND> findById(String id) {
-        Optional<ND> nestedDocument = Optional.empty();
-        Optional<D> document = repo.findById(id);
-        if (document.isPresent()) {
-            nestedDocument = Optional.of(toNested(document.get()));
-        }
-        return nestedDocument;
-    }
-
-    public ND getById(String id) {
-        return findById(id).get();
+    public long count(String query, List<FilterArg> filters) {
+        return repo.count(query, augmentFilters(filters));
     }
 
     @Override
@@ -94,116 +93,210 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public Iterable<ND> findAll() {
-        return StreamSupport.stream(repo.findAll().spliterator(), false).map(this::toNested).collect(Collectors.toList());
+    public ND getById(String id, List<Field> fields) {
+        Optional<ND> document = findById(id, fields);
+        if (document.isPresent()) {
+            return document.get();
+        }
+        throw new DocumentNotFoundException(String.format("Could not find %s with id %s", type(), id));
     }
 
     @Override
-    public Iterable<ND> findAllById(Iterable<String> ids) {
-        return StreamSupport.stream(repo.findAllById(ids).spliterator(), false).map(this::toNested).collect(Collectors.toList());
+    public List<ND> findByIdIn(List<String> ids, List<Field> fields) {
+        return repo.findByIdIn(ids).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteById(String id) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
+    public List<ND> findByType(String type, List<Field> fields) {
+        return StreamSupport.stream(repo.findByType(type, augmentFilters(new ArrayList<FilterArg>())).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteAll(Iterable<? extends ND> nestedDocuments) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
+    public List<ND> findByType(String type, List<FilterArg> filters, List<Field> fields) {
+        return StreamSupport.stream(repo.findByType(type, augmentFilters(filters)).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteAll() {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
+    public List<ND> findMostRecentlyUpdate(Integer limit, List<Field> fields) {
+        return findMostRecentlyUpdate(limit, new ArrayList<FilterArg>(), fields);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public FacetPage<ND> search(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        FacetPage<D> facetPage = repo.search(query, index, facets, filters, page);
-        List<ND> content = facetPage.getContent().stream().map(this::toNested).collect(Collectors.toList());
-        Field field = FieldUtils.getField(SolrResultPage.class, "content", true);
-        ReflectionUtils.setField(field, facetPage, content);
-        return (FacetPage<ND>) facetPage;
-    }
-
-    public DiscoveryFacetPage<ND> search(String query, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), page);
-    }
-
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), new ArrayList<FacetArg>(), filters, page);
-    }
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, new ArrayList<FilterArg>(), page);
-    }
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        return facetedSearch(query, Optional.empty(), facets, filters, page);
-    }
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, Optional<IndexArg> index, List<FacetArg> facets, List<FilterArg> filters, Pageable page) {
-        FacetPage<ND> facetPage = search(query, index, facets, filters, page);
-        return DiscoveryFacetPage.from(facetPage, facets, getOriginDocumentType());
+    public List<ND> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters, List<Field> fields) {
+        return repo.findMostRecentlyUpdate(limit, augmentFilters(filters)).stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public long count(String query, List<FilterArg> filters) {
-        return repo.count(query, filters);
+    public Iterable<ND> findAll(List<Field> fields) {
+        return StreamSupport.stream(repo.findAll(augmentFilters(new ArrayList<FilterArg>())).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public <NS extends ND> NS save(NS nestedDocument) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
+    public Iterable<ND> findAll(List<FilterArg> filters, List<Field> fields) {
+        return StreamSupport.stream(repo.findAll(augmentFilters(filters)).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public void delete(ND nestedDocument) {
-        throw new UnsupportedOperationException(String.format("%s is read only", type()));
+    public Iterable<ND> findAll(Sort sort, List<Field> fields) {
+        return StreamSupport.stream(repo.findAll(augmentFilters(new ArrayList<FilterArg>()), sort).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public List<ND> findByType(String type) {
-        return repo.findByType(type).stream().map(this::toNested).collect(Collectors.toList());
+    public Iterable<ND> findAll(List<FilterArg> filters, Sort sort, List<Field> fields) {
+        return StreamSupport.stream(repo.findAll(augmentFilters(filters), sort).spliterator(), false).map(document -> toNested(document, fields)).collect(Collectors.toList());
     }
 
     @Override
-    public List<ND> findByIdIn(List<String> ids) {
-        return repo.findByIdIn(ids).stream().map(this::toNested).collect(Collectors.toList());
+    public DiscoveryPage<ND> findAll(Pageable page, List<Field> fields) {
+        return DiscoveryPage.from(repo.findAll(augmentFilters(new ArrayList<FilterArg>()), page).map(document -> toNested(document, fields)));
     }
 
     @Override
-    public List<ND> findBySyncIds(String syncId) {
-        return repo.findBySyncIds(syncId).stream().map(this::toNested).collect(Collectors.toList());
+    public DiscoveryPage<ND> findAll(List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return DiscoveryPage.from(repo.findAll(augmentFilters(filters), page).map(document -> toNested(document, fields)));
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, boosts, page, fields);
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, facets, filters, new ArrayList<BoostArg>(), page, fields);
+    }
+
+    @Override
+    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, facets, filters, boosts, page, fields);
     }
 
     @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
-        return repo.findBySyncIdsIn(syncIds).stream().map(this::toNested).collect(Collectors.toList());
+        return repo.findBySyncIdsIn(syncIds).stream().map(document -> toNested(document, new ArrayList<Field>())).collect(Collectors.toList());
     }
 
-    @Override
-    public List<ND> findMostRecentlyUpdate(Integer limit) {
-        return repo.findMostRecentlyUpdate(limit).stream().map(this::toNested).collect(Collectors.toList());
+    private DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return DiscoveryFacetPage.from(search(query, facets, filters, boosts, page, fields), facets);
     }
 
-    @Override
-    public Cursor<ND> stream(String query, Optional<IndexArg> index, List<FilterArg> filters, Sort sort) {
-        throw new UnsupportedOperationException("Unable to map stream");
+    private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
+        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+        FacetPage<ND> results = new SolrResultPage<ND>(content);
+        BeanUtils.copyProperties(facetPage, results, "content");
+        return results;
+    }
+
+    private Optional<ND> findById(String id, List<Field> fields) {
+        Optional<ND> nestedDocument = Optional.empty();
+        Optional<Individual> document = repo.findById(id);
+        if (document.isPresent()) {
+            nestedDocument = Optional.of(toNested(document.get(), fields));
+        }
+        return nestedDocument;
+    }
+
+    private ND toNested(Individual document, List<Field> fields) {
+        ObjectNode node = mapper.valueToTree(document);
+        Optional<Composite> composite = composites.stream().filter(c -> c.getType().equals(type().getSimpleName())).findAny();
+        if (composite.isPresent()) {
+            composite.get().getReferences().parallelStream().forEach(reference -> {
+                if (node.has(reference.getName()) && dereference(reference, fields)) {
+                    JsonNode referenceNode = node.get(reference.getName());
+                    List<String> ids = new ArrayList<String>();
+                    if (referenceNode.isArray()) {
+                        Iterator<JsonNode> resourceNodes = ((ArrayNode) referenceNode).elements();
+                        while (resourceNodes.hasNext()) {
+                            ids.add(resourceNodes.next().get(ID).asText());
+                        }
+                    } else {
+                        ids.add(referenceNode.get(ID).asText());
+                    }
+
+                    Optional<NestedDocumentService<?>> nestedDocumentService = nestedDocumentServices.stream().filter(service -> {
+                        return service.type().getSimpleName().equals(reference.getType());
+                    }).findAny();
+
+                    if (nestedDocumentService.isPresent()) {
+                        List<AbstractNestedDocument> references = new ArrayList<AbstractNestedDocument>();
+                        while (ids.size() >= MAX_BATCH_SIZE) {
+                            references.addAll(nestedDocumentService.get().findByIdIn(ids.subList(0, MAX_BATCH_SIZE), fields));
+                            ids = ids.subList(MAX_BATCH_SIZE, ids.size());
+                        }
+                        references.addAll(nestedDocumentService.get().findByIdIn(ids, fields));
+                        node.set(reference.getName(), mapper.valueToTree(references));
+                    }
+                } else {
+                    node.remove(reference.getName());
+                }
+            });
+        }
+        return mapper.convertValue(node, type());
+    }
+
+    @SuppressWarnings("rawtypes")
+    private boolean dereference(CompositeReference reference, List<Field> fields) {
+        for (Field field : fields) {
+            List<Selection> selections = field.getSelectionSet().getSelections();
+            if (checkSelections(reference, selections)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private boolean checkSelections(CompositeReference reference, List<Selection> selections) {
+        for (Selection selection : selections) {
+            if (checkSelection(reference, (Field) selection)) {
+                return true;
+            }
+            if (!selection.getChildren().isEmpty()) {
+                List<SelectionSet> sets = selection.getChildren();
+                for (SelectionSet set : sets) {
+                    if (checkSelections(reference, set.getSelections())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkSelection(CompositeReference reference, Field field) {
+        return field.getName().equals(reference.getName());
     }
 
     protected abstract Class<?> getOriginDocumentType();
 
-    private ND toNested(D document) {
-        try {
-            String json = mapper.writeValueAsString(document);
-            return mapper.readValue(json, type());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Something went wrong");
-        }
+    protected List<FilterArg> augmentFilters(List<FilterArg> filters) {
+        filters.add(getCollectionFilter());
+        return filters;
+    }
+
+    protected FilterArg getCollectionFilter() {
+        return FilterArg.of(CLASS, Optional.of(type().getSimpleName()), Optional.of(OpKey.EQUALS.getKey()));
     }
 
 }
