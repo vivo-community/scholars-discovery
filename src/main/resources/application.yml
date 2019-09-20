@@ -154,8 +154,6 @@ management:
         include: health, info
   endpoint:
     health:
-      sensitive: false
       enabled: true
     info:
-      sensitive: false
       enabled: true

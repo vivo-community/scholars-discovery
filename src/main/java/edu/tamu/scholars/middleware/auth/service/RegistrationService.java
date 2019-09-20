@@ -66,8 +66,8 @@ public class RegistrationService {
         Token token = tokenService.allocateToken(registrationJson);
         String subject = messageSource.getMessage("RegistrationService.confirmationEmailSubject", new Object[0], LocaleContextHolder.getLocale());
         String message = templateService.templateConfirmRegistrationMessage(registration, token.getKey());
-        emailService.send(registration.getEmail(), subject, message);
         createUser(registration);
+        emailService.send(registration.getEmail(), subject, message);
         return registration;
     }
 
@@ -77,8 +77,13 @@ public class RegistrationService {
         Registration registration = objectMapper.readValue(registrationJson, Registration.class);
         Optional<User> user = userRepo.findByEmail(registration.getEmail());
         if (user.isPresent()) {
-            if (isTokenNonExpired(token)) {
-                return registration;
+            if (!isTokenExpired(token)) {
+                if (!user.get().isConfirmed()) {
+                    user.get().setConfirmed(true);
+                    userRepo.save(user.get());
+                    return registration;
+                }
+                throw new RegistrationException(messageSource.getMessage("RegistrationService.emailAlreadyConfirmed", new Object[] { registration.getEmail() }, LocaleContextHolder.getLocale()));
             }
             userRepo.delete(user.get());
             throw new RegistrationException(messageSource.getMessage("RegistrationService.tokenExpired", new Object[0], LocaleContextHolder.getLocale()));
@@ -86,16 +91,20 @@ public class RegistrationService {
         throw new RegistrationException(messageSource.getMessage("RegistrationService.unableToConfirmEmailNotFound", new Object[] { registration.getEmail() }, LocaleContextHolder.getLocale()));
     }
 
-    public User complete(Registration registration) throws RegistrationException {
+    public User complete(String key, Registration registration) throws RegistrationException {
+        Token token = tokenService.verifyToken(key);
         Optional<User> user = userRepo.findByEmail(registration.getEmail());
         if (user.isPresent()) {
-            if (isUserNotConfirmed(user.get())) {
-                user.get().setConfirmed(true);
-                user.get().setEnabled(true);
-                user.get().setPassword(bCryptPasswordEncoder.encode(registration.getPassword()));
-                return userRepo.save(user.get());
+            if (!isTokenExpired(token)) {
+                if (user.get().isConfirmed()) {
+                    user.get().setEnabled(true);
+                    user.get().setPassword(bCryptPasswordEncoder.encode(registration.getPassword()));
+                    return userRepo.save(user.get());
+                }
+                throw new RegistrationException(messageSource.getMessage("RegistrationService.emailNotConfirmed", new Object[] { registration.getEmail() }, LocaleContextHolder.getLocale()));
             }
-            throw new RegistrationException(messageSource.getMessage("RegistrationService.emailAlreadyConfirmed", new Object[] { registration.getEmail() }, LocaleContextHolder.getLocale()));
+            userRepo.delete(user.get());
+            throw new RegistrationException(messageSource.getMessage("RegistrationService.tokenExpired", new Object[0], LocaleContextHolder.getLocale()));
         }
         throw new RegistrationException(messageSource.getMessage("RegistrationService.unableToCompleteEmailNotFound", new Object[] { registration.getEmail() }, LocaleContextHolder.getLocale()));
     }
@@ -113,15 +122,11 @@ public class RegistrationService {
         simpMessageTemplate.convertAndSend(USERS_CHANNEL, new CreateEntityMessage<User>(user));
     }
 
-    private boolean isUserNotConfirmed(User user) {
-        return !user.isConfirmed();
-    }
-
-    private boolean isTokenNonExpired(Token token) {
+    private boolean isTokenExpired(Token token) {
         Calendar currentTime = Calendar.getInstance();
         Calendar creationTime = Calendar.getInstance();
         creationTime.setTimeInMillis(token.getKeyCreationTime());
-        return ChronoUnit.DAYS.between(creationTime.toInstant(), currentTime.toInstant()) < authConfig.getRegistrationTokenDuration();
+        return ChronoUnit.DAYS.between(creationTime.toInstant(), currentTime.toInstant()) >= authConfig.getRegistrationTokenDuration();
     }
 
 }
