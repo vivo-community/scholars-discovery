@@ -1,0 +1,19 @@
+{
+   "kind": "ImageStream",
+   "apiVersion": "v1",
+   "metadata": {
+      "name": "scholars-discovery-build",            
+      "labels": {
+         "application": "scholars-discovery-build"   
+      }
+   },
+   "spec": {                         
+      "dockerImageRepository": "",   
+      "tags": [                      
+         {
+            "name": "latest"
+         }
+      ]
+   }
+}
+

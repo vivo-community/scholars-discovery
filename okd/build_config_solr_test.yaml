@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: scholars-discovery-solr-build
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: scholars-discovery-solr:latest
+  source:
+    contextDir: /
+    git:
+      ref: vstf-sprint6-staging
+      uri: 'https://github.com/vivo-community/scholars-discovery.git'
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: solr/Dockerfile
+      noCache: true
+    type: Docker

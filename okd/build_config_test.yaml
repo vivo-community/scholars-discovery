@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: scholars-discovery-build
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: scholars-discovery-build:latest
+  source:
+    contextDir: /
+    git:
+      ref: 105_scholars_discovery_okd_setup
+      uri: 'https://github.com/vivo-community/scholars-discovery.git'
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile.build.okd
+      noCache: true
+    type: Docker

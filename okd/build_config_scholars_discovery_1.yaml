@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: scholars-discovery-runtime-build
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: scholars-discovery-runtime:latest
+  source:
+    dockerfile: |-
+      FROM openjdk:8u171-jre-alpine
+      WORKDIR /scholars
+      COPY middleware*.jar ./scholars-discovery.jar
+      CMD ["java", "-jar", "./scholars-discovery.jar"]
+    images:
+    - from: 
+        kind: ImageStreamTag
+        name: scholars-discovery-build:latest
+      paths: 
+      - sourcePath: /target/
+        destinationDir: "."
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile.runtime.okd
+      noCache: true
+  triggers:
+  - imageChange: {}
+    type: ImageChange
