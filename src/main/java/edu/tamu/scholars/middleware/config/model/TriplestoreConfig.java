@@ -1,13 +1,10 @@
 package edu.tamu.scholars.middleware.config.model;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import edu.tamu.scholars.middleware.service.Triplestore;
 
-@Component
-@ConfigurationProperties(prefix = "vivo.triplestore")
 public class TriplestoreConfig {
 
-    private TriplestoreType type = TriplestoreType.SDB;
+    private Class<Triplestore> type;
 
     private String directory;
 
@@ -33,11 +30,11 @@ public class TriplestoreConfig {
 
     }
 
-    public TriplestoreType getType() {
+    public Class<Triplestore> getType() {
         return type;
     }
 
-    public void setType(TriplestoreType type) {
+    public void setType(Class<Triplestore> type) {
         this.type = type;
     }
 
@@ -119,10 +116,6 @@ public class TriplestoreConfig {
 
     public void setAnnotateGeneratedSQL(boolean annotateGeneratedSQL) {
         this.annotateGeneratedSQL = annotateGeneratedSQL;
-    }
-
-    public enum TriplestoreType {
-        SDB, TDB
     }
 
 }

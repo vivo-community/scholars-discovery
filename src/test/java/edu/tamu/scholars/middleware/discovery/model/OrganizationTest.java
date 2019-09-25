@@ -1,6 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.model;
 
-public class OrganizationTest extends AbstractSolrDocumentTest<Organization> {
+public class OrganizationTest extends AbstractIndexDocumentTest<Organization> {
 
     @Override
     protected Class<?> getType() {

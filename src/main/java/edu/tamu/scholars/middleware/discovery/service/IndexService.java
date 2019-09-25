@@ -19,17 +19,23 @@ import edu.tamu.scholars.middleware.service.Triplestore;
 
 @Service
 @Profile("!test")
-public class VivoIndexService {
+public class IndexService {
 
-    private final static Logger logger = LoggerFactory.getLogger(VivoIndexService.class);
+    private final static Logger logger = LoggerFactory.getLogger(IndexService.class);
 
     private final static AtomicBoolean indexing = new AtomicBoolean(false);
 
     @Value("${middleware.index.onStartup:false}")
     public boolean indexOnStartup;
 
+    @Value("${middleware.index.batchSize:10000}")
+    public int indexBatchSize;
+
     @Autowired
-    private List<SolrIndexService> indexers;
+    private List<Harvester> harvesters;
+
+    @Autowired
+    private List<Indexer> indexers;
 
     @Autowired
     private Triplestore triplestore;
@@ -37,7 +43,6 @@ public class VivoIndexService {
     @PostConstruct
     public void indexOnStartup() {
         if (indexOnStartup) {
-            // TODO: run asynchronously with maintaining logging
             index();
         }
     }
@@ -45,15 +50,15 @@ public class VivoIndexService {
     @Scheduled(cron = "${middleware.index.cron}", zone = "${middleware.index.zone}")
     public void index() {
         if (indexing.compareAndSet(false, true)) {
+            triplestore.init();
             Instant start = Instant.now();
             logger.info("Indexing...");
-            logger.info("Loading dataset...");
-            triplestore.init();
-            logger.info(String.format("Loading finished. %s seconds", Duration.between(start, Instant.now()).toMillis() / 1000.0));
-            indexers.parallelStream().forEach(indexer -> {
-                logger.info(String.format("Indexing %s documents", indexer.name()));
-                indexer.index();
-                logger.info(String.format("Indexing %s documents finished.", indexer.name()));
+            harvesters.parallelStream().forEach(harvester -> {
+                logger.info(String.format("Indexing %s documents", harvester.type().getSimpleName()));
+                indexers.stream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
+                    harvester.harvest().collect(IndexBatchCollector.of(batch -> indexer.index(batch), indexBatchSize));
+                });
+                logger.info(String.format("Indexing %s documents finished.", harvester.type().getSimpleName()));
             });
             logger.info(String.format("Indexing finished. %s seconds", Duration.between(start, Instant.now()).toMillis() / 1000.0));
             triplestore.destroy();

@@ -43,7 +43,7 @@ import com.squareup.javapoet.TypeSpec.Builder;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.model.Common;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
 import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
@@ -108,7 +108,7 @@ public class NestedDocumentGenerator {
         // @formatter:off
         TypeSpec abstractNestedDocumentClass = builder(className, Modifier.PUBLIC, Modifier.ABSTRACT)
             .addSuperinterface(Serializable.class)
-            .superclass(AbstractSolrDocument.class)
+            .superclass(AbstractIndexDocument.class)
             .addAnnotation(AnnotationSpec.builder(GraphQLInterface.class)
                 .addMember("name", "$S", "AbstractNestedDocument")
                 .addMember("implementationAutoDiscovery", "$L", true)
