@@ -11,8 +11,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.jena.graph.Triple;
@@ -35,6 +33,7 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.service.Harvester;
 import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.service.Triplestore;
+import reactor.core.publisher.Flux;
 
 public class LocalTriplestoreHarvester implements Harvester {
 
@@ -60,7 +59,7 @@ public class LocalTriplestoreHarvester implements Harvester {
         this.type = type;
     }
 
-    public Stream<AbstractIndexDocument> harvest() {
+    public Flux<AbstractIndexDocument> harvest() {
         CollectionSource source = type.getAnnotation(CollectionSource.class);
         String query = templateService.templateSparql(COLLECTION_SPARQL_TEMPLATE, source.predicate());
         if (logger.isDebugEnabled()) {
@@ -69,7 +68,12 @@ public class LocalTriplestoreHarvester implements Harvester {
         QueryExecution queryExecution = QueryExecutionFactory.create(query, triplestore.getDataset());
         Iterator<Triple> tripleIterator = queryExecution.execConstructTriples();
         Iterable<Triple> triples = () -> tripleIterator;
-        return StreamSupport.stream(triples.spliterator(), true).map(triple -> harvest(triple.getSubject().toString()));
+        // @formatter:off
+        return Flux.fromIterable(triples)
+            .map(this::subject)
+            .map(this::harvest)
+            .doFinally(onFinally -> queryExecution.close());
+        // @formatter:on
     }
 
     public AbstractIndexDocument harvest(String subject) {
@@ -87,6 +91,10 @@ public class LocalTriplestoreHarvester implements Harvester {
 
     public Class<AbstractIndexDocument> type() {
         return type;
+    }
+
+    private String subject(Triple triple) {
+        return triple.getSubject().toString();
     }
 
     private AbstractIndexDocument createDocument(String subject) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {

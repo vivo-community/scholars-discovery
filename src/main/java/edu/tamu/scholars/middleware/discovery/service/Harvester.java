@@ -1,12 +1,11 @@
 package edu.tamu.scholars.middleware.discovery.service;
 
-import java.util.stream.Stream;
-
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
+import reactor.core.publisher.Flux;
 
 public interface Harvester {
 
-    public Stream<AbstractIndexDocument> harvest();
+    public Flux<AbstractIndexDocument> harvest();
 
     public AbstractIndexDocument harvest(String subject);
 
