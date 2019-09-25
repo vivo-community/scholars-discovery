@@ -54,13 +54,19 @@ public class IndexService {
             Instant start = Instant.now();
             logger.info("Indexing...");
             harvesters.parallelStream().forEach(harvester -> {
-                logger.info(String.format("Indexing %s documents", harvester.type().getSimpleName()));
-                indexers.parallelStream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
-                    harvester.harvest().buffer(indexBatchSize).subscribe(batch -> indexer.index(batch));
-                });
+                logger.info(String.format("Indexing %s documents.", harvester.type().getSimpleName()));
+                if (indexers.stream().anyMatch(indexer -> indexer.type().equals(harvester.type()))) {
+                    harvester.harvest().buffer(indexBatchSize).subscribe(batch -> {
+                        indexers.parallelStream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
+                            indexer.index(batch);
+                        });
+                    });
+                } else {
+                    logger.warn(String.format("No indexer found for %s documents!", harvester.type().getSimpleName()));
+                }
                 logger.info(String.format("Indexing %s documents finished.", harvester.type().getSimpleName()));
             });
-            logger.info(String.format("Indexing finished. %s seconds", Duration.between(start, Instant.now()).toMillis() / 1000.0));
+            logger.info(String.format("Indexing finished. %s seconds.", Duration.between(start, Instant.now()).toMillis() / 1000.0));
             triplestore.destroy();
             indexing.set(false);
         } else {

@@ -1,5 +1,8 @@
 package edu.tamu.scholars.middleware.service;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.rdf.model.Model;
@@ -10,10 +13,14 @@ import org.apache.jena.sdb.StoreDesc;
 import org.apache.jena.sdb.sql.SDBConnection;
 import org.apache.jena.sdb.store.DatabaseType;
 import org.apache.jena.sdb.store.LayoutType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.tamu.scholars.middleware.config.model.TriplestoreConfig;
 
 public class SDBTriplestore implements Triplestore {
+
+    private final static Logger logger = LoggerFactory.getLogger(SDBTriplestore.class);
 
     private final TriplestoreConfig config;
 
@@ -27,6 +34,8 @@ public class SDBTriplestore implements Triplestore {
 
     @Override
     public void init() {
+        Instant start = Instant.now();
+        logger.info(String.format("Intializing %s", config.getType().getSimpleName()));
         // TODO: handle missing configurations
         SDB.getContext().setTrue(SDB.unionDefaultGraph);
         SDB.getContext().set(SDB.jdbcStream, config.isJdbcStream());
@@ -40,6 +49,7 @@ public class SDBTriplestore implements Triplestore {
         dataset = DatasetFactory.create();
         Model model = SDBFactory.connectDefaultModel(store);
         dataset.setDefaultModel(model);
+        logger.info(String.format("%s ready. %s seconds", config.getType().getSimpleName(), Duration.between(start, Instant.now()).toMillis() / 1000.0));
     }
 
     @Override
