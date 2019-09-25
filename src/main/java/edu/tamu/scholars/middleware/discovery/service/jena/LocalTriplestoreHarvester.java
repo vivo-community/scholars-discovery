@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -67,11 +66,10 @@ public class LocalTriplestoreHarvester implements Harvester {
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("%s:\n%s", COLLECTION_SPARQL_TEMPLATE, query));
         }
-        try (QueryExecution qe = QueryExecutionFactory.create(query, triplestore.getDataset())) {
-            Iterator<Triple> triples = qe.execConstructTriples();
-            Iterable<Triple> tripleIterable = () -> triples;
-            return StreamSupport.stream(tripleIterable.spliterator(), true).map(triple -> harvest(triple.getSubject().toString())).collect(Collectors.toList()).stream();
-        }
+        QueryExecution queryExecution = QueryExecutionFactory.create(query, triplestore.getDataset());
+        Iterator<Triple> tripleIterator = queryExecution.execConstructTriples();
+        Iterable<Triple> triples = () -> tripleIterator;
+        return StreamSupport.stream(triples.spliterator(), true).map(triple -> harvest(triple.getSubject().toString()));
     }
 
     public AbstractIndexDocument harvest(String subject) {

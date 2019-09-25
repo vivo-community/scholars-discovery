@@ -2,8 +2,10 @@ package edu.tamu.scholars.middleware.discovery.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.service.Triplestore;
 
 @Service
@@ -29,7 +32,7 @@ public class IndexService {
     public boolean indexOnStartup;
 
     @Value("${middleware.index.batchSize:10000}")
-    public int indexBatchSize;
+    private int indexBatchSize;
 
     @Autowired
     private List<Harvester> harvesters;
@@ -55,8 +58,20 @@ public class IndexService {
             logger.info("Indexing...");
             harvesters.parallelStream().forEach(harvester -> {
                 logger.info(String.format("Indexing %s documents", harvester.type().getSimpleName()));
-                indexers.stream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
-                    harvester.harvest().collect(IndexBatchCollector.of(batch -> indexer.index(batch), indexBatchSize));
+                indexers.parallelStream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
+                    List<AbstractIndexDocument> batch = new ArrayList<AbstractIndexDocument>();
+                    Stream<AbstractIndexDocument> stream = harvester.harvest();
+                    stream.forEach(document -> {
+                        batch.add(document);
+                        if (batch.size() >= indexBatchSize) {
+                            indexer.index(batch);
+                            batch.clear();
+                        }
+                    });
+                    if (!batch.isEmpty()) {
+                        indexer.index(batch);
+                    }
+                    stream.close();
                 });
                 logger.info(String.format("Indexing %s documents finished.", harvester.type().getSimpleName()));
             });

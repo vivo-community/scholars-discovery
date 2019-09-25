@@ -35,7 +35,7 @@ public class SolrIndexer implements Indexer {
             if (logger.isDebugEnabled()) {
                 e.printStackTrace();
             }
-            documents.forEach(this::index);
+            documents.stream().forEach(this::index);
         }
     }
 
