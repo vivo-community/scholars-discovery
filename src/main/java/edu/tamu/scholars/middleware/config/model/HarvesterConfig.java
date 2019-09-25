@@ -5,7 +5,7 @@ import java.util.List;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.service.Harvester;
-import edu.tamu.scholars.middleware.discovery.service.triplestore.LocalTriplestoreHarvester;
+import edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester;
 
 public class HarvesterConfig {
 
