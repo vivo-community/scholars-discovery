@@ -137,7 +137,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                         // @formatter:off
                         if (strip(nestedValues.get(0)).split(NESTED_DELIMITER).length > depth) {
-                            array = nestedValues.stream()
+                            array = nestedValues.parallelStream()
                                 .filter(nv -> isProperty(vParts, nv))
                                 .map(nv -> processValue(content, type, nestedField, strip(nv).split(NESTED_DELIMITER), depth))
                                 .collect(new JsonNodeArrayNodeCollector());
