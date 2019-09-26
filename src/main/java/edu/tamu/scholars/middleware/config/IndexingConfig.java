@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import edu.tamu.scholars.middleware.config.model.IndexerConfig;
 import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
@@ -16,7 +15,6 @@ import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.service.Indexer;
 
 @Configuration
-@Profile("!test")
 public class IndexingConfig {
 
     @Autowired
