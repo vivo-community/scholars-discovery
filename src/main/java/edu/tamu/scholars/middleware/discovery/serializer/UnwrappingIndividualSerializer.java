@@ -137,13 +137,13 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                         // @formatter:off
                         if (strip(nestedValues.get(0)).split(NESTED_DELIMITER).length > depth) {
-                            array = nestedValues.parallelStream()
-                                .filter(nv -> nv.contains(vParts[depth - 1]) && !(vParts[0].equals(strip(nv).split(NESTED_DELIMITER)[0])))
+                            array = nestedValues.stream()
+                                .filter(nv -> isProperty(vParts, nv))
                                 .map(nv -> processValue(content, type, nestedField, strip(nv).split(NESTED_DELIMITER), depth))
                                 .collect(new JsonNodeArrayNodeCollector());
                         } else {
                             array = nestedValues.parallelStream()
-                                .filter(nv -> nv.contains(vParts[depth - 1]) && !(vParts[0].equals(strip(nv).split(NESTED_DELIMITER)[0])))
+                                .filter(nv -> isProperty(vParts, nv))
                                 .map(nv -> strip(nv).split(NESTED_DELIMITER)[0])
                                 .collect(new StringArrayNodeCollector());
                         }
@@ -157,7 +157,6 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                             }
                         }
                     }
-
                 } else {
                     String[] nvParts = strip(nestedValue.toString()).split(NESTED_DELIMITER);
                     if (nvParts.length > depth) {
@@ -177,6 +176,15 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             return value.substring(1, value.length() - 1);
         }
         return value;
+    }
+
+    private boolean isProperty(String[] parts, String value) {
+        for (int i = parts.length - 1; i > 0; i--) {
+            if (!value.contains(parts[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {
