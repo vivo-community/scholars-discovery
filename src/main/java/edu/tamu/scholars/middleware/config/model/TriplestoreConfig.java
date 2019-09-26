@@ -1,12 +1,13 @@
 package edu.tamu.scholars.middleware.config.model;
 
+import edu.tamu.scholars.middleware.service.TDBTriplestore;
 import edu.tamu.scholars.middleware.service.Triplestore;
 
 public class TriplestoreConfig {
 
-    private Class<Triplestore> type;
+    private Class<? extends Triplestore> type = TDBTriplestore.class;
 
-    private String directory;
+    private String directory = "triplestore";
 
     private String layoutType = "layout2/hash";
 
@@ -20,7 +21,7 @@ public class TriplestoreConfig {
 
     private boolean jdbcStream = true;
 
-    private int jdbcFetchSize = 128;
+    private int jdbcFetchSize = 8;
 
     private boolean streamGraphAPI = true;
 
@@ -30,11 +31,11 @@ public class TriplestoreConfig {
 
     }
 
-    public Class<Triplestore> getType() {
+    public Class<? extends Triplestore> getType() {
         return type;
     }
 
-    public void setType(Class<Triplestore> type) {
+    public void setType(Class<? extends Triplestore> type) {
         this.type = type;
     }
 
