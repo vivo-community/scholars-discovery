@@ -4,8 +4,6 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.apache.jena.query.Dataset;
-import org.apache.jena.query.DatasetFactory;
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sdb.SDB;
 import org.apache.jena.sdb.SDBFactory;
 import org.apache.jena.sdb.Store;
@@ -45,10 +43,7 @@ public class SDBTriplestore implements Triplestore {
         StoreDesc storeDesc = new StoreDesc(LayoutType.fetch(config.getLayoutType()), DatabaseType.fetch(config.getDatabaseType()));
         SDBConnection conn = new SDBConnection(config.getDatasourceUrl(), config.getUsername(), config.getPassword());
         store = SDBFactory.connectStore(conn, storeDesc);
-        // dataset = SDBFactory.connectDataset(store);
-        dataset = DatasetFactory.create();
-        Model model = SDBFactory.connectDefaultModel(store);
-        dataset.setDefaultModel(model);
+        dataset = SDBFactory.connectDataset(store);
         logger.info(String.format("%s ready. %s seconds", config.getType().getSimpleName(), Duration.between(start, Instant.now()).toMillis() / 1000.0));
     }
 

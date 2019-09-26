@@ -20,11 +20,11 @@ public class TriplestoreConfig {
 
     private boolean jdbcStream = true;
 
-    private int jdbcFetchSize = 16;
+    private int jdbcFetchSize = 128;
 
     private boolean streamGraphAPI = true;
 
-    private boolean annotateGeneratedSQL = true;
+    private boolean annotateGeneratedSQL = false;
 
     public TriplestoreConfig() {
 
