@@ -1,7 +1,12 @@
 package edu.tamu.scholars.middleware.config.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +15,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
 import edu.tamu.scholars.middleware.auth.config.TokenConfig;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
+import edu.tamu.scholars.middleware.discovery.model.Collection;
+import edu.tamu.scholars.middleware.discovery.model.Concept;
+import edu.tamu.scholars.middleware.discovery.model.Document;
+import edu.tamu.scholars.middleware.discovery.model.Organization;
+import edu.tamu.scholars.middleware.discovery.model.Person;
+import edu.tamu.scholars.middleware.discovery.model.Process;
+import edu.tamu.scholars.middleware.discovery.model.Relationship;
+import edu.tamu.scholars.middleware.service.SDBTriplestore;
 
 @ExtendWith(SpringExtension.class)
 public class MiddlewareConfigTest {
@@ -110,6 +124,89 @@ public class MiddlewareConfigTest {
         ExportConfig exportConfig = middlewareConfig.getExport();
         assertEquals("link", exportConfig.getIndividualKey());
         assertEquals("http://localhost:8080/vivo/display", exportConfig.getIndividualBaseUri());
+    }
+
+    @Test
+    public void testTriplestoreGetterSetter() {
+        MiddlewareConfig middlewareConfig = new MiddlewareConfig();
+        TriplestoreConfig newTriplestoreConfig = new TriplestoreConfig();
+        newTriplestoreConfig.setType(SDBTriplestore.class);
+        newTriplestoreConfig.setDirectory("vivo_data");
+        newTriplestoreConfig.setLayoutType("layout/hash");
+        newTriplestoreConfig.setDatabaseType("PostgreSQL");
+        newTriplestoreConfig.setDatasourceUrl("jdbc://localhost:6541/test");
+        newTriplestoreConfig.setUsername("username");
+        newTriplestoreConfig.setPassword("password");
+        newTriplestoreConfig.setJdbcStream(false);
+        newTriplestoreConfig.setJdbcFetchSize(16);
+        newTriplestoreConfig.setStreamGraphAPI(false);
+        newTriplestoreConfig.setAnnotateGeneratedSQL(true);
+        middlewareConfig.setTriplestore(newTriplestoreConfig);
+        TriplestoreConfig triplestoreConfig = middlewareConfig.getTriplestore();
+        triplestoreConfig.setType(SDBTriplestore.class);
+        assertEquals(SDBTriplestore.class, triplestoreConfig.getType());
+        triplestoreConfig.setDirectory("vivo_data");
+        assertEquals("vivo_data", triplestoreConfig.getDirectory());
+        triplestoreConfig.setLayoutType("layout/hash");
+        assertEquals("layout/hash", triplestoreConfig.getLayoutType());
+        triplestoreConfig.setDatabaseType("PostgreSQL");
+        assertEquals("PostgreSQL", triplestoreConfig.getDatabaseType());
+        triplestoreConfig.setDatasourceUrl("jdbc://localhost:6541/test");
+        assertEquals("jdbc://localhost:6541/test", triplestoreConfig.getDatasourceUrl());
+        triplestoreConfig.setUsername("username");
+        assertEquals("username", triplestoreConfig.getUsername());
+        triplestoreConfig.setPassword("password");
+        assertEquals("password", triplestoreConfig.getPassword());
+        triplestoreConfig.setJdbcStream(false);
+        assertFalse(triplestoreConfig.isJdbcStream());
+        triplestoreConfig.setJdbcFetchSize(16);
+        assertEquals(16, triplestoreConfig.getJdbcFetchSize());
+        triplestoreConfig.setStreamGraphAPI(false);
+        assertFalse(triplestoreConfig.isStreamGraphAPI());
+        triplestoreConfig.setAnnotateGeneratedSQL(true);
+        assertTrue(triplestoreConfig.isAnnotateGeneratedSQL());
+    }
+
+    @Test
+    public void testHarvestersGetterSetter() {
+        MiddlewareConfig middlewareConfig = new MiddlewareConfig();
+        HarvesterConfig newHarvesterConfig = new HarvesterConfig();
+        List<Class<? extends AbstractIndexDocument>> documentTypes = new ArrayList<Class<? extends AbstractIndexDocument>>();
+        documentTypes.add(Collection.class);
+        documentTypes.add(Concept.class);
+        documentTypes.add(Document.class);
+        documentTypes.add(Organization.class);
+        documentTypes.add(Person.class);
+        documentTypes.add(Process.class);
+        documentTypes.add(Relationship.class);
+        newHarvesterConfig.setDocumentTypes(documentTypes);
+        List<HarvesterConfig> harvesterConfigs = new ArrayList<HarvesterConfig>();
+        harvesterConfigs.add(newHarvesterConfig);
+        middlewareConfig.setHarvesters(harvesterConfigs);
+        assertEquals(1, middlewareConfig.getHarvesters().size());
+        HarvesterConfig harvesterConfig = middlewareConfig.getHarvesters().get(0);
+        assertEquals(7, harvesterConfig.getDocumentTypes().size());
+    }
+
+    @Test
+    public void testIndexersGetterSetter() {
+        MiddlewareConfig middlewareConfig = new MiddlewareConfig();
+        IndexerConfig newIndexerConfig = new IndexerConfig();
+        List<Class<? extends AbstractIndexDocument>> documentTypes = new ArrayList<Class<? extends AbstractIndexDocument>>();
+        documentTypes.add(Collection.class);
+        documentTypes.add(Concept.class);
+        documentTypes.add(Document.class);
+        documentTypes.add(Organization.class);
+        documentTypes.add(Person.class);
+        documentTypes.add(Process.class);
+        documentTypes.add(Relationship.class);
+        newIndexerConfig.setDocumentTypes(documentTypes);
+        List<IndexerConfig> indexerConfigs = new ArrayList<IndexerConfig>();
+        indexerConfigs.add(newIndexerConfig);
+        middlewareConfig.setIndexers(indexerConfigs);
+        assertEquals(1, middlewareConfig.getIndexers().size());
+        IndexerConfig indexerConfig = middlewareConfig.getIndexers().get(0);
+        assertEquals(7, indexerConfig.getDocumentTypes().size());
     }
 
 }

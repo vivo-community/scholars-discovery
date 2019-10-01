@@ -1,6 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
     name = "AbstractNestedDocument",
     implementationAutoDiscovery = true
 )
-public abstract class AbstractNestedDocument extends AbstractSolrDocument implements Serializable {
+public abstract class AbstractNestedDocument extends AbstractIndexDocument implements Serializable {
   private static final long serialVersionUID = -849883046L;
 
   public AbstractNestedDocument() {
