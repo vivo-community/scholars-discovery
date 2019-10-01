@@ -28,13 +28,13 @@ public class IndexingConfig {
         List<Indexer> indexers = new ArrayList<Indexer>();
         for (IndexerConfig config : middleware.getIndexers()) {
             for (Class<? extends AbstractIndexDocument> documentType : config.getDocumentTypes()) {
-                indexers.add(indexed(config.getType(), documentType));
+                indexers.add(indexer(config.getType(), documentType));
             }
         }
         return indexers;
     }
 
-    public Indexer indexed(Class<? extends Indexer> type, Class<? extends AbstractIndexDocument> documentType) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    public Indexer indexer(Class<? extends Indexer> type, Class<? extends AbstractIndexDocument> documentType) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         Indexer indexer = type.getConstructor(Class.class).newInstance(documentType);
         beanFactory.autowireBean(indexer);
         return indexer;

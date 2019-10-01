@@ -13,7 +13,7 @@ import edu.tamu.scholars.middleware.service.Triplestore;
 
 @Configuration
 @Profile("!test")
-public class HarvesterConfig {
+public class HarvesterDependencyConfig {
 
     @Autowired
     private MiddlewareConfig middleware;
