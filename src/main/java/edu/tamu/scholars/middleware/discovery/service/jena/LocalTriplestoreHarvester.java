@@ -107,7 +107,7 @@ public class LocalTriplestoreHarvester implements Harvester {
     }
 
     private void lookupProperties(AbstractIndexDocument document, String subject) {
-        FieldUtils.getFieldsListWithAnnotation(document.getClass(), PropertySource.class).parallelStream().forEach(field -> {
+        FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class).parallelStream().forEach(field -> {
             PropertySource source = field.getAnnotation(PropertySource.class);
             Model model = queryForModel(source, subject);
             String property = field.getName();
@@ -194,7 +194,7 @@ public class LocalTriplestoreHarvester implements Harvester {
     private void lookupSyncIds(AbstractIndexDocument document) {
         Set<String> syncIds = new HashSet<String>();
         syncIds.add(document.getId());
-        FieldUtils.getFieldsListWithAnnotation(document.getClass(), Indexed.class).stream().filter(field -> {
+        FieldUtils.getFieldsListWithAnnotation(type, Indexed.class).stream().filter(field -> {
             field.setAccessible(true);
             return !field.getName().equals(ID) && field.getAnnotation(Indexed.class).type().startsWith(NESTED);
         }).forEach(field -> {
