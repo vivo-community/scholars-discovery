@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.discovery.service;
+package edu.tamu.scholars.middleware.discovery.service.jena;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
@@ -25,19 +25,17 @@ import org.apache.jena.shared.InvalidPropertyURIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.mapping.Indexed;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
+import edu.tamu.scholars.middleware.discovery.service.Harvester;
 import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.service.Triplestore;
+import reactor.core.publisher.Flux;
 
-public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> implements SolrIndexService {
+public class LocalTriplestoreHarvester implements Harvester {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -49,127 +47,67 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> i
 
     private static final String NESTED = "nested";
 
-    @Value("${middleware.index.batchSize:10000}")
-    public int indexBatchSize;
-
-    @Autowired
-    private TemplateService templateService;
-
     @Autowired
     private Triplestore triplestore;
 
     @Autowired
-    private SolrTemplate solrTemplate;
+    private TemplateService templateService;
 
-    @Override
-    public void index() {
-        CollectionSource source = type().getAnnotation(CollectionSource.class);
+    private final Class<AbstractIndexDocument> type;
+
+    public LocalTriplestoreHarvester(Class<AbstractIndexDocument> type) {
+        this.type = type;
+    }
+
+    public Flux<AbstractIndexDocument> harvest() {
+        CollectionSource source = type.getAnnotation(CollectionSource.class);
         String query = templateService.templateSparql(COLLECTION_SPARQL_TEMPLATE, source.predicate());
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("%s:\n%s", COLLECTION_SPARQL_TEMPLATE, query));
         }
-        try (QueryExecution qe = QueryExecutionFactory.create(query, triplestore.getDataset())) {
-            Iterator<Triple> triples = qe.execConstructTriples();
-            List<D> documents = new ArrayList<D>();
-            if (triples.hasNext()) {
-                while (triples.hasNext()) {
-                    Triple triple = triples.next();
-                    String subject = triple.getSubject().toString();
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(String.format("Indexing %s %s", name(), subject));
-                    }
-                    try {
-                        documents.add(createDocument(subject));
-                    } catch (DataAccessResourceFailureException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                        logger.error(String.format("Unable to index %s: %s", name(), parse(subject)));
-                        logger.error(String.format("Error: %s", e.getMessage()));
-                        if (logger.isDebugEnabled()) {
-                            e.printStackTrace();
-                        }
-                    } catch (NullPointerException e) {
-                        if (logger.isDebugEnabled()) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if (documents.size() == indexBatchSize) {
-                        batchSave(documents);
-                    }
-                }
-                if (documents.size() > 0) {
-                    batchSave(documents);
-                }
-                solrTemplate.commit(collection());
-            } else {
-                logger.warn(String.format("No %s found!", name()));
-            }
-        }
+        QueryExecution queryExecution = QueryExecutionFactory.create(query, triplestore.getDataset());
+        Iterator<Triple> tripleIterator = queryExecution.execConstructTriples();
+        Iterable<Triple> triples = () -> tripleIterator;
+        // @formatter:off
+        return Flux.fromIterable(triples)
+            .map(this::subject)
+            .map(this::harvest)
+            .doFinally(onFinally -> queryExecution.close());
+        // @formatter:on
     }
 
-    @Override
-    public void index(String subject) {
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Indexing %s %s", name(), subject));
-        }
+    public AbstractIndexDocument harvest(String subject) {
         try {
-            solrTemplate.saveBean(collection(), createDocument(subject));
-            solrTemplate.commit(collection());
-        } catch (DataAccessResourceFailureException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            logger.error(String.format("Unable to index %s: %s", name(), parse(subject)));
+            return createDocument(subject);
+        } catch (Exception e) {
+            logger.error(String.format("Unable to index %s: %s", type.getSimpleName(), parse(subject)));
             logger.error(String.format("Error: %s", e.getMessage()));
             if (logger.isDebugEnabled()) {
                 e.printStackTrace();
             }
-        } catch (NullPointerException e) {
-            if (logger.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException(e);
         }
     }
 
-    private void batchSave(List<D> documents) {
-        try {
-            solrTemplate.saveBeans(collection(), documents);
-            logger.info(String.format("Completed %s batch of %s", name(), documents.size()));
-        } catch (Exception e1) {
-            logger.warn("Failed to batch save. Attempting individually.");
-            if (logger.isDebugEnabled()) {
-                e1.printStackTrace();
-            }
-            documents.forEach(document -> {
-                try {
-                    solrTemplate.saveBean(collection(), document);
-                } catch (Exception e2) {
-                    logger.warn(String.format("Failed to save document with id %s", document.getId()));
-                    if (logger.isDebugEnabled()) {
-                        e2.printStackTrace();
-                    }
-                }
-            });
-        }
-        documents.clear();
+    public Class<AbstractIndexDocument> type() {
+        return type;
     }
 
-    @Override
-    public String name() {
-        return type().getSimpleName();
+    private String subject(Triple triple) {
+        return triple.getSubject().toString();
     }
 
-    @Override
-    public String collection() {
-        return type().getAnnotation(SolrDocument.class).collection();
-    }
-
-    private D createDocument(String subject) throws InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException {
-        D document = construct();
-        Field field = FieldUtils.getField(type(), ID, true);
+    private AbstractIndexDocument createDocument(String subject) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        AbstractIndexDocument document = construct();
+        Field field = FieldUtils.getField(type, ID, true);
         field.set(document, parse(subject));
         lookupProperties(document, subject);
         lookupSyncIds(document);
         return document;
     }
 
-    private void lookupProperties(D document, String subject) {
-        FieldUtils.getFieldsListWithAnnotation(type(), PropertySource.class).parallelStream().forEach(field -> {
+    private void lookupProperties(AbstractIndexDocument document, String subject) {
+        FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class).parallelStream().forEach(field -> {
             PropertySource source = field.getAnnotation(PropertySource.class);
             Model model = queryForModel(source, subject);
             String property = field.getName();
@@ -237,7 +175,7 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> i
         return values;
     }
 
-    private void populate(D document, Field field, List<String> values) throws IllegalArgumentException, IllegalAccessException {
+    private void populate(AbstractIndexDocument document, Field field, List<String> values) throws IllegalArgumentException, IllegalAccessException {
         if (values.isEmpty()) {
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Could not find values for %s", field.getName()));
@@ -253,10 +191,10 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> i
     }
 
     @SuppressWarnings("unchecked")
-    private void lookupSyncIds(D document) {
+    private void lookupSyncIds(AbstractIndexDocument document) {
         Set<String> syncIds = new HashSet<String>();
         syncIds.add(document.getId());
-        FieldUtils.getFieldsListWithAnnotation(type(), Indexed.class).stream().filter(field -> {
+        FieldUtils.getFieldsListWithAnnotation(type, Indexed.class).stream().filter(field -> {
             field.setAccessible(true);
             return !field.getName().equals(ID) && field.getAnnotation(Indexed.class).type().startsWith(NESTED);
         }).forEach(field -> {
@@ -287,12 +225,15 @@ public abstract class AbstractSolrIndexService<D extends AbstractSolrDocument> i
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private D construct() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return (D) type().getConstructor().newInstance(new Object[0]);
+    private AbstractIndexDocument construct() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        return type.getConstructor().newInstance(new Object[0]);
     }
 
-    private static String parse(String uri) {
+    private String name() {
+        return type.getSimpleName();
+    }
+
+    private String parse(String uri) {
         return uri.substring(uri.lastIndexOf(uri.contains(HASH_TAG) ? HASH_TAG : FORWARD_SLASH) + 1);
     }
 

@@ -69,7 +69,7 @@ public class Organization extends Common {
     @PropertySource(template = "organization/awardOrHonorReceivedDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> awardOrHonorReceivedDate;
 
-    @Indexed(type = "delimited_strings", copyTo = "_text_")
+    @Indexed(type = "whole_strings", copyTo = "_text_")
     @PropertySource(template = "organization/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 

@@ -27,13 +27,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import graphql.language.Field;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractNestedDocumentServiceTest<D extends AbstractSolrDocument, ND extends AbstractNestedDocument, NDS extends AbstractNestedDocumentService<ND>> extends AbstractSolrDocumentIntegrationTest<D> {
+public abstract class AbstractNestedDocumentServiceTest<D extends AbstractIndexDocument, ND extends AbstractNestedDocument, NDS extends AbstractNestedDocumentService<ND>> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Autowired
     private NDS service;

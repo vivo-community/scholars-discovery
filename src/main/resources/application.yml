@@ -26,6 +26,32 @@ middleware:
     zone: America/Chicago
     onStartup: true
     batchSize: 10000
+  triplestore:
+    type: edu.tamu.scholars.middleware.service.TDBTriplestore
+    directory: triplestore
+    datasourceUrl: jdbc:mysql://localhost/vivo?useLegacyDatetimeCode=false&serverTimezone=America/Chicago
+    username:
+    password:
+  harvesters:
+  - type: edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester
+    documentTypes:
+    - edu.tamu.scholars.middleware.discovery.model.Collection
+    - edu.tamu.scholars.middleware.discovery.model.Concept
+    - edu.tamu.scholars.middleware.discovery.model.Document
+    - edu.tamu.scholars.middleware.discovery.model.Organization
+    - edu.tamu.scholars.middleware.discovery.model.Person
+    - edu.tamu.scholars.middleware.discovery.model.Process
+    - edu.tamu.scholars.middleware.discovery.model.Relationship
+  indexers:
+  - type: edu.tamu.scholars.middleware.discovery.service.solr.SolrIndexer
+    documentTypes:
+    - edu.tamu.scholars.middleware.discovery.model.Collection
+    - edu.tamu.scholars.middleware.discovery.model.Concept
+    - edu.tamu.scholars.middleware.discovery.model.Document
+    - edu.tamu.scholars.middleware.discovery.model.Organization
+    - edu.tamu.scholars.middleware.discovery.model.Person
+    - edu.tamu.scholars.middleware.discovery.model.Process
+    - edu.tamu.scholars.middleware.discovery.model.Relationship
   export:
     individualKey: individual
     individualBaseUri: http://localhost:4200/display
@@ -40,12 +66,6 @@ vivo:
   linked-open-data-endpoint: /individual
   list-rdf-endpoint: /listrdf
   sparql-query-endpoint: /api/sparqlQuery
-  triplestore:
-    type: TDB
-    directory: triplestore
-    datasourceUrl: jdbc:mysql://localhost/vivo?useLegacyDatetimeCode=false&serverTimezone=America/Chicago
-    username:
-    password:
 
 graphql:
   spqr:
@@ -154,8 +174,6 @@ management:
         include: health, info
   endpoint:
     health:
-      sensitive: false
       enabled: true
     info:
-      sensitive: false
       enabled: true

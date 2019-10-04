@@ -42,8 +42,8 @@ public class RegistrationController {
     }
 
     @PutMapping
-    public ResponseEntity<User> complete(@RequestBody @Validated(CompleteRegistration.class) Registration registration) throws RegistrationException {
-        return ResponseEntity.ok(registrationService.complete(registration));
+    public ResponseEntity<User> complete(@RequestParam(required = true) String key, @RequestBody @Validated(CompleteRegistration.class) Registration registration) throws RegistrationException {
+        return ResponseEntity.ok(registrationService.complete(key, registration));
     }
 
 }

@@ -251,30 +251,50 @@
               filters:
                 - field: role
                   value: PrincipalInvestigatorRole
+              sort:
+                - field: startDate
+                  direction: DESC
+                  date: true
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Co-Principal Investigator
               field: researcherOn
               filters:
                 - field: role
                   value: CoPrincipalInvestigatorRole
+              sort:
+                - field: startDate
+                  direction: DESC
+                  date: true
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Investigator
               field: researcherOn
               filters:
                 - field: role
                   value: InvestigatorRole
+              sort:
+                - field: startDate
+                  direction: DESC
+                  date: true
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Researcher
               field: researcherOn
               filters:
                 - field: role
                   value: ResearcherRole
+              sort:
+                - field: startDate
+                  direction: DESC
+                  date: true
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Collaborator
               field: researcherOn
               filters:
                 - field: role
                   value: CollaboratorRole
+              sort:
+                - field: startDate
+                  direction: DESC
+                  date: true
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
         - name: other research activities
           template: "defaults/displayViews/persons/grantsAwards/otherResearchActivities.html"

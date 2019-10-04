@@ -81,6 +81,18 @@ public class GraphQLConfig {
 
             @Override
             public Object getArgumentValue(ArgumentInjectorParams params) {
+                return BoostArg.of(params);
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return BoostArg.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
                 return ExportArg.of(params);
             }
 

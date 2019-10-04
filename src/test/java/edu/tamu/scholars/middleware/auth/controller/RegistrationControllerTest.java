@@ -181,6 +181,17 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
     }
 
     @Test
+    public void testConfirmAlreadyConfirmed() throws Exception {
+        testConfirm();
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+        // @formatter:off
+        mockMvc.perform(get("/registration").param("key", token.getKey()))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().string(equalTo("Unable to confirm registration. Email bboring@mailinator.com has already been confirmed")));
+        // @formatter:on
+    }
+
+    @Test
     public void testConfirmWithoutSubmit() throws Exception {
         Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
         // @formatter:off
@@ -198,41 +209,69 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("HelloWorld123!");
         registration.setConfirm("HelloWorld123!");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isOk())
-            .andExpect(content().json("{'firstName':'Bob','lastName':'Boring','email':'bboring@mailinator.com','role':'ROLE_SUPER_ADMIN','active':true,'enabled':true}"))
-            .andDo(
-                document(
-                    "registration/complete",
-                    requestFields(
-                        describeRegistration.withField("firstName", "The first name of the registered account."),
-                        describeRegistration.withField("lastName", "The last name of the registered account."),
-                        // describeRegistration.withField("email", "The e-mail address of the registered account."),
-                        // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.auth.annotation.AvailableEmail.description
-                        fieldWithPath("email").description("The e-mail address of the registered account."),
-                        describeRegistration.withField("password", "The password for the registered account."),
-                        describeRegistration.withField("confirm", "The password confirmation, which should match the password.")
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{'firstName':'Bob','lastName':'Boring','email':'bboring@mailinator.com','role':'ROLE_SUPER_ADMIN','active':true,'enabled':true}"))
+                .andDo(
+                    document(
+                        "registration/complete",
+                        requestFields(
+                            describeRegistration.withField("firstName", "The first name of the registered account."),
+                            describeRegistration.withField("lastName", "The last name of the registered account."),
+                            // describeRegistration.withField("email", "The e-mail address of the registered account."),
+                            // NOTE: Can't find resource for bundle java.util.PropertyResourceBundle, key edu.tamu.scholars.middleware.auth.annotation.AvailableEmail.description
+                            fieldWithPath("email").description("The e-mail address of the registered account."),
+                            describeRegistration.withField("password", "The password for the registered account."),
+                            describeRegistration.withField("confirm", "The password confirmation, which should match the password.")
+                        )
                     )
-                )
-            );
+                );
         // @formatter:on
     }
 
     @Test
-    public void testCompleteWithoutSubmitAndConfirm() throws Exception {
+    public void testCompleteWithoutSubmit() throws Exception {
         Registration registration = getMockRegistration("Bob", "Boring", "bboring@mailinator.com");
         registration.setPassword("HelloWorld123!");
         registration.setConfirm("HelloWorld123!");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Unable to complete registration. Email bboring@mailinator.com not found")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Unable to complete registration. Email bboring@mailinator.com not found")));
+        // @formatter:on
+    }
+
+    @Test
+    public void testCompleteWithoutConfirm() throws Exception {
+        testSubmit();
+        Registration registration = getMockRegistration("Bob", "Boring", "bboring@mailinator.com");
+        registration.setPassword("HelloWorld123!");
+        registration.setConfirm("HelloWorld123!");
+
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
+        String body = objectMapper.writeValueAsString(registration);
+
+        // @formatter:off
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Unable to complete registration. Email bboring@mailinator.com has not yet been confirmed")));
         // @formatter:on
     }
 
@@ -242,12 +281,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("aA1~");
         registration.setConfirm("aA1~");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Password must be at least 8 characters in length")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Password must be at least 8 characters in length")));
         // @formatter:on
     }
 
@@ -257,12 +300,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_+");
         registration.setConfirm("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789~!@#$%^&*()_+");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Password must be no more than 64 characters in length")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Password must be no more than 64 characters in length")));
         // @formatter:on
     }
 
@@ -272,12 +319,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("Hello, World 123!");
         registration.setConfirm("Hello, World 123!");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Password cannot contain whitespace characters")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Password cannot contain whitespace characters")));
         // @formatter:on
     }
 
@@ -287,12 +338,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("HELLOWORLD123!");
         registration.setConfirm("HELLOWORLD123!");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Password must contain at least 1 lowercase characters")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Password must contain at least 1 lowercase characters")));
         // @formatter:on
     }
 
@@ -302,12 +357,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("helloworld123!");
         registration.setConfirm("helloworld123!");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Password must contain at least 1 uppercase characters")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Password must contain at least 1 uppercase characters")));
         // @formatter:on
     }
 
@@ -317,12 +376,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("HelloWorld123");
         registration.setConfirm("HelloWorld123");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Password must contain at least 1 special characters")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Password must contain at least 1 special characters")));
         // @formatter:on
     }
 
@@ -332,12 +395,16 @@ public class RegistrationControllerTest extends RegistrationIntegrationTest {
         registration.setPassword("HelloWorld123!");
         registration.setConfirm("HelloWorld123~");
 
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+
         String body = objectMapper.writeValueAsString(registration);
 
         // @formatter:off
-        mockMvc.perform(put("/registration").contentType(APPLICATION_JSON).content(body))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string(equalTo("Passwords do not match")));
+        mockMvc.perform(put("/registration")
+            .param("key", token.getKey())
+            .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(equalTo("Passwords do not match")));
         // @formatter:on
     }
 

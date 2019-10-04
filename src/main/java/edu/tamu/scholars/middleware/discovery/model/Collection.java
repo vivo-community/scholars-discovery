@@ -129,7 +129,7 @@ public class Collection extends Common {
     @PropertySource(template = "collection/outputOfProcessOrEventType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> outputOfProcessOrEventType;
 
-    @Indexed(type = "delimited_strings", copyTo = "_text_")
+    @Indexed(type = "whole_strings", copyTo = "_text_")
     @PropertySource(template = "collection/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 

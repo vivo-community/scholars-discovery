@@ -33,14 +33,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.utility.ConstraintDescriptionsHelper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractSolrDocumentControllerTest<D extends AbstractSolrDocument> extends AbstractSolrDocumentIntegrationTest<D> {
+public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndexDocument> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Autowired
     private MockMvc mockMvc;
