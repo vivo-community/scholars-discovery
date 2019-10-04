@@ -6,6 +6,8 @@ import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_MIN_LENGT
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EXPORT_INDIVIDUAL_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,13 @@ import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
 import edu.tamu.scholars.middleware.auth.config.TokenConfig;
 import edu.tamu.scholars.middleware.config.model.ExportConfig;
+import edu.tamu.scholars.middleware.config.model.HarvesterConfig;
 import edu.tamu.scholars.middleware.config.model.HttpConfig;
+import edu.tamu.scholars.middleware.config.model.IndexerConfig;
 import edu.tamu.scholars.middleware.config.model.MailConfig;
 import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
+import edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester;
+import edu.tamu.scholars.middleware.discovery.service.solr.SolrIndexer;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -67,17 +73,42 @@ public class MiddlewareApplicationTest {
     public void testMiddlewareConfig() {
         AuthConfig authConfig = middlewareConfig.getAuth();
         assertEquals(14, authConfig.getRegistrationTokenDuration());
+
         PasswordConfig passwordConfig = authConfig.getPassword();
         assertEquals(180, passwordConfig.getDuration());
         assertEquals(8, passwordConfig.getMinLength());
         assertEquals(64, passwordConfig.getMaxLength());
+
         TokenConfig tokenConfig = authConfig.getToken();
         assertEquals(1, tokenConfig.getServerInteger());
         assertEquals("wKFkxTX54UzKx6xCYnC8WlEI2wtOy0PR", tokenConfig.getServerSecret());
         assertEquals(64, tokenConfig.getPseudoRandomNumberBytes());
+
         MailConfig mailConfig = middlewareConfig.getMail();
         assertEquals("scholarsdiscovery@gmail.com", mailConfig.getFrom());
         assertEquals("scholarsdiscovery@gmail.com", mailConfig.getReplyTo());
+
+        HttpConfig httpConfig = middlewareConfig.getHttp();
+        assertEquals(60000, httpConfig.getTimeout());
+        assertEquals(60000, httpConfig.getTimeToLive());
+        assertEquals(30000, httpConfig.getRequestTimeout());
+        assertEquals(60000, httpConfig.getSocketTimeout());
+
+        ExportConfig exportConfig = middlewareConfig.getExport();
+        assertEquals("individual", exportConfig.getIndividualKey());
+        assertEquals("http://localhost:4200/display", exportConfig.getIndividualBaseUri());
+
+        List<HarvesterConfig> harvesterConfigs = middlewareConfig.getHarvesters();
+        assertEquals(1, harvesterConfigs.size());
+        HarvesterConfig harvesterConfig = harvesterConfigs.get(0);
+        assertEquals(7, harvesterConfig.getDocumentTypes().size());
+        assertEquals(LocalTriplestoreHarvester.class, harvesterConfig.getType());
+
+        List<IndexerConfig> indexerConfigs = middlewareConfig.getIndexers();
+        assertEquals(1, indexerConfigs.size());
+        IndexerConfig indexerConfig = indexerConfigs.get(0);
+        assertEquals(7, indexerConfig.getDocumentTypes().size());
+        assertEquals(SolrIndexer.class, indexerConfig.getType());
     }
 
     @Test

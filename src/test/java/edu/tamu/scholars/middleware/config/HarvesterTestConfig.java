@@ -9,7 +9,7 @@ import edu.tamu.scholars.middleware.service.Triplestore;
 
 @Configuration
 @Profile("test")
-public class HarvestTestConfig {
+public class HarvesterTestConfig {
 
     @Bean
     public Triplestore triplestore() throws Exception {

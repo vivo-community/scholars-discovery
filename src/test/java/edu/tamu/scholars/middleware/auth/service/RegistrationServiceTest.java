@@ -129,7 +129,8 @@ public class RegistrationServiceTest extends RegistrationIntegrationTest {
         doReturn("Success").when(messageSource).getMessage("RegistrationService.submitSuccess", new Object[0], LocaleContextHolder.getLocale());
         doReturn("Unable to complete registration. Email eexciting@mailinator.com not found.").when(messageSource).getMessage("RegistrationService.unableToCompleteEmailNotFound", new Object[0], LocaleContextHolder.getLocale());
         doReturn("Token has expired.").when(messageSource).getMessage("RegistrationService.tokenExpired", new Object[0], LocaleContextHolder.getLocale());
-        doReturn("Email bboring@mailinator.com has already been confirmed.").when(messageSource).getMessage("RegistrationService.emailAlreadyConfirmed", new Object[0], LocaleContextHolder.getLocale());
+        doReturn("Email bboring@mailinator.com has not yet been confirmed").when(messageSource).getMessage("RegistrationService.emailNotConfirmed", new Object[0], LocaleContextHolder.getLocale());
+        doReturn("Email bboring@mailinator.com has already been confirmed").when(messageSource).getMessage("RegistrationService.emailAlreadyConfirmed", new Object[0], LocaleContextHolder.getLocale());
         doReturn("Unable to confirm registration. Email eexciting@mailinator.com not found.").when(messageSource).getMessage("RegistrationService.unableToConfirmEmailNotFound", new Object[0], LocaleContextHolder.getLocale());
     }
 
@@ -150,18 +151,27 @@ public class RegistrationServiceTest extends RegistrationIntegrationTest {
     }
 
     @Test
-    public void testConfirm() throws JsonParseException, JsonMappingException, IOException, RegistrationException {
+    public Token testConfirm() throws JsonParseException, JsonMappingException, IOException, RegistrationException {
         testSubmit();
         Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
         Registration registration = registrationService.confirm(token.getKey());
         assertEquals("bboring@mailinator.com", registration.getEmail());
         assertEquals("Bob", registration.getFirstName());
         assertEquals("Boring", registration.getLastName());
+        return token;
     }
 
     @Test
     public void testConfirmEmailNotFound() throws JsonParseException, JsonMappingException, IOException, RegistrationException {
         Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
+        assertThrows(RegistrationException.class, () -> {
+            registrationService.confirm(token.getKey());
+        });
+    }
+
+    @Test
+    public void testConfirmEmailAlreadyConfirmed() throws JsonParseException, JsonMappingException, IOException, RegistrationException {
+        Token token = testConfirm();
         assertThrows(RegistrationException.class, () -> {
             registrationService.confirm(token.getKey());
         });
@@ -178,12 +188,12 @@ public class RegistrationServiceTest extends RegistrationIntegrationTest {
     }
 
     @Test
-    public void testComplete() throws IOException, RegistrationException {
-        testConfirm();
+    public Token testComplete() throws IOException, RegistrationException {
+        Token token = testConfirm();
         Registration registration = getMockRegistration("Bob", "Boring", "bboring@mailinator.com");
         registration.setPassword("HelloWorld123!");
         registration.setConfirm("HelloWorld123!");
-        User user = registrationService.complete(registration);
+        User user = registrationService.complete(token.getKey(), registration);
         assertEquals("bboring@mailinator.com", user.getEmail());
         assertEquals("Bob", user.getFirstName());
         assertEquals("Boring", user.getLastName());
@@ -193,26 +203,29 @@ public class RegistrationServiceTest extends RegistrationIntegrationTest {
         assertTrue(user.isConfirmed());
         assertTrue(user.isActive());
         assertTrue(user.isEnabled());
+        return token;
     }
 
     @Test
-    public void testCompleteWithoutSubmitAndConfirm() throws IOException, RegistrationException {
+    public void testCompleteWithoutSubmit() throws IOException, RegistrationException {
         Registration registration = getMockRegistration("Bob", "Boring", "bboring@mailinator.com");
         registration.setPassword("HelloWorld123!");
         registration.setConfirm("HelloWorld123!");
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
         assertThrows(RegistrationException.class, () -> {
-            registrationService.complete(registration);
+            registrationService.complete(token.getKey(), registration);
         });
     }
 
     @Test
-    public void testCompleteEmailAlreadyConfirmed() throws JsonParseException, JsonMappingException, IOException, RegistrationException {
-        testComplete();
+    public void testCompleteWithoutConfirm() throws JsonParseException, JsonMappingException, IOException, RegistrationException {
+        testSubmit();
         Registration registration = getMockRegistration("Bob", "Boring", "bboring@mailinator.com");
         registration.setPassword("HelloWorld123!");
         registration.setConfirm("HelloWorld123!");
+        Token token = getMockToken("Bob", "Boring", "bboring@mailinator.com");
         assertThrows(RegistrationException.class, () -> {
-            registrationService.complete(registration);
+            registrationService.complete(token.getKey(), registration);
         });
     }
 
@@ -237,7 +250,7 @@ public class RegistrationServiceTest extends RegistrationIntegrationTest {
         registration.setPassword(password);
         registration.setConfirm(password);
 
-        User user = registrationService.complete(registration);
+        User user = registrationService.complete(token.getKey(), registration);
         assertEquals(email, user.getEmail());
         assertEquals(firstName, user.getFirstName());
         assertEquals(lastName, user.getLastName());

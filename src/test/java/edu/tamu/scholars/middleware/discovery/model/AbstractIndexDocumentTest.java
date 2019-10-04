@@ -18,7 +18,7 @@ import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractSolrDocumentTest<D extends AbstractSolrDocument> {
+public abstract class AbstractIndexDocumentTest<D extends AbstractIndexDocument> {
 
     @Test
     public void testDefaultConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {

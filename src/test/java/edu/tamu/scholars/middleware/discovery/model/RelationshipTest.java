@@ -1,6 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.model;
 
-public class RelationshipTest extends AbstractSolrDocumentTest<Relationship> {
+public class RelationshipTest extends AbstractIndexDocumentTest<Relationship> {
 
     @Override
     protected Class<?> getType() {

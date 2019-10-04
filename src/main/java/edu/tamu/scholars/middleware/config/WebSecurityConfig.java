@@ -169,7 +169,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST,
                         "/registration",
                         "/graphql"
-                 )
+                    )
                     .permitAll()
                 .antMatchers(POST,
                         "/directoryViews/{id}",
@@ -194,6 +194,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .denyAll()
 
                 .antMatchers(GET,
+                        "/actuator/health",
+                        "/actuator/info",
                         "/api",
                         "/gui",
                         "/graphql",

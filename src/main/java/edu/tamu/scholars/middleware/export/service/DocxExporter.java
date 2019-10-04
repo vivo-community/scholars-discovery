@@ -45,7 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.export.exception.ExportException;
@@ -151,7 +151,7 @@ public class DocxExporter implements Exporter {
         };
     }
 
-    private <D extends AbstractSolrDocument> ObjectNode processDocument(Individual document, ExportView view) {
+    private <D extends AbstractIndexDocument> ObjectNode processDocument(Individual document, ExportView view) {
         final ObjectNode node = mapper.valueToTree(document);
         node.put("vivoUrl", vivoUrl);
         node.put("uiUrl", uiUrl);
@@ -187,8 +187,8 @@ public class DocxExporter implements Exporter {
         });
     }
 
-    private List<AbstractSolrDocument> fetchLazyReference(List<String> ids) {
-        List<AbstractSolrDocument> documents = new ArrayList<AbstractSolrDocument>();
+    private List<AbstractIndexDocument> fetchLazyReference(List<String> ids) {
+        List<AbstractIndexDocument> documents = new ArrayList<AbstractIndexDocument>();
         while (ids.size() >= MAX_DOCUMENT_BATCH_SIZE) {
             documents.addAll(individualRepo.findByIdIn(ids.subList(0, MAX_DOCUMENT_BATCH_SIZE)));
             ids = ids.subList(MAX_DOCUMENT_BATCH_SIZE, ids.size());

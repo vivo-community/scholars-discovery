@@ -26,6 +26,12 @@ public class MiddlewareConfig {
 
     private ExportConfig export = new ExportConfig();
 
+    private TriplestoreConfig triplestore = new TriplestoreConfig();
+
+    private List<HarvesterConfig> harvesters = new ArrayList<HarvesterConfig>();
+
+    private List<IndexerConfig> indexers = new ArrayList<IndexerConfig>();
+
     public MiddlewareConfig() {
         this.allowedOrigins.add("http://localhost:4200");
     }
@@ -84,6 +90,30 @@ public class MiddlewareConfig {
 
     public void setExport(ExportConfig export) {
         this.export = export;
+    }
+
+    public TriplestoreConfig getTriplestore() {
+        return triplestore;
+    }
+
+    public void setTriplestore(TriplestoreConfig triplestore) {
+        this.triplestore = triplestore;
+    }
+
+    public List<HarvesterConfig> getHarvesters() {
+        return harvesters;
+    }
+
+    public void setHarvesters(List<HarvesterConfig> harvesters) {
+        this.harvesters = harvesters;
+    }
+
+    public List<IndexerConfig> getIndexers() {
+        return indexers;
+    }
+
+    public void setIndexers(List<IndexerConfig> indexers) {
+        this.indexers = indexers;
     }
 
 }
