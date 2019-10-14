@@ -19,9 +19,9 @@ Scholars Discovery project was initiated by [Scholars@TAMU](https://scholars.lib
 
 # Technology
 
-Scholars discovery system is first and foremost an ETL system in which **e**xtracts data from VIVO triplestore, **t**ransforms triples into flattened documents, and **l**oads the documents into Solr. The Solr index is then exposed via REST API and GraphQL API as a nested JSON. A secondary feature is that of providing a persistent, configurable discovery layout for rendering a UI. 
+Scholars discovery system is first and foremost an ETL system which **e**xtracts data from the VIVO triplestore, **t**ransforms triples into flattened documents, and **l**oads the documents into Solr. The Solr index is then exposed via REST API and GraphQL API as a nested JSON. A secondary feature is that of providing a persistent, configurable discovery layout for rendering a UI. 
 
-Extraction from VIVO is done view configurable harvesters in which make SPARQL requests to the triplestore for a collection of objects and subsequent SPARQL requests for each property value of the target document. The SPARQL requests can be found in [src/main/resources/templates/sparql](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/resources/templates/sparql). The transformation is done granularly converting resulting triples of a SPARQL request into a property of a flattened document. This document is then saved into a heterogeneous Solr collection. The configuration of the Solr collection can be found in [solr/config](https://github.com/vivo-community/scholars-discovery/tree/master/solr/config). In order to represent a flatten document as a nested JSON response, the field values are indexed with a relationship identifier convention. ```[value]::[id]```, ```[value]::[id]::[id]```, etc. During serialization the document model is traversed parsing the Solr field value and constructing a nested JSON.
+Extraction from VIVO is done view configurable harvesters which make SPARQL requests to the triplestore for a collection of objects and subsequent SPARQL requests for each property value of the target document. The SPARQL requests can be found in [src/main/resources/templates/sparql](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/resources/templates/sparql). The transformation is done granularly converting resulting triples of a SPARQL request into a property of a flattened document. This document is then saved into a heterogeneous Solr collection. The configuration of the Solr collection can be found in [solr/config](https://github.com/vivo-community/scholars-discovery/tree/master/solr/config). In order to represent a flattened document as a nested JSON response, the field values are indexed with a relationship identifier convention. ```[value]::[id]```, ```[value]::[id]::[id]```, etc. During serialization the document model is traversed parsing the Solr field value and constructing a nested JSON.
 
 Here is a list of some dependencies used:
 
@@ -42,11 +42,11 @@ The basic Spring Boot application configuration can be found at [src/main/resour
 
 ### Harvesting
 
-Harvesting can be configured via ```middleware.harvesters``` and represented with [HarvesterConfig](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/java/edu/tamu/scholars/middleware/config/model/HarvesterConfig.java). For each harvester, a bean will be created in which specifies the type of harvester and which document types it maps to. The reference implementation is the local triplestore harvester.
+Harvesting can be configured via ```middleware.harvesters``` and represented with [HarvesterConfig](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/java/edu/tamu/scholars/middleware/config/model/HarvesterConfig.java). For each harvester, a bean will be created which specifies the type of harvester and which document types it maps to. The reference implementation is the local triplestore harvester.
 
 ### Indexing
 
-Indexing can be configured via ```middleware.indexers``` and represented with [IndexerConfig](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/java/edu/tamu/scholars/middleware/config/model/IndexerConfig.java). For each indexer, a bean will be created in which specifies the type of indexer and which document types it indexes. The reference implementation is the solr indexer.
+Indexing can be configured via ```middleware.indexers``` and represented with [IndexerConfig](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/java/edu/tamu/scholars/middleware/config/model/IndexerConfig.java). For each indexer, a bean will be created which specifies the type of indexer and which document types it indexes. The reference implementation is the solr indexer.
 
 The application can be configured to harvest and index on startup, ```middleware.index.onStartup```, and via a cron schedule via ```middleware.index.cron```. The indexing is done in batch for performance. It can be tuned via ```middleware.index.batchSize```.
 
