@@ -92,3 +92,17 @@ docker run -d -p 9000:9000 -e SPRING_APPLICATION_JSON="{\"spring\":{\"data\":{\"
 ```
 
 > The environment variable `SPRING_APPLICATION_JSON` will override properties in application.yml.
+
+## Verify Installation
+
+With the above installation instructions, the following service endpoints can be verified:
+
+1. [REST API (9000/individual)](http://localhost:9000/individual)
+1. [REST API Docs (9000/api)](http://localhost:9000/api)
+1. [GraphQL UI (9000/gui)](http://localhost:9000/gui)
+
+If the JSON [HAL(Hypertext Application Language)](https://www.baeldung.com/spring-rest-hal) browser is enabled by changing the [authorize-hal-browser](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/resources/application.yml#L103) configuration to `true`, http://localhost:9000/ can be used to browse scholars-discovery resources.
+If the authorize-hal-browser is set to `false`, http://localhost:9000/ will respond with the following message:
+> Full authentication is required to access this resource
+
+..due to the a whitelist security access policy. Everything else requires authentication and if authenticated will return 404 if not found or 401 if unauthorized or the result of the endpoint.
