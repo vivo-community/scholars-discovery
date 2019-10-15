@@ -8,6 +8,7 @@ VIVO Scholars Discovery is a middleware project that pulls [VIVO](https://durasp
 Various frontend applications are available (or can be built) to display the content as read-only websites.
 Existing frontend applications include:
 1. [VIVO Scholars Angular](https://github.com/vivo-community/scholars-angular)
+1. [VIVO Scholars React](https://github.com/vivo-community/scholars-react)
 
 # Background
 
