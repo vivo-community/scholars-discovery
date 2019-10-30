@@ -654,10 +654,10 @@
           template: "defaults/displayViews/organizations/publications/publisherOf.html"
           field: publisherOf
           lazyReferences:
-            - publications
+            - publisherOf
           subsections:
             - name: Academic Articles
-              field: publications
+              field: publisherOf
               filters:
                 - field: type
                   value: AcademicArticle
@@ -669,7 +669,7 @@
                   direction: ASC
               template: "defaults/displayViews/organizations/publications/publisherOf/default.html"
             - name: Books
-              field: publications
+              field: publisherOf
               filters:
                 - field: type
                   value: Book
@@ -681,7 +681,7 @@
                   direction: ASC
               template: "defaults/displayViews/organizations/publications/publisherOf/book.html"
             - name: Chapters
-              field: publications
+              field: publisherOf
               filters:
                 - field: type
                   value: Chapter
