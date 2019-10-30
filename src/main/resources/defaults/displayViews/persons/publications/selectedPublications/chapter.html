@@ -1,6 +1,8 @@
 <div>
   <span>{{authorList}}</span>
+  {{#if publicationDate}}
   <span>({{toYear publicationDate}}).</span>
+  {{/if}}
   <span>
     <a href="display/{{id}}"><u>{{title}}</u>.</a>
   </span>
