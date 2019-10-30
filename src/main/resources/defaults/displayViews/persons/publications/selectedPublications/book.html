@@ -24,17 +24,37 @@
   {{#if uri}}
   <span class="m-1"><a href="{{uri}}"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge" /></a></span>
   {{/if}}
+
   {{#if doi}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-doi="{{doi}}"></span>
   {{else}}
   {{#if uri}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-handle="{{replace uri 'http://hdl.handle.net/' ''}}"></span>
-  {{/if}}
-  {{/if}}
+  {{else}}
+  {{#if isbn13}}
+  <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-isbn="{{isbn13}}"></span>
+  {{else}}
   {{#if isbn10}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-isbn="{{isbn10}}"></span>
   {{/if}}
+  {{/if}}
+  {{/if}}
+  {{/if}}
+
   {{#if doi}}
   <span class="__dimensions_badge_embed__ m-1" data-hide-zero-citations="true" data-style="small_rectangle" data-legend="hover-top" data-doi="{{doi}}"></span>
   {{/if}}
 </div>
+<style>
+  .__dimensions_badge_embed__ {
+    display: inline-block;
+  }
+
+  .__dimensions_badge_embed__ .__dimensions_png {
+    opacity: 1;
+  }
+
+  .__dimensions_Badge_Image svg {
+    display: none;
+  }
+</style>

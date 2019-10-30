@@ -70,7 +70,7 @@
     - field: lastName
       value: 2
     - field: name
-      value: 2
+      value: 4
   sort:
     - field: name
       direction: ASC
@@ -165,6 +165,8 @@
     - field: title
       value: 2
     - field: keywords
+      value: 2
+    - field: abstract
       value: 2
   sort:
     - field: title

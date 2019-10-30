@@ -73,7 +73,7 @@ public class Organization extends Common {
     @PropertySource(template = "organization/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @NestedObject(properties = { @Reference(value = "organizationForTrainingTrainee", key = "trainee"), @Reference(value = "organizationForTrainingStartDate", key = "startDate"), @Reference(value = "organizationForTrainingEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "organizationForTrainingTrainee", key = "trainee"), @Reference(value = "organizationForTrainingDegree", key = "degree"), @Reference(value = "organizationForTrainingStartDate", key = "startDate"), @Reference(value = "organizationForTrainingEndDate", key = "endDate") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/organizationForTraining", predicate = "http://vivoweb.org/ontology/core#majorField")
     private List<String> organizationForTraining;
@@ -82,6 +82,10 @@ public class Organization extends Common {
     @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/organizationForTrainingTrainee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> organizationForTrainingTrainee;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "organization/organizationForTrainingDegree", predicate = "http://vivoweb.org/ontology/core#abbreviation")
+    private List<String> organizationForTrainingDegree;
 
     @Indexed(type = "nested_dates")
     @PropertySource(template = "organization/organizationForTrainingStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -462,6 +466,14 @@ public class Organization extends Common {
 
     public void setOrganizationForTrainingTrainee(List<String> organizationForTrainingTrainee) {
         this.organizationForTrainingTrainee = organizationForTrainingTrainee;
+    }
+
+    public List<String> getOrganizationForTrainingDegree() {
+        return organizationForTrainingDegree;
+    }
+
+    public void setOrganizationForTrainingDegree(List<String> organizationForTrainingDegree) {
+        this.organizationForTrainingDegree = organizationForTrainingDegree;
     }
 
     public List<String> getOrganizationForTrainingStartDate() {
