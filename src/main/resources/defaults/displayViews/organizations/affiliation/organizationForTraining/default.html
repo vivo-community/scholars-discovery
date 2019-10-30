@@ -1,13 +1,4 @@
-<div class="person comma-separated">
-  <span><a href="display/{{trainee.id}}">{{trainee.label}}</a></span>
-  <span>{{label}}</span>
+<div class="person">
+  <span><a href="display/{{trainee.id}}">{{trainee.label}}</a>, {{degree}} in {{label}}</span>
+  <span class="badge badge-light">{{toYear endDate}}</span>
 </div>
-<style>
-  .comma-separated span:after {
-    content: ", ";
-  }
-
-  .comma-separated span:last-child:after {
-    content: "";
-  }
-</style>

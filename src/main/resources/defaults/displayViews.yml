@@ -564,6 +564,8 @@
             - name: Organization For Training
               field: organizationForTraining
               sort:
+                - field: endDate
+                  direction: DESC
                 - field: label
                   direction: ASC
               template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
