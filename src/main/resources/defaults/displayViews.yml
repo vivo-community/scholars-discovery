@@ -620,11 +620,11 @@
                 - field: type
                   value: AcademicArticle
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/organizations/publications/selectedPublications/default.html"
             - name: Books
               field: publications
@@ -632,11 +632,11 @@
                 - field: type
                   value: Book
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/organizations/publications/selectedPublications/book.html"
             - name: Chapters
               field: publications
@@ -644,15 +644,54 @@
                 - field: type
                   value: Chapter
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/organizations/publications/selectedPublications/chapter.html"
         - name: publisher of
           template: "defaults/displayViews/organizations/publications/publisherOf.html"
           field: publisherOf
+          lazyReferences:
+            - publications
+          subsections:
+            - name: Academic Articles
+              field: publications
+              filters:
+                - field: type
+                  value: AcademicArticle
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/publisherOf/default.html"
+            - name: Books
+              field: publications
+              filters:
+                - field: type
+                  value: Book
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/publisherOf/book.html"
+            - name: Chapters
+              field: publications
+              filters:
+                - field: type
+                  value: Chapter
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/publisherOf/chapter.html"
         - name: presentations
           template: "defaults/displayViews/organizations/publications/presentations.html"
           field: presentations
