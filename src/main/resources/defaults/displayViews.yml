@@ -862,6 +862,12 @@
         - name: PubMed ID
           template: "defaults/displayViews/documents/identity/pubMedId.html"
           field: pmid
+        - name: International Standard Book Number (ISBN) 10
+          template: "defaults/displayViews/documents/identity/isbn10.html"
+          field: isbn10
+        - name: International Standard Book Number (ISBN) 13
+          template: "defaults/displayViews/documents/identity/isbn13.html"
+          field: isbn13
     - name: Related Documents
       sections:
         - name: cited by
