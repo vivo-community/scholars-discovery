@@ -30,11 +30,11 @@ import org.springframework.data.solr.core.query.SimpleQuery;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractSolrDocument> {
+public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractIndexDocument> {
 
     @Value("classpath:solr/discovery")
     private Resource instanceDirectory;

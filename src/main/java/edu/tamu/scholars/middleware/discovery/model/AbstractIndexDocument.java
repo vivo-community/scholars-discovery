@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 
-@GraphQLInterface(name = "AbstractSolrDocument", implementationAutoDiscovery = true)
-public abstract class AbstractSolrDocument {
+@GraphQLInterface(name = "AbstractIndexDocument", implementationAutoDiscovery = true)
+public abstract class AbstractIndexDocument {
 
     @Id
     @Indexed(required = true)

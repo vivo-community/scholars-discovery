@@ -10,7 +10,7 @@ import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 import io.leangen.graphql.annotations.GraphQLIgnore;
 
 @GraphQLIgnore
-public class Common extends AbstractSolrDocument {
+public class Common extends AbstractIndexDocument {
 
     @Indexed(type = "whole_strings")
     @PropertySource(template = "common/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)

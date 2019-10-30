@@ -15,12 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractSolrDocumentRepoTest<D extends AbstractSolrDocument> extends AbstractSolrDocumentIntegrationTest<D> {
+public abstract class AbstractSolrDocumentRepoTest<D extends AbstractIndexDocument> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Test
     public void testCreate() {

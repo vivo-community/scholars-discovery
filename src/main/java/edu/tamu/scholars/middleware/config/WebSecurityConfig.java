@@ -178,10 +178,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/themes/{id}"
                     )
                     .hasRole("ADMIN")
-                .antMatchers(POST,
-                        "/actuator/restart"
-                    )
-                    .hasRole("SUPER_ADMIN")
                 .antMatchers(POST, "/users/{id}")
                     .denyAll()
 
