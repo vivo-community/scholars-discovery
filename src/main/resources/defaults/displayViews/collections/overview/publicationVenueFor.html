@@ -2,7 +2,7 @@
   <ul class="list-unstyled ml-2 mr-2 mb-0">
     {{#eachSorted publicationVenueFor "publicationDate" "DESC" true}}
     <li class="mb-2">
-      <a href="display/{{id}}">{{title}}.</a>
+      <a href="display/{{id}}">{{{title}}}.</a>
       {{#if volume}}
       {{#if issue}}
       <span>{{volume}}({{issue}}), </span>
