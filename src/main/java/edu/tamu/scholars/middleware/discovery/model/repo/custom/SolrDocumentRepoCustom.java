@@ -11,9 +11,9 @@ import org.springframework.data.solr.core.query.result.FacetPage;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.model.AbstractSolrDocument;
+import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 
-public interface SolrDocumentRepoCustom<D extends AbstractSolrDocument> {
+public interface SolrDocumentRepoCustom<D extends AbstractIndexDocument> {
 
     public long count(String query, List<FilterArg> filters);
 

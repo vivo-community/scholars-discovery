@@ -7,12 +7,10 @@ public class TestTriplestore implements Triplestore {
 
     private Dataset dataset;
 
-    @Override
     public void init() {
         dataset = TDBFactory.createDataset();
     }
 
-    @Override
     public void destroy() {
         dataset.close();
     }
