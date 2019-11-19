@@ -5,7 +5,7 @@
     {{#each type}}
     <span>{{formalize .}}{{#if @last }}{{else}}<span class="ml-1">|</span>{{/if}}</span>
     {{/each}}
-    <span class="ml-1"><a href="{{_links.self.href}}" download target="_blank"><i class="fa fa-link"><span class="d-none">individual record</span></i></a></span>
+    <span class="ml-1"><a href="{{_links.self.href}}" title="View individual in JSON format" download target="_blank"><i class="fa fa-link"><span class="d-none">individual record</span></i></a></span>
   </span>
 </div>
 {{#if affiliatedResearchAreas}}

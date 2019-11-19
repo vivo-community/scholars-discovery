@@ -110,11 +110,11 @@
                 - field: type
                   value: AcademicArticle
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Books
               field: publications
@@ -122,11 +122,11 @@
                 - field: type
                   value: Book
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/book.html"
             - name: Chapters
               field: publications
@@ -134,11 +134,11 @@
                 - field: type
                   value: Chapter
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/chapter.html"
             - name: Conference Papers
               field: publications
@@ -146,11 +146,11 @@
                 - field: type
                   value: ConferencePaper
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Institutional Repository Documents
               field: publications
@@ -158,11 +158,11 @@
                 - field: type
                   value: GreyLiterature
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Thesis
               field: publications
@@ -170,11 +170,11 @@
                 - field: type
                   value: Thesis
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Working Papers
               field: publications
@@ -182,11 +182,11 @@
                 - field: type
                   value: WorkingPaper
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
         - name: collection or series editor for
           template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
@@ -564,6 +564,8 @@
             - name: Organization For Training
               field: organizationForTraining
               sort:
+                - field: endDate
+                  direction: DESC
                 - field: label
                   direction: ASC
               template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
@@ -618,11 +620,11 @@
                 - field: type
                   value: AcademicArticle
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/organizations/publications/selectedPublications/default.html"
             - name: Books
               field: publications
@@ -630,11 +632,11 @@
                 - field: type
                   value: Book
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/organizations/publications/selectedPublications/book.html"
             - name: Chapters
               field: publications
@@ -642,15 +644,54 @@
                 - field: type
                   value: Chapter
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/organizations/publications/selectedPublications/chapter.html"
         - name: publisher of
           template: "defaults/displayViews/organizations/publications/publisherOf.html"
           field: publisherOf
+          lazyReferences:
+            - publisherOf
+          subsections:
+            - name: Academic Articles
+              field: publisherOf
+              filters:
+                - field: type
+                  value: AcademicArticle
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/publisherOf/default.html"
+            - name: Books
+              field: publisherOf
+              filters:
+                - field: type
+                  value: Book
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/publisherOf/book.html"
+            - name: Chapters
+              field: publisherOf
+              filters:
+                - field: type
+                  value: Chapter
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/publisherOf/chapter.html"
         - name: presentations
           template: "defaults/displayViews/organizations/publications/presentations.html"
           field: presentations
@@ -862,6 +903,12 @@
         - name: PubMed ID
           template: "defaults/displayViews/documents/identity/pubMedId.html"
           field: pmid
+        - name: International Standard Book Number (ISBN) 10
+          template: "defaults/displayViews/documents/identity/isbn10.html"
+          field: isbn10
+        - name: International Standard Book Number (ISBN) 13
+          template: "defaults/displayViews/documents/identity/isbn13.html"
+          field: isbn13
     - name: Related Documents
       sections:
         - name: cited by

@@ -8,6 +8,7 @@ VIVO Scholars Discovery is a middleware project that pulls [VIVO](https://durasp
 Various frontend applications are available (or can be built) to display the content as read-only websites.
 Existing frontend applications include:
 1. [VIVO Scholars Angular](https://github.com/vivo-community/scholars-angular)
+1. [VIVO Scholars React](https://github.com/vivo-community/scholars-react)
 
 # Background
 
@@ -19,7 +20,7 @@ Scholars Discovery project was initiated by [Scholars@TAMU](https://scholars.lib
 
 # Technology
 
-Scholars discovery system is first and foremost an ETL system in which **e**xtracts data from VIVO triplestore, **t**ransforms triples into flattened documents, and **l**oads the documents into Solr. The Solr index is then exposed via REST API and GraphQL API as a nested JSON. A secondary feature is that of providing a persistent, configurable discovery layout for rendering a UI. 
+Scholars discovery system is first and foremost an ETL system in which **e**xtracts data from VIVO's triplestore, **t**ransforms triples into flattened documents, and **l**oads the documents into Solr. The Solr index is then exposed via REST API and GraphQL API as a nested JSON. A secondary feature is that of providing a persistent, configurable discovery layout for rendering a UI. 
 
 Extraction from VIVO is done view configurable harvesters in which make SPARQL requests to the triplestore for a collection of objects and subsequent SPARQL requests for each property value of the target document. The SPARQL requests can be found in [src/main/resources/templates/sparql](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/resources/templates/sparql). The transformation is done granularly converting resulting triples of a SPARQL request into a property of a flattened document. This document is then saved into a heterogeneous Solr collection. The configuration of the Solr collection can be found in [solr/config](https://github.com/vivo-community/scholars-discovery/tree/master/solr/config). In order to represent a flatten document as a nested JSON response, the field values are indexed with a relationship identifier convention. ```[value]::[id]```, ```[value]::[id]::[id]```, etc. During serialization the document model is traversed parsing the Solr field value and constructing a nested JSON.
 
@@ -56,7 +57,7 @@ Solr is configured via ```spring.data.solr```.
 
 ### GraphQL
 
-GraphQL SPQR configuration can be done via ```graphql.spqr```. Explicit Java [models](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/java/edu/tamu/scholars/middleware/graphql/model) in which are turned into a GraphQL schema are generated. The generated models are a nested representation of the flattened index documents. An important configuration for GraphQL schema generation if for generating explicit composite models representing relationships between complete index documents. The configuration is done via [src/main/resources/graphql/composites.yml](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/resources/graphql/composites.yml) and represented with [Composite.java](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/java/edu/tamu/scholars/middleware/graphql/config/model).
+GraphQL SPQR configuration can be done via ```graphql.spqr```. Explicit Java [models](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/java/edu/tamu/scholars/middleware/graphql/model) in which are turned into a GraphQL schema are generated. The generated models are a nested representation of the flattened index documents. An important configuration for GraphQL schema generation is for generating explicit composite models representing relationships between complete index documents. The configuration is done via [src/main/resources/graphql/composites.yml](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/resources/graphql/composites.yml) and represented with [Composite.java](https://github.com/vivo-community/scholars-discovery/tree/master/src/main/java/edu/tamu/scholars/middleware/graphql/config/model).
 
 ## Installation instructions
 
@@ -91,3 +92,17 @@ docker run -d -p 9000:9000 -e SPRING_APPLICATION_JSON="{\"spring\":{\"data\":{\"
 ```
 
 > The environment variable `SPRING_APPLICATION_JSON` will override properties in application.yml.
+
+## Verify Installation
+
+With the above installation instructions, the following service endpoints can be verified:
+
+1. [REST API (9000/individual)](http://localhost:9000/individual)
+1. [REST API Docs (9000/api)](http://localhost:9000/api)
+1. [GraphQL UI (9000/gui)](http://localhost:9000/gui)
+
+If the JSON [HAL(Hypertext Application Language)](https://www.baeldung.com/spring-rest-hal) browser is enabled by changing the [authorize-hal-browser](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/resources/application.yml#L103) configuration to `true`, http://localhost:9000/ can be used to browse scholars-discovery resources.
+If the authorize-hal-browser is set to `false`, http://localhost:9000/ will respond with the following message:
+> Full authentication is required to access this resource
+
+..due to the a whitelist security access policy. Everything else requires authentication and if authenticated will return 404 if not found or 401 if unauthorized or the result of the endpoint.

@@ -11,5 +11,5 @@ CONSTRUCT {
     ?publication a obo:IAO_0000030 .
     ?publication vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?mostSpecificType), REPLACE(STR(?publication), "(^.*/)", "::") ) AS ?mostSpecificTypeWithId ) .
-    FILTER (STR(?mostSpecificType) != "http://vivoweb.org/ontology/core#DateTimeValue")
+    FILTER (?mostSpecificType != vivo:DateTimeValue)
 }

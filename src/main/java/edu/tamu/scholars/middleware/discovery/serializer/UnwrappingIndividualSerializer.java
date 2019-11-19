@@ -59,10 +59,10 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
         jsonGenerator.writeObjectField(nameTransformer.transform(CLASS), document.getClazz());
         for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
-            Object value = content.get(field.getName());
+            JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
+            String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
+            Object value = content.get(name);
             if (value != null) {
-                JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
-                String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
                 NestedObject nestedObject = field.getAnnotation(NestedObject.class);
                 if (nestedObject != null) {
                     if (nestedObject.root()) {
