@@ -2,6 +2,6 @@
 {{name}}
 {{else}}
   {{#if title}}
-  {{title}}
+  {{{title}}}
   {{/if}}
 {{/if}}

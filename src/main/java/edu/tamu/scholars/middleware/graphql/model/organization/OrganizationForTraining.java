@@ -25,6 +25,8 @@ public class OrganizationForTraining extends AbstractNestedDocument {
 
   private OrganizationForTrainingTrainee trainee;
 
+  private String degree;
+
   private String startDate;
 
   private String endDate;
@@ -47,6 +49,14 @@ public class OrganizationForTraining extends AbstractNestedDocument {
 
   public void setTrainee(OrganizationForTrainingTrainee trainee) {
     this.trainee = trainee;
+  }
+
+  public String getDegree() {
+    return degree;
+  }
+
+  public void setDegree(String degree) {
+    this.degree = degree;
   }
 
   public String getStartDate() {
