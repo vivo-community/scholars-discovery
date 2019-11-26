@@ -4,6 +4,9 @@ FROM openjdk:8u171-jre-alpine
 # set deployment directory
 WORKDIR /scholars
 
+# create a folder to mount VIVO backup
+RUN mkdir -p /scholars/vivo_backup
+
 # copy over the built artifact from the maven image
 COPY /target/middleware*.jar ./scholars-discovery.jar
 
