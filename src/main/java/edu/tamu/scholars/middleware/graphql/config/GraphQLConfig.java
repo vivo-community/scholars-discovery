@@ -12,12 +12,15 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
+import edu.tamu.scholars.middleware.graphql.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
@@ -39,6 +42,8 @@ import io.leangen.graphql.metadata.strategy.query.DefaultOperationBuilder;
 import io.leangen.graphql.metadata.strategy.query.DefaultOperationBuilder.TypeInference;
 import io.leangen.graphql.metadata.strategy.value.InputFieldBuilder;
 import io.leangen.graphql.metadata.strategy.value.InputFieldBuilderParams;
+
+
 
 @Configuration
 public class GraphQLConfig {
@@ -113,6 +118,20 @@ public class GraphQLConfig {
             @Override
             public boolean supports(AnnotatedType type, Parameter parameter) {
                 return Pageable.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
+                AnnotatedType returnType = params.getResolutionEnvironment().resolver.getReturnType();
+                AnnotatedType genericType = GenericTypeReflector.getTypeParameter(returnType, Iterable.class.getTypeParameters()[0]);
+                return parseDefaultablePageRequest(params.getInput(), genericType.getType().getTypeName());
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return DefaultablePageRequest.class.equals(type.getType());
             }
 
         }).prepend(new ArgumentInjector() {
@@ -214,6 +233,21 @@ public class GraphQLConfig {
             @Override
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
                 Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("pageNumber", "Page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 0));
+                fields.add(new InputField("pageSize", "Page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
+                fields.add(new InputField("sort", "Page sorting", new TypedElement(GenericTypeReflector.annotate(Sort.class)), GenericTypeReflector.annotate(Sort.class), null));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return DefaultablePageRequest.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("orders", "Orders for sorting", new TypedElement(GenericTypeReflector.annotate(Sort.Order[].class)), GenericTypeReflector.annotate(Sort.Order[].class), null));
                 return fields;
             }
@@ -245,6 +279,24 @@ public class GraphQLConfig {
         Integer pageNumber = (Integer) page.get("pageNumber");
         Integer pageSize = (Integer) page.get("pageSize");
         return PageRequest.of(pageNumber, pageSize, parseSort(page.get("sort"), type));
+    }
+
+    @SuppressWarnings("unchecked")
+    private DefaultablePageRequest parseDefaultablePageRequest(Object input, String type) {
+        Integer pageNumber = 0;
+        Integer pageSize = 100;
+        Sort sort = null;
+        DefaultablePageRequest rv = null;
+        if (input instanceof DefaultablePageRequest) {
+            rv = new DefaultablePageRequest(pageNumber, pageSize);
+        } else {
+            Map<String, Object> page = (Map<String, Object>) input;
+            pageNumber = (Integer) page.get("pageNumber");
+            pageSize = (Integer) page.get("pageSize");
+            sort = parseSort(page.get("sort"), type);
+            rv = new DefaultablePageRequest(pageNumber, pageSize, sort);
+        }
+        return rv;
     }
 
     @SuppressWarnings("unchecked")
