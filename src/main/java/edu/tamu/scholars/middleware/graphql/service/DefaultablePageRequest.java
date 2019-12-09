@@ -18,7 +18,7 @@ public class DefaultablePageRequest extends AbstractPageRequest {
   private PageRequest pager = PageRequest.of(0, 100);
 
   public DefaultablePageRequest() {
-    super( 0, 100);
+    super(0, 100);
     this.pager = PageRequest.of(0, 100);
   }
 
@@ -28,17 +28,17 @@ public class DefaultablePageRequest extends AbstractPageRequest {
   }
 
   public DefaultablePageRequest(int pageNumber, int pageSize, Sort sort) {
-    super( 0, 100);
+    super(0, 100);
     this.pager = PageRequest.of(pageNumber, pageSize, sort);
   }
 
   public DefaultablePageRequest(int pageNumber, int pageSize) {
-    super( 0, 100);
+    super(0, 100);
     this.pager = PageRequest.of(pageNumber, pageSize);
   }
 
   public DefaultablePageRequest(PageRequest pageRequest) {
-    super( 0, 100);
+    super(0, 100);
     this.pager = pageRequest;
   }
 
