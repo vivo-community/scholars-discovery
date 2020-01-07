@@ -32,9 +32,7 @@ public class SolrIndexer implements Indexer {
             logger.info(String.format("Saved %s batch of %s", name(), documents.size()));
         } catch (Exception e) {
             logger.warn("Failed to save batch. Attempting individually.");
-            if (logger.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
             documents.stream().forEach(this::index);
         }
     }
@@ -47,9 +45,7 @@ public class SolrIndexer implements Indexer {
             logger.info(String.format("Saved %s with id %s", name(), document.getId()));
         } catch (Exception e) {
             logger.warn(String.format("Failed to save document with id %s", document.getId()));
-            if (logger.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 
