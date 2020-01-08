@@ -2,8 +2,8 @@
 
 - type: Person
   references:
-    - name: positions
-      type: Relationship
+#    - name: positions
+#      type: Relationship
     - name: publications
       type: Document
 

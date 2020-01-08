@@ -1,6 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
-import edu.tamu.scholars.middleware.graphql.model.Relationship;
+import edu.tamu.scholars.middleware.graphql.model.person.Position;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
 import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.person.HeadOf;
@@ -55,7 +55,7 @@ import java.util.List;
 public class Person extends AbstractNestedDocument {
   private static final long serialVersionUID = -3444805L;
 
-  private List<Relationship> positions;
+  private List<Position> positions;
 
   private List<ResearchArea> researchAreas;
 
@@ -214,11 +214,11 @@ public class Person extends AbstractNestedDocument {
     super();
   }
 
-  public List<Relationship> getPositions() {
+  public List<Position> getPositions() {
     return positions;
   }
 
-  public void setPositions(List<Relationship> positions) {
+  public void setPositions(List<Position> positions) {
     this.positions = positions;
   }
 
