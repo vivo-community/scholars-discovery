@@ -5,7 +5,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 CONSTRUCT {
     ?organization rdfs:label ?labelWithIds .
 } WHERE {
-    <{{uri}}> vivo:relatedBy ?organization .
+    <{{uri}}> vivo:relates ?organization .
     ?organization a foaf:Organization .
     ?organization rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?organization), "(^.*/)", "::") ) AS ?labelWithIds ) .
