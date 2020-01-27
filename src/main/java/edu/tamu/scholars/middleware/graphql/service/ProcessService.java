@@ -17,18 +17,19 @@ import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
+import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
 
 @Service
 public class ProcessService extends AbstractNestedDocumentService<Process> {
 
     @Override
-    @GraphQLQuery(name = "processExistsById")
+    //@GraphQLQuery(name = "processExistsById")
     public boolean existsById(@GraphQLArgument(name = "id") String id) {
         return super.existsById(id);
     }
 
     @Override
-    @GraphQLQuery(name = "processById")
+    @GraphQLQuery(name = "process")
     // @formatter:off
     public Process getById(
         @GraphQLArgument(name = "id") String id,
@@ -39,7 +40,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesByType")
+    //@GraphQLQuery(name = "processesByType")
     // @formatter:off
     public List<Process> findByType(
         @GraphQLArgument(name = "type") String type,
@@ -50,7 +51,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesByIds")
+    //@GraphQLQuery(name = "processesByIds")
     // @formatter:off
     public List<Process> findByIdIn(
         @GraphQLArgument(name = "ids") List<String> ids,
@@ -61,7 +62,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesMostRecentlyUpdate")
+    //@GraphQLQuery(name = "processesMostRecentlyUpdate")
     // @formatter:off
     public List<Process> findMostRecentlyUpdate(
         @GraphQLArgument(name = "limit") Integer limit,
@@ -72,7 +73,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesMostRecentlyUpdate")
+    //@GraphQLQuery(name = "processesMostRecentlyUpdate")
     // @formatter:off
     public List<Process> findMostRecentlyUpdate(
         @GraphQLArgument(name = "limit") Integer limit,
@@ -84,13 +85,13 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesCount")
+    //@GraphQLQuery(name = "processesCount")
     public long count() {
         return super.count();
     }
 
     @Override
-    @GraphQLQuery(name = "processesCount")
+    //@GraphQLQuery(name = "processesCount")
     // @formatter:off
     public long count(
         @GraphQLArgument(name = "query") String query,
@@ -101,7 +102,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesSorted")
+    //@GraphQLQuery(name = "processesSorted")
     // @formatter:off
     public Iterable<Process> findAll(
         @GraphQLArgument(name = "sort") Sort sort,
@@ -112,7 +113,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesPaged")
+    //@GraphQLQuery(name = "processesPaged")
     // @formatter:off
     public DiscoveryPage<Process> findAll(
         @GraphQLArgument(name = "paging") Pageable page,
@@ -123,7 +124,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesSearch")
+    //@GraphQLQuery(name = "processesSearch")
     // @formatter:off
     public DiscoveryFacetPage<Process> search(
         @GraphQLArgument(name = "query") String query,
@@ -135,7 +136,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesSearch")
+    //@GraphQLQuery(name = "processesSearch")
     // @formatter:off
     public DiscoveryFacetPage<Process> search(
         @GraphQLArgument(name = "query") String query,
@@ -148,7 +149,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesFilterSearch")
+    //@GraphQLQuery(name = "processesFilterSearch")
     // @formatter:off
     public DiscoveryFacetPage<Process> filterSearch(
         @GraphQLArgument(name = "query") String query,
@@ -161,7 +162,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesFilterSearch")
+    //@GraphQLQuery(name = "processesFilterSearch")
     // @formatter:off
     public DiscoveryFacetPage<Process> filterSearch(
         @GraphQLArgument(name = "query") String query,
@@ -175,7 +176,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesFacetedSearch")
+    //@GraphQLQuery(name = "processesFacetedSearch")
     // @formatter:off
     public DiscoveryFacetPage<Process> facetedSearch(
         @GraphQLArgument(name = "query") String query,
@@ -188,7 +189,7 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
     }
 
     @Override
-    @GraphQLQuery(name = "processesFacetedSearch")
+    //@GraphQLQuery(name = "processesFacetedSearch")
     // @formatter:off
     public DiscoveryFacetPage<Process> facetedSearch(
         @GraphQLArgument(name = "query") String query,
@@ -201,15 +202,15 @@ public class ProcessService extends AbstractNestedDocumentService<Process> {
         return super.facetedSearch(query, facets, filters, page, fields);
     }
 
-    @Override
-    @GraphQLQuery(name = "processesFacetedSearch")
+    //@Override
+    @GraphQLQuery(name = "processes")
     // @formatter:off
     public DiscoveryFacetPage<Process> facetedSearch(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "facets") List<FacetArg> facets,
-        @GraphQLArgument(name = "filters") List<FilterArg> filters,
-        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
-        @GraphQLArgument(name = "paging") Pageable page,
+        @GraphQLArgument(name = "query", defaultValue="*") String query,
+        @GraphQLArgument(name = "facets", defaultValue="[]") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters", defaultValue="[]") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts", defaultValue="[]") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging", defaultValue="{}") DefaultablePageRequest page,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
