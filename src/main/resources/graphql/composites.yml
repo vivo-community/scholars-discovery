@@ -7,7 +7,7 @@
     - name: publications
       type: Document
 
-#- type: Organization
-#  references:
-#  - name: people
-#    type: Person
+- type: Organization
+  references:
+  - name: people
+    type: Person

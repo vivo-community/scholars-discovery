@@ -5,7 +5,7 @@ import edu.tamu.scholars.middleware.graphql.model.organization.SponsorsAwardOrHo
 import edu.tamu.scholars.middleware.graphql.model.organization.AwardOrHonorGiven;
 import edu.tamu.scholars.middleware.graphql.model.organization.AwardOrHonorReceived;
 import edu.tamu.scholars.middleware.graphql.model.organization.OrganizationForTraining;
-import edu.tamu.scholars.middleware.graphql.model.organization.People;
+import edu.tamu.scholars.middleware.graphql.model.Person;
 import edu.tamu.scholars.middleware.graphql.model.organization.HasSubOrganization;
 import edu.tamu.scholars.middleware.graphql.model.organization.OrganizationWithin;
 import edu.tamu.scholars.middleware.graphql.model.organization.LeadOrganizationOf;
@@ -67,7 +67,7 @@ public class Organization extends AbstractNestedDocument {
 
   private List<OrganizationForTraining> organizationForTraining;
 
-  private List<People> people;
+  private List<Person> people;
 
   private List<HasSubOrganization> hasSubOrganizations;
 
@@ -214,11 +214,11 @@ public class Organization extends AbstractNestedDocument {
     this.organizationForTraining = organizationForTraining;
   }
 
-  public List<People> getPeople() {
+  public List<Person> getPeople() {
     return people;
   }
 
-  public void setPeople(List<People> people) {
+  public void setPeople(List<Person> people) {
     this.people = people;
   }
 
