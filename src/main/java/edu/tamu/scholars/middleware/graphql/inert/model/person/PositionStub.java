@@ -18,49 +18,52 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 
+//import edu.tamu.scholars.middleware.graphql.inert.model.position.Organization;
 import edu.tamu.scholars.middleware.graphql.inert.model.position.OrganizationStub;
+
 import io.leangen.graphql.annotations.GraphQLIgnore;
 
-// @GraphQLIgnore
-@GraphQLType(
-  name = "CustomPosition"
-)
-
+@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
-public class Position extends AbstractNestedDocument {
-  private String title;
+public class PositionStub extends AbstractNestedDocument {
+  private String id;
+  private String label;
   private String[] type;
   private OrganizationStub[] organizations;
 
-  public Position() {
+  public PositionStub() {
   }
 
-  public String getTitle() {
-    return this.title;
+  public String getLabel() {
+    return label;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String[] getType() {
-    return this.type;
+    return this.getType();
   }
 
   public void setType(String[] type) {
     this.type = type;
   }
 
-  
-  @GraphQLIgnore
-  public OrganizationStub[] getOrganization() {
+  public OrganizationStub[] getOrganizations() {
     return this.organizations;
   }
 
-  @GraphQLIgnore
-  public void setOrganization(OrganizationStub[] orgs) {
+  public void setOrganizations(OrganizationStub[] orgs) {
     this.organizations = orgs;
   }
-  
-  
+
 }
