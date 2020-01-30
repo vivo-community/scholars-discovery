@@ -14,16 +14,13 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.graphql.inert.model.person.Position;
-import edu.tamu.scholars.middleware.graphql.inert.model.person.PositionStub;
 
-//import edu.tamu.scholars.middleware.graphql.inert.model.person.Person;
 import edu.tamu.scholars.middleware.graphql.model.Person;
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 @GraphQLApi
 @Service
