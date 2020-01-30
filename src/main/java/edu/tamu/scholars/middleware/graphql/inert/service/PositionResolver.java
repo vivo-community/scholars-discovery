@@ -56,15 +56,18 @@ public class PositionResolver {
 
      List<Position> list = new ArrayList<Position>();
      
-     for (Relationship rel: positions) {
-     //for (edu.tamu.scholars.middleware.graphql.model.person.Position rel: positions) {
-      Optional<Individual> position = repo.findById(rel.getId());
-
-      ObjectNode node = mapper.valueToTree(position);
-      System.out.println("**** NODE: " + node);
-      Position real = mapper.convertValue(node, Position.class);
-      list.add(real);
+     if (positions !=  null) {
+      for (Relationship rel: positions) {
+        //for (edu.tamu.scholars.middleware.graphql.model.person.Position rel: positions) {
+         Optional<Individual> position = repo.findById(rel.getId());
+   
+         ObjectNode node = mapper.valueToTree(position);
+         System.out.println("**** NODE: " + node);
+         Position real = mapper.convertValue(node, Position.class);
+         list.add(real);
+        }
      }
+
     return list;
   }
 
