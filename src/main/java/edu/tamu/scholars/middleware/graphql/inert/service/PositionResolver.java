@@ -31,7 +31,7 @@ public class PositionResolver {
   @Autowired
   private ObjectMapper mapper;
 
-  @GraphQLQuery(name = "position")
+  //@GraphQLQuery(name = "position")
   // @formatter:off
   public Position getById(
     @GraphQLArgument(name = "id") String id,
