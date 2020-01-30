@@ -42,8 +42,6 @@ public class OrganizationResolver {
     System.out.println("**** NODE: " + node);
     return mapper.convertValue(node, Organization.class);
   }
-
-
   
   @GraphQLQuery
   public Organization[] organizations(@GraphQLContext Position position) {

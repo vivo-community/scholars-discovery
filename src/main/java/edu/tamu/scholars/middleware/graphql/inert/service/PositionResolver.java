@@ -16,11 +16,14 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.graphql.inert.model.person.Position;
 import edu.tamu.scholars.middleware.graphql.inert.model.person.PositionStub;
 
-import edu.tamu.scholars.middleware.graphql.inert.model.person.Person;
+//import edu.tamu.scholars.middleware.graphql.inert.model.person.Person;
+import edu.tamu.scholars.middleware.graphql.model.Person;
+import edu.tamu.scholars.middleware.graphql.model.Relationship;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 @GraphQLApi
 @Service
@@ -39,7 +42,6 @@ public class PositionResolver {
   ) {
     // @formatter:on
 
-
     Optional<Individual> position = repo.findById(id);
     ObjectNode node = mapper.valueToTree(position);
     System.out.println("**** NODE: " + node);
@@ -48,23 +50,22 @@ public class PositionResolver {
 
   
   @GraphQLQuery
-  public Position[] positions(@GraphQLContext Person person) {
-     PositionStub[] positions = person.getPositions();
-     Position[] list = new Position[positions.length];
+  public List<Position> positions(@GraphQLContext Person person) {
+     List<Relationship> positions = person.getPositions();
+     //List<edu.tamu.scholars.middleware.graphql.model.person.Position> positions = person.getPositions();
 
-     System.out.println("**** found " + positions.length + " positions");
-     for (int i = 0; i < positions.length; i++) {  
-       PositionStub pos = positions[i];
-       Optional<Individual> position = repo.findById(pos.getId());
-       System.out.println("found " + position);
-       ObjectNode node = mapper.valueToTree(position);
-       System.out.println("**** NODE: " + node);
-       Position real = mapper.convertValue(node, Position.class);
+     List<Position> list = new ArrayList<Position>();
+     
+     for (Relationship rel: positions) {
+     //for (edu.tamu.scholars.middleware.graphql.model.person.Position rel: positions) {
+      Optional<Individual> position = repo.findById(rel.getId());
 
-       list[i] = real;
-    }
+      ObjectNode node = mapper.valueToTree(position);
+      System.out.println("**** NODE: " + node);
+      Position real = mapper.convertValue(node, Position.class);
+      list.add(real);
+     }
     return list;
   }
-  
 
 }
