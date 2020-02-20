@@ -208,8 +208,10 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
         facetPage.getFacetFields().forEach(field ->  facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
-        SolrResultPage<ND> results = new SolrResultPage<ND>(content);
-        results.addAllFacetFieldResultPages(facetFieldResults);
+        
+        Pageable resultsPaging = facetPage.getPageable();
+        SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
+        results.addAllFacetFieldResultPages(facetFieldResults);        
         return results;
     }
 
