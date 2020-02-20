@@ -16,7 +16,6 @@ import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
-import org.docx4j.wml.P;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
