@@ -201,13 +201,6 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     private DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        /* has {!ex=?} here
-        facets.forEach(arg -> {
-            System.out.println(arg.getField());
-            System.out.println(arg.getCommand());
-            System.out.println(arg.getProperty());
-         });
-         */
         return DiscoveryFacetPage.from(search(query, facets, filters, boosts, page, fields), facets);
     }
 
