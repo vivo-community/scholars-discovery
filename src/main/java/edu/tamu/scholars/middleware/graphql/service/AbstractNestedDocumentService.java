@@ -214,20 +214,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
         FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
         Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
-        
-        for (org.springframework.data.solr.core.query.Field field: facetPage.getFacetFields()) {
-          // TODO: might have to strip off {!ex=?} (or add back)
-          System.out.println("mapping field:" + field.getName());
-          Page<FacetFieldEntry> _page = facetPage.getFacetResultPage(field);
-          ObjectNode node = mapper.valueToTree(_page);
-          System.out.println("**** NODE: " + node);
-        }
-
-        //for(Page<FacetFieldEntry> result : facetPage.getFacetResultPages()) {
-        //  ObjectNode node = mapper.valueToTree(result);
-        //  System.out.println("**** NODE: " + node);
-        //}
-
+   
         facetPage.getFacetFields().forEach(field -> 
           facetFieldResults.put(field, facetPage.getFacetResultPage(field))
         );
