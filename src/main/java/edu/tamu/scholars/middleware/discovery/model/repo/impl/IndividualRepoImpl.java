@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.solr.query.FilterQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,8 @@ import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
+
+
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
@@ -147,6 +150,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             facetQuery.addFilterQuery(filterQuery);
         });
 
+        //facetQuery.setDefaultOperator(Operator.OR);
         facetQuery.setDefaultOperator(queryOperator);
 
         facetQuery.setDefType(queryParser);
@@ -189,10 +193,15 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
         SimpleQuery simpleQuery = new SimpleQuery();
         buildFilterQueries(filters).forEach(filterQuery -> {
+            // how to make OR? per query
+            //simpleQuery.addCriteria(Criteria -->)
             simpleQuery.addFilterQuery(filterQuery);
         });
+
+        //simpleQuery.setDefaultOperator(Operator.OR);
         simpleQuery.setDefaultOperator(queryOperator);
         simpleQuery.setDefType(queryParser);
+
         return simpleQuery;
     }
 
@@ -234,6 +243,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             criteria.endsWith(value);
             break;
         case EQUALS:
+            
             criteria.is(value);
             break;
         case EXPRESSION:
@@ -249,6 +259,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         case STARTS_WITH:
             criteria.startsWith(value);
             break;
+        case RAW:
+            criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
         default:
             break;
         }
