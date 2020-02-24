@@ -25,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
+import org.springframework.data.solr.core.query.result.FacetQueryResult;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -200,13 +201,36 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     private DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        /* has {!ex=?} here
+        facets.forEach(arg -> {
+            System.out.println(arg.getField());
+            System.out.println(arg.getCommand());
+            System.out.println(arg.getProperty());
+         });
+         */
         return DiscoveryFacetPage.from(search(query, facets, filters, boosts, page, fields), facets);
     }
 
     private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
         FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
         Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
-        facetPage.getFacetFields().forEach(field ->  facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
+        
+        for (org.springframework.data.solr.core.query.Field field: facetPage.getFacetFields()) {
+          // TODO: might have to strip off {!ex=?} (or add back)
+          System.out.println("mapping field:" + field.getName());
+          Page<FacetFieldEntry> _page = facetPage.getFacetResultPage(field);
+          ObjectNode node = mapper.valueToTree(_page);
+          System.out.println("**** NODE: " + node);
+        }
+
+        //for(Page<FacetFieldEntry> result : facetPage.getFacetResultPages()) {
+        //  ObjectNode node = mapper.valueToTree(result);
+        //  System.out.println("**** NODE: " + node);
+        //}
+
+        facetPage.getFacetFields().forEach(field -> 
+          facetFieldResults.put(field, facetPage.getFacetResultPage(field))
+        );
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
         
         Pageable resultsPaging = facetPage.getPageable();

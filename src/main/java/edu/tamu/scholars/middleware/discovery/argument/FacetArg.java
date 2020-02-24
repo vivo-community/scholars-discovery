@@ -4,8 +4,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import edu.tamu.scholars.middleware.view.model.FacetType;
+import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
 
-public class FacetArg extends MappingArg {
+public class FacetArg {
 
     private final FacetSortArg sort;
 
@@ -15,8 +16,17 @@ public class FacetArg extends MappingArg {
 
     private final FacetType type;
 
+    private final String field;
+    private final String command;
+    private final String path;
+
     public FacetArg(String field, String sort, int pageSize, int pageNumber, String type) {
-        super(field);
+        // e.g. !{ex=lc}locality -> locality, SOLR gets 'command'
+        // but maps back to 'field' name
+        String fieldWithoutTag = field.replaceAll("\\{\\!.*\\}", "");
+        this.command = field;
+        this.field = fieldWithoutTag;
+        this.path = fieldWithoutTag;
         this.sort = FacetSortArg.of(sort);
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
@@ -38,6 +48,23 @@ public class FacetArg extends MappingArg {
     public FacetType getType() {
         return type;
     }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public String getProperty() {
+        return findProperty(path);
+    }
+    
 
     @SuppressWarnings("unchecked")
     public static FacetArg of(Object input) {

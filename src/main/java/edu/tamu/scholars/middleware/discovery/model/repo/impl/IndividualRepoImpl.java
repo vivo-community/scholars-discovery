@@ -6,6 +6,8 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
+//import org.springframework.data.solr.core.query.FacetOptions.FacetParameter;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -133,16 +135,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         FacetOptions facetOptions = new FacetOptions();
 
         facets.forEach(facet -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getProperty());
-
-            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
-
-            fieldWithFacetParameters.setOffset(0);
-
-            // NOTE: solr does not return total number of facet entries, nor afford direction of sort
-
-            // NOTE: other possible; method, minCount, missing, and prefix
-
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
             facetOptions.addFacetOnField(fieldWithFacetParameters);
         });
 
