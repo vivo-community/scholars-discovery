@@ -307,7 +307,10 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     protected FilterArg getCollectionFilter() {
-        return FilterArg.of(CLASS, Optional.of(type().getSimpleName()), Optional.of(OpKey.EQUALS.getKey()));
+        return FilterArg.of(CLASS, 
+        Optional.of(type().getSimpleName()), 
+        Optional.of(OpKey.EQUALS.getKey()),
+        Optional.empty());
     }
 
 }

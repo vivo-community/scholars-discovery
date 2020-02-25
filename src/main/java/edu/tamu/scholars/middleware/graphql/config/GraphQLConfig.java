@@ -163,6 +163,7 @@ public class GraphQLConfig {
                 fields.add(new InputField("pageSize", "Facet page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
                 fields.add(new InputField("pageNumber", "Facet page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 1));
                 fields.add(new InputField("type", "Facet type", new TypedElement(GenericTypeReflector.annotate(FacetType.class)), GenericTypeReflector.annotate(FacetType.class), FacetType.STRING));
+                fields.add(new InputField("exclusionTag", "Tag (in conjunction with Filter)", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 return fields;
             }
 
@@ -178,6 +179,7 @@ public class GraphQLConfig {
                 fields.add(new InputField("field", "Filter field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 fields.add(new InputField("value", "Filter value", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 fields.add(new InputField("opKey", "Filter operation key", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), OpKey.EQUALS.getKey()));
+                fields.add(new InputField("tag", "add SOLR tag to filter (for facet exclusion)", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 return fields;
             }
 

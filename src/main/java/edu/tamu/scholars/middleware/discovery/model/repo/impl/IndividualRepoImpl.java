@@ -43,8 +43,6 @@ import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
-
-
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
@@ -75,9 +73,13 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return solrTemplate.count(collection(), simpleQuery, type());
     }
 
+   
     @Override
     public List<Individual> findByType(String type, List<FilterArg> filters) {
-        filters.add(FilterArg.of("type", Optional.of(type), Optional.of(OpKey.EQUALS.getKey())));
+        filters.add(FilterArg.of(
+            "type", Optional.of(type), 
+             Optional.of(OpKey.EQUALS.getKey()),
+             Optional.empty()));
         return findAll(filters);
     }
 
@@ -150,7 +152,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             facetQuery.addFilterQuery(filterQuery);
         });
 
-        //facetQuery.setDefaultOperator(Operator.OR);
         facetQuery.setDefaultOperator(queryOperator);
 
         facetQuery.setDefType(queryParser);
@@ -193,12 +194,9 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
         SimpleQuery simpleQuery = new SimpleQuery();
         buildFilterQueries(filters).forEach(filterQuery -> {
-            // how to make OR? per query
-            //simpleQuery.addCriteria(Criteria -->)
             simpleQuery.addFilterQuery(filterQuery);
         });
 
-        //simpleQuery.setDefaultOperator(Operator.OR);
         simpleQuery.setDefaultOperator(queryOperator);
         simpleQuery.setDefType(queryParser);
 
@@ -206,11 +204,14 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
+        // TODO: split out the 'OR' ones
+        // so they can be chained
         return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
     }
 
     private Criteria buildCriteria(FilterArg filter) {
-        String field = filter.getProperty();
+        //String field = filter.getProperty();
+        String field = filter.getCommand();
         String value = filter.getValue();
         Criteria criteria = Criteria.where(field);
         switch (filter.getOpKey()) {
@@ -243,7 +244,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             criteria.endsWith(value);
             break;
         case EQUALS:
-            
             criteria.is(value);
             break;
         case EXPRESSION:
