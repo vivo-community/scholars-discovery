@@ -203,27 +203,30 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return simpleQuery;
     }
 
+    // FIXME: if you want to OR across facet-groups
+    // e.g. author=? OR type=? it needs to still not OR by 
+    // the "class:Person" main query
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        // TODO: split out the 'OR' ones so they can be chained
         Criteria conditions = null;
         String currentField = null;
         List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
 
         for (FilterArg filter: filters) {
              if (conditions == null) {
-                conditions = buildCriteria(filter);
+                conditions = buildCriteria(filter, false);
                 currentField = filter.getField();
              } else {
                 String field = filter.getField();
                 // if field seen before add as OR, otherwise another (AND)
+                // and !field.equqls("class")???
                 if (field.equals(currentField)) {
-                    conditions = conditions.or(buildCriteria(filter));
+                    conditions = conditions.or(buildCriteria(filter, true));
                 } else {
                     // NOTE: and doesn't seem to work out, not sure why
                     //conditions = conditions.and(buildCriteria(filter));
                     SimpleFilterQuery result = new SimpleFilterQuery(conditions);
                     results.add(result);
-                    conditions = buildCriteria(filter);
+                    conditions = buildCriteria(filter, false);
                 }
                 // now make current field field
                 currentField = field; 
@@ -237,8 +240,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return results;
     }
 
-    private Criteria buildCriteria(FilterArg filter) {
-        String field = filter.getCommand();
+    private Criteria buildCriteria(FilterArg filter, Boolean skipTag) {
+        String field = skipTag ? filter.getField() : filter.getCommand();
         String value = filter.getValue();
         Criteria criteria = Criteria.where(field);
         switch (filter.getOpKey()) {
