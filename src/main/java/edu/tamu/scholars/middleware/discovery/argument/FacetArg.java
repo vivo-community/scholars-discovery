@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import edu.tamu.scholars.middleware.view.model.FacetType;
-import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findProperty;
 
 public class FacetArg extends MappingArg {
 
@@ -22,14 +21,9 @@ public class FacetArg extends MappingArg {
 
     private final String exclusionTag;
 
-    // maybe use 'tag' field instead
     public FacetArg(String field, String sort, int pageSize, int pageNumber, 
       String type, String exclusionTag) {
-        // e.g. !{ex=lc}locality -> locality, SOLR gets 'command'
-        // but maps back to 'field' name
         super(field);
-        //String fieldWithoutTag = field.replaceAll("\\{\\!.*\\}", "");
-        //this.command = field;
         this.field = field;
         this.sort = FacetSortArg.of(sort);
         this.pageSize = pageSize;
@@ -59,7 +53,8 @@ public class FacetArg extends MappingArg {
     }
 
     public String getCommand() {
-        if (exclusionTag != "") {
+        // NOTE: seems to make it through as "null"!
+        if (exclusionTag != null && exclusionTag != "" && exclusionTag != "null") {
             return "{!ex=" + exclusionTag + "}" + field;
         } else {
             return field;

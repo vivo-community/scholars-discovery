@@ -204,13 +204,40 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        // TODO: split out the 'OR' ones
-        // so they can be chained
-        return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
+        // TODO: split out the 'OR' ones so they can be chained
+        Criteria conditions = null;
+        String currentField = null;
+        List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
+
+        for (FilterArg filter: filters) {
+             if (conditions == null) {
+                conditions = buildCriteria(filter);
+                currentField = filter.getField();
+             } else {
+                String field = filter.getField();
+                // if field seen before add as OR, otherwise another (AND)
+                if (field.equals(currentField)) {
+                    conditions = conditions.or(buildCriteria(filter));
+                } else {
+                    // NOTE: and doesn't seem to work out, not sure why
+                    //conditions = conditions.and(buildCriteria(filter));
+                    SimpleFilterQuery result = new SimpleFilterQuery(conditions);
+                    results.add(result);
+                    conditions = buildCriteria(filter);
+                }
+                // now make current field field
+                currentField = field; 
+             }
+        }
+        // only going to be one
+        SimpleFilterQuery result = new SimpleFilterQuery(conditions);
+        results.add(result);
+        // was this:
+        //return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
+        return results;
     }
 
     private Criteria buildCriteria(FilterArg filter) {
-        //String field = filter.getProperty();
         String field = filter.getCommand();
         String value = filter.getValue();
         Criteria criteria = Criteria.where(field);
