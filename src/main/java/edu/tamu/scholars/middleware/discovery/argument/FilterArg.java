@@ -42,6 +42,7 @@ public class FilterArg extends MappingArg {
     }
 
     public String getCommand() {
+        // NOTE: seems to make it through as "null"!
         if (tag != null && tag != "" && tag != "null") {
             return "{!tag=" + tag + "}" + field;
         } else {
