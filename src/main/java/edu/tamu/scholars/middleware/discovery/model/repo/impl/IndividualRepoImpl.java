@@ -14,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Date;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,7 +75,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return solrTemplate.count(collection(), simpleQuery, type());
     }
 
-   
     @Override
     public List<Individual> findByType(String type, List<FilterArg> filters) {
         filters.add(FilterArg.of(
@@ -203,103 +204,104 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return simpleQuery;
     }
 
-    // FIXME: if you want to OR across facet-groups
-    // e.g. author=? OR type=? it needs to still not OR by 
-    // the "class:Person" main query
+    // FIXME: not sure how you could parameterize this to allow for AND(ing)
+    // between facets - or OR(ing) between different fields
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        Criteria conditions = null;
-        String currentField = null;
         List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
-
-        for (FilterArg filter: filters) {
-             if (conditions == null) {
-                conditions = buildCriteria(filter, false);
-                currentField = filter.getField();
-             } else {
-                String field = filter.getField();
-                // if field seen before add as OR, otherwise another (AND)
-                // and !field.equqls("class")???
-                if (field.equals(currentField)) {
-                    conditions = conditions.or(buildCriteria(filter, true));
-                } else {
-                    // NOTE: and doesn't seem to work out, not sure why
-                    //conditions = conditions.and(buildCriteria(filter));
-                    SimpleFilterQuery result = new SimpleFilterQuery(conditions);
-                    results.add(result);
-                    conditions = buildCriteria(filter, false);
-                }
-                // now make current field field
-                currentField = field; 
-             }
-        }
-        // only going to be one
-        SimpleFilterQuery result = new SimpleFilterQuery(conditions);
-        results.add(result);
-        // was this:
-        //return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
-        return results;
-    }
-
-    private Criteria buildCriteria(FilterArg filter, Boolean skipTag) {
-        String field = skipTag ? filter.getField() : filter.getCommand();
-        String value = filter.getValue();
-        Criteria criteria = Criteria.where(field);
-        switch (filter.getOpKey()) {
-        case BETWEEN:
-            Matcher rangeMatcher = RANGE_PATTERN.matcher(value);
-            if (rangeMatcher.matches()) {
-                String start = rangeMatcher.group(1);
-                String end = rangeMatcher.group(2);
-                try {
-                    Date from = YEAR_DATE_FORMAT.parse(start);
-                    Date to = YEAR_DATE_FORMAT.parse(end);
-                    criteria.between(from, to, true, false);
-                } catch (ParseException e) {
-                    try {
-                        LocalDate from = DateFormatUtility.parse(start);
-                        LocalDate to = DateFormatUtility.parse(end);
-                        criteria.between(from, to, true, false);
-                    } catch (DateTimeParseException dtpe) {
-                        criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
-                    }
-                }
-            } else {
-                criteria.is(value);
+        Map<String, List<FilterArg>> filtersGrouped = filters.stream().collect(Collectors.groupingBy(w -> w.getField()));
+        filtersGrouped.forEach((field, filterList) -> {
+            FilterArg firstOne = filterList.get(0);
+            Criteria crit = new CriteriaBuilder(firstOne).buildCriteria();
+            
+            // the rest (of that field) are Or'd
+            if (filterList.size() > 1) {
+                for (FilterArg arg: filterList.subList(1, filterList.size())) {
+                    Criteria orCriteria = new CriteriaBuilder(arg).skipTag(true).buildCriteria();
+                    crit = crit.or(orCriteria);
+                }    
             }
-            break;
-        case CONTAINS:
-            criteria.contains(value);
-            break;
-        case ENDS_WITH:
-            criteria.endsWith(value);
-            break;
-        case EQUALS:
-            criteria.is(value);
-            break;
-        case EXPRESSION:
-            criteria.expression(value);
-            break;
-        case FUZZY:
-            // NOTE: more arguments can be used for fuzzy compare, yet unsupported
-            criteria.fuzzy(value);
-            break;
-        case NOT_EQUALS:
-            criteria.is(value).not();
-            break;
-        case STARTS_WITH:
-            criteria.startsWith(value);
-            break;
-        case RAW:
-            criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
-        default:
-            break;
-        }
-        return criteria;
+            SimpleFilterQuery result = new SimpleFilterQuery(crit);
+            results.add(result);
+        });
+        return results;
     }
 
     @Override
     public Class<Individual> type() {
         return Individual.class;
+    }
+
+    public class CriteriaBuilder {
+        private FilterArg filter;
+        private Boolean skipTag = false; // this has a default
+
+        public CriteriaBuilder(FilterArg filter) { 
+          this.filter = filter;
+        }
+
+        public Criteria buildCriteria()
+        {
+            String field = skipTag ? filter.getField() : filter.getCommand();
+            String value = filter.getValue();
+            Criteria criteria = Criteria.where(field);
+            switch (filter.getOpKey()) {
+            case BETWEEN:
+                Matcher rangeMatcher = RANGE_PATTERN.matcher(value);
+                if (rangeMatcher.matches()) {
+                    String start = rangeMatcher.group(1);
+                    String end = rangeMatcher.group(2);
+                    try {
+                        Date from = YEAR_DATE_FORMAT.parse(start);
+                        Date to = YEAR_DATE_FORMAT.parse(end);
+                        criteria.between(from, to, true, false);
+                    } catch (ParseException e) {
+                        try {
+                            LocalDate from = DateFormatUtility.parse(start);
+                            LocalDate to = DateFormatUtility.parse(end);
+                            criteria.between(from, to, true, false);
+                        } catch (DateTimeParseException dtpe) {
+                            criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
+                        }
+                    }
+                } else {
+                    criteria.is(value);
+                }
+                break;
+            case CONTAINS:
+                criteria.contains(value);
+                break;
+            case ENDS_WITH:
+                criteria.endsWith(value);
+                break;
+            case EQUALS:
+                criteria.is(value);
+                break;
+            case EXPRESSION:
+                criteria.expression(value);
+                break;
+            case FUZZY:
+                // NOTE: more arguments can be used for fuzzy compare, yet unsupported
+                criteria.fuzzy(value);
+                break;
+            case NOT_EQUALS:
+                criteria.is(value).not();
+                break;
+            case STARTS_WITH:
+                criteria.startsWith(value);
+                break;
+            case RAW:
+                criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
+            default:
+                break;
+            }
+            return criteria;    
+        }
+
+        public CriteriaBuilder skipTag(Boolean skipTag)
+        {
+            this.skipTag = skipTag;
+            return this;
+        }
     }
 
 }
