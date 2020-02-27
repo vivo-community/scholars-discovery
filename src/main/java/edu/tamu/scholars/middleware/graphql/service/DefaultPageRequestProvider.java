@@ -14,9 +14,7 @@ public class DefaultPageRequestProvider implements DefaultValueProvider {
         Map<String, Object> values = new HashMap<String, Object>();
         values.put("pageNumber", new Integer(0));
         values.put("pageSize", new Integer(100));
-        // TODO: is this correct? might need a way to default per type
-        // e.g. {"person": "name"}, {"document": "title"} etc...
-        values.put("sort", null); 
+        values.put("sort", null);
         return values;
     }
 }
