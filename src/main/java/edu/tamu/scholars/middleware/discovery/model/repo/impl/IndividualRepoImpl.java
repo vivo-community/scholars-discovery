@@ -202,8 +202,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return simpleQuery;
     }
 
-    // FIXME: not sure how you could parameterize this to allow for AND(ing)
-    // between facets - or OR(ing) between different fields
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
         List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
         Map<String, List<FilterArg>> filtersGrouped = filters.stream()
