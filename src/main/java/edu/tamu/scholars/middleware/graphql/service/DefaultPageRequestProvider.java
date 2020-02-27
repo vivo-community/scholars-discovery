@@ -1,7 +1,5 @@
 package edu.tamu.scholars.middleware.graphql.service;
 
-import org.springframework.data.domain.PageRequest;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -16,7 +14,9 @@ public class DefaultPageRequestProvider implements DefaultValueProvider {
         Map<String, Object> values = new HashMap<String, Object>();
         values.put("pageNumber", new Integer(0));
         values.put("pageSize", new Integer(100));
-        values.put("sort", null); // TODO: is this correct? or "{}"
+        // TODO: is this correct? might need a way to default per type
+        // e.g. {"person": "name"}, {"document": "title"} etc...
+        values.put("sort", null); 
         return values;
     }
 }
