@@ -17,7 +17,6 @@ import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
-import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
 
 @Service
 public class DocumentService extends AbstractNestedDocumentService<Document> {
@@ -209,7 +208,8 @@ public class DocumentService extends AbstractNestedDocumentService<Document> {
         @GraphQLArgument(name = "facets", defaultValue="[]") List<FacetArg> facets,
         @GraphQLArgument(name = "filters", defaultValue="[]") List<FilterArg> filters,
         @GraphQLArgument(name = "boosts", defaultValue="[]") List<BoostArg> boosts,
-        @GraphQLArgument(name = "paging", defaultValue="{}") DefaultablePageRequest page,
+        @GraphQLArgument(name = "paging",
+        defaultValueProvider = DefaultPageRequestProvider.class) Pageable page,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
@@ -227,18 +227,3 @@ public class DocumentService extends AbstractNestedDocumentService<Document> {
     }
 
 }
-/*
-    @GraphQLQuery(name = "people")
-    // @formatter:off
-    public DiscoveryFacetPage<Person> facetedSearch(
-        @GraphQLArgument(name = "query", defaultValue="*") String query,
-        @GraphQLArgument(name = "facets", defaultValue="[]") List<FacetArg> facets,
-        @GraphQLArgument(name = "filters", defaultValue="[]") List<FilterArg> filters,
-        @GraphQLArgument(name = "boosts", defaultValue="[]") List<BoostArg> boosts,
-        @GraphQLArgument(name = "paging", defaultValue="{}") DefaultablePageRequest page,
-        @GraphQLEnvironment List<Field> fields
-    ) {
-        // @formatter:on
-        return super.facetedSearch(query, facets, filters, boosts, page, fields);
-    }
-    */

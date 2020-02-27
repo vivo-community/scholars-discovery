@@ -12,15 +12,12 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
-import edu.tamu.scholars.middleware.graphql.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
@@ -126,20 +123,6 @@ public class GraphQLConfig {
             public Object getArgumentValue(ArgumentInjectorParams params) {
                 AnnotatedType returnType = params.getResolutionEnvironment().resolver.getReturnType();
                 AnnotatedType genericType = GenericTypeReflector.getTypeParameter(returnType, Iterable.class.getTypeParameters()[0]);
-                return parseDefaultablePageRequest(params.getInput(), genericType.getType().getTypeName());
-            }
-
-            @Override
-            public boolean supports(AnnotatedType type, Parameter parameter) {
-                return DefaultablePageRequest.class.equals(type.getType());
-            }
-
-        }).prepend(new ArgumentInjector() {
-
-            @Override
-            public Object getArgumentValue(ArgumentInjectorParams params) {
-                AnnotatedType returnType = params.getResolutionEnvironment().resolver.getReturnType();
-                AnnotatedType genericType = GenericTypeReflector.getTypeParameter(returnType, Iterable.class.getTypeParameters()[0]);
                 return parseSort(params.getInput(), genericType.getType().getTypeName());
             }
 
@@ -160,7 +143,7 @@ public class GraphQLConfig {
                 Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("field", "Facet field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 fields.add(new InputField("sort", "Facet sort", new TypedElement(GenericTypeReflector.annotate(FacetSort.class)), GenericTypeReflector.annotate(FacetSort.class), FacetSort.COUNT));
-                fields.add(new InputField("pageSize", "Facet page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
+                fields.add(new InputField("pageSize", "Facet page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 100));
                 fields.add(new InputField("pageNumber", "Facet page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 1));
                 fields.add(new InputField("type", "Facet type", new TypedElement(GenericTypeReflector.annotate(FacetType.class)), GenericTypeReflector.annotate(FacetType.class), FacetType.STRING));
                 fields.add(new InputField("exclusionTag", "Tag (in conjunction with Filter)", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
@@ -221,7 +204,7 @@ public class GraphQLConfig {
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
                 Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("pageNumber", "Page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 0));
-                fields.add(new InputField("pageSize", "Page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
+                fields.add(new InputField("pageSize", "Page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 100));
                 fields.add(new InputField("sort", "Page sorting", new TypedElement(GenericTypeReflector.annotate(Sort.class)), GenericTypeReflector.annotate(Sort.class), null));
                 return fields;
             }
@@ -229,21 +212,6 @@ public class GraphQLConfig {
             @Override
             public boolean supports(AnnotatedType type) {
                 return Pageable.class.equals(type.getType());
-            }
-        }).prepend(new InputFieldBuilder() {
-
-            @Override
-            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
-                Set<InputField> fields = new HashSet<>();
-                fields.add(new InputField("pageNumber", "Page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 0));
-                fields.add(new InputField("pageSize", "Page size", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 10));
-                fields.add(new InputField("sort", "Page sorting", new TypedElement(GenericTypeReflector.annotate(Sort.class)), GenericTypeReflector.annotate(Sort.class), null));
-                return fields;
-            }
-
-            @Override
-            public boolean supports(AnnotatedType type) {
-                return DefaultablePageRequest.class.equals(type.getType());
             }
         }).prepend(new InputFieldBuilder() {
 
@@ -281,24 +249,6 @@ public class GraphQLConfig {
         Integer pageNumber = (Integer) page.get("pageNumber");
         Integer pageSize = (Integer) page.get("pageSize");
         return PageRequest.of(pageNumber, pageSize, parseSort(page.get("sort"), type));
-    }
-
-    @SuppressWarnings("unchecked")
-    private DefaultablePageRequest parseDefaultablePageRequest(Object input, String type) {
-        Integer pageNumber = 0;
-        Integer pageSize = 100;
-        Sort sort = null;
-        DefaultablePageRequest rv = null;
-        if (input instanceof DefaultablePageRequest) {
-            rv = new DefaultablePageRequest(pageNumber, pageSize);
-        } else {
-            Map<String, Object> page = (Map<String, Object>) input;
-            pageNumber = (Integer) page.get("pageNumber");
-            pageSize = (Integer) page.get("pageSize");
-            sort = parseSort(page.get("sort"), type);
-            rv = new DefaultablePageRequest(pageNumber, pageSize, sort);
-        }
-        return rv;
     }
 
     @SuppressWarnings("unchecked")
