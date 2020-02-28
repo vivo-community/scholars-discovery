@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
-import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
 
 @Service
 public class PersonService extends AbstractNestedDocumentService<Person> {
@@ -211,7 +209,8 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
         @GraphQLArgument(name = "facets", defaultValue="[]") List<FacetArg> facets,
         @GraphQLArgument(name = "filters", defaultValue="[]") List<FilterArg> filters,
         @GraphQLArgument(name = "boosts", defaultValue="[]") List<BoostArg> boosts,
-        @GraphQLArgument(name = "paging", defaultValue="{}") DefaultablePageRequest page,
+        @GraphQLArgument(name = "paging",
+          defaultValueProvider = DefaultPageRequestProvider.class) Pageable page,
         @GraphQLEnvironment List<Field> fields
     ) {
         // @formatter:on
