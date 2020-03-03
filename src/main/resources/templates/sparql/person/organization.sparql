@@ -12,5 +12,3 @@ CONSTRUCT {
     ?organization rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?organization), "(^.*/)", "::") ) AS ?labelWithId ) .
 }
-
-
