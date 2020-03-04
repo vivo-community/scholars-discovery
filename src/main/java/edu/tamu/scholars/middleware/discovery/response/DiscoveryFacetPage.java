@@ -36,13 +36,10 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
         List<Facet> facets = new ArrayList<Facet>();
 
         facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
-
             if (!facetFieldEntryPage.getContent().isEmpty()) {
-
                 String field = facetFieldEntryPage.getContent().get(0).getField().getName();
-
-                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getProperty().equals(field)).findAny();
-
+                // NOTE: use getField instead of getCommand (any tagging is stripped off)
+                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getField().equals(field)).findAny();
                 if (facetArgument.isPresent()) {
 
                     // @formatter:off
@@ -66,8 +63,8 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
 
                     facets.add(new Facet(field, DiscoveryPage.from(entries.subList(start, end), pageInfo)));
-                }
-            }
+                }  
+            } 
         });
         return facets;
     }

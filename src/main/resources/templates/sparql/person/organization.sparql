@@ -1,0 +1,14 @@
+PREFIX vivo: <http://vivoweb.org/ontology/core#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf:     <http://xmlns.com/foaf/0.1/>
+ 
+CONSTRUCT {
+    ?organization rdfs:label ?labelWithId .
+} WHERE {
+    <{{uri}}> vivo:relatedBy ?position .
+    ?position a vivo:Position  .
+    ?position vivo:relates ?organization .
+    ?organization a foaf:Organization .
+    ?organization rdfs:label ?label .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?organization), "(^.*/)", "::") ) AS ?labelWithId ) .
+}
