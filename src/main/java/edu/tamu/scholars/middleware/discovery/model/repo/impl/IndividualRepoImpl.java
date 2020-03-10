@@ -33,17 +33,22 @@ import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.data.solr.core.query.FacetOptions.FieldWithFacetParameters;
 import org.springframework.data.solr.core.query.FacetQuery;
+import org.springframework.data.solr.core.query.FacetAndHighlightQuery;
+
 import org.springframework.data.solr.core.query.Query.Operator;
 import org.springframework.data.solr.core.query.SimpleFacetQuery;
+import org.springframework.data.solr.core.query.SimpleFacetAndHighlightQuery;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
+import org.springframework.data.solr.core.query.result.FacetAndHighlightPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.model.OpKey;
@@ -156,6 +161,52 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
     }
+
+    @Override
+    public FacetAndHighlightPage<Individual> searchAndHighlight(String query, 
+        List<FacetArg> facets, List<FilterArg> filters,
+        List<HighlightArg> highlights,
+        List<BoostArg> boosts, Pageable page) {
+
+        FacetAndHighlightQuery facetAndHighlightQuery = new SimpleFacetAndHighlightQuery();
+
+        Criteria criteria = getQueryCriteria(query);
+
+        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+
+        if (boostCriteria.isPresent()) {
+            criteria = boostCriteria.get().or(criteria);
+            page = PageRequest.of(page.getPageNumber(), page.getPageSize(),
+                    Sort.by(SCORE).descending().and(page.getSort()));
+        }
+
+        facetAndHighlightQuery.addCriteria(criteria);
+
+        FacetOptions facetOptions = new FacetOptions();
+
+        facets.forEach(facet -> {
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
+            facetOptions.addFacetOnField(fieldWithFacetParameters);
+        });
+
+        if (facetOptions.hasFacets()) {
+            facetAndHighlightQuery.setFacetOptions(facetOptions);
+        }
+
+        buildFilterQueries(filters).forEach(filterQuery -> {
+            facetAndHighlightQuery.addFilterQuery(filterQuery);
+        });
+
+        facetAndHighlightQuery.setDefaultOperator(queryOperator);
+
+        facetAndHighlightQuery.setDefType(queryParser);
+
+        facetAndHighlightQuery.setPageRequest(page);
+
+        return solrTemplate.queryForFacetAndHighlightPage(collection(), facetAndHighlightQuery, type());
+        //return solrTemplate.queryForFacetPage(collection(), facetAndHighlightQuery, type());
+    }
+
 
     @Override
     public Cursor<Individual> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {

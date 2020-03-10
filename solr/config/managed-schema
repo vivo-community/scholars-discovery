@@ -204,21 +204,21 @@
     </fieldType>
 
     <!-- Scholars whole string type  -->
-    <fieldType name="whole_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
+    <fieldType name="whole_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" stored="true">
       <analyzer>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
       </analyzer>
     </fieldType>
 
     <!-- Scholars whole strings type -->
-    <fieldType name="whole_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
+    <fieldType name="whole_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true" stored="true">
       <analyzer>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
       </analyzer>
     </fieldType>
 
     <!-- Scholars nested string type  -->
-    <fieldType name="nested_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
+    <fieldType name="nested_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" stored="true">
       <analyzer>
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
@@ -226,7 +226,7 @@
     </fieldType>
 
     <!-- Scholars nested strings type -->
-    <fieldType name="nested_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
+    <fieldType name="nested_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true" stored="true">
       <analyzer>
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.KeywordTokenizerFactory"/>

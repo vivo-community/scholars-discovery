@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
+import org.springframework.data.solr.core.query.result.FacetAndHighlightPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -39,9 +40,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetHighlightPage;
+
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
 import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
@@ -214,6 +218,58 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         
         Pageable resultsPaging = facetPage.getPageable();
         SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
+        results.addAllFacetFieldResultPages(facetFieldResults);        
+        return results;
+    }
+
+    /*
+    public DiscoveryFacetHighlightPage<ND> facetedHighlightSearch(String query, 
+      List<FacetArg> facets, List<FilterArg> filters, 
+      List<HighlightArg> highlights,
+      List<BoostArg> boosts, Pageable page, List<Field> fields) {
+      return discoveryFacetedHighlightSearch(query, facets, filters, highlights, boosts, page, fields);
+    }
+
+    
+    private DiscoveryFacetHighlightPage<ND> discoveryFacetedHighlightSearch(String query, 
+      List<FacetArg> facets, 
+      List<FilterArg> filters, 
+      List<HighlightArg> highlights,
+      List<BoostArg> boosts, 
+      Pageable page, 
+      List<Field> fields) {
+        FacetAndHighlightPage<ND> highlight = searchHighlight(query, facets, filters, 
+          highlights, boosts, page, fields);
+        
+        return DiscoveryFacetHighlightPage.from(highlight);
+    }
+    */
+
+   private FacetAndHighlightPage<ND> searchHighlight(String query, 
+          List<FacetArg> facets, 
+          List<FilterArg> filters, 
+          List<HighlightArg> highlights,
+          List<BoostArg> boosts, 
+          Pageable page, 
+          List<Field> fields)
+           {
+        
+        FacetAndHighlightPage<Individual> facetPage = repo.searchAndHighlight(query, facets, 
+          augmentFilters(filters), highlights, boosts, page);
+        
+        Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
+   
+        facetPage.getFacetFields().forEach(field -> 
+          facetFieldResults.put(field, facetPage.getFacetResultPage(field))
+        );
+        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+        
+        Pageable resultsPaging = facetPage.getPageable();
+        
+        SolrResultPage<ND> results = new SolrResultPage<ND>(content, 
+          resultsPaging, 
+          new Long(facetPage.getTotalElements()), 
+          null);
         results.addAllFacetFieldResultPages(facetFieldResults);        
         return results;
     }

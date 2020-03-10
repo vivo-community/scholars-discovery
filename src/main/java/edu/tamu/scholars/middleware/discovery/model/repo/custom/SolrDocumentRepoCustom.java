@@ -7,10 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.data.solr.core.query.result.FacetPage;
+import org.springframework.data.solr.core.query.result.FacetAndHighlightPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 
 public interface SolrDocumentRepoCustom<D extends AbstractIndexDocument> {
@@ -31,6 +33,12 @@ public interface SolrDocumentRepoCustom<D extends AbstractIndexDocument> {
 
     public FacetPage<D> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page);
 
+    
+    public FacetAndHighlightPage<D> searchAndHighlight(String query, List<FacetArg> facets, 
+      List<FilterArg> filters, 
+      List<HighlightArg> highlights, 
+      List<BoostArg> boosts, Pageable page);
+   
     public Cursor<D> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort);
 
     public Class<D> type();
