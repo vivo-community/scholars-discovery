@@ -65,7 +65,7 @@ public class LocalTriplestoreHarvester implements Harvester {
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("%s:\n%s", COLLECTION_SPARQL_TEMPLATE, query));
         }
-        QueryExecution queryExecution = QueryExecutionFactory.create(query, triplestore.getDataset());
+        QueryExecution queryExecution = triplestore.createQueryExecution(query);
         Iterator<Triple> tripleIterator = queryExecution.execConstructTriples();
         Iterable<Triple> triples = () -> tripleIterator;
         // @formatter:off
@@ -129,7 +129,7 @@ public class LocalTriplestoreHarvester implements Harvester {
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("%s:\n%s", source.template(), query));
         }
-        try (QueryExecution qe = QueryExecutionFactory.create(query, triplestore.getDataset())) {
+        try (QueryExecution qe = triplestore.createQueryExecution(query)) {
             Model model = qe.execConstruct();
             if (logger.isDebugEnabled()) {
                 model.write(System.out, "RDF/XML");
