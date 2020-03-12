@@ -35,7 +35,7 @@ import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.service.Triplestore;
 import reactor.core.publisher.Flux;
 
-public class LocalTriplestoreHarvester implements Harvester {
+public class TriplestoreHarvester implements Harvester {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -55,7 +55,7 @@ public class LocalTriplestoreHarvester implements Harvester {
 
     private final Class<AbstractIndexDocument> type;
 
-    public LocalTriplestoreHarvester(Class<AbstractIndexDocument> type) {
+    public TriplestoreHarvester(Class<AbstractIndexDocument> type) {
         this.type = type;
     }
 

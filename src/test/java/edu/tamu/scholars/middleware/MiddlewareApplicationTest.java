@@ -24,7 +24,7 @@ import edu.tamu.scholars.middleware.config.model.HttpConfig;
 import edu.tamu.scholars.middleware.config.model.IndexerConfig;
 import edu.tamu.scholars.middleware.config.model.MailConfig;
 import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
-import edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester;
+import edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester;
 import edu.tamu.scholars.middleware.discovery.service.solr.SolrIndexer;
 
 @SpringBootTest
@@ -102,7 +102,7 @@ public class MiddlewareApplicationTest {
         assertEquals(1, harvesterConfigs.size());
         HarvesterConfig harvesterConfig = harvesterConfigs.get(0);
         assertEquals(7, harvesterConfig.getDocumentTypes().size());
-        assertEquals(LocalTriplestoreHarvester.class, harvesterConfig.getType());
+        assertEquals(TriplestoreHarvester.class, harvesterConfig.getType());
 
         List<IndexerConfig> indexerConfigs = middlewareConfig.getIndexers();
         assertEquals(1, indexerConfigs.size());
