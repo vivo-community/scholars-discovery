@@ -27,8 +27,8 @@ public class SparqlHttpTriplestore implements Triplestore {
     @Override
     public void init() {
         Instant start = Instant.now();
-        logger.info(String.format("Initializing %s", config.getType().getSimpleName()));
-        logger.info(String.format("%s ready. %s seconds", config.getType().getSimpleName(), Duration.between(start, Instant.now()).toMillis() / 1000.0));
+        logger.info("Initializing {}", config.getType().getSimpleName());
+        logger.info("{} ready. {} seconds", config.getType().getSimpleName(), Duration.between(start, Instant.now()).toMillis() / 1000.0);
     }
 
     @Override
