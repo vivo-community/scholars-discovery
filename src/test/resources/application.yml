@@ -33,7 +33,7 @@ middleware:
     username:
     password:
   harvesters:
-  - type: edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester
+  - type: edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester
     documentTypes:
     - edu.tamu.scholars.middleware.discovery.model.Collection
     - edu.tamu.scholars.middleware.discovery.model.Concept

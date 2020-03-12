@@ -1,10 +1,10 @@
 package edu.tamu.scholars.middleware.service;
 
-import org.apache.jena.query.Dataset;
+import org.apache.jena.query.QueryExecution;
 
 public interface Triplestore {
 
-    public Dataset getDataset();
+    public QueryExecution createQueryExecution(String query);
 
     public void init();
 
