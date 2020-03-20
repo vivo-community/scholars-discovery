@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.apache.jena.query.Dataset;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.sdb.SDB;
 import org.apache.jena.sdb.SDBFactory;
 import org.apache.jena.sdb.Store;
@@ -31,6 +33,11 @@ public class SDBTriplestore implements Triplestore {
     }
 
     @Override
+    public QueryExecution createQueryExecution(String query) {
+        return QueryExecutionFactory.create(query, dataset);
+    }
+
+    @Override
     public void init() {
         Instant start = Instant.now();
         logger.info(String.format("Intializing %s", config.getType().getSimpleName()));
@@ -52,11 +59,6 @@ public class SDBTriplestore implements Triplestore {
         store.getConnection().close();
         store.close();
         dataset.close();
-    }
-
-    @Override
-    public Dataset getDataset() {
-        return dataset;
     }
 
 }
