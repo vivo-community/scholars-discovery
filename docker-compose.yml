@@ -1,0 +1,35 @@
+version: '3'
+services:
+  solr:
+    build:
+      context: ./solr
+    ports:
+      #DRE remap     - 9083:8983
+      - 8983:8983
+    volumes:
+      - solr-data:/opt/solr/server/solr/ckan/data
+    networks:
+       scholarsnet:
+
+  scholars:
+    build:
+      context: ./
+    volumes:
+      - ./tdbContentModels:/usr/local/tdbContentModels:z
+    ports:
+      - 9000:9000
+    networks:
+       scholarsnet:
+
+
+volumes:
+  solr-data:
+  config:
+
+networks:
+  scholarsnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.200.0.0/16"
+

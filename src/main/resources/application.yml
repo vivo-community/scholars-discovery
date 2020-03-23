@@ -1,7 +1,10 @@
 middleware:
   load-defaults: true
   update-defaults: true
-  allowed-origins:
+  allowed-origins: 
+  - http://cythna.colorado.edu:4200
+  - http://cythna.colorado.edu
+  - http://web:4200
   - http://localhost:4200
   auth:
     password:
@@ -28,7 +31,7 @@ middleware:
     batchSize: 10000
   triplestore:
     type: edu.tamu.scholars.middleware.service.TDBTriplestore
-    directory: triplestore
+    directory: /usr/local/tdbContentModels
     datasourceUrl: jdbc:mysql://localhost/vivo?useLegacyDatetimeCode=false&serverTimezone=America/Chicago
     username:
     password:
@@ -62,7 +65,7 @@ ui:
 vivo:
   email: vivo_root@school.edu
   password:
-  base-url: http://localhost:8080/vivo
+  base-url: https://experts.colorado.edu
   linked-open-data-endpoint: /individual
   list-rdf-endpoint: /listrdf
   sparql-query-endpoint: /api/sparqlQuery
@@ -100,12 +103,12 @@ spring:
   data:
     rest:
       # CAUTION: leaving this on will permit all requests from localhost, breaks various UI requests and SSR
-      authorize-hal-browser: false
+      authorize-hal-browser: true
       return-body-on-create: true
       return-body-on-update: true
       max-page-size: 10000
     solr:
-      host: http://localhost:8983/solr
+      host: http://solr:8983/solr
       operator: AND
       parser: edismax
     # NOTE: this does not work yet, https://jira.spring.io/browse/DATAREST-1290
