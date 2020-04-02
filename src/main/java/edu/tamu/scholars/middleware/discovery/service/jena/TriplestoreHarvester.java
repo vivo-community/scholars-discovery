@@ -35,7 +35,7 @@ import edu.tamu.scholars.middleware.service.TemplateService;
 import edu.tamu.scholars.middleware.service.Triplestore;
 import reactor.core.publisher.Flux;
 
-public class LocalTriplestoreHarvester implements Harvester {
+public class TriplestoreHarvester implements Harvester {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -55,7 +55,7 @@ public class LocalTriplestoreHarvester implements Harvester {
 
     private final Class<AbstractIndexDocument> type;
 
-    public LocalTriplestoreHarvester(Class<AbstractIndexDocument> type) {
+    public TriplestoreHarvester(Class<AbstractIndexDocument> type) {
         this.type = type;
     }
 
@@ -65,7 +65,7 @@ public class LocalTriplestoreHarvester implements Harvester {
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("%s:\n%s", COLLECTION_SPARQL_TEMPLATE, query));
         }
-        QueryExecution queryExecution = QueryExecutionFactory.create(query, triplestore.getDataset());
+        QueryExecution queryExecution = triplestore.createQueryExecution(query);
         Iterator<Triple> tripleIterator = queryExecution.execConstructTriples();
         Iterable<Triple> triples = () -> tripleIterator;
         // @formatter:off
@@ -129,7 +129,7 @@ public class LocalTriplestoreHarvester implements Harvester {
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("%s:\n%s", source.template(), query));
         }
-        try (QueryExecution qe = QueryExecutionFactory.create(query, triplestore.getDataset())) {
+        try (QueryExecution qe = triplestore.createQueryExecution(query)) {
             Model model = qe.execConstruct();
             if (logger.isDebugEnabled()) {
                 model.write(System.out, "RDF/XML");

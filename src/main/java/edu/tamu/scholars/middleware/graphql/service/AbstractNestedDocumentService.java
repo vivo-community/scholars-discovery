@@ -6,20 +6,23 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
 
@@ -202,9 +205,13 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
 
     private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
         FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
+        Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
+        facetPage.getFacetFields().forEach(field ->  facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
-        FacetPage<ND> results = new SolrResultPage<ND>(content);
-        BeanUtils.copyProperties(facetPage, results, "content");
+        
+        Pageable resultsPaging = facetPage.getPageable();
+        SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
+        results.addAllFacetFieldResultPages(facetFieldResults);        
         return results;
     }
 

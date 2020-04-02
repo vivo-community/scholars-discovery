@@ -17,18 +17,19 @@ import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
+import edu.tamu.scholars.middleware.graphql.service.DefaultablePageRequest;
 
 @Service
 public class OrganizationService extends AbstractNestedDocumentService<Organization> {
 
     @Override
-    @GraphQLQuery(name = "organizationExistsById")
+    //@GraphQLQuery(name = "organizationExistsById")
     public boolean existsById(@GraphQLArgument(name = "id") String id) {
         return super.existsById(id);
     }
 
     @Override
-    @GraphQLQuery(name = "organizationById")
+    @GraphQLQuery(name = "organization")
     // @formatter:off
     public Organization getById(
         @GraphQLArgument(name = "id") String id,
@@ -39,7 +40,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsByType")
+    //@GraphQLQuery(name = "organizationsByType")
     // @formatter:off
     public List<Organization> findByType(
         @GraphQLArgument(name = "type") String type,
@@ -50,7 +51,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsByIds")
+    //@GraphQLQuery(name = "organizationsByIds")
     // @formatter:off
     public List<Organization> findByIdIn(
         @GraphQLArgument(name = "ids") List<String> ids,
@@ -61,7 +62,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsMostRecentlyUpdate")
+    //@GraphQLQuery(name = "organizationsMostRecentlyUpdate")
     // @formatter:off
     public List<Organization> findMostRecentlyUpdate(
         @GraphQLArgument(name = "limit") Integer limit,
@@ -72,7 +73,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsMostRecentlyUpdate")
+    //@GraphQLQuery(name = "organizationsMostRecentlyUpdate")
     // @formatter:off
     public List<Organization> findMostRecentlyUpdate(
         @GraphQLArgument(name = "limit") Integer limit,
@@ -84,13 +85,13 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsCount")
+    //@GraphQLQuery(name = "organizationsCount")
     public long count() {
         return super.count();
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsCount")
+    //@GraphQLQuery(name = "organizationsCount")
     // @formatter:off
     public long count(
         @GraphQLArgument(name = "query") String query,
@@ -101,7 +102,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsSorted")
+    //@GraphQLQuery(name = "organizationsSorted")
     // @formatter:off
     public Iterable<Organization> findAll(
         @GraphQLArgument(name = "sort") Sort sort,
@@ -112,7 +113,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsPaged")
+    //@GraphQLQuery(name = "organizationsPaged")
     // @formatter:off
     public DiscoveryPage<Organization> findAll(
         @GraphQLArgument(name = "paging") Pageable page,
@@ -123,7 +124,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsSearch")
+    //@GraphQLQuery(name = "organizationsSearch")
     // @formatter:off
     public DiscoveryFacetPage<Organization> search(
         @GraphQLArgument(name = "query") String query,
@@ -135,7 +136,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsSearch")
+    //@GraphQLQuery(name = "organizationsSearch")
     // @formatter:off
     public DiscoveryFacetPage<Organization> search(
         @GraphQLArgument(name = "query") String query,
@@ -148,7 +149,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsFilterSearch")
+    //@GraphQLQuery(name = "organizationsFilterSearch")
     // @formatter:off
     public DiscoveryFacetPage<Organization> filterSearch(
         @GraphQLArgument(name = "query") String query,
@@ -161,7 +162,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsFilterSearch")
+    //@GraphQLQuery(name = "organizationsFilterSearch")
     // @formatter:off
     public DiscoveryFacetPage<Organization> filterSearch(
         @GraphQLArgument(name = "query") String query,
@@ -175,7 +176,7 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsFacetedSearch")
+    //@GraphQLQuery(name = "organizationsFacetedSearch")
     // @formatter:off
     public DiscoveryFacetPage<Organization> facetedSearch(
         @GraphQLArgument(name = "query") String query,
@@ -188,8 +189,8 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
     }
 
     @Override
-    @GraphQLQuery(name = "organizationsFacetedSearch")
-    // @formatter:off
+    //@GraphQLQuery(name = "organizationsFacetedSearch")
+    // @formatter:oFacetedSearchff
     public DiscoveryFacetPage<Organization> facetedSearch(
         @GraphQLArgument(name = "query") String query,
         @GraphQLArgument(name = "facets") List<FacetArg> facets,
@@ -201,15 +202,15 @@ public class OrganizationService extends AbstractNestedDocumentService<Organizat
         return super.facetedSearch(query, facets, filters, page, fields);
     }
 
-    @Override
-    @GraphQLQuery(name = "organizationsFacetedSearch")
+    //@Override
+    @GraphQLQuery(name = "organizations")
     // @formatter:off
     public DiscoveryFacetPage<Organization> facetedSearch(
-        @GraphQLArgument(name = "query") String query,
-        @GraphQLArgument(name = "facets") List<FacetArg> facets,
-        @GraphQLArgument(name = "filters") List<FilterArg> filters,
-        @GraphQLArgument(name = "boosts") List<BoostArg> boosts,
-        @GraphQLArgument(name = "paging") Pageable page,
+        @GraphQLArgument(name = "query", defaultValue="*") String query,
+        @GraphQLArgument(name = "facets", defaultValue="[]") List<FacetArg> facets,
+        @GraphQLArgument(name = "filters", defaultValue="[]") List<FilterArg> filters,
+        @GraphQLArgument(name = "boosts", defaultValue="[]") List<BoostArg> boosts,
+        @GraphQLArgument(name = "paging", defaultValue="{}") DefaultablePageRequest page,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
