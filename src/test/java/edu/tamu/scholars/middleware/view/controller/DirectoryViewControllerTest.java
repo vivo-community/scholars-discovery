@@ -3,7 +3,7 @@ package edu.tamu.scholars.middleware.view.controller;
 import static edu.tamu.scholars.middleware.view.ViewTestUtility.MOCK_VIEW_NAME;
 import static edu.tamu.scholars.middleware.view.ViewTestUtility.getMockDirectoryView;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -140,7 +140,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                 .content("{\"name\": \"Organizations\"}")
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                    .andExpect(content().contentType(HAL_JSON_VALUE))
                     .andExpect(jsonPath("name", equalTo("Organizations")))
                     .andDo(
                         document(
@@ -191,7 +191,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
         mockMvc.perform(
             get("/directoryViews/{id}", directoryView.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath("name", equalTo(MOCK_VIEW_NAME)))
                 .andDo(
                     document(
@@ -228,7 +228,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
         mockMvc.perform(
             get("/directoryViews").param("page", "0").param("size", "20").param("sort", "name"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath("page.size", equalTo(20)))
                 .andExpect(jsonPath("page.totalElements", equalTo(1)))
                 .andExpect(jsonPath("page.totalPages", equalTo(1)))
@@ -293,7 +293,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                 .contentType(MediaType.APPLICATION_JSON)
                 .cookie(loginAdmin()))
                     .andExpect(status().isCreated())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE)
+                    .andExpect(content().contentType(HAL_JSON_VALUE)
             );
         // @formatter:on
     }
@@ -309,7 +309,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                 .content(objectMapper.writeValueAsString(directoryView))
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE)
+                    .andExpect(content().contentType(HAL_JSON_VALUE)
             );
         // @formatter:on
     }
