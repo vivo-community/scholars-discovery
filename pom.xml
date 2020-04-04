@@ -20,9 +20,6 @@
   <description>VIVO Scholars Middleware</description>
 
   <properties>
-    <java.version>1.8</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jena.version>3.14.0</jena.version>
   </properties>
@@ -370,10 +367,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <!-- in case generate files are not available -->
+        <configuration> -->
           <!-- add additional exclusions for code importing generated classes -->
           <!--
           <excludes>
