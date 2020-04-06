@@ -187,6 +187,10 @@ public class Document extends AbstractNestedDocument {
 
   private String isTemplate;
 
+  private float altmetricScore;
+
+  private int citationCount;
+
   private List<String> type;
 
   private String image;
@@ -737,6 +741,22 @@ public class Document extends AbstractNestedDocument {
 
   public void setIsTemplate(String isTemplate) {
     this.isTemplate = isTemplate;
+  }
+
+  public float getAltmetricScore() {
+    return altmetricScore;
+  }
+
+  public void setAltmetricScore(float altmetricScore) {
+    this.altmetricScore = altmetricScore;
+  }
+
+  public int getCitationCount() {
+    return citationCount;
+  }
+
+  public void setCitationCount(int citationCount) {
+    this.citationCount = citationCount;
   }
 
   public List<String> getType() {
