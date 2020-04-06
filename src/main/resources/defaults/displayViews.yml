@@ -877,6 +877,12 @@
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
+        - name: altmetric score
+          template: "defaults/displayViews/documents/overview/altmetricScore.html"
+          field: altmetricScore
+        - name: citation count
+          template: "defaults/displayViews/documents/overview/citationCount.html"
+          field: citationCount
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
