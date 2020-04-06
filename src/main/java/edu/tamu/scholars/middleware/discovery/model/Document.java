@@ -432,11 +432,11 @@ public class Document extends Common {
     private List<String> receipts;
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
-    @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#altmetricScore")
+    @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#AltmetricScore")
     private String altmetricScore;
 
     @Indexed(type = "sorting_string", copyTo = "_text_")
-    @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#citationCount")
+    @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
     private String citationCount;
 
     public Document() {
