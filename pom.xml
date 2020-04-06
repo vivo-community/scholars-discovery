@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.7.RELEASE</version>
+    <version>2.2.6.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -20,11 +20,8 @@
   <description>VIVO Scholars Middleware</description>
 
   <properties>
-    <java.version>1.8</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jena.version>3.12.0</jena.version>
+    <jena.version>3.14.0</jena.version>
   </properties>
 
   <packaging>jar</packaging>
@@ -107,37 +104,28 @@
 
     <dependency>
       <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-rest-hal-browser</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>spring-data-rest-hal-explorer</artifactId>
     </dependency>
     
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.10.0.pr1</version><!--$NO-MVN-MAN-VER$ -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.10.0.pr1</version><!--$NO-MVN-MAN-VER$ -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.10.0.pr1</version><!--$NO-MVN-MAN-VER$-->
     </dependency>
 
     <dependency>
       <groupId>com.squareup</groupId>
       <artifactId>javapoet</artifactId>
-      <version>1.11.1</version>
+      <version>1.12.1</version>
     </dependency>
     
     <dependency>
@@ -149,13 +137,13 @@
     <dependency>
       <groupId>io.leangen.graphql</groupId>
       <artifactId>spqr</artifactId>
-      <version>0.10.0</version>
+      <version>0.10.1</version>
     </dependency>
 
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-runtime</artifactId>
-      <version>4.7.1</version>
+      <version>4.8-1</version>
       <scope>compile</scope>
     </dependency>
 
@@ -195,6 +183,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
       <version>3.2.6</version><!--$NO-MVN-MAN-VER$ -->
@@ -203,19 +197,19 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <version>1.19</version>
+      <version>1.20</version>
     </dependency>
     
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
-      <version>1.7</version>
+      <version>1.8</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.jsonld-java</groupId>
       <artifactId>jsonld-java</artifactId>
-      <version>0.12.5</version>
+      <version>0.13.0</version>
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -310,8 +304,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -358,7 +352,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version><!--$NO-MVN-MAN-VER$ -->
+        <version>3.0.0-M4</version><!--$NO-MVN-MAN-VER$ -->
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
@@ -368,9 +362,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <!-- in case generate files are not available -->
           <!-- add additional exclusions for code importing generated classes -->
           <!--
           <excludes>
@@ -405,29 +396,9 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <quiet>true</quiet>
-          <instrumentation>
-            <ignoreTrivial>true</ignoreTrivial>
-            <ignores>
-              <ignore>java.util.logging.*</ignore>
-            </ignores>
-          </instrumentation>
-          <formats>
-            <format>html</format>
-            <format>xml</format>
-          </formats>
-          <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.4</version>
+        <version>0.8.5</version>
         <executions>
           <execution>
             <id>prepare-agent</id>
@@ -442,6 +413,13 @@
         <groupId>org.eluder.coveralls</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.3.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <repoToken/>
         </configuration>
@@ -450,7 +428,7 @@
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.7.1</version>
+        <version>1.6.0</version>
         <executions>
           <execution>
             <id>generate-docs</id>
@@ -469,7 +447,7 @@
           <dependency>
             <groupId>org.springframework.restdocs</groupId>
             <artifactId>spring-restdocs-asciidoctor</artifactId>
-            <version>2.0.3.RELEASE</version>
+            <version>2.0.4.RELEASE</version>
           </dependency>
         </dependencies>
       </plugin>

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.SortDefault;
-import org.springframework.hateoas.ResourceProcessor;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ import edu.tamu.scholars.middleware.export.service.ExporterRegistry;
 
 @RepositoryRestController
 @RequestMapping("/individual")
-public class IndividualExportController implements ResourceProcessor<IndividualResource> {
+public class IndividualExportController implements RepresentationModelProcessor<IndividualResource> {
 
     @Autowired
     private IndividualRepo repo;
@@ -75,11 +75,11 @@ public class IndividualExportController implements ResourceProcessor<IndividualR
         try {
             // @formatter:off
             resource.add(
-              ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder
-                  .methodOn(this.getClass())
-                  .export(resource.getContent().getId(), "docx")
-              ).withRel("export")
+                WebMvcLinkBuilder.linkTo(
+                  WebMvcLinkBuilder
+                    .methodOn(this.getClass())
+                    .export(resource.getContent().getId(), "docx")
+                ).withRel("export")
             );
             // @formatter:on
         } catch (UnknownExporterTypeException | IllegalArgumentException | IllegalAccessException e) {
