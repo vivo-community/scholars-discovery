@@ -431,6 +431,10 @@ public class Document extends Common {
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
+    @Indexed(type = "whole_strings")
+    @PropertySource(template = "document/tag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
+    private List<String> tags;
+
     public Document() {
 
     }
@@ -1177,6 +1181,14 @@ public class Document extends Common {
 
     public void setReceipts(List<String> receipts) {
         this.receipts = receipts;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
 }

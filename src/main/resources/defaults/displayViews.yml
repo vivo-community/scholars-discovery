@@ -981,6 +981,9 @@
         - name: date/time value
           template: "defaults/displayViews/documents/other/dateTimeValue.html"
           field: dateTimeValue
+        - name: tags
+          template: "defaults/displayViews/documents/other/tags.html"
+          field: tags
 
 - name: Relationships
   types:
