@@ -330,7 +330,7 @@ public class Document extends Common {
     @PropertySource(template = "document/iclCode", predicate = "http://vivoweb.org/ontology/core#iclCode")
     private String iclCode;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "sorting_string")
     @PropertySource(template = "document/numberOfPages", predicate = "http://purl.org/ontology/bibo/numPages")
     private String numberOfPages;
 
@@ -350,7 +350,7 @@ public class Document extends Common {
     @PropertySource(template = "document/issue", predicate = "http://purl.org/ontology/bibo/issue")
     private String issue;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "sorting_string")
     @PropertySource(template = "document/placeOfPublication", predicate = "http://vivoweb.org/ontology/core#placeOfPublication")
     private String placeOfPublication;
 
@@ -430,6 +430,14 @@ public class Document extends Common {
     @Indexed(type = "nested_strings")
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
+
+    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#AltmetricScore")
+    private String altmetricScore;
+
+    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
+    private String citationCount;
 
     @Indexed(type = "whole_strings")
     @PropertySource(template = "document/tag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
@@ -1181,6 +1189,22 @@ public class Document extends Common {
 
     public void setReceipts(List<String> receipts) {
         this.receipts = receipts;
+    }
+
+    public String getAltmetricScore() {
+        return altmetricScore;
+    }
+
+    public void setAltmetricScore(String altmetricScore) {
+        this.altmetricScore = altmetricScore;
+    }
+
+    public String getCitationCount() {
+        return citationCount;
+    }
+
+    public void setCitationCount(String citationCount) {
+        this.citationCount = citationCount;
     }
 
     public List<String> getTags() {

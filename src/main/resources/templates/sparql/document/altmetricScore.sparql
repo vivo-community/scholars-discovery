@@ -1,0 +1,7 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    <{{uri}}> tamu:AltmetricScore ?altmetricScore .
+} WHERE {
+    <{{uri}}> tamu:AltmetricScore ?altmetricScore .
+}
