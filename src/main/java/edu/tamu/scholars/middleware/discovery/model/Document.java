@@ -431,6 +431,14 @@ public class Document extends Common {
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
+    @Indexed(type = "pfloat", copyTo = "_text_")
+    @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#altmetricScore")
+    private float altmetricScore;
+
+    @Indexed(type = "pint", copyTo = "_text_")
+    @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#citationCount")
+    private int citationCount;
+
     public Document() {
 
     }
@@ -1177,6 +1185,22 @@ public class Document extends Common {
 
     public void setReceipts(List<String> receipts) {
         this.receipts = receipts;
+    }
+
+    public float getAltmetricScore() {
+        return altmetricScore;
+    }
+
+    public void setAltmetricScore(float altmetricScore) {
+        this.altmetricScore = altmetricScore;
+    }
+
+    public int getCitationCount() {
+        return citationCount;
+    }
+
+    public void setCitationCount(int citationCount) {
+        this.citationCount = citationCount;
     }
 
 }
