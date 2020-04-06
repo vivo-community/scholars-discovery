@@ -22,7 +22,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "persons", predicate = "http://xmlns.com/foaf/0.1/Person")
 public class Person extends Common {
 
-    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @Indexed(type = "sorting_string")
     @PropertySource(template = "person/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
 
@@ -185,20 +185,20 @@ public class Person extends Common {
     @PropertySource(template = "person/educationAndTraining", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> educationAndTraining;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/educationAndTrainingName", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTrainingName;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/educationAndTrainingInfo", predicate = "http://vivoweb.org/ontology/core#supplementalInformation")
     private List<String> educationAndTrainingInfo;
 
     @NestedObject(root = false)
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/educationAndTrainingOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> educationAndTrainingOrganization;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/educationAndTrainingMajorField", predicate = "http://vivoweb.org/ontology/core#majorField")
     private List<String> educationAndTrainingMajorField;
 
@@ -271,16 +271,16 @@ public class Person extends Common {
     @PropertySource(template = "person/selectedPublicationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> selectedPublicationType;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/selectedPublicationPublisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> selectedPublicationPublisher;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(root = false, properties = { @Reference(value = "selectedPublicationVenueType", key = "type") })
     @PropertySource(template = "person/selectedPublicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> selectedPublicationVenue;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/selectedPublicationVenueType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> selectedPublicationVenueType;
 
@@ -363,7 +363,7 @@ public class Person extends Common {
     @PropertySource(template = "person/presentationEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> presentationEndDate;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "featuredInType", key = "type"), @Reference(value = "featuredInDate", key = "date") })
     @PropertySource(template = "person/featuredIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> featuredIn;
@@ -376,7 +376,7 @@ public class Person extends Common {
     @PropertySource(template = "person/featuredInDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> featuredInDate;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "assigneeForPatentType", key = "type"), @Reference(value = "assigneeForPatentDate", key = "date") })
     @PropertySource(template = "person/assigneeForPatent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assigneeForPatent;
@@ -402,7 +402,7 @@ public class Person extends Common {
     @PropertySource(template = "person/translatorOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> translatorOfDate;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/researchOverview", predicate = "http://vivoweb.org/ontology/core#researchOverview")
     private String researchOverview;
 
@@ -414,17 +414,17 @@ public class Person extends Common {
     @PropertySource(template = "person/coPrincipalInvestigatorOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> coPrincipalInvestigatorOn;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "researcherOnAwardedBy", key = "awardedBy"), @Reference(value = "researcherOnRole", key = "role"), @Reference(value = "researcherOnStartDate", key = "startDate"), @Reference(value = "researcherOnEndDate", key = "endDate") })
     @PropertySource(template = "person/researcherOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researcherOn;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(root = false, properties = { @Reference(value = "researcherOnAwardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "person/researcherOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researcherOnAwardedBy;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/researcherOnAwardedByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardedBy_label")
     private List<String> researcherOnAwardedByPreferredLabel;
 
@@ -440,7 +440,7 @@ public class Person extends Common {
     @PropertySource(template = "person/researcherOnEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> researcherOnEndDate;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "otherResearchActivityRole", key = "role"), @Reference(value = "otherResearchActivityStartDate", key = "startDate"), @Reference(value = "otherResearchActivityEndDate", key = "endDate") })
     @PropertySource(template = "person/otherResearchActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> otherResearchActivities;
@@ -457,11 +457,11 @@ public class Person extends Common {
     @PropertySource(template = "person/otherResearchActivityEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> otherResearchActivityEndDate;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/teachingOverview", predicate = "http://vivoweb.org/ontology/core#teachingOverview")
     private String teachingOverview;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "teachingActivityRole", key = "role") })
     @PropertySource(template = "person/teachingActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> teachingActivities;
@@ -491,11 +491,11 @@ public class Person extends Common {
     @PropertySource(template = "person/adviseeEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> adviseeEndDate;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/outreachOverview", predicate = "http://vivoweb.org/ontology/core#outreachOverview")
     private String outreachOverview;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "reviewerOfType", key = "type"), @Reference(value = "reviewerOfStartDate", key = "startDate"), @Reference(value = "reviewerOfEndDate", key = "endDate") })
     @PropertySource(template = "person/reviewerOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> reviewerOf;
@@ -646,7 +646,7 @@ public class Person extends Common {
     @PropertySource(template = "person/email", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private String email;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "person/firstName", predicate = "http://www.w3.org/2006/vcard/ns#givenName")
     private String firstName;
 
@@ -654,7 +654,7 @@ public class Person extends Common {
     @PropertySource(template = "person/middleName", predicate = "http://www.w3.org/2006/vcard/ns#middleName")
     private String middleName;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "person/lastName", predicate = "http://www.w3.org/2006/vcard/ns#familyName")
     private String lastName;
 
@@ -691,7 +691,7 @@ public class Person extends Common {
     private String fax;
 
     @NestedObject(properties = { @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key = "publicationDate") })
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "person/etdChairOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairOf;
 

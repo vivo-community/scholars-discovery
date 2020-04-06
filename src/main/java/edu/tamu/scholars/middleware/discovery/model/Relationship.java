@@ -28,12 +28,12 @@ public class Relationship extends Common {
     private String title;
 
     @Field("abstract")
-    @Indexed(type = "whole_string", value = "abstract", copyTo = "_text_")
+    @Indexed(type = "whole_string", value = "abstract")
     @JsonProperty("abstract")
     @PropertySource(template = "relationship/abstract", predicate = "http://purl.org/ontology/bibo/abstract")
     private String abstractText;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "relationship/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
@@ -51,7 +51,7 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/receiptOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> receiptOfType;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
     @PropertySource(template = "relationship/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorFor;
@@ -164,7 +164,7 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/localAwardId", predicate = "http://vivoweb.org/ontology/core#localAwardId")
     private String localAwardId;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
     @PropertySource(template = "relationship/contributor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contributors;
@@ -204,7 +204,7 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/dateTimeIntervalEnd", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalEnd;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "subjectAreaType", key = "type") })
     @PropertySource(template = "relationship/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
