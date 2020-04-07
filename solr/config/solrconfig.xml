@@ -1180,6 +1180,7 @@
       <str>yyyy-MM-dd HH:mmZZ</str>
 
       <str>yyyy-MM-dd</str>
+      <str>yyyy</str>
     </arr>
   </updateProcessor>
   <updateProcessor class="solr.AddSchemaFieldsUpdateProcessorFactory" name="add-schema-fields">
