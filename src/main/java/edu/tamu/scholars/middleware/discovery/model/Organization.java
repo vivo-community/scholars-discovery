@@ -30,7 +30,7 @@ public class Organization extends Common {
     private String overview;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "organization/offersDegree", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> degrees;
 
@@ -303,32 +303,32 @@ public class Organization extends Common {
     @PropertySource(template = "organization/emailAddress", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private String emailAddress;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "organization/streetAddress", predicate = "organization.streetAddress")
     private String streetAddress;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "organization/locality", predicate = "organization.locality")
     private String locality;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "organization/region", predicate = "organization.region")
     private String region;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "organization/postalCode", predicate = "organization.postalCode")
     private String postalCode;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "organization/country", predicate = "organization.country")
     private String country;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "organization/geographicLocation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String geographicLocation;
 
     @NestedObject
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/locatedAtFacility", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> locatedAtFacilities;
 
@@ -348,7 +348,7 @@ public class Organization extends Common {
     private List<String> governingAuthorityFor;
 
     @NestedObject
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/affiliatedResearchArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> affiliatedResearchAreas;
 
