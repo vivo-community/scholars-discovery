@@ -2,7 +2,7 @@ package edu.tamu.scholars.middleware.auth.controller;
 
 import static edu.tamu.scholars.middleware.auth.AuthConstants.PASSWORD_DURATION_IN_DAYS;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -42,7 +42,7 @@ public class LoginControllerTest extends UserIntegrationTest {
             .param("username", user.getEmail())
             .param("password", "HelloWorld123!"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("active", equalTo(user.isActive())))
                 .andExpect(jsonPath("enabled", equalTo(user.isEnabled())))
                 .andExpect(jsonPath("email", equalTo(user.getEmail())))
