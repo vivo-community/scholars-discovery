@@ -191,6 +191,8 @@ public class Document extends AbstractNestedDocument {
 
   private String citationCount;
 
+  private List<String> tags;
+
   private List<String> type;
 
   private String image;
@@ -198,8 +200,6 @@ public class Document extends AbstractNestedDocument {
   private String thumbnail;
 
   private String modTime;
-
-  private List<String> tags;
 
   @JsonProperty("class")
   private String clazz;
@@ -761,6 +761,14 @@ public class Document extends AbstractNestedDocument {
     this.citationCount = citationCount;
   }
 
+  public List<String> getTags() {
+    return tags;
+  }
+
+  public void setTags(List<String> tags) {
+    this.tags = tags;
+  }
+
   public List<String> getType() {
     return type;
   }
@@ -791,14 +799,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
-  }
-
-  public List<String> getTags() {
-    return tags;
-  }
-
-  public void setTags(List<String> tags) {
-    this.tags = tags;
   }
 
   public String getClazz() {
