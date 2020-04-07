@@ -439,6 +439,10 @@ public class Document extends Common {
     @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
     private String citationCount;
 
+    @Indexed(type = "whole_strings")
+    @PropertySource(template = "document/tag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
+    private List<String> tags;
+
     public Document() {
 
     }
@@ -1201,6 +1205,14 @@ public class Document extends Common {
 
     public void setCitationCount(String citationCount) {
         this.citationCount = citationCount;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
 }

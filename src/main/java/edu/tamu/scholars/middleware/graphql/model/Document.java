@@ -199,6 +199,8 @@ public class Document extends AbstractNestedDocument {
 
   private String modTime;
 
+  private List<String> tags;
+
   @JsonProperty("class")
   private String clazz;
 
@@ -789,6 +791,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
+  }
+
+  public List<String> getTags() {
+    return tags;
+  }
+
+  public void setTags(List<String> tags) {
+    this.tags = tags;
   }
 
   public String getClazz() {
