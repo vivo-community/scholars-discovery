@@ -87,6 +87,7 @@ logging:
       springframework:
         security: INFO
         web: INFO
+  path:
 
 server:
   connection-timeout: 30000
@@ -97,6 +98,7 @@ server:
 spring:
   data:
     rest:
+      authorize-hal-browser: false
       return-body-on-create: true
       return-body-on-update: true
       max-page-size: 1000

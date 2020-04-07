@@ -25,11 +25,11 @@ public class Process extends Common {
     @PropertySource(template = "process/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "process/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "offeredByType", key = "type") })
     @PropertySource(template = "process/offeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> offeredBy;
@@ -61,7 +61,7 @@ public class Process extends Common {
     @PropertySource(template = "process/inEventSeries", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inEventSeries;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "participantRole", key = "role") })
     @PropertySource(template = "process/participant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participants;
@@ -71,7 +71,7 @@ public class Process extends Common {
     private List<String> participantRole;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "process/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 

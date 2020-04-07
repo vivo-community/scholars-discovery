@@ -3,7 +3,7 @@ package edu.tamu.scholars.middleware.view.controller;
 import static edu.tamu.scholars.middleware.view.ViewTestUtility.MOCK_VIEW_NAME;
 import static edu.tamu.scholars.middleware.view.ViewTestUtility.getMockDisplayView;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -146,7 +146,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                 .content("{\"name\": \"Organizations\"}")
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_VALUE))
+                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                     .andExpect(jsonPath("name", equalTo("Organizations")))
                     .andDo(
                         document(
@@ -199,7 +199,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
         mockMvc.perform(
             get("/displayViews/{id}", displayView.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_VALUE))
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("name", equalTo(MOCK_VIEW_NAME)))
                 .andDo(
                     document(
@@ -237,7 +237,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
         mockMvc.perform(
             get("/displayViews/search/findByTypesIn").param("types", "FacultyMember"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_VALUE))
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("name", equalTo(MOCK_VIEW_NAME)))
                 .andDo(
                     document(
@@ -275,7 +275,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
         mockMvc.perform(
             get("/displayViews").param("page", "0").param("size", "20").param("sort", "name"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_VALUE))
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("page.size", equalTo(20)))
                 .andExpect(jsonPath("page.totalElements", equalTo(1)))
                 .andExpect(jsonPath("page.totalPages", equalTo(1)))
@@ -341,7 +341,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                 .contentType(MediaType.APPLICATION_JSON)
                 .cookie(loginAdmin()))
                     .andExpect(status().isCreated())
-                    .andExpect(content().contentType(HAL_JSON_VALUE)
+                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE)
                 );
         // @formatter:on
     }
@@ -361,7 +361,7 @@ public class DisplayViewControllerTest extends ResourceViewIntegrationTest<Displ
                 .content(objectMapper.writeValueAsString(displayView))
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_VALUE)
+                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE)
                 );
         // @formatter:on
     }

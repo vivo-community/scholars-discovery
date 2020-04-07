@@ -88,6 +88,7 @@ logging:
       springframework:
         security: INFO
         web: INFO
+  path:
 
 server:
   connection-timeout: 900000
@@ -98,6 +99,8 @@ server:
 spring:
   data:
     rest:
+      # CAUTION: leaving this on will permit all requests from localhost, breaks various UI requests and SSR
+      authorize-hal-browser: false
       return-body-on-create: true
       return-body-on-update: true
       max-page-size: 10000

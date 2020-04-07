@@ -3,7 +3,7 @@ package edu.tamu.scholars.middleware.theme.controller;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -155,7 +155,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
 	        .content("{\"active\": true, \"header\": { \"navbar\": { \"brandText\": \"Hello, Scholars!\"}}}")
 			.cookie(loginAdmin()))
 		        .andExpect(status().isOk())
-		        .andExpect(content().contentType(HAL_JSON_VALUE))
+		        .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
     			.andExpect(jsonPath("active", equalTo(true)))
     			.andExpect(jsonPath("name", equalTo("Test")))
     			.andExpect(jsonPath("organization", equalTo("Testing Unlimited")))
@@ -213,7 +213,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
 	        .content("{\"colors\": " + objectMapper.writeValueAsString(colors) + "}")
 	        .cookie(loginAdmin()))
     			.andExpect(status().isOk())
-    			.andExpect(content().contentType(HAL_JSON_VALUE))
+    			.andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
     			.andExpect(jsonPath("colors[0].key", equalTo("--red")))
     			.andExpect(jsonPath("colors[0].value", equalTo("#dc3545")))
     			.andExpect(jsonPath("colors[1].key", equalTo("--green")))
@@ -238,7 +238,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
 	        .content("{\"variants\": " + objectMapper.writeValueAsString(variants) + "}")
 	        .cookie(loginAdmin()))
     			.andExpect(status().isOk())
-    			.andExpect(content().contentType(HAL_JSON_VALUE))
+    			.andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
     			.andExpect(jsonPath("variants[0].key", equalTo("--primary")))
     			.andExpect(jsonPath("variants[0].value", equalTo("#500000")))
     			.andExpect(jsonPath("variants[1].key", equalTo("--secondary")))
@@ -263,7 +263,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
 	        .content("{\"variables\": " + objectMapper.writeValueAsString(variables) + "}")
 	        .cookie(loginAdmin()))
     			.andExpect(status().isOk())
-    			.andExpect(content().contentType(HAL_JSON_VALUE))
+    			.andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
     			.andExpect(jsonPath("variables[0].key", equalTo("--accent")))
     			.andExpect(jsonPath("variables[0].value", equalTo("#00ff00")))
     			.andExpect(jsonPath("variables[1].key", equalTo("--navigation-color")))
@@ -281,7 +281,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
 		mockMvc.perform(get("/themes/{id}", theme.getId())
 	        .cookie(loginAdmin()))
     		    .andExpect(status().isOk())
-    			.andExpect(content().contentType(HAL_JSON_VALUE))
+    			.andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
     			.andExpect(jsonPath("active", equalTo(false)))
     			.andExpect(jsonPath("name", equalTo("Test")))
     			.andExpect(jsonPath("organization", equalTo("Testing Unlimited")))
@@ -320,7 +320,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
 	        get("/themes").param("page", "0").param("size", "20").param("sort", "name")
 	        .cookie(loginAdmin()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_VALUE))
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("page.size", equalTo(20)))
                 .andExpect(jsonPath("page.totalElements", equalTo(1)))
                 .andExpect(jsonPath("page.totalPages", equalTo(1)))
@@ -405,7 +405,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
         // @formatter:off
 		mockMvc.perform(get("/themes/search/active"))
 		    .andExpect(status().isOk())
-			.andExpect(content().contentType(HAL_JSON_VALUE))
+			.andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
 			.andExpect(jsonPath("active", equalTo(true)))
 			.andExpect(jsonPath("name", equalTo("Test")))
 			.andExpect(jsonPath("organization", equalTo("Testing Limited")))
@@ -486,7 +486,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
         return mockMvc.perform(post("/themes")
             .content(objectMapper.writeValueAsString(theme)).contentType(MediaType.APPLICATION_JSON).cookie(loginAdmin()))
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(HAL_JSON_VALUE))
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("active", equalTo(false)))
                 .andExpect(jsonPath("name", equalTo("Test")))
                 .andExpect(jsonPath("organization", equalTo("Testing Unlimited")))
@@ -550,7 +550,7 @@ public class ThemeControllerTest extends ThemeIntegrationTest {
             .content(objectMapper.writeValueAsString(theme))
             .cookie(loginAdmin()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_VALUE))
+                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("active", equalTo(true)))
                 .andExpect(jsonPath("name", equalTo("Test")))
                 .andExpect(jsonPath("organization", equalTo("Testing Limited")))

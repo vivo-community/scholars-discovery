@@ -1,6 +1,6 @@
 package edu.tamu.scholars.middleware.auth.handler;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setContentType(APPLICATION_JSON_UTF8_VALUE);
         response.getOutputStream().write(objectMapper.writeValueAsBytes((User) authentication.getPrincipal()));
     }
 

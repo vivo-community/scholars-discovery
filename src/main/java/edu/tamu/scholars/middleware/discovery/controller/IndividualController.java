@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +39,7 @@ public class IndividualController {
 
     @GetMapping("/search/faceted")
     // @formatter:off
-    public ResponseEntity<PagedModel<IndividualResource>> search(
+    public ResponseEntity<PagedResources<IndividualResource>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
         @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page,
         List<FacetArg> facets,
@@ -47,7 +47,7 @@ public class IndividualController {
         List<BoostArg> boosts
     ) {
     // @formatter:on
-        return ResponseEntity.ok(pagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, page), assembler));
+        return ResponseEntity.ok(pagedResourcesAssembler.toResource(repo.search(query, facets, filters, boosts, page), assembler));
     }
 
     @GetMapping("/search/count")
@@ -56,8 +56,8 @@ public class IndividualController {
     }
 
     @GetMapping("/search/recently-updated")
-    public ResponseEntity<CollectionModel<IndividualResource>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit, List<FilterArg> filters) {
-        return ResponseEntity.ok(assembler.toCollectionModel(repo.findMostRecentlyUpdate(limit, filters)));
+    public ResponseEntity<Resources<IndividualResource>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit, List<FilterArg> filters) {
+        return ResponseEntity.ok(new Resources<IndividualResource>(assembler.toResources(repo.findMostRecentlyUpdate(limit, filters))));
     }
 
     class Count {

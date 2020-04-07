@@ -1,5 +1,5 @@
 Handlebars.registerHelper('toYear', function (value) {
-    if (value) {
+    if (value !== undefined) {
         const date = new Date(value);
         value = Number(date.getUTCFullYear()).toString();
     }
@@ -7,7 +7,7 @@ Handlebars.registerHelper('toYear', function (value) {
 });
 
 Handlebars.registerHelper('parseAuthorList', function (value) {
-    if (value) {
+    if (value !== undefined && typeof value === 'object') {
         value = value.toString();
         if (value.startsWith('["')) {
             value = value.substring(2);
