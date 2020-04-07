@@ -6,19 +6,16 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -51,8 +48,6 @@ import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
-
-    private static final DateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy");
 
     @Value("${spring.data.solr.parser:edismax}")
     private String queryParser;
@@ -218,15 +213,13 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
                 String start = rangeMatcher.group(1);
                 String end = rangeMatcher.group(2);
                 try {
-                    Date from = YEAR_DATE_FORMAT.parse(start);
-                    Date to = YEAR_DATE_FORMAT.parse(end);
+                    String from = DateFormatUtility.parse(start).format(DateTimeFormatter.ISO_INSTANT);
+                    String to = DateFormatUtility.parse(end).format(DateTimeFormatter.ISO_INSTANT);
                     criteria.between(from, to, true, false);
-                } catch (ParseException e) {
-                    try {
-                        LocalDate from = DateFormatUtility.parse(start);
-                        LocalDate to = DateFormatUtility.parse(end);
-                        criteria.between(from, to, true, false);
-                    } catch (DateTimeParseException dtpe) {
+                } catch (ParseException pe) {
+                    if (NumberUtils.isParsable(start) && NumberUtils.isParsable(end)) {
+                        criteria.between(Double.parseDouble(start), Double.parseDouble(end), true, false);
+                    } else {
                         criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
                     }
                 }
@@ -260,6 +253,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             break;
         }
         return criteria;
+
     }
 
     @Override
