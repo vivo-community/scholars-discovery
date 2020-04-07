@@ -88,6 +88,21 @@
   </div>
   {{/if}}
 
+  {{#if tags}}
+  <div class="d-none d-lg-block">
+    <hr />
+    <div class="mt-1">
+      <img src="assets/images/tag_icon.png" height="20" width="20" alt="tag icon">
+      <span class="label">Research Tags:</span>
+    </div>
+    <div class="ml-1 text-justify">
+      {{#each tags}}
+      <span class="badge badge-light"><a href="display/{{id}}">{{label}}</a></span>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
 </div>
 <style>
   .aside .info,
