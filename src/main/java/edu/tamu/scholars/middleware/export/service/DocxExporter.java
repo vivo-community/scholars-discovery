@@ -3,8 +3,8 @@ package edu.tamu.scholars.middleware.export.service;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +13,12 @@ import java.util.stream.StreamSupport;
 
 import javax.xml.bind.JAXBException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.openpackaging.contenttype.ContentType;
@@ -39,11 +45,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
@@ -206,15 +207,15 @@ public class DocxExporter implements Exporter {
                 String n1 = jn1 != null ? jn1.asText() : "";
                 String n2 = jn2 != null ? jn2.asText() : "";
                 try {
-                    LocalDate ld1 = DateFormatUtility.parse(n1);
-                    LocalDate ld2 = DateFormatUtility.parse(n2);
+                    ZonedDateTime ld1 = DateFormatUtility.parse(n1);
+                    ZonedDateTime ld2 = DateFormatUtility.parse(n2);
                     return sort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
-                } catch (DateTimeParseException dtpe) {
-                    try {
+                } catch (ParseException pe) {
+                    if (NumberUtils.isParsable(n1) && NumberUtils.isParsable(n2)) {
                         Double d1 = Double.parseDouble(n1);
                         Double d2 = Double.parseDouble(n2);
                         return sort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
-                    } catch (NumberFormatException nfe) {
+                    } else {
                         return sort.getDirection().equals(Direction.ASC) ? n1.compareTo(n2) : n2.compareTo(n1);
                     }
                 }

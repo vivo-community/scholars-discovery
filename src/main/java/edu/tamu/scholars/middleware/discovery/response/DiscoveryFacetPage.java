@@ -1,13 +1,14 @@
 package edu.tamu.scholars.middleware.discovery.response;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 import org.springframework.data.solr.core.query.result.FacetPage;
@@ -86,15 +87,15 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                 return facetSort.getDirection().equals(Direction.ASC) ? Long.compare(e1.count, e2.count) : Long.compare(e2.count, e1.count);
             }
             try {
-                LocalDate ld1 = DateFormatUtility.parse(e1.value);
-                LocalDate ld2 = DateFormatUtility.parse(e2.value);
+                ZonedDateTime ld1 = DateFormatUtility.parse(e1.value);
+                ZonedDateTime ld2 = DateFormatUtility.parse(e2.value);
                 return facetSort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
-            } catch (DateTimeParseException dtpe) {
-                try {
+            } catch (ParseException pe) {
+                if (NumberUtils.isParsable(e1.value) && NumberUtils.isParsable(e2.value)) {
                     Double d1 = Double.parseDouble(e1.value);
                     Double d2 = Double.parseDouble(e2.value);
                     return facetSort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
-                } catch (NumberFormatException nfe) {
+                } else {
                     return facetSort.getDirection().equals(Direction.ASC) ? e1.value.compareTo(e2.value) : e2.value.compareTo(e1.value);
                 }
             }
@@ -150,9 +151,9 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
         public String getValueKey() {
             try {
-                LocalDate ldv = DateFormatUtility.parse(value);
-                return String.valueOf(ldv.getYear());
-            } catch (DateTimeParseException dtpe) {
+                ZonedDateTime date = DateFormatUtility.parse(value);
+                return String.valueOf(date.getYear());
+            } catch (ParseException pe) {
                 return value;
             }
         }
