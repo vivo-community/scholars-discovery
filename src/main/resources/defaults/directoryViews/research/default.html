@@ -47,6 +47,11 @@
     <a href="{{uri}}"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge" /></a>
   </span>
   {{/if}}
+  {{#if tags}}
+    {{#each tags}}
+    <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light badge-custom">{{this}}</span>
+    {{/each}}
+  {{/if}}
 </div>
 <style>
   .label {
