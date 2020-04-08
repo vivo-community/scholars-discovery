@@ -5,6 +5,7 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_D
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,7 +16,6 @@ import java.util.Set;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
@@ -110,8 +110,7 @@ public class TriplestoreHarvester implements Harvester {
         FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class).parallelStream().forEach(field -> {
             PropertySource source = field.getAnnotation(PropertySource.class);
             Model model = queryForModel(source, subject);
-            String property = field.getName();
-            List<String> values = lookupProperty(property, source, model);
+            List<Object> values = lookupProperty(field, source, model);
             try {
                 populate(document, field, values);
             } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -138,25 +137,28 @@ public class TriplestoreHarvester implements Harvester {
         }
     }
 
-    private List<String> lookupProperty(String property, PropertySource source, Model model) {
-        List<String> values = new ArrayList<String>();
+    private List<Object> lookupProperty(Field field, PropertySource source, Model model) {
+        List<Object> values = new ArrayList<>();
         ResIterator resources = model.listSubjects();
         while (resources.hasNext()) {
             Resource resource = resources.next();
-            values.addAll(queryForProperty(property, source, model, resource));
+            values.addAll(queryForProperty(field, source, model, resource));
         }
         return values;
     }
 
-    private List<String> queryForProperty(String property, PropertySource source, Model model, Resource resource) {
-        List<String> values = new ArrayList<String>();
+    private List<Object> queryForProperty(Field field, PropertySource source, Model model, Resource resource) {
+        List<Object> values = new ArrayList<>();
         StmtIterator statements;
         try {
             statements = resource.listProperties(model.createProperty(source.predicate()));
         } catch (InvalidPropertyURIException exception) {
-            logger.error(String.format("%s lookup by %s", property, source.predicate()));
+            logger.error(String.format("%s lookup by %s", field.getName(), source.predicate()));
             throw exception;
         }
+
+        TypeOp typeOp = getTypeOp(field);
+
         while (statements.hasNext()) {
             Statement statement = statements.next();
             String object = statement.getObject().toString();
@@ -164,18 +166,18 @@ public class TriplestoreHarvester implements Harvester {
             if (value.contains("^^")) {
                 value = value.substring(0, value.indexOf("^^"));
             }
-            if (source.unique() && values.stream().anyMatch(value::equalsIgnoreCase)) {
+            if (source.unique() && values.stream().map(v -> v.toString()).anyMatch(value::equalsIgnoreCase)) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug(String.format("%s has duplicate value %s", property, value));
+                    logger.debug(String.format("%s has duplicate value %s", field.getName(), value));
                 }
             } else {
-                values.add(value);
+                values.add(typeOp.type(value));
             }
         }
         return values;
     }
 
-    private void populate(AbstractIndexDocument document, Field field, List<String> values) throws IllegalArgumentException, IllegalAccessException {
+    private void populate(AbstractIndexDocument document, Field field, List<Object> values) throws IllegalArgumentException, IllegalAccessException {
         if (values.isEmpty()) {
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Could not find values for %s", field.getName()));
@@ -235,6 +237,59 @@ public class TriplestoreHarvester implements Harvester {
 
     private String parse(String uri) {
         return uri.substring(uri.lastIndexOf(uri.contains(HASH_TAG) ? HASH_TAG : FORWARD_SLASH) + 1);
+    }
+
+    private TypeOp getTypeOp(Field field) {
+        if (Collection.class.isAssignableFrom(field.getType())) {
+            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            Class<?> collectionType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            if (String.class.isAssignableFrom(collectionType)) {
+                return new StringOp();
+            } else if (Integer.class.isAssignableFrom(collectionType)) {
+                return new IntegerOp();
+            } else if (Float.class.isAssignableFrom(collectionType)) {
+                return new FloatOp();
+            } else if (Double.class.isAssignableFrom(collectionType)) {
+                return new DoubleOp();
+            }
+        } else if (String.class.isAssignableFrom(field.getType())) {
+            return new StringOp();
+        } else if (Integer.class.isAssignableFrom(field.getType())) {
+            return new IntegerOp();
+        } else if (Float.class.isAssignableFrom(field.getType())) {
+            return new FloatOp();
+        } else if (Double.class.isAssignableFrom(field.getType())) {
+            return new DoubleOp();
+        }
+        return new StringOp();
+    }
+
+    private interface TypeOp {
+        public Object type(String value);
+    }
+
+    private class StringOp implements TypeOp {
+        public Object type(String value) {
+            return value;
+        }
+    }
+
+    private class IntegerOp implements TypeOp {
+        public Object type(String value) {
+            return Integer.parseInt(value);
+        }
+    }
+
+    private class FloatOp implements TypeOp {
+        public Object type(String value) {
+            return Float.parseFloat(value);
+        }
+    }
+
+    private class DoubleOp implements TypeOp {
+        public Object type(String value) {
+            return Double.parseDouble(value);
+        }
     }
 
 }
