@@ -4,12 +4,12 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
@@ -330,9 +330,9 @@ public class Document extends Common {
     @PropertySource(template = "document/iclCode", predicate = "http://vivoweb.org/ontology/core#iclCode")
     private String iclCode;
 
-    @Indexed(type = "sorting_string")
+    @Indexed(type = "pint")
     @PropertySource(template = "document/numberOfPages", predicate = "http://purl.org/ontology/bibo/numPages")
-    private String numberOfPages;
+    private Integer numberOfPages;
 
     @Indexed(type = "whole_string")
     @PropertySource(template = "document/pageStart", predicate = "http://purl.org/ontology/bibo/pageStart")
@@ -431,13 +431,13 @@ public class Document extends Common {
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
-    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @Indexed(type = "pfloat")
     @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#AltmetricScore")
-    private String altmetricScore;
+    private Float altmetricScore;
 
-    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @Indexed(type = "pint")
     @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
-    private String citationCount;
+    private Integer citationCount;
 
     @Indexed(type = "whole_strings")
     @PropertySource(template = "document/tag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
@@ -1007,11 +1007,11 @@ public class Document extends Common {
         this.iclCode = iclCode;
     }
 
-    public String getNumberOfPages() {
+    public Integer getNumberOfPages() {
         return numberOfPages;
     }
 
-    public void setNumberOfPages(String numberOfPages) {
+    public void setNumberOfPages(Integer numberOfPages) {
         this.numberOfPages = numberOfPages;
     }
 
@@ -1191,19 +1191,19 @@ public class Document extends Common {
         this.receipts = receipts;
     }
 
-    public String getAltmetricScore() {
+    public Float getAltmetricScore() {
         return altmetricScore;
     }
 
-    public void setAltmetricScore(String altmetricScore) {
+    public void setAltmetricScore(Float altmetricScore) {
         this.altmetricScore = altmetricScore;
     }
 
-    public String getCitationCount() {
+    public Integer getCitationCount() {
         return citationCount;
     }
 
-    public void setCitationCount(String citationCount) {
+    public void setCitationCount(Integer citationCount) {
         this.citationCount = citationCount;
     }
 

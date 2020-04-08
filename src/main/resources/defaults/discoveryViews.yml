@@ -158,6 +158,34 @@
       pageSize: 10
       collapsed: true
       hidden: false
+    - name: Research Tag
+      field: tags
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Altmetric Score Range
+      field: altmetricScore
+      type: RANGE_SLIDER
+      sort: INDEX
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+      rangeMin: 0
+      rangeMax: 100
+    - name: Citation Count Range
+      field: citationCount
+      type: RANGE_SLIDER
+      sort: INDEX
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+      rangeMin: 0
+      rangeMax: 1000
   filters:
     - field: class
       value: Document
