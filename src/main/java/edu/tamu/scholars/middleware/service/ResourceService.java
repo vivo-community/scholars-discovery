@@ -21,7 +21,7 @@ public class ResourceService {
     private ResourceLoader resourceLoader;
 
     public String getTemplate(String path) throws IOException {
-        // NOTE: wold prefer to use @Cacheable, but could not get to work as expected
+        // NOTE: would prefer to use @Cacheable, but could not get to work as expected
         if (TEMPLATES.containsKey(path)) {
             return TEMPLATES.get(path);
         }
