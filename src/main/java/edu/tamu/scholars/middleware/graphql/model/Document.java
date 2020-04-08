@@ -37,6 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
+import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 
@@ -173,7 +174,7 @@ public class Document extends AbstractNestedDocument {
 
   private String iclCode;
 
-  private String numberOfPages;
+  private Integer numberOfPages;
 
   private String pageStart;
 
@@ -689,11 +690,11 @@ public class Document extends AbstractNestedDocument {
     this.iclCode = iclCode;
   }
 
-  public String getNumberOfPages() {
+  public Integer getNumberOfPages() {
     return numberOfPages;
   }
 
-  public void setNumberOfPages(String numberOfPages) {
+  public void setNumberOfPages(Integer numberOfPages) {
     this.numberOfPages = numberOfPages;
   }
 
