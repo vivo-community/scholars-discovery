@@ -28,6 +28,11 @@ public class TemplateServiceTest {
             return new TemplateService();
         }
 
+        @Bean
+        public ResourceService resourceService() {
+            return new ResourceService();
+        }
+
     }
 
     @Autowired
