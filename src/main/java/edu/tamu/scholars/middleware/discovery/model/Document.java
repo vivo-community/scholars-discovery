@@ -443,6 +443,10 @@ public class Document extends Common {
     @PropertySource(template = "document/tag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
     private List<String> tags;
 
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "document/note", predicate = "http://www.w3.org/2006/vcard/ns#note")
+    private String note;
+
     public Document() {
 
     }
@@ -1213,6 +1217,14 @@ public class Document extends Common {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
 }
