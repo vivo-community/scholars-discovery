@@ -6,8 +6,6 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
-import java.text.ParseException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Date;
@@ -17,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -45,7 +42,6 @@ import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.model.OpKey;
-import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
@@ -242,17 +238,9 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
                     if (rangeMatcher.matches()) {
                         String start = rangeMatcher.group(1);
                         String end = rangeMatcher.group(2);
-                        try {
-                            String from = DateFormatUtility.parse(start).format(DateTimeFormatter.ISO_INSTANT);
-                            String to = DateFormatUtility.parse(end).format(DateTimeFormatter.ISO_INSTANT);
-                            criteria.between(from, to, true, false);
-                        } catch (ParseException e) {
-                            if (NumberUtils.isParsable(start) && NumberUtils.isParsable(end)) {
-                                criteria.between(Double.parseDouble(start), Double.parseDouble(end), true, false);
-                            } else {
-                                criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
-                            }
-                        }
+                        // NOTE: if date field, must be ISO format for Solr to recognize
+                        // https://lucene.apache.org/solr/7_5_0/solr-core/org/apache/solr/schema/DatePointField.html
+                        criteria.between(start, end, true, false);
                     } else {
                         criteria.is(value);
                     }

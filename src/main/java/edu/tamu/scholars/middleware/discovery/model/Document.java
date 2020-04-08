@@ -330,9 +330,9 @@ public class Document extends Common {
     @PropertySource(template = "document/iclCode", predicate = "http://vivoweb.org/ontology/core#iclCode")
     private String iclCode;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "pint")
     @PropertySource(template = "document/numberOfPages", predicate = "http://purl.org/ontology/bibo/numPages")
-    private String numberOfPages;
+    private Integer numberOfPages;
 
     @Indexed(type = "whole_string")
     @PropertySource(template = "document/pageStart", predicate = "http://purl.org/ontology/bibo/pageStart")
@@ -995,11 +995,11 @@ public class Document extends Common {
         this.iclCode = iclCode;
     }
 
-    public String getNumberOfPages() {
+    public Integer getNumberOfPages() {
         return numberOfPages;
     }
 
-    public void setNumberOfPages(String numberOfPages) {
+    public void setNumberOfPages(Integer numberOfPages) {
         this.numberOfPages = numberOfPages;
     }
 
