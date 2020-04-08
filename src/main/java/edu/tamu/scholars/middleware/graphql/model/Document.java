@@ -188,9 +188,9 @@ public class Document extends AbstractNestedDocument {
 
   private String isTemplate;
 
-  private String altmetricScore;
+  private Integer altmetricScore;
 
-  private String citationCount;
+  private Integer citationCount;
 
   private List<String> tags;
 
@@ -746,19 +746,19 @@ public class Document extends AbstractNestedDocument {
     this.isTemplate = isTemplate;
   }
 
-  public String getAltmetricScore() {
+  public Integer getAltmetricScore() {
     return altmetricScore;
   }
 
-  public void setAltmetricScore(String altmetricScore) {
+  public void setAltmetricScore(Integer altmetricScore) {
     this.altmetricScore = altmetricScore;
   }
 
-  public String getCitationCount() {
+  public Integer getCitationCount() {
     return citationCount;
   }
 
-  public void setCitationCount(String citationCount) {
+  public void setCitationCount(Integer citationCount) {
     this.citationCount = citationCount;
   }
 
