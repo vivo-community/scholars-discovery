@@ -431,9 +431,9 @@ public class Document extends Common {
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
-    @Indexed(type = "pint")
+    @Indexed(type = "pfloat")
     @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#AltmetricScore")
-    private Double altmetricScore;
+    private Float altmetricScore;
 
     @Indexed(type = "pint")
     @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
@@ -1191,11 +1191,11 @@ public class Document extends Common {
         this.receipts = receipts;
     }
 
-    public Double getAltmetricScore() {
+    public Float getAltmetricScore() {
         return altmetricScore;
     }
 
-    public void setAltmetricScore(Double altmetricScore) {
+    public void setAltmetricScore(Float altmetricScore) {
         this.altmetricScore = altmetricScore;
     }
 
