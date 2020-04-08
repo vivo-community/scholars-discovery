@@ -208,7 +208,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             if (rangeMatcher.matches()) {
                 String start = rangeMatcher.group(1);
                 String end = rangeMatcher.group(2);
-                // NOTE: if date field must be ISO format for Solr to recognize
+                // NOTE: if date field, must be ISO format for Solr to recognize
                 // https://lucene.apache.org/solr/7_5_0/solr-core/org/apache/solr/schema/DatePointField.html
                 criteria.between(start, end, true, false);
             } else {
