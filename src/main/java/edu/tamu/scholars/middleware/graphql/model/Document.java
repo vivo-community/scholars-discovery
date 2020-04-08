@@ -37,6 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
+import java.lang.Double;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
@@ -188,7 +189,7 @@ public class Document extends AbstractNestedDocument {
 
   private String isTemplate;
 
-  private Integer altmetricScore;
+  private Double altmetricScore;
 
   private Integer citationCount;
 
@@ -746,11 +747,11 @@ public class Document extends AbstractNestedDocument {
     this.isTemplate = isTemplate;
   }
 
-  public Integer getAltmetricScore() {
+  public Double getAltmetricScore() {
     return altmetricScore;
   }
 
-  public void setAltmetricScore(Integer altmetricScore) {
+  public void setAltmetricScore(Double altmetricScore) {
     this.altmetricScore = altmetricScore;
   }
 
