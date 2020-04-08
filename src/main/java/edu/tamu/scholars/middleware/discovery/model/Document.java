@@ -433,7 +433,7 @@ public class Document extends Common {
 
     @Indexed(type = "pint")
     @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#AltmetricScore")
-    private Integer altmetricScore;
+    private Double altmetricScore;
 
     @Indexed(type = "pint")
     @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
@@ -1191,11 +1191,11 @@ public class Document extends Common {
         this.receipts = receipts;
     }
 
-    public Integer getAltmetricScore() {
+    public Double getAltmetricScore() {
         return altmetricScore;
     }
 
-    public void setAltmetricScore(Integer altmetricScore) {
+    public void setAltmetricScore(Double altmetricScore) {
         this.altmetricScore = altmetricScore;
     }
 
