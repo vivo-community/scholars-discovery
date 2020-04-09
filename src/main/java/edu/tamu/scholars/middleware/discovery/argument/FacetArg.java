@@ -52,7 +52,8 @@ public class FacetArg extends MappingArg {
     }
 
     public String getCommand() {
-        return StringUtils.isEmpty(exclusionTag) ? field : String.format("{!ex=%s}%s", exclusionTag, field);
+        String property = getProperty();
+        return StringUtils.isEmpty(exclusionTag) ? property : String.format("{!ex=%s}%s", exclusionTag, property);
     }
 
     @SuppressWarnings("unchecked")

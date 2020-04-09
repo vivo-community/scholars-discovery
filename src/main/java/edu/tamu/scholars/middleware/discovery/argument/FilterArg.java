@@ -42,7 +42,8 @@ public class FilterArg extends MappingArg {
     }
 
     public String getCommand() {
-        return StringUtils.isEmpty(tag) ? field : String.format("{!tag=%s}%s", tag, field);
+        String property = getProperty();
+        return StringUtils.isEmpty(tag) ? property : String.format("{!tag=%s}%s", tag, property);
     }
 
     @SuppressWarnings("unchecked")
