@@ -199,10 +199,6 @@ public class Person extends AbstractNestedDocument {
 
   private String featuredProfileDisplay;
 
-  private List<String> organizations;
-
-  private List<String> schools;
-
   private List<String> type;
 
   private String image;
@@ -797,22 +793,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
     this.featuredProfileDisplay = featuredProfileDisplay;
-  }
-
-  public List<String> getOrganizations() {
-    return organizations;
-  }
-
-  public void setOrganizations(List<String> organizations) {
-    this.organizations = organizations;
-  }
-
-  public List<String> getSchools() {
-    return schools;
-  }
-
-  public void setSchools(List<String> schools) {
-    this.schools = schools;
   }
 
   public List<String> getType() {
