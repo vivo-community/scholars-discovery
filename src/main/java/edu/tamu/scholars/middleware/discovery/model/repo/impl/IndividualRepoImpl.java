@@ -132,6 +132,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
             facetOptions.addFacetOnField(fieldWithFacetParameters);
             // NOTE: other possible; method, minCount, missing, and prefix
+            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
+            fieldWithFacetParameters.setOffset(0);
         });
 
         if (facetOptions.hasFacets()) {
