@@ -108,6 +108,11 @@ public class Concept extends Common {
     @PropertySource(template = "concept/relatedConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> relatedConceptType;
 
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "concept/futureResearchIdeaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> futureResearchIdeaOf;
+
     public Concept() {
 
     }
@@ -262,6 +267,14 @@ public class Concept extends Common {
 
     public void setRelatedConceptType(List<String> relatedConceptType) {
         this.relatedConceptType = relatedConceptType;
+    }
+
+    public List<String> getFutureResearchIdeaOf() {
+        return futureResearchIdeaOf;
+    }
+
+    public void setFutureResearchIdeaOf(List<String> futureResearchIdeaOf) {
+        this.futureResearchIdeaOf = futureResearchIdeaOf;
     }
 
 }
