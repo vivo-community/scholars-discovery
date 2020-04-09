@@ -64,8 +64,8 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
                     int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
 
                     facets.add(new Facet(field, DiscoveryPage.from(entries.subList(start, end), pageInfo)));
-                }  
-            } 
+                }
+            }
         });
         return facets;
     }
