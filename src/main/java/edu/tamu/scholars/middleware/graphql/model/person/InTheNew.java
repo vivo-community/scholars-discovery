@@ -13,15 +13,15 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "PersonSoftware"
+    name = "PersonInTheNew"
 )
 @JsonInclude(NON_EMPTY)
-public class Software extends AbstractNestedDocument {
-  private static final long serialVersionUID = 276697786L;
+public class InTheNew extends AbstractNestedDocument {
+  private static final long serialVersionUID = -1386001913L;
 
   private String label;
 
-  public Software() {
+  public InTheNew() {
     super();
   }
 

@@ -221,10 +221,26 @@
         - name: software
           paginated: true
           template: "defaults/displayViews/persons/software/software.html"
-          field: software
-          lazyReferences:
-            - software
+          field: publications
+          filters:
+            - field: type
+              value: ERO_0000071
           sort:
+            - field: publicationDate
+              direction: DESC
+            - field: title
+              direction: ASC
+    - name: News
+      sections:
+        - name: in the news
+          paginated: true
+          template: "defaults/displayViews/persons/inTheNews/inTheNews.html"
+          field: inTheNews
+          lazyReferences:
+            - inTheNews
+          sort:
+            - field: publicationDate
+              direction: DESC
             - field: title
               direction: ASC
     - name: Patents
@@ -815,6 +831,7 @@
     - GreyLiterature
     - Patent
     - WorkingPaper
+    - NewsRelease
     - ERO_0000071
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"

@@ -32,7 +32,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunitySer
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
-import edu.tamu.scholars.middleware.graphql.model.person.Software;
+import edu.tamu.scholars.middleware.graphql.model.person.InTheNew;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
@@ -120,7 +120,7 @@ public class Person extends AbstractNestedDocument {
 
   private List<EtdChairOf> etdChairOf;
 
-  private List<Software> software;
+  private List<InTheNew> inTheNews;
 
   private List<Website> websites;
 
@@ -478,12 +478,12 @@ public class Person extends AbstractNestedDocument {
     this.etdChairOf = etdChairOf;
   }
 
-  public List<Software> getSoftware() {
-    return software;
+  public List<InTheNew> getInTheNews() {
+    return inTheNews;
   }
 
-  public void setSoftware(List<Software> software) {
-    this.software = software;
+  public void setInTheNews(List<InTheNew> inTheNews) {
+    this.inTheNews = inTheNews;
   }
 
   public List<Website> getWebsites() {
