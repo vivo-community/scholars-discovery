@@ -709,8 +709,8 @@ public class Person extends Common {
 
     @NestedObject
     @Indexed(type = "nested_strings")
-    @PropertySource(template = "person/software", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> software;
+    @PropertySource(template = "person/inTheNews", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> inTheNews;
 
     public Person() {
 
@@ -2004,12 +2004,12 @@ public class Person extends Common {
         this.featuredProfileDisplay = featuredProfileDisplay;
     }
 
-    public List<String> getSoftware() {
-        return software;
+    public List<String> getInTheNews() {
+        return inTheNews;
     }
 
-    public void setSoftware(List<String> software) {
-        this.software = software;
+    public void setInTheNews(List<String> inTheNews) {
+        this.inTheNews = inTheNews;
     }
 
 }
