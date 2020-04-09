@@ -1,12 +1,12 @@
 <div>
   <span>{{authorList}}</span>
-  <span><a href="display/{{id}}">{{title}}</a> - </span>
+  <span><a href="display/{{id}}">{{title}}</a></span>
   {{#if note}}
-  <span><em>{{note}}</em>, </span>
+  <span> - <em>{{note}}</em></span>
   {{/if}}
 
   {{#if publicationDate}}
-  <span>{{toYear publicationDate}}</span>
+  <span class="badge badge-light">{{toYear publicationDate}}</span>
   {{/if}}
 
 </div>

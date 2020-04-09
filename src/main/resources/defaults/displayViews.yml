@@ -815,6 +815,7 @@
     - GreyLiterature
     - Patent
     - WorkingPaper
+    - ERO_0000071
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:
