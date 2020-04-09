@@ -60,6 +60,12 @@ public class Concept extends AbstractNestedDocument {
 
   private String yearAwarded;
 
+  private List<String> keywords;
+
+  private String description;
+
+  private String createdDate;
+
   private List<String> type;
 
   private String image;
@@ -185,6 +191,30 @@ public class Concept extends AbstractNestedDocument {
 
   public void setYearAwarded(String yearAwarded) {
     this.yearAwarded = yearAwarded;
+  }
+
+  public List<String> getKeywords() {
+    return keywords;
+  }
+
+  public void setKeywords(List<String> keywords) {
+    this.keywords = keywords;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(String createdDate) {
+    this.createdDate = createdDate;
   }
 
   public List<String> getType() {
