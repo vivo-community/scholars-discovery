@@ -712,6 +712,11 @@ public class Person extends Common {
     @PropertySource(template = "person/inTheNews", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inTheNews;
 
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/futureResearchIdeas", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> futureResearchIdeas;
+
     public Person() {
 
     }
@@ -2010,6 +2015,14 @@ public class Person extends Common {
 
     public void setInTheNews(List<String> inTheNews) {
         this.inTheNews = inTheNews;
+    }
+
+    public List<String> getFutureResearchIdeas() {
+        return futureResearchIdeas;
+    }
+
+    public void setFutureResearchIdeas(List<String> futureResearchIdeas) {
+        this.futureResearchIdeas = futureResearchIdeas;
     }
 
 }

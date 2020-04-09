@@ -1,0 +1,10 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    ?futureResearchIdea rdfs:label ?labelWithId .
+} WHERE {
+    <{{uri}}> tamu:HasFutureResearchIdea ?futureResearchIdea .
+    ?futureResearchIdea rdfs:label ?label .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?futureResearchIdea), "(^.*/)", "::") ) AS ?labelWithId ) .
+}
