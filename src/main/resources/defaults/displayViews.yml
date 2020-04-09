@@ -216,6 +216,17 @@
         - name: translator of
           template: "defaults/displayViews/persons/publications/translatorOf.html"
           field: translatorOf
+    - name: Software
+      sections:
+        - name: software
+          paginated: true
+          template: "defaults/displayViews/persons/software/software.html"
+          field: software
+          lazyReferences:
+            - software
+          sort:
+            - field: title
+              direction: ASC
     - name: Patents
       sections:
         - name: patents
@@ -804,6 +815,7 @@
     - GreyLiterature
     - Patent
     - WorkingPaper
+    - ERO_0000071
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:

@@ -4,10 +4,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
@@ -706,6 +706,11 @@ public class Person extends Common {
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
     private String featuredProfileDisplay;
+
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/software", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> software;
 
     public Person() {
 
@@ -1997,6 +2002,14 @@ public class Person extends Common {
 
     public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
         this.featuredProfileDisplay = featuredProfileDisplay;
+    }
+
+    public List<String> getSoftware() {
+        return software;
+    }
+
+    public void setSoftware(List<String> software) {
+        this.software = software;
     }
 
 }

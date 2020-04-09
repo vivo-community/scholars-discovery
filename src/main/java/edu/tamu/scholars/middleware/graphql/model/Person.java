@@ -32,6 +32,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunitySer
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
+import edu.tamu.scholars.middleware.graphql.model.person.Software;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
@@ -118,6 +119,8 @@ public class Person extends AbstractNestedDocument {
   private List<HasExpertiseInTechnique> hasExpertiseInTechnique;
 
   private List<EtdChairOf> etdChairOf;
+
+  private List<Software> software;
 
   private List<Website> websites;
 
@@ -473,6 +476,14 @@ public class Person extends AbstractNestedDocument {
 
   public void setEtdChairOf(List<EtdChairOf> etdChairOf) {
     this.etdChairOf = etdChairOf;
+  }
+
+  public List<Software> getSoftware() {
+    return software;
+  }
+
+  public void setSoftware(List<Software> software) {
+    this.software = software;
   }
 
   public List<Website> getWebsites() {

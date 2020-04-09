@@ -195,6 +195,8 @@ public class Document extends AbstractNestedDocument {
 
   private List<String> tags;
 
+  private String note;
+
   private List<String> type;
 
   private String image;
@@ -769,6 +771,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setTags(List<String> tags) {
     this.tags = tags;
+  }
+
+  public String getNote() {
+    return note;
+  }
+
+  public void setNote(String note) {
+    this.note = note;
   }
 
   public List<String> getType() {
