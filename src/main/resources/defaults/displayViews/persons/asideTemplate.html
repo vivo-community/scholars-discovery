@@ -74,6 +74,22 @@
   </div>
   {{/if}}
 
+  {{#if futureResearchIdeas}}
+  <div class="d-none d-lg-block">
+    <hr />
+    <div class="mt-1">
+      <span class="label">Future Research Ideas:</span>
+    </div>
+    <div class="ml-1">
+      <ul class="list-unstyled ml-1">
+        {{#each futureResearchIdeas}}
+        <li><span><a href="display/{{id}}">{{label}}</a></span></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+  {{/if}}
+
   {{#if researchAreas}}
   <div class="d-none d-lg-block">
     <hr />
