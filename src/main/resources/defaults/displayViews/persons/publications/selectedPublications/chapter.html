@@ -65,6 +65,12 @@
   {{#if doi}}
   <span class="__dimensions_badge_embed__ m-1" data-hide-zero-citations="true" data-style="small_rectangle" data-legend="hover-top" data-doi="{{doi}}"></span>
   {{/if}}
+
+  {{#if tags}}
+    {{#each tags}}
+    <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light">{{this}}</span>
+    {{/each}}
+  {{/if}}
 </div>
 <style>
   .__dimensions_badge_embed__ {
