@@ -1,10 +1,25 @@
-<span>
+<div>
   {{#if name}}
   <a href="display/{{id}}">{{name}}</a>
   {{else}}
   <a href="display/{{id}}">No title available ({{id}})</a>
   {{/if}}
-  {{#if futureResearchIdeaOf}}
-  <a href="display/{{id}}">{{label}}</a>
+</div>
+{{#if futureResearchIdeaOf}}
+<div>
+  {{#each futureResearchIdeaOf}}
+  <div><a href="display/{{id}}">{{label}}</a></div>
+  <span>{{title}}</span>
+  {{#if organizations}}
+  {{#each organizations}}
+  <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
+  {{/each}}
   {{/if}}
-</span>
+  {{/each}}
+</div>
+{{/if}}
+{{#if createdDate}}
+<div>
+  <span>Created: <span>{{toYear createdDate}}</span></span>
+</div>
+{{/if}}
