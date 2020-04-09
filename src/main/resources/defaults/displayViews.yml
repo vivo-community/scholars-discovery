@@ -1355,6 +1355,7 @@
   types:
     - Concept
     - Award
+    - FutureResearchIdea
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"
@@ -1388,6 +1389,18 @@
           sort:
             - field: recipientName
               direction: ASC
+        - name: idea of
+          template: "defaults/displayViews/concepts/overview/futureResearchIdeaOf.html"
+          field: futureResearchIdeaOf
+        - name: creation date
+          template: "defaults/displayViews/concepts/overview/createdDate.html"
+          field: createdDate
+        - name: description
+          template: "defaults/displayViews/concepts/overview/description.html"
+          field: description
+        - name: keywords
+          template: "defaults/displayViews/concepts/overview/keywords.html"
+          field: keywords
     - name: Identity
       sections:
         - name: same as
