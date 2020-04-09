@@ -43,7 +43,7 @@ public class Document extends Common {
     @PropertySource(template = "document/publicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publicationVenue;
 
-    @Indexed(type = "nested_string", copyTo = "_text_")
+    @Indexed(type = "nested_string")
     @PropertySource(template = "document/publicationVenueType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private String publicationVenueType;
 

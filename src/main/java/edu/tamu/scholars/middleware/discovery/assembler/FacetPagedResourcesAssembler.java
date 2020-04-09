@@ -15,8 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
@@ -35,19 +35,19 @@ public class FacetPagedResourcesAssembler<T> extends PagedResourcesAssembler<T> 
     }
 
     @Override
-    protected <R extends ResourceSupport, S> PagedResources<R> createPagedResource(List<R> resources, PagedResources.PageMetadata metadata, Page<S> page) {
-        PagedResources<R> pagedResource = super.createPagedResource(resources, metadata, page);
+    protected <R extends RepresentationModel<?>, S> PagedModel<R> createPagedModel(List<R> resources, PagedModel.PageMetadata metadata, Page<S> page) {
+        PagedModel<R> pagedResource = super.createPagedModel(resources, metadata, page);
         if (page instanceof FacetPage) {
             return new FacetPagedResource<R, S>(pagedResource, (FacetPage<S>) page, request);
         }
         return pagedResource;
     }
 
-    class FacetPagedResource<R extends ResourceSupport, S> extends PagedResources<R> {
+    class FacetPagedResource<R extends RepresentationModel<?>, S> extends PagedModel<R> {
 
         private final List<Facet> facets;
 
-        FacetPagedResource(PagedResources<R> pagedResources, FacetPage<S> facetPage, HttpServletRequest request) {
+        FacetPagedResource(PagedModel<R> pagedResources, FacetPage<S> facetPage, HttpServletRequest request) {
             super(pagedResources.getContent(), pagedResources.getMetadata(), pagedResources.getLinks());
             this.facets = buildFacets(facetPage, getFacetArguments(request));
         }
