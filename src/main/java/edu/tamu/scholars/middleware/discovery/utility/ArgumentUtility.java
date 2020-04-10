@@ -23,9 +23,11 @@ public class ArgumentUtility {
     private final static String FACET_PAGE_SIZE_FORMAT = "%s.pageSize";
     private final static String FACET_PAGE_NUMBER_FORMAT = "%s.pageNumber";
     private final static String FACET_TYPE_FORMAT = "%s.type";
+    private final static String FACET_EXCLUDE_TAG_FORMAT = "%s.exclusionTag";
 
     private final static String FILTER_VALUE_FORMAT = "%s.filter";
     private final static String FILTER_OPKEY_FORMAT = "%s.opKey";
+    private final static String FILTER_TAG_FORMAT = "%s.tag";
 
     public static List<FacetArg> getFacetArguments(HttpServletRequest request) {
         List<String> perameterNames = Collections.list(request.getParameterNames());
@@ -64,7 +66,13 @@ public class ArgumentUtility {
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
                 .findAny();
-            return FacetArg.of(field, sort, pageSize, pageNumber, type);
+            Optional<String> exclusionTag = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FACET_EXCLUDE_TAG_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();               
+            return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag);
         }).collect(Collectors.toList());
         // @formatter:on
     }
@@ -95,7 +103,13 @@ public class ArgumentUtility {
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
                 .findAny();
-            return FilterArg.of(field, value, opKey);
+            Optional<String> tag = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FILTER_TAG_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();                
+            return FilterArg.of(field, value, opKey, tag);
         }).collect(Collectors.toList());
         // @formatter:on
         return filters;
