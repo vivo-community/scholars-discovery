@@ -707,14 +707,13 @@ public class Person extends Common {
     @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
     private String featuredProfileDisplay;
 
- 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "whole_strings")
     @PropertySource(template = "person/organization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> organizations;  
+    private List<String> organizations;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "whole_strings")
     @PropertySource(template = "person/school", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> schools;  
+    private List<String> schools;
 
     public Person() {
 
@@ -2022,6 +2021,6 @@ public class Person extends Common {
 
     public void setSchools(List<String> schools) {
         this.schools = schools;
-    }    
+    }
 
 }
