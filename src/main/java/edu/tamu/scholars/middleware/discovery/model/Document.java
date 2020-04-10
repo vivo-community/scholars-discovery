@@ -447,6 +447,21 @@ public class Document extends Common {
     @PropertySource(template = "document/note", predicate = "http://www.w3.org/2006/vcard/ns#note")
     private String note;
 
+    @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "advisedByEmail", key = "email"), @Reference(value = "advisedByOrganization", key = "organization") })
+    @PropertySource(template = "document/advisedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> advisedBy;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "document/advisedByEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
+    private List<String> advisedByEmail;
+
+    @NestedMultiValuedProperty
+    @NestedObject(root = false)
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "document/advisedByOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> advisedByOrganization;
+
     public Document() {
 
     }
@@ -1225,6 +1240,30 @@ public class Document extends Common {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public List<String> getAdvisedBy() {
+        return advisedBy;
+    }
+
+    public void setAdvisedBy(List<String> advisedBy) {
+        this.advisedBy = advisedBy;
+    }
+
+    public List<String> getAdvisedByEmail() {
+        return advisedByEmail;
+    }
+
+    public void setAdvisedByEmail(List<String> advisedByEmail) {
+        this.advisedByEmail = advisedByEmail;
+    }
+
+    public List<String> getAdvisedByOrganization() {
+        return advisedByOrganization;
+    }
+
+    public void setAdvisedByOrganization(List<String> advisedByOrganization) {
+        this.advisedByOrganization = advisedByOrganization;
     }
 
 }

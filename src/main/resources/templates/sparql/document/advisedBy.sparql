@@ -1,0 +1,10 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT {
+    ?chair rdfs:label ?labelWithId .
+} WHERE {
+    <{{uri}}> tamu:AdvisedBy ?chair .
+    ?chair rdfs:label ?label .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?chair), "(^.*/)", "::") ) AS ?labelWithId ) .
+}

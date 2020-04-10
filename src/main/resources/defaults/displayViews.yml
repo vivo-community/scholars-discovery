@@ -362,6 +362,9 @@
             - field: publicationDate
               direction: DESC
               date: true
+        - name: advised capstone (non-thesis) project
+          template: "defaults/displayViews/persons/worksByStudents/advisedCapstone.html"
+          field: capstoneAdvisedOf
     - name: Service
       sections:
         - name: outreach overview
@@ -864,6 +867,11 @@
           field: etdChairedBy
           lazyReferences:
             - etdChairedBy
+        - name: capstone (non-thesis) advisor
+          template: "defaults/displayViews/documents/overview/advisor.html"
+          field: advisedBy
+          lazyReferences:
+            - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators

@@ -29,6 +29,7 @@ import edu.tamu.scholars.middleware.graphql.model.document.Mention;
 import edu.tamu.scholars.middleware.graphql.model.document.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.document.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Receipt;
+import edu.tamu.scholars.middleware.graphql.model.document.AdvisedBy;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
@@ -111,6 +112,8 @@ public class Document extends AbstractNestedDocument {
   private List<SupportedBy> supportedBy;
 
   private List<Receipt> receipts;
+
+  private List<AdvisedBy> advisedBy;
 
   private List<Website> websites;
 
@@ -443,6 +446,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setReceipts(List<Receipt> receipts) {
     this.receipts = receipts;
+  }
+
+  public List<AdvisedBy> getAdvisedBy() {
+    return advisedBy;
+  }
+
+  public void setAdvisedBy(List<AdvisedBy> advisedBy) {
+    this.advisedBy = advisedBy;
   }
 
   public List<Website> getWebsites() {

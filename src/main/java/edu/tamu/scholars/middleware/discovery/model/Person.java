@@ -783,6 +783,19 @@ public class Person extends Common {
     @PropertySource(template = "person/futureResearchIdeas", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> futureResearchIdeas;
 
+    @NestedObject(properties = { @Reference(value = "capstoneAdvisedOfURL", key = "url"), @Reference(value = "capstoneAdvisedOfPublicationDate", key = "publicationDate") })
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/capstoneAdvisedOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> capstoneAdvisedOf;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/capstoneAdvisedOfURL", predicate = "http://www.w3.org/2006/vcard/ns#url")
+    private List<String> capstoneAdvisedOfURL;
+
+    @Indexed(type = "nested_dates")
+    @PropertySource(template = "person/capstoneAdvisedOfPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> capstoneAdvisedOfPublicationDate;
+
     public Person() {
 
     }
@@ -2106,6 +2119,30 @@ public class Person extends Common {
 
     public void setFutureResearchIdeas(List<String> futureResearchIdeas) {
         this.futureResearchIdeas = futureResearchIdeas;
+    }
+
+    public List<String> getCapstoneAdvisedOf() {
+        return capstoneAdvisedOf;
+    }
+
+    public void setCapstoneAdvisedOf(List<String> capstoneAdvisedOf) {
+        this.capstoneAdvisedOf = capstoneAdvisedOf;
+    }
+
+    public List<String> getCapstoneAdvisedOfURL() {
+        return capstoneAdvisedOfURL;
+    }
+
+    public void setCapstoneAdvisedOfURL(List<String> capstoneAdvisedOfURL) {
+        this.capstoneAdvisedOfURL = capstoneAdvisedOfURL;
+    }
+
+    public List<String> getCapstoneAdvisedOfPublicationDate() {
+        return capstoneAdvisedOfPublicationDate;
+    }
+
+    public void setCapstoneAdvisedOfPublicationDate(List<String> capstoneAdvisedOfPublicationDate) {
+        this.capstoneAdvisedOfPublicationDate = capstoneAdvisedOfPublicationDate;
     }
 
 }
