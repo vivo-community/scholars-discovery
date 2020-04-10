@@ -6,14 +6,9 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,13 +41,10 @@ import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.model.OpKey;
-import edu.tamu.scholars.middleware.utility.DateFormatUtility;
 
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
-
-    private static final DateFormat YEAR_DATE_FORMAT = new SimpleDateFormat("yyyy");
 
     @Value("${spring.data.solr.parser:edismax}")
     private String queryParser;
@@ -72,7 +64,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     @Override
     public List<Individual> findByType(String type, List<FilterArg> filters) {
-        filters.add(FilterArg.of("type", Optional.of(type), Optional.of(OpKey.EQUALS.getKey())));
+        filters.add(FilterArg.of("type", Optional.of(type), Optional.of(OpKey.EQUALS.getKey()), Optional.empty()));
         return findAll(filters);
     }
 
@@ -130,20 +122,15 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         facetQuery.addCriteria(criteria);
 
+        // NOTE: solr does not return total number of facet entries, nor afford direction of sort
         FacetOptions facetOptions = new FacetOptions();
 
         facets.forEach(facet -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getProperty());
-
-            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
-
-            fieldWithFacetParameters.setOffset(0);
-
-            // NOTE: solr does not return total number of facet entries, nor afford direction of sort
-
-            // NOTE: other possible; method, minCount, missing, and prefix
-
+            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
             facetOptions.addFacetOnField(fieldWithFacetParameters);
+            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
+            fieldWithFacetParameters.setOffset(0);
+            // NOTE: other possible; method, minCount, missing, and prefix
         });
 
         if (facetOptions.hasFacets()) {
@@ -204,67 +191,92 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        return filters.stream().map(filter -> new SimpleFilterQuery(buildCriteria(filter))).collect(Collectors.toList());
-    }
+        List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
+        Map<String, List<FilterArg>> filtersGrouped = filters.stream().collect(Collectors.groupingBy(w -> w.getProperty()));
+        filtersGrouped.forEach((field, filterList) -> {
+            FilterArg firstOne = filterList.get(0);
+            Criteria crit = new CriteriaBuilder(firstOne).buildCriteria();
 
-    private Criteria buildCriteria(FilterArg filter) {
-        String field = filter.getProperty();
-        String value = filter.getValue();
-        Criteria criteria = Criteria.where(field);
-        switch (filter.getOpKey()) {
-        case BETWEEN:
-            Matcher rangeMatcher = RANGE_PATTERN.matcher(value);
-            if (rangeMatcher.matches()) {
-                String start = rangeMatcher.group(1);
-                String end = rangeMatcher.group(2);
-                try {
-                    Date from = YEAR_DATE_FORMAT.parse(start);
-                    Date to = YEAR_DATE_FORMAT.parse(end);
-                    criteria.between(from, to, true, false);
-                } catch (ParseException e) {
-                    try {
-                        LocalDate from = DateFormatUtility.parse(start);
-                        LocalDate to = DateFormatUtility.parse(end);
-                        criteria.between(from, to, true, false);
-                    } catch (DateTimeParseException dtpe) {
-                        criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
-                    }
+            // the rest (of that field) are Or'd
+            if (filterList.size() > 1) {
+                for (FilterArg arg : filterList.subList(1, filterList.size())) {
+                    Criteria orCriteria = new CriteriaBuilder(arg).skipTag(true).buildCriteria();
+                    crit = crit.or(orCriteria);
                 }
-            } else {
-                criteria.is(value);
             }
-            break;
-        case CONTAINS:
-            criteria.contains(value);
-            break;
-        case ENDS_WITH:
-            criteria.endsWith(value);
-            break;
-        case EQUALS:
-            criteria.is(value);
-            break;
-        case EXPRESSION:
-            criteria.expression(value);
-            break;
-        case FUZZY:
-            // NOTE: more arguments can be used for fuzzy compare, yet unsupported
-            criteria.fuzzy(value);
-            break;
-        case NOT_EQUALS:
-            criteria.is(value).not();
-            break;
-        case STARTS_WITH:
-            criteria.startsWith(value);
-            break;
-        default:
-            break;
-        }
-        return criteria;
+            SimpleFilterQuery result = new SimpleFilterQuery(crit);
+            results.add(result);
+        });
+        return results;
     }
 
     @Override
     public Class<Individual> type() {
         return Individual.class;
+    }
+
+    public class CriteriaBuilder {
+
+        private FilterArg filter;
+
+        private Boolean skipTag = false; // this has a default
+
+        public CriteriaBuilder(FilterArg filter) {
+            this.filter = filter;
+        }
+
+        public Criteria buildCriteria() {
+            String field = skipTag ? filter.getProperty() : filter.getCommand();
+            String value = filter.getValue();
+            Criteria criteria = Criteria.where(field);
+            switch (filter.getOpKey()) {
+            case BETWEEN:
+                Matcher rangeMatcher = RANGE_PATTERN.matcher(value);
+                if (rangeMatcher.matches()) {
+                    String start = rangeMatcher.group(1);
+                    String end = rangeMatcher.group(2);
+                    // NOTE: if date field, must be ISO format for Solr to recognize
+                    // https://lucene.apache.org/solr/7_5_0/solr-core/org/apache/solr/schema/DatePointField.html
+                    criteria.between(start, end, true, false);
+                } else {
+                    criteria.is(value);
+                }
+                break;
+            case CONTAINS:
+                criteria.contains(value);
+                break;
+            case ENDS_WITH:
+                criteria.endsWith(value);
+                break;
+            case EQUALS:
+                criteria.is(value);
+                break;
+            case EXPRESSION:
+                criteria.expression(value);
+                break;
+            case FUZZY:
+                // NOTE: more arguments can be used for fuzzy compare, yet unsupported
+                criteria.fuzzy(value);
+                break;
+            case NOT_EQUALS:
+                criteria.is(value).not();
+                break;
+            case STARTS_WITH:
+                criteria.startsWith(value);
+                break;
+            case RAW:
+                criteria = new SimpleStringCriteria(String.format("%s:%s", field, value));
+            default:
+                break;
+            }
+            return criteria;
+        }
+
+        public CriteriaBuilder skipTag(Boolean skipTag) {
+            this.skipTag = skipTag;
+            return this;
+        }
+
     }
 
 }

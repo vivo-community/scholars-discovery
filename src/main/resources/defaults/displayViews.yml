@@ -216,6 +216,33 @@
         - name: translator of
           template: "defaults/displayViews/persons/publications/translatorOf.html"
           field: translatorOf
+    - name: Software
+      sections:
+        - name: software
+          paginated: true
+          template: "defaults/displayViews/persons/software/software.html"
+          field: publications
+          filters:
+            - field: type
+              value: ERO_0000071
+          sort:
+            - field: publicationDate
+              direction: DESC
+            - field: title
+              direction: ASC
+    - name: News
+      sections:
+        - name: in the news
+          paginated: true
+          template: "defaults/displayViews/persons/inTheNews/inTheNews.html"
+          field: inTheNews
+          lazyReferences:
+            - inTheNews
+          sort:
+            - field: publicationDate
+              direction: DESC
+            - field: title
+              direction: ASC
     - name: Patents
       sections:
         - name: patents
@@ -331,6 +358,15 @@
           paginated: true
           template: "defaults/displayViews/persons/worksByStudents/chairedThesesAndDissertations.html"
           field: etdChairOf
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
+        - name: advised capstone (non-thesis) project
+          shared: true
+          paginated: true
+          template: "defaults/displayViews/persons/worksByStudents/advisedCapstone.html"
+          field: capstoneAdvisedOf
           sort:
             - field: publicationDate
               direction: DESC
@@ -804,6 +840,9 @@
     - GreyLiterature
     - Patent
     - WorkingPaper
+    - NewsRelease
+    - ERO_0000071
+    - Capstone
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:
@@ -835,6 +874,11 @@
           field: etdChairedBy
           lazyReferences:
             - etdChairedBy
+        - name: capstone (non-thesis) advisor
+          template: "defaults/displayViews/documents/overview/advisor.html"
+          field: advisedBy
+          lazyReferences:
+            - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators
@@ -877,6 +921,12 @@
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
+        - name: altmetric score
+          template: "defaults/displayViews/documents/overview/altmetricScore.html"
+          field: altmetricScore
+        - name: citation count
+          template: "defaults/displayViews/documents/overview/citationCount.html"
+          field: citationCount
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
@@ -1320,6 +1370,7 @@
   types:
     - Concept
     - Award
+    - FutureResearchIdea
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"
@@ -1353,6 +1404,18 @@
           sort:
             - field: recipientName
               direction: ASC
+        - name: idea of
+          template: "defaults/displayViews/concepts/overview/futureResearchIdeaOf.html"
+          field: futureResearchIdeaOf
+        - name: creation date
+          template: "defaults/displayViews/concepts/overview/createdDate.html"
+          field: createdDate
+        - name: description
+          template: "defaults/displayViews/concepts/overview/description.html"
+          field: description
+        - name: keywords
+          template: "defaults/displayViews/concepts/overview/keywords.html"
+          field: keywords
     - name: Identity
       sections:
         - name: same as

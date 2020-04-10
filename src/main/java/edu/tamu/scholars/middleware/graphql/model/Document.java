@@ -29,6 +29,7 @@ import edu.tamu.scholars.middleware.graphql.model.document.Mention;
 import edu.tamu.scholars.middleware.graphql.model.document.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.document.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Receipt;
+import edu.tamu.scholars.middleware.graphql.model.document.AdvisedBy;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
@@ -37,6 +38,8 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.leangen.graphql.annotations.types.GraphQLType;
+import java.lang.Float;
+import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
 
@@ -110,6 +113,8 @@ public class Document extends AbstractNestedDocument {
 
   private List<Receipt> receipts;
 
+  private List<AdvisedBy> advisedBy;
+
   private List<Website> websites;
 
   private List<SameAs> sameAs;
@@ -173,7 +178,7 @@ public class Document extends AbstractNestedDocument {
 
   private String iclCode;
 
-  private String numberOfPages;
+  private Integer numberOfPages;
 
   private String pageStart;
 
@@ -187,6 +192,14 @@ public class Document extends AbstractNestedDocument {
 
   private String isTemplate;
 
+  private Float altmetricScore;
+
+  private Integer citationCount;
+
+  private List<String> tags;
+
+  private String note;
+
   private List<String> type;
 
   private String image;
@@ -194,8 +207,6 @@ public class Document extends AbstractNestedDocument {
   private String thumbnail;
 
   private String modTime;
-
-  private List<String> tags;
 
   @JsonProperty("class")
   private String clazz;
@@ -435,6 +446,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setReceipts(List<Receipt> receipts) {
     this.receipts = receipts;
+  }
+
+  public List<AdvisedBy> getAdvisedBy() {
+    return advisedBy;
+  }
+
+  public void setAdvisedBy(List<AdvisedBy> advisedBy) {
+    this.advisedBy = advisedBy;
   }
 
   public List<Website> getWebsites() {
@@ -685,11 +704,11 @@ public class Document extends AbstractNestedDocument {
     this.iclCode = iclCode;
   }
 
-  public String getNumberOfPages() {
+  public Integer getNumberOfPages() {
     return numberOfPages;
   }
 
-  public void setNumberOfPages(String numberOfPages) {
+  public void setNumberOfPages(Integer numberOfPages) {
     this.numberOfPages = numberOfPages;
   }
 
@@ -741,6 +760,38 @@ public class Document extends AbstractNestedDocument {
     this.isTemplate = isTemplate;
   }
 
+  public Float getAltmetricScore() {
+    return altmetricScore;
+  }
+
+  public void setAltmetricScore(Float altmetricScore) {
+    this.altmetricScore = altmetricScore;
+  }
+
+  public Integer getCitationCount() {
+    return citationCount;
+  }
+
+  public void setCitationCount(Integer citationCount) {
+    this.citationCount = citationCount;
+  }
+
+  public List<String> getTags() {
+    return tags;
+  }
+
+  public void setTags(List<String> tags) {
+    this.tags = tags;
+  }
+
+  public String getNote() {
+    return note;
+  }
+
+  public void setNote(String note) {
+    this.note = note;
+  }
+
   public List<String> getType() {
     return type;
   }
@@ -771,14 +822,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setModTime(String modTime) {
     this.modTime = modTime;
-  }
-
-  public List<String> getTags() {
-    return tags;
-  }
-
-  public void setTags(List<String> tags) {
-    this.tags = tags;
   }
 
   public String getClazz() {

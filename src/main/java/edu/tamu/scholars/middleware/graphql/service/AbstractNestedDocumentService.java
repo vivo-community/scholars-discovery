@@ -206,12 +206,13 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
         FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
         Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
-        facetPage.getFacetFields().forEach(field ->  facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
+
+        facetPage.getFacetFields().forEach(field -> facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
-        
+
         Pageable resultsPaging = facetPage.getPageable();
         SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
-        results.addAllFacetFieldResultPages(facetFieldResults);        
+        results.addAllFacetFieldResultPages(facetFieldResults);
         return results;
     }
 
@@ -303,7 +304,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     protected FilterArg getCollectionFilter() {
-        return FilterArg.of(CLASS, Optional.of(type().getSimpleName()), Optional.of(OpKey.EQUALS.getKey()));
+        return FilterArg.of(CLASS, Optional.of(type().getSimpleName()), Optional.of(OpKey.EQUALS.getKey()), Optional.empty());
     }
 
 }

@@ -5,17 +5,18 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_D
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
@@ -55,8 +56,14 @@ public class TriplestoreHarvester implements Harvester {
 
     private final Class<AbstractIndexDocument> type;
 
+    private final List<TypeOp> propertySourceTypeOps;
+
+    private final List<Field> indexedFields;
+
     public TriplestoreHarvester(Class<AbstractIndexDocument> type) {
         this.type = type;
+        this.propertySourceTypeOps = FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class).stream().map(this::getTypeOp).collect(Collectors.toList());
+        this.indexedFields = FieldUtils.getFieldsListWithAnnotation(type, Indexed.class);
     }
 
     public Flux<AbstractIndexDocument> harvest() {
@@ -107,13 +114,12 @@ public class TriplestoreHarvester implements Harvester {
     }
 
     private void lookupProperties(AbstractIndexDocument document, String subject) {
-        FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class).parallelStream().forEach(field -> {
-            PropertySource source = field.getAnnotation(PropertySource.class);
+        propertySourceTypeOps.parallelStream().forEach(typeOp -> {
+            PropertySource source = typeOp.getPropertySource();
             Model model = queryForModel(source, subject);
-            String property = field.getName();
-            List<String> values = lookupProperty(property, source, model);
+            List<Object> values = lookupProperty(typeOp, source, model);
             try {
-                populate(document, field, values);
+                populate(document, typeOp.getField(), values);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 logger.error(String.format("Unable to populat document %s: %s", name(), parse(subject)));
                 logger.error(String.format("Error: %s", e.getMessage()));
@@ -138,25 +144,26 @@ public class TriplestoreHarvester implements Harvester {
         }
     }
 
-    private List<String> lookupProperty(String property, PropertySource source, Model model) {
-        List<String> values = new ArrayList<String>();
+    private List<Object> lookupProperty(TypeOp typeOp, PropertySource source, Model model) {
+        List<Object> values = new ArrayList<>();
         ResIterator resources = model.listSubjects();
         while (resources.hasNext()) {
             Resource resource = resources.next();
-            values.addAll(queryForProperty(property, source, model, resource));
+            values.addAll(queryForProperty(typeOp, source, model, resource));
         }
         return values;
     }
 
-    private List<String> queryForProperty(String property, PropertySource source, Model model, Resource resource) {
-        List<String> values = new ArrayList<String>();
+    private List<Object> queryForProperty(TypeOp typeOp, PropertySource source, Model model, Resource resource) {
+        List<Object> values = new ArrayList<>();
         StmtIterator statements;
         try {
             statements = resource.listProperties(model.createProperty(source.predicate()));
         } catch (InvalidPropertyURIException exception) {
-            logger.error(String.format("%s lookup by %s", property, source.predicate()));
+            logger.error(String.format("%s lookup by %s", typeOp.getField().getName(), source.predicate()));
             throw exception;
         }
+
         while (statements.hasNext()) {
             Statement statement = statements.next();
             String object = statement.getObject().toString();
@@ -164,18 +171,18 @@ public class TriplestoreHarvester implements Harvester {
             if (value.contains("^^")) {
                 value = value.substring(0, value.indexOf("^^"));
             }
-            if (source.unique() && values.stream().anyMatch(value::equalsIgnoreCase)) {
+            if (source.unique() && values.stream().map(v -> v.toString()).anyMatch(value::equalsIgnoreCase)) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug(String.format("%s has duplicate value %s", property, value));
+                    logger.debug(String.format("%s has duplicate value %s", typeOp.getField().getName(), value));
                 }
             } else {
-                values.add(value);
+                values.add(typeOp.type(value));
             }
         }
         return values;
     }
 
-    private void populate(AbstractIndexDocument document, Field field, List<String> values) throws IllegalArgumentException, IllegalAccessException {
+    private void populate(AbstractIndexDocument document, Field field, List<Object> values) throws IllegalArgumentException, IllegalAccessException {
         if (values.isEmpty()) {
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Could not find values for %s", field.getName()));
@@ -194,10 +201,7 @@ public class TriplestoreHarvester implements Harvester {
     private void lookupSyncIds(AbstractIndexDocument document) {
         Set<String> syncIds = new HashSet<String>();
         syncIds.add(document.getId());
-        FieldUtils.getFieldsListWithAnnotation(type, Indexed.class).stream().filter(field -> {
-            field.setAccessible(true);
-            return !field.getName().equals(ID) && field.getAnnotation(Indexed.class).type().startsWith(NESTED);
-        }).forEach(field -> {
+        indexedFields.stream().filter(this::isNestedField).peek(field -> field.setAccessible(true)).forEach(field -> {
             try {
                 Object value = field.get(document);
                 if (value != null) {
@@ -218,6 +222,10 @@ public class TriplestoreHarvester implements Harvester {
         document.setSyncIds(syncIds);
     }
 
+    private boolean isNestedField(Field field) {
+        return !field.getName().equals(ID) && field.getAnnotation(Indexed.class).type().startsWith(NESTED);
+    }
+
     private void addSyncId(Set<String> syncIds, String value) {
         String[] vParts = value.split(NESTED_DELIMITER);
         for (int i = 1; i < vParts.length; i++) {
@@ -235,6 +243,99 @@ public class TriplestoreHarvester implements Harvester {
 
     private String parse(String uri) {
         return uri.substring(uri.lastIndexOf(uri.contains(HASH_TAG) ? HASH_TAG : FORWARD_SLASH) + 1);
+    }
+
+    private TypeOp getTypeOp(Field field) {
+        if (Collection.class.isAssignableFrom(field.getType())) {
+            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            Class<?> collectionType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            if (String.class.isAssignableFrom(collectionType)) {
+                return new StringOp(field);
+            } else if (Integer.class.isAssignableFrom(collectionType)) {
+                return new IntegerOp(field);
+            } else if (Float.class.isAssignableFrom(collectionType)) {
+                return new FloatOp(field);
+            } else if (Double.class.isAssignableFrom(collectionType)) {
+                return new DoubleOp(field);
+            }
+        } else if (String.class.isAssignableFrom(field.getType())) {
+            return new StringOp(field);
+        } else if (Integer.class.isAssignableFrom(field.getType())) {
+            return new IntegerOp(field);
+        } else if (Float.class.isAssignableFrom(field.getType())) {
+            return new FloatOp(field);
+        } else if (Double.class.isAssignableFrom(field.getType())) {
+            return new DoubleOp(field);
+        }
+        return new StringOp(field);
+    }
+
+    private interface TypeOp {
+        public Object type(String value);
+
+        public Field getField();
+
+        public PropertySource getPropertySource();
+
+    }
+
+    private abstract class AbstractTypeOp implements TypeOp {
+        private final Field field;
+
+        private final PropertySource source;
+
+        public AbstractTypeOp(Field field) {
+            this.field = field;
+            this.source = field.getAnnotation(PropertySource.class);
+        }
+
+        public Field getField() {
+            return field;
+        }
+
+        public PropertySource getPropertySource() {
+            return source;
+        }
+    }
+
+    private class StringOp extends AbstractTypeOp {
+        public StringOp(Field field) {
+            super(field);
+        }
+
+        public Object type(String value) {
+            return value;
+        }
+    }
+
+    private class IntegerOp extends AbstractTypeOp {
+        public IntegerOp(Field field) {
+            super(field);
+        }
+
+        public Object type(String value) {
+            return Integer.parseInt(value);
+        }
+    }
+
+    private class FloatOp extends AbstractTypeOp {
+        public FloatOp(Field field) {
+            super(field);
+        }
+
+        public Object type(String value) {
+            return Float.parseFloat(value);
+        }
+    }
+
+    private class DoubleOp extends AbstractTypeOp {
+        public DoubleOp(Field field) {
+            super(field);
+        }
+
+        public Object type(String value) {
+            return Double.parseDouble(value);
+        }
     }
 
 }
