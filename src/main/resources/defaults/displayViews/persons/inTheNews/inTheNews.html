@@ -1,0 +1,7 @@
+<span><a href="display/{{id}}">{{title}}</a></span>
+{{#if publisher}}
+<span class="badge badge-light">{{publisher.label}}</span>
+{{/if}}
+{{#if publicationDate}}
+<span class="badge badge-light">{{toYear publicationDate}}</span>
+{{/if}}

@@ -4,10 +4,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
@@ -47,7 +47,8 @@ public class Person extends Common {
     private String preferredTitle;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "positionType", key = "type"), @Reference(value = "positionOrganization", key = "organizations") })
+    @NestedObject(properties = { @Reference(value = "positionType", key = "type"),
+            @Reference(value = "positionOrganization", key = "organizations") })
     @PropertySource(template = "person/position", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> positions;
 
@@ -94,7 +95,10 @@ public class Person extends Common {
     private List<String> keywords;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "headOfType", key = "type"), @Reference(value = "headOfOrganization", key = "organization"), @Reference(value = "headOfStartDate", key = "startDate"), @Reference(value = "headOfEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "headOfType", key = "type"),
+            @Reference(value = "headOfOrganization", key = "organization"),
+            @Reference(value = "headOfStartDate", key = "startDate"),
+            @Reference(value = "headOfEndDate", key = "endDate") })
     @PropertySource(template = "person/headOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> headOf;
 
@@ -116,7 +120,10 @@ public class Person extends Common {
     private List<String> headOfEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "memberOfType", key = "type"), @Reference(value = "memberOfOrganization", key = "organization"), @Reference(value = "memberOfStartDate", key = "startDate"), @Reference(value = "memberOfEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "memberOfType", key = "type"),
+            @Reference(value = "memberOfOrganization", key = "organization"),
+            @Reference(value = "memberOfStartDate", key = "startDate"),
+            @Reference(value = "memberOfEndDate", key = "endDate") })
     @PropertySource(template = "person/memberOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> memberOf;
 
@@ -143,7 +150,10 @@ public class Person extends Common {
     private List<String> hasCollaborator;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "clinicalActivityType", key = "type"), @Reference(value = "clinicalActivityRole", key = "role"), @Reference(value = "clinicalActivityStartDate", key = "startDate"), @Reference(value = "clinicalActivityEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "clinicalActivityType", key = "type"),
+            @Reference(value = "clinicalActivityRole", key = "role"),
+            @Reference(value = "clinicalActivityStartDate", key = "startDate"),
+            @Reference(value = "clinicalActivityEndDate", key = "endDate") })
     @PropertySource(template = "person/clinicalActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> clinicalActivities;
 
@@ -164,7 +174,9 @@ public class Person extends Common {
     private List<String> clinicalActivityEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "attendedEventType", key = "type"), @Reference(value = "attendedEventStartDate", key = "startDate"), @Reference(value = "attendedEventEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "attendedEventType", key = "type"),
+            @Reference(value = "attendedEventStartDate", key = "startDate"),
+            @Reference(value = "attendedEventEndDate", key = "endDate") })
     @PropertySource(template = "person/attendedEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> attendedEvents;
 
@@ -181,7 +193,13 @@ public class Person extends Common {
     private List<String> attendedEventEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "educationAndTrainingName", key = "name"), @Reference(value = "educationAndTrainingInfo", key = "info"), @Reference(value = "educationAndTrainingOrganization", key = "organization"), @Reference(value = "educationAndTrainingMajorField", key = "field"), @Reference(value = "educationAndTrainingDegreeAbbreviation", key = "abbreviation"), @Reference(value = "educationAndTrainingStartDate", key = "startDate"), @Reference(value = "educationAndTrainingEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "educationAndTrainingName", key = "name"),
+            @Reference(value = "educationAndTrainingInfo", key = "info"),
+            @Reference(value = "educationAndTrainingOrganization", key = "organization"),
+            @Reference(value = "educationAndTrainingMajorField", key = "field"),
+            @Reference(value = "educationAndTrainingDegreeAbbreviation", key = "abbreviation"),
+            @Reference(value = "educationAndTrainingStartDate", key = "startDate"),
+            @Reference(value = "educationAndTrainingEndDate", key = "endDate") })
     @PropertySource(template = "person/educationAndTraining", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> educationAndTraining;
 
@@ -242,7 +260,10 @@ public class Person extends Common {
     private List<String> awardAndHonorDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "adviseeOfType", key = "type"), @Reference(value = "adviseeOfCandidacy", key = "candidacy"), @Reference(value = "adviseeOfStartDate", key = "startDate"), @Reference(value = "adviseeOfEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "adviseeOfType", key = "type"),
+            @Reference(value = "adviseeOfCandidacy", key = "candidacy"),
+            @Reference(value = "adviseeOfStartDate", key = "startDate"),
+            @Reference(value = "adviseeOfEndDate", key = "endDate") })
     @PropertySource(template = "person/adviseeOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> adviseeOf;
 
@@ -263,7 +284,10 @@ public class Person extends Common {
     private List<String> adviseeOfEndDate;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue"), @Reference(value = "selectedPublicationDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"),
+            @Reference(value = "selectedPublicationPublisher", key = "publisher"),
+            @Reference(value = "selectedPublicationVenue", key = "venue"),
+            @Reference(value = "selectedPublicationDate", key = "date") })
     @PropertySource(template = "person/selectedPublication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
@@ -289,7 +313,10 @@ public class Person extends Common {
     private List<String> selectedPublicationDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "collectionOrSeriesEditorForType", key = "type"), @Reference(value = "collectionOrSeriesEditorForRole", key = "role"), @Reference(value = "collectionOrSeriesEditorForStartDate", key = "startDate"), @Reference(value = "collectionOrSeriesEditorForEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "collectionOrSeriesEditorForType", key = "type"),
+            @Reference(value = "collectionOrSeriesEditorForRole", key = "role"),
+            @Reference(value = "collectionOrSeriesEditorForStartDate", key = "startDate"),
+            @Reference(value = "collectionOrSeriesEditorForEndDate", key = "endDate") })
     @PropertySource(template = "person/collectionOrSeriesEditorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> collectionOrSeriesEditorFor;
 
@@ -310,7 +337,11 @@ public class Person extends Common {
     private List<String> collectionOrSeriesEditorForEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "editorOfType", key = "type"), @Reference(value = "editorOfPublisher", key = "publisher"), @Reference(value = "editorOfFullAuthorList", key = "authors"), @Reference(value = "editorOfPageStart", key = "pageStart"), @Reference(value = "editorOfPageEnd", key = "pageEnd"), @Reference(value = "editorOfDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "editorOfType", key = "type"),
+            @Reference(value = "editorOfPublisher", key = "publisher"),
+            @Reference(value = "editorOfFullAuthorList", key = "authors"),
+            @Reference(value = "editorOfPageStart", key = "pageStart"),
+            @Reference(value = "editorOfPageEnd", key = "pageEnd"), @Reference(value = "editorOfDate", key = "date") })
     @PropertySource(template = "person/editorOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editorOf;
 
@@ -339,7 +370,11 @@ public class Person extends Common {
     private List<String> editorOfDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "presentationType", key = "type"), @Reference(value = "presentationRole", key = "role"), @Reference(value = "presentationEvent", key = "event"), @Reference(value = "presentationStartDate", key = "startDate"), @Reference(value = "presentationEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "presentationType", key = "type"),
+            @Reference(value = "presentationRole", key = "role"),
+            @Reference(value = "presentationEvent", key = "event"),
+            @Reference(value = "presentationStartDate", key = "startDate"),
+            @Reference(value = "presentationEndDate", key = "endDate") })
     @PropertySource(template = "person/presentation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentations;
 
@@ -364,7 +399,8 @@ public class Person extends Common {
     private List<String> presentationEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "featuredInType", key = "type"), @Reference(value = "featuredInDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "featuredInType", key = "type"),
+            @Reference(value = "featuredInDate", key = "date") })
     @PropertySource(template = "person/featuredIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> featuredIn;
 
@@ -377,7 +413,8 @@ public class Person extends Common {
     private List<String> featuredInDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "assigneeForPatentType", key = "type"), @Reference(value = "assigneeForPatentDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "assigneeForPatentType", key = "type"),
+            @Reference(value = "assigneeForPatentDate", key = "date") })
     @PropertySource(template = "person/assigneeForPatent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assigneeForPatent;
 
@@ -390,7 +427,8 @@ public class Person extends Common {
     private List<String> assigneeForPatentDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "translatorOfType", key = "type"), @Reference(value = "translatorOfDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "translatorOfType", key = "type"),
+            @Reference(value = "translatorOfDate", key = "date") })
     @PropertySource(template = "person/translatorOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translatorOf;
 
@@ -415,12 +453,16 @@ public class Person extends Common {
     private List<String> coPrincipalInvestigatorOn;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "researcherOnAwardedBy", key = "awardedBy"), @Reference(value = "researcherOnRole", key = "role"), @Reference(value = "researcherOnStartDate", key = "startDate"), @Reference(value = "researcherOnEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "researcherOnAwardedBy", key = "awardedBy"),
+            @Reference(value = "researcherOnRole", key = "role"),
+            @Reference(value = "researcherOnStartDate", key = "startDate"),
+            @Reference(value = "researcherOnEndDate", key = "endDate") })
     @PropertySource(template = "person/researcherOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researcherOn;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(root = false, properties = { @Reference(value = "researcherOnAwardedByPreferredLabel", key = "preferredLabel") })
+    @NestedObject(root = false, properties = {
+            @Reference(value = "researcherOnAwardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "person/researcherOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researcherOnAwardedBy;
 
@@ -441,7 +483,9 @@ public class Person extends Common {
     private List<String> researcherOnEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "otherResearchActivityRole", key = "role"), @Reference(value = "otherResearchActivityStartDate", key = "startDate"), @Reference(value = "otherResearchActivityEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "otherResearchActivityRole", key = "role"),
+            @Reference(value = "otherResearchActivityStartDate", key = "startDate"),
+            @Reference(value = "otherResearchActivityEndDate", key = "endDate") })
     @PropertySource(template = "person/otherResearchActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> otherResearchActivities;
 
@@ -471,7 +515,10 @@ public class Person extends Common {
     private List<String> teachingActivityRole;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "adviseeType", key = "type"), @Reference(value = "adviseeCandidacy", key = "candidacy"), @Reference(value = "adviseeStartDate", key = "startDate"), @Reference(value = "adviseeEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "adviseeType", key = "type"),
+            @Reference(value = "adviseeCandidacy", key = "candidacy"),
+            @Reference(value = "adviseeStartDate", key = "startDate"),
+            @Reference(value = "adviseeEndDate", key = "endDate") })
     @PropertySource(template = "person/advisee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> advisee;
 
@@ -496,7 +543,9 @@ public class Person extends Common {
     private String outreachOverview;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "reviewerOfType", key = "type"), @Reference(value = "reviewerOfStartDate", key = "startDate"), @Reference(value = "reviewerOfEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "reviewerOfType", key = "type"),
+            @Reference(value = "reviewerOfStartDate", key = "startDate"),
+            @Reference(value = "reviewerOfEndDate", key = "endDate") })
     @PropertySource(template = "person/reviewerOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> reviewerOf;
 
@@ -522,7 +571,9 @@ public class Person extends Common {
     private List<String> contactOrProvidorForServiceType;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "organizerOfEventType", key = "type"), @Reference(value = "organizerOfEventStartDate", key = "startDate"), @Reference(value = "organizerOfEventEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "organizerOfEventType", key = "type"),
+            @Reference(value = "organizerOfEventStartDate", key = "startDate"),
+            @Reference(value = "organizerOfEventEndDate", key = "endDate") })
     @PropertySource(template = "person/organizerOfEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> organizerOfEvent;
 
@@ -539,7 +590,10 @@ public class Person extends Common {
     private List<String> organizerOfEventEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "professionalServiceActivityType", key = "type"), @Reference(value = "professionalServiceActivityRole", key = "role"), @Reference(value = "professionalServiceActivityStartDate", key = "startDate"), @Reference(value = "professionalServiceActivityEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "professionalServiceActivityType", key = "type"),
+            @Reference(value = "professionalServiceActivityRole", key = "role"),
+            @Reference(value = "professionalServiceActivityStartDate", key = "startDate"),
+            @Reference(value = "professionalServiceActivityEndDate", key = "endDate") })
     @PropertySource(template = "person/professionalServiceActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> professionalServiceActivities;
 
@@ -560,7 +614,10 @@ public class Person extends Common {
     private List<String> professionalServiceActivityEndDate;
 
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "outreachAndCommunityServiceActivityType", key = "type"), @Reference(value = "outreachAndCommunityServiceActivityRole", key = "role"), @Reference(value = "outreachAndCommunityServiceActivityStartDate", key = "startDate"), @Reference(value = "outreachAndCommunityServiceActivityEndDate", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "outreachAndCommunityServiceActivityType", key = "type"),
+            @Reference(value = "outreachAndCommunityServiceActivityRole", key = "role"),
+            @Reference(value = "outreachAndCommunityServiceActivityStartDate", key = "startDate"),
+            @Reference(value = "outreachAndCommunityServiceActivityEndDate", key = "endDate") })
     @PropertySource(template = "person/outreachAndCommunityServiceActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outreachAndCommunityServiceActivities;
 
@@ -690,7 +747,8 @@ public class Person extends Common {
     @PropertySource(template = "person/fax", predicate = "http://www.w3.org/2006/vcard/ns#fax")
     private String fax;
 
-    @NestedObject(properties = { @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key = "publicationDate") })
+    @NestedObject(properties = { @Reference(value = "etdChairOfURL", key = "url"),
+            @Reference(value = "etdChairOfPublicationDate", key = "publicationDate") })
     @Indexed(type = "nested_strings")
     @PropertySource(template = "person/etdChairOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairOf;
@@ -714,6 +772,16 @@ public class Person extends Common {
     @Indexed(type = "whole_strings")
     @PropertySource(template = "person/school", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> schools;
+
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/inTheNews", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> inTheNews;
+
+    @NestedObject
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/futureResearchIdeas", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> futureResearchIdeas;
 
     public Person() {
 
@@ -1747,7 +1815,8 @@ public class Person extends Common {
         return outreachAndCommunityServiceActivityStartDate;
     }
 
-    public void setOutreachAndCommunityServiceActivityStartDate(List<String> outreachAndCommunityServiceActivityStartDate) {
+    public void setOutreachAndCommunityServiceActivityStartDate(
+            List<String> outreachAndCommunityServiceActivityStartDate) {
         this.outreachAndCommunityServiceActivityStartDate = outreachAndCommunityServiceActivityStartDate;
     }
 
@@ -2021,6 +2090,22 @@ public class Person extends Common {
 
     public void setSchools(List<String> schools) {
         this.schools = schools;
+    }
+
+    public List<String> getInTheNews() {
+        return inTheNews;
+    }
+
+    public void setInTheNews(List<String> inTheNews) {
+        this.inTheNews = inTheNews;
+    }
+
+    public List<String> getFutureResearchIdeas() {
+        return futureResearchIdeas;
+    }
+
+    public void setFutureResearchIdeas(List<String> futureResearchIdeas) {
+        this.futureResearchIdeas = futureResearchIdeas;
     }
 
 }

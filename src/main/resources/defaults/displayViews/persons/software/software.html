@@ -1,37 +1,12 @@
 <div>
   <span>{{authorList}}</span>
+  <span><a href="display/{{id}}">{{title}}</a></span>
+  {{#if note}}
+  <span> - <em>{{note}}</em></span>
+  {{/if}}
+
   {{#if publicationDate}}
-  <span>({{toYear publicationDate}}).</span>
-  {{/if}}
-  <span>
-    <a href="display/{{id}}"><u>{{{title}}}</u>.</a>
-  </span>
-
-  {{#if publicationVenue}}
-  <span><em>{{publicationVenue.label}}</em>. </span>
-  {{/if}}
-
-  {{#if editorList}}
-  <span>{{editorList}} (Eds.),</span>
-  {{/if}}
-  {{#if bookTitle}}
-  <span>{{bookTitle}}.</span>
-  {{/if}}
-
-  {{#if pageStart}}
-  {{#if pageEnd}}
-  <span>(pp. {{pageStart}}-{{pageEnd}}).</span>
-  {{else}}
-  <span>(pp. {{pageStart}}).</span>
-  {{/if}}
-  {{else}}
-  {{#if pageEnd}}
-  <span>(pp. {{pageEnd}}).</span>
-  {{/if}}
-  {{/if}}
-
-  {{#if publisher}}
-  <span>{{publisher.label}}.</span>
+  <span class="badge badge-light">{{toYear publicationDate}}</span>
   {{/if}}
 
 </div>
@@ -64,12 +39,6 @@
 
   {{#if doi}}
   <span class="__dimensions_badge_embed__ m-1" data-hide-zero-citations="true" data-style="small_rectangle" data-legend="hover-top" data-doi="{{doi}}"></span>
-  {{/if}}
-
-  {{#if tags}}
-    {{#each tags}}
-    <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light">{{this}}</span>
-    {{/each}}
   {{/if}}
 </div>
 <style>

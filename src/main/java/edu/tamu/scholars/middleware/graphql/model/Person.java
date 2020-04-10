@@ -32,6 +32,8 @@ import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunitySer
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
+import edu.tamu.scholars.middleware.graphql.model.person.InTheNew;
+import edu.tamu.scholars.middleware.graphql.model.person.FutureResearchIdea;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
@@ -118,6 +120,10 @@ public class Person extends AbstractNestedDocument {
   private List<HasExpertiseInTechnique> hasExpertiseInTechnique;
 
   private List<EtdChairOf> etdChairOf;
+
+  private List<InTheNew> inTheNews;
+
+  private List<FutureResearchIdea> futureResearchIdeas;
 
   private List<Website> websites;
 
@@ -477,6 +483,22 @@ public class Person extends AbstractNestedDocument {
 
   public void setEtdChairOf(List<EtdChairOf> etdChairOf) {
     this.etdChairOf = etdChairOf;
+  }
+
+  public List<InTheNew> getInTheNews() {
+    return inTheNews;
+  }
+
+  public void setInTheNews(List<InTheNew> inTheNews) {
+    this.inTheNews = inTheNews;
+  }
+
+  public List<FutureResearchIdea> getFutureResearchIdeas() {
+    return futureResearchIdeas;
+  }
+
+  public void setFutureResearchIdeas(List<FutureResearchIdea> futureResearchIdeas) {
+    this.futureResearchIdeas = futureResearchIdeas;
   }
 
   public List<Website> getWebsites() {

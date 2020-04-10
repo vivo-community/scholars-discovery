@@ -216,6 +216,33 @@
         - name: translator of
           template: "defaults/displayViews/persons/publications/translatorOf.html"
           field: translatorOf
+    - name: Software
+      sections:
+        - name: software
+          paginated: true
+          template: "defaults/displayViews/persons/software/software.html"
+          field: publications
+          filters:
+            - field: type
+              value: ERO_0000071
+          sort:
+            - field: publicationDate
+              direction: DESC
+            - field: title
+              direction: ASC
+    - name: News
+      sections:
+        - name: in the news
+          paginated: true
+          template: "defaults/displayViews/persons/inTheNews/inTheNews.html"
+          field: inTheNews
+          lazyReferences:
+            - inTheNews
+          sort:
+            - field: publicationDate
+              direction: DESC
+            - field: title
+              direction: ASC
     - name: Patents
       sections:
         - name: patents
@@ -804,6 +831,8 @@
     - GreyLiterature
     - Patent
     - WorkingPaper
+    - NewsRelease
+    - ERO_0000071
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:
@@ -877,6 +906,12 @@
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
+        - name: altmetric score
+          template: "defaults/displayViews/documents/overview/altmetricScore.html"
+          field: altmetricScore
+        - name: citation count
+          template: "defaults/displayViews/documents/overview/citationCount.html"
+          field: citationCount
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
@@ -981,6 +1016,9 @@
         - name: date/time value
           template: "defaults/displayViews/documents/other/dateTimeValue.html"
           field: dateTimeValue
+        - name: tags
+          template: "defaults/displayViews/documents/other/tags.html"
+          field: tags
 
 - name: Relationships
   types:
@@ -1317,6 +1355,7 @@
   types:
     - Concept
     - Award
+    - FutureResearchIdea
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"
@@ -1350,6 +1389,18 @@
           sort:
             - field: recipientName
               direction: ASC
+        - name: idea of
+          template: "defaults/displayViews/concepts/overview/futureResearchIdeaOf.html"
+          field: futureResearchIdeaOf
+        - name: creation date
+          template: "defaults/displayViews/concepts/overview/createdDate.html"
+          field: createdDate
+        - name: description
+          template: "defaults/displayViews/concepts/overview/description.html"
+          field: description
+        - name: keywords
+          template: "defaults/displayViews/concepts/overview/keywords.html"
+          field: keywords
     - name: Identity
       sections:
         - name: same as

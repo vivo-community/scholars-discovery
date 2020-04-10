@@ -4,12 +4,12 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
@@ -350,7 +350,7 @@ public class Document extends Common {
     @PropertySource(template = "document/issue", predicate = "http://purl.org/ontology/bibo/issue")
     private String issue;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "sorting_string")
     @PropertySource(template = "document/placeOfPublication", predicate = "http://vivoweb.org/ontology/core#placeOfPublication")
     private String placeOfPublication;
 
@@ -430,6 +430,22 @@ public class Document extends Common {
     @Indexed(type = "nested_strings")
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
+
+    @Indexed(type = "pfloat")
+    @PropertySource(template = "document/altmetricScore", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#AltmetricScore")
+    private Float altmetricScore;
+
+    @Indexed(type = "pint")
+    @PropertySource(template = "document/citationCount", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#CitationCount")
+    private Integer citationCount;
+
+    @Indexed(type = "whole_strings")
+    @PropertySource(template = "document/tag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
+    private List<String> tags;
+
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "document/note", predicate = "http://www.w3.org/2006/vcard/ns#note")
+    private String note;
 
     public Document() {
 
@@ -1177,6 +1193,38 @@ public class Document extends Common {
 
     public void setReceipts(List<String> receipts) {
         this.receipts = receipts;
+    }
+
+    public Float getAltmetricScore() {
+        return altmetricScore;
+    }
+
+    public void setAltmetricScore(Float altmetricScore) {
+        this.altmetricScore = altmetricScore;
+    }
+
+    public Integer getCitationCount() {
+        return citationCount;
+    }
+
+    public void setCitationCount(Integer citationCount) {
+        this.citationCount = citationCount;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
 }
