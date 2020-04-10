@@ -10,7 +10,8 @@ public enum OpKey {
     EXPRESSION("EXPRESSION"),
     FUZZY("FUZZY"),
     NOT_EQUALS("NOT_EQUALS"),
-    STARTS_WITH("STARTS_WITH");
+    STARTS_WITH("STARTS_WITH"),
+    RAW("RAW");
     // @formatter:on
 
     private final String key;
