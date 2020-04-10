@@ -34,6 +34,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
 import edu.tamu.scholars.middleware.graphql.model.person.InTheNew;
 import edu.tamu.scholars.middleware.graphql.model.person.FutureResearchIdea;
+import edu.tamu.scholars.middleware.graphql.model.person.CapstoneAdvisedOf;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
@@ -124,6 +125,8 @@ public class Person extends AbstractNestedDocument {
   private List<InTheNew> inTheNews;
 
   private List<FutureResearchIdea> futureResearchIdeas;
+
+  private List<CapstoneAdvisedOf> capstoneAdvisedOf;
 
   private List<Website> websites;
 
@@ -499,6 +502,14 @@ public class Person extends AbstractNestedDocument {
 
   public void setFutureResearchIdeas(List<FutureResearchIdea> futureResearchIdeas) {
     this.futureResearchIdeas = futureResearchIdeas;
+  }
+
+  public List<CapstoneAdvisedOf> getCapstoneAdvisedOf() {
+    return capstoneAdvisedOf;
+  }
+
+  public void setCapstoneAdvisedOf(List<CapstoneAdvisedOf> capstoneAdvisedOf) {
+    this.capstoneAdvisedOf = capstoneAdvisedOf;
   }
 
   public List<Website> getWebsites() {

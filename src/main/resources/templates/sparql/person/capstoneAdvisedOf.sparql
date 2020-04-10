@@ -1,0 +1,10 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+CONSTRUCT {
+    ?document rdfs:label ?titleWithId .
+} WHERE {
+    <{{uri}}> tamu:CapstoneAdvisedOf ?document .
+    ?document rdfs:label ?title .
+    BIND( CONCAT( STR(?title), REPLACE(STR(?document), "(^.*/)", "::") ) AS ?titleWithId )
+}

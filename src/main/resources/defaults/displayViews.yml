@@ -362,6 +362,15 @@
             - field: publicationDate
               direction: DESC
               date: true
+        - name: advised capstone (non-thesis) project
+          shared: true
+          paginated: true
+          template: "defaults/displayViews/persons/worksByStudents/advisedCapstone.html"
+          field: capstoneAdvisedOf
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
     - name: Service
       sections:
         - name: outreach overview
@@ -833,6 +842,7 @@
     - WorkingPaper
     - NewsRelease
     - ERO_0000071
+    - Capstone
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:
@@ -864,6 +874,11 @@
           field: etdChairedBy
           lazyReferences:
             - etdChairedBy
+        - name: capstone (non-thesis) advisor
+          template: "defaults/displayViews/documents/overview/advisor.html"
+          field: advisedBy
+          lazyReferences:
+            - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators
