@@ -220,59 +220,59 @@ public class Document extends Common {
     @PropertySource(template = "document/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/eanucc13", predicate = "http://purl.org/ontology/bibo/eanucc13")
     private String eanucc13;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/nihmsid", predicate = "http://vivoweb.org/ontology/core#nihmsid")
     private String nihmsid;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/pmcid", predicate = "http://vivoweb.org/ontology/core#pmcid")
     private String pmcid;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/identifier", predicate = "http://purl.org/ontology/bibo/identifier")
     private String identifier;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/patentNumber", predicate = "http://vivoweb.org/ontology/core#patentNumber")
     private String patentNumber;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/doi", predicate = "http://purl.org/ontology/bibo/doi")
     private String doi;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/oclcnum", predicate = "http://purl.org/ontology/bibo/oclcnum")
     private String oclcnum;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/isbn10", predicate = "http://purl.org/ontology/bibo/isbn10")
     private String isbn10;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/isbn13", predicate = "http://purl.org/ontology/bibo/isbn13")
     private String isbn13;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/pmid", predicate = "http://purl.org/ontology/bibo/pmid")
     private String pmid;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/lccn", predicate = "http://purl.org/ontology/bibo/lccn")
     private String lccn;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/issn", predicate = "http://purl.org/ontology/bibo/issn")
     private String issn;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/eissn", predicate = "http://purl.org/ontology/bibo/eissn")
     private String eissn;
 
-    @Indexed(type = "whole_strings", searchable = false)
+    @Indexed(type = "whole_strings")
     @PropertySource(template = "document/uri", predicate = "http://purl.org/ontology/bibo/uri")
     private String uri;
 

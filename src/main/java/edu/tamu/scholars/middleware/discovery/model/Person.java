@@ -38,7 +38,7 @@ public class Person extends Common {
     @PropertySource(template = "person/phone", predicate = "http://www.w3.org/2006/vcard/ns#telephone")
     private String phone;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/orcidId", predicate = "http://vivoweb.org/ontology/core#orcidId", parse = true)
     private String orcidId;
 
@@ -51,7 +51,7 @@ public class Person extends Common {
     @PropertySource(template = "person/position", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> positions;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "person/positionType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> positionType;
 
@@ -267,7 +267,7 @@ public class Person extends Common {
     @PropertySource(template = "person/selectedPublication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "person/selectedPublicationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> selectedPublicationType;
 
@@ -280,7 +280,7 @@ public class Person extends Common {
     @PropertySource(template = "person/selectedPublicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> selectedPublicationVenue;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "person/selectedPublicationVenueType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> selectedPublicationVenueType;
 
@@ -626,23 +626,23 @@ public class Person extends Common {
     @PropertySource(template = "person/youtube", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#youtube")
     private String youtube;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/eraCommonsId", predicate = "http://vivoweb.org/ontology/core#eRACommonsId")
     private String eraCommonsId;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/isiResearcherId", predicate = "http://vivoweb.org/ontology/core#researcherId")
     private String isiResearcherId;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/scopusId", predicate = "http://vivoweb.org/ontology/core#scopusId")
     private String scopusId;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/healthCareProviderId", predicate = "http://purl.obolibrary.org/obo/ARG_0000197")
     private String healthCareProviderId;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/email", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private String email;
 

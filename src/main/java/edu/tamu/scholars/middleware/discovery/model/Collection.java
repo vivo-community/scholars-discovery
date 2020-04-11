@@ -133,19 +133,19 @@ public class Collection extends Common {
     @PropertySource(template = "collection/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "collection/issn", predicate = "http://purl.org/ontology/bibo/issn")
     private String issn;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "collection/eissn", predicate = "http://purl.org/ontology/bibo/eissn")
     private String eissn;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "collection/doi", predicate = "http://purl.org/ontology/bibo/doi")
     private String doi;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "collection/oclcnum", predicate = "http://purl.org/ontology/bibo/oclcnum")
     private String oclcnum;
 
