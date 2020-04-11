@@ -38,34 +38,34 @@ public class Organization extends Common {
     @PropertySource(template = "organization/abbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private String abbreviation;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "pdate", searchable = false)
     @PropertySource(template = "organization/date", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String date;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "sponsorsAwardOrHonorType", key = "type") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/sponsorsAwardOrHonor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sponsorsAwardOrHonor;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/sponsorsAwardOrHonorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> sponsorsAwardOrHonorType;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "awardOrHonorGivenDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/awardOrHonorGiven", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorGiven;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/awardOrHonorGivenDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> awardOrHonorGivenDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "awardOrHonorReceivedDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/awardOrHonorReceived", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorReceived;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/awardOrHonorReceivedDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> awardOrHonorReceivedDate;
 
@@ -73,34 +73,34 @@ public class Organization extends Common {
     @PropertySource(template = "organization/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "organizationForTrainingTrainee", key = "trainee"), @Reference(value = "organizationForTrainingDegree", key = "degree"), @Reference(value = "organizationForTrainingStartDate", key = "startDate"), @Reference(value = "organizationForTrainingEndDate", key = "endDate") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/organizationForTraining", predicate = "http://vivoweb.org/ontology/core#majorField")
     private List<String> organizationForTraining;
 
     @NestedObject(root = false)
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/organizationForTrainingTrainee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> organizationForTrainingTrainee;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/organizationForTrainingDegree", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private List<String> organizationForTrainingDegree;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/organizationForTrainingStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> organizationForTrainingStartDate;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/organizationForTrainingEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> organizationForTrainingEndDate;
 
-    @NestedObject(properties = { @Reference(value = "peopleType", key = "type"), @Reference(value = "peopleTitle", key = "title") })
     @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "peopleType", key = "type"), @Reference(value = "peopleTitle", key = "title") })
     @PropertySource(template = "organization/people", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> people;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/peopleType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> peopleType;
 
@@ -109,7 +109,7 @@ public class Organization extends Common {
     private List<String> peopleTitle;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/hasSubOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasSubOrganizations;
 
@@ -119,166 +119,166 @@ public class Organization extends Common {
     private List<String> organizationWithin;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/leadOrganizationOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> leadOrganizationOf;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/hasCollaboratingOrganizationOrGroup", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasCollaboratingOrganizationOrGroup;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/hasAffiliatedOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasAffiliatedOrganizations;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/memberOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> memberOf;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/clinicalActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> clinicalActivities;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "convenerOfEventDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/convenerOfEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> convenerOfEvents;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/convenerOfEventDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> convenerOfEventDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "attendedEventDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/attendedEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> attendedEvents;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/attendedEventDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> attendedEventDate;
 
-    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "date") })
     @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "date") })
     @PropertySource(template = "organization/selectedPublication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/selectedPublicationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> selectedPublicationType;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/selectedPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> selectedPublicationDate;
 
-    @NestedObject(properties = { @Reference(value = "publisherOfType", key = "type"), @Reference(value = "publisherOfDate", key = "date") })
     @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "publisherOfType", key = "type"), @Reference(value = "publisherOfDate", key = "date") })
     @PropertySource(template = "organization/publisherOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> publisherOf;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/publisherOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> publisherOfType;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/publisherOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> publisherOfDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "presentationEvent", key = "event"), @Reference(value = "presentationDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/presentation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentations;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/presentationEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentationEvent;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/presentationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> presentationDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "featuredInType", key = "type"), @Reference(value = "featuredInDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/featuredIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> featuredIn;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/featuredInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> featuredInType;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/featuredInDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> featuredInDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "assigneeForPatentDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/assigneeForPatent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assigneeForPatent;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/assigneeForPatentDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> assigneeForPatentDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "translatorOfType", key = "type"), @Reference(value = "translatorOfDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/translatorOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translatorOf;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/translatorOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> translatorOfType;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/translatorOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> translatorOfDate;
 
-    @NestedObject(properties = { @Reference(value = "awardsGrantDate", key = "date") })
     @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "awardsGrantDate", key = "date") })
     @PropertySource(template = "organization/awardsGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardsGrant;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/awardsGrantDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> awardsGrantDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "administersGrantDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/administersGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> administersGrant;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/administersGrantDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> administersGrantDate;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "subcontractsGrantDate", key = "date") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "organization/subcontractsGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subcontractsGrant;
 
-    @Indexed(type = "nested_dates")
+    @Indexed(type = "nested_dates", searchable = false)
     @PropertySource(template = "organization/subcontractsGrantDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> subcontractsGrantDate;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/performsHumanStudy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> performsHumanStudy;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/contractOrProviderForService", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contractOrProviderForService;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/outreachAndCommunityServiceActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outreachAndCommunityServiceActivities;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/hasEquipment", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasEquipment;
 
@@ -287,68 +287,68 @@ public class Organization extends Common {
     @PropertySource(template = "organization/offersCourse", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> courses;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/orgId", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#OrgID")
     private String orgId;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/phone", predicate = "http://www.w3.org/2006/vcard/ns#telephone")
     private String phone;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/fax", predicate = "http://www.w3.org/2006/vcard/ns#fax")
     private String fax;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/emailAddress", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private String emailAddress;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/streetAddress", predicate = "organization.streetAddress")
     private String streetAddress;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/locality", predicate = "organization.locality")
     private String locality;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/region", predicate = "organization.region")
     private String region;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/postalCode", predicate = "organization.postalCode")
     private String postalCode;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/country", predicate = "organization.country")
     private String country;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/geographicLocation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String geographicLocation;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/locatedAtFacility", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> locatedAtFacilities;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/predecessorOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> predecessorOrganizations;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/successorOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> successorOrganizations;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/governingAuthorityFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> governingAuthorityFor;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "organization/affiliatedResearchArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> affiliatedResearchAreas;
 

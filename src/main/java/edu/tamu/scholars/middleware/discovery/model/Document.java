@@ -34,36 +34,36 @@ public class Document extends Common {
     @PropertySource(template = "document/abstract", predicate = "http://purl.org/ontology/bibo/abstract")
     private String abstractText;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "document/abbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private String abbreviation;
 
-    @NestedObject(properties = { @Reference(value = "publicationVenueType", key = "type") })
     @Indexed(type = "nested_string", copyTo = "_text_")
+    @NestedObject(properties = { @Reference(value = "publicationVenueType", key = "type") })
     @PropertySource(template = "document/publicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publicationVenue;
 
-    @Indexed(type = "nested_string")
+    @Indexed(type = "nested_string", searchable = false)
     @PropertySource(template = "document/publicationVenueType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private String publicationVenueType;
 
     @NestedObject
-    @Indexed(type = "nested_string")
+    @Indexed(type = "nested_string", searchable = false)
     @PropertySource(template = "document/hasPublicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String hasPublicationVenueFor;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "etdChairedByEmail", key = "email"), @Reference(value = "etdChairedByOrganization", key = "organization") })
     @PropertySource(template = "document/etdChairedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairedBy;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/etdChairedByEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private List<String> etdChairedByEmail;
 
     @NestedMultiValuedProperty
     @NestedObject(root = false)
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/etdChairedByOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairedByOrganization;
 
@@ -90,20 +90,20 @@ public class Document extends Common {
     @PropertySource(template = "document/authorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullAuthorList")
     private List<String> authorList;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "editorType", key = "type"), @Reference(value = "editorRank", key = "rank") })
     @PropertySource(template = "document/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/editorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> editorType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/editorRank", predicate = "http://vivoweb.org/ontology/core#rank")
     private List<String> editorRank;
 
-    @Indexed(type = "whole_strings")
+    @Indexed(type = "whole_strings", searchable = false)
     @PropertySource(template = "document/editorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullEditorList")
     private List<String> editorList;
 
@@ -111,16 +111,16 @@ public class Document extends Common {
     @PropertySource(template = "document/bookTitle", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#bookTitleForChapter")
     private String bookTitle;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "translatorType", key = "type") })
     @PropertySource(template = "document/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translators;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/translatorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> translatorType;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/status", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String status;
 
@@ -137,11 +137,11 @@ public class Document extends Common {
     @PropertySource(template = "document/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private String publisherType;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "pdate", searchable = false)
     @PropertySource(template = "document/dateFiled", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateFiled;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "pdate", searchable = false)
     @PropertySource(template = "document/dateIssued", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateIssued;
 
@@ -150,69 +150,69 @@ public class Document extends Common {
     @PropertySource(template = "document/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
-    @Indexed(type = "whole_strings")
+    @Indexed(type = "whole_strings", searchable = false)
     @PropertySource(template = "document/hasRestriction", predicate = "http://purl.obolibrary.org/obo/ERO_0000045")
     private List<String> restrictions;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "documentPartType", key = "type") })
     @PropertySource(template = "document/documentPart", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> documentParts;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/documentPartType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> documentPartType;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/chapter", predicate = "http://purl.org/ontology/bibo/chapter")
     private String chapter;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "featureType", key = "type") })
     @PropertySource(template = "document/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> features;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/featureType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> featureType;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/edition", predicate = "http://purl.org/ontology/bibo/edition")
     private String edition;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "document/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/geographicFocusType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> geographicFocusType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "documentationForProjectOrResourceType", key = "type") })
     @PropertySource(template = "document/documentationForProjectOrResource", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> documentationForProjectOrResource;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/documentationForProjectOrResourceType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> documentationForProjectOrResourceType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "outputOfProcessOrEventType", key = "type") })
     @PropertySource(template = "document/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/outputOfProcessOrEventType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> outputOfProcessOrEventType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "presentedAtType", key = "type") })
     @PropertySource(template = "document/presentedAt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentedAt;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/presentedAtType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> presentedAtType;
 
@@ -220,113 +220,113 @@ public class Document extends Common {
     @PropertySource(template = "document/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/eanucc13", predicate = "http://purl.org/ontology/bibo/eanucc13")
     private String eanucc13;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/nihmsid", predicate = "http://vivoweb.org/ontology/core#nihmsid")
     private String nihmsid;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/pmcid", predicate = "http://vivoweb.org/ontology/core#pmcid")
     private String pmcid;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/identifier", predicate = "http://purl.org/ontology/bibo/identifier")
     private String identifier;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/patentNumber", predicate = "http://vivoweb.org/ontology/core#patentNumber")
     private String patentNumber;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/doi", predicate = "http://purl.org/ontology/bibo/doi")
     private String doi;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/oclcnum", predicate = "http://purl.org/ontology/bibo/oclcnum")
     private String oclcnum;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/isbn10", predicate = "http://purl.org/ontology/bibo/isbn10")
     private String isbn10;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/isbn13", predicate = "http://purl.org/ontology/bibo/isbn13")
     private String isbn13;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/pmid", predicate = "http://purl.org/ontology/bibo/pmid")
     private String pmid;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/lccn", predicate = "http://purl.org/ontology/bibo/lccn")
     private String lccn;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/issn", predicate = "http://purl.org/ontology/bibo/issn")
     private String issn;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/eissn", predicate = "http://purl.org/ontology/bibo/eissn")
     private String eissn;
 
-    @Indexed(type = "whole_strings")
+    @Indexed(type = "whole_strings", searchable = false)
     @PropertySource(template = "document/uri", predicate = "http://purl.org/ontology/bibo/uri")
     private String uri;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "citedByType", key = "type") })
     @PropertySource(template = "document/citedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> citedBy;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/citedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> citedByType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "citationType", key = "type") })
     @PropertySource(template = "document/citation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> citations;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/citationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> citationType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "citesAsDataSourceType", key = "type") })
     @PropertySource(template = "document/citesAsDataSource", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> citesAsDataSource;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/citesAsDataSourceType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> citesAsDataSourceType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "translationType", key = "type") })
     @PropertySource(template = "document/hasTranslation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translations;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/hasTranslationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> translationType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "translationOfType", key = "type") })
     @PropertySource(template = "document/translationOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translationOf;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/translationOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> translationOfType;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/globalCitationFrequency", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> globalCitationFrequency;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/iclCode", predicate = "http://vivoweb.org/ontology/core#iclCode")
     private String iclCode;
 
@@ -334,100 +334,100 @@ public class Document extends Common {
     @PropertySource(template = "document/numberOfPages", predicate = "http://purl.org/ontology/bibo/numPages")
     private Integer numberOfPages;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/pageStart", predicate = "http://purl.org/ontology/bibo/pageStart")
     private String pageStart;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/pageEnd", predicate = "http://purl.org/ontology/bibo/pageEnd")
     private String pageEnd;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/volume", predicate = "http://purl.org/ontology/bibo/volume")
     private String volume;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/issue", predicate = "http://purl.org/ontology/bibo/issue")
     private String issue;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/placeOfPublication", predicate = "http://vivoweb.org/ontology/core#placeOfPublication")
     private String placeOfPublication;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "assigneeType", key = "type") })
     @PropertySource(template = "document/assignee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assignees;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/assigneeType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> assigneeType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "reproducedInType", key = "type") })
     @PropertySource(template = "document/reproducedIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> reproducedIn;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/reproducedInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> reproducedInType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "reproducesType", key = "type") })
     @PropertySource(template = "document/reproduces", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> reproduces;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/reproducesType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> reproducesType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "isAboutType", key = "type") })
     @PropertySource(template = "document/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> isAbout;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/isAboutType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> isAboutType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "document/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/specifiedOutputOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> specifiedOutputOfType;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/isTemplate", predicate = "http://purl.obolibrary.org/obo/ARG_0000001")
     private String isTemplate;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "mentionType", key = "type") })
     @PropertySource(template = "document/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> mentions;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/mentionType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> mentionType;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "supportedByType", key = "type") })
     @PropertySource(template = "document/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedBy;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/supportedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> supportedByType;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/receipt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 

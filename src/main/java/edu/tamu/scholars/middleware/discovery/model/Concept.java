@@ -36,35 +36,35 @@ public class Concept extends Common {
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/researchAreaOfTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOfTitle;
 
     @NestedMultiValuedProperty
     @NestedObject(root = false)
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/researchAreaOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOfOrganization;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
     @PropertySource(template = "concept/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorFor;
 
-    @Indexed
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/awardOrHonorForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> awardOrHonorForType;
 
-    @Indexed(type = "nested_string")
+    @Indexed(type = "nested_string", searchable = false)
     @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
     @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardConferredBy;
 
-    @Indexed(type = "nested_string")
+    @Indexed(type = "nested_string", searchable = false)
     @PropertySource(template = "concept/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> awardConferredByType;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
     private List<String> awardConferredByPreferredLabel;
 
@@ -72,39 +72,39 @@ public class Concept extends Common {
     @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "receiptRecipientName", key = "recipientName") })
-    @Indexed(type = "nested_strings")
     @PropertySource(template = "concept/receipts", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/receiptRecipientName", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receiptRecipientName;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "broaderConceptType", key = "type") })
     @PropertySource(template = "concept/broaderConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> broaderConcepts;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/broaderConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> broaderConceptType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "narrowerConceptType", key = "type") })
     @PropertySource(template = "concept/narrowerConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> narrowerConcepts;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/narrowerConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> narrowerConceptType;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "relatedConceptType", key = "type") })
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/relatedConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> relatedConceptType;
 
