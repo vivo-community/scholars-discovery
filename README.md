@@ -68,7 +68,7 @@ GraphQL SPQR configuration can be done via ```graphql.spqr```. Explicit Java [mo
 ```bash
    cd scholars-discovery/solr
    docker build --tag=scholars/solr .
-   docker run -p 8983:8983 scholars/solr
+   docker run -d -p 8983:8983 scholars/solr
 ```
 5. Build and Run the application
 ```bash
@@ -77,7 +77,7 @@ GraphQL SPQR configuration can be done via ```graphql.spqr```. Explicit Java [mo
 ```
    - Note: Custom application configuration can be achieved by providing a location and an optional profile, such as:
 ```bash
-   mvn spring-boot:run -Dspring-boot.run.config.location=/some/directory/ -Dspring-boot.run.profiles=dev
+   mvn spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.config.location=/some/directory/
 ```
    - ..where an `application-dev.yml` exists in the `/some/location/` directory
 
