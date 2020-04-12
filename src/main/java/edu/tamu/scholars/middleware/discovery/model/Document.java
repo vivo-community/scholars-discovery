@@ -48,20 +48,10 @@ public class Document extends Common {
     @PropertySource(template = "document/hasPublicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String hasPublicationVenueFor;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "etdChairedByEmail", key = "email"), @Reference(value = "etdChairedByOrganization", key = "organization") })
     @PropertySource(template = "document/etdChairedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairedBy;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/etdChairedByEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
-    private List<String> etdChairedByEmail;
-
-    @NestedMultiValuedProperty
-    @NestedObject(root = false)
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/etdChairedByOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> etdChairedByOrganization;
 
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "authorType", key = "type"), @Reference(value = "authorRank", key = "rank"), @Reference(value = "authorOrganization", key = "organizations") })
@@ -477,22 +467,6 @@ public class Document extends Common {
 
     public void setEtdChairedBy(List<String> etdChairedBy) {
         this.etdChairedBy = etdChairedBy;
-    }
-
-    public List<String> getEtdChairedByEmail() {
-        return etdChairedByEmail;
-    }
-
-    public void setEtdChairedByEmail(List<String> etdChairedByEmail) {
-        this.etdChairedByEmail = etdChairedByEmail;
-    }
-
-    public List<String> getEtdChairedByOrganization() {
-        return etdChairedByOrganization;
-    }
-
-    public void setEtdChairedByOrganization(List<String> etdChairedByOrganization) {
-        this.etdChairedByOrganization = etdChairedByOrganization;
     }
 
     public List<String> getAuthors() {
