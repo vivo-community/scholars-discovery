@@ -1,33 +1,27 @@
-<div class="mb-2">
-  <ul class="list-unstyled ml-2 mr-2 mb-0">
-    {{#eachSorted publicationVenueFor "publicationDate" "DESC" true}}
-    <li class="mb-2">
-      <a href="display/{{id}}">{{{title}}}.</a>
-      {{#if volume}}
-      {{#if issue}}
-      <span>{{volume}}({{issue}}), </span>
-      {{else}}
-      <span>{{volume}}, </span>
-      {{/if}}
-      {{else}}
-      {{#if issue}}
-      <span>({{issue}}), </span>
-      {{/if}}
-      {{/if}}
+<span>
+  <a href="display/{{id}}">{{{title}}}.</a>
+  {{#if volume}}
+  {{#if issue}}
+  <span>{{volume}}({{issue}}), </span>
+  {{else}}
+  <span>{{volume}}, </span>
+  {{/if}}
+  {{else}}
+  {{#if issue}}
+  <span>({{issue}}), </span>
+  {{/if}}
+  {{/if}}
 
-      {{#if pageStart}}
-      {{#if pageEnd}}
-      <span>{{pageStart}}-{{pageEnd}}.</span>
-      {{else}}
-      <span>{{pageStart}}.</span>
-      {{/if}}
-      {{else}}
-      {{#if pageEnd}}
-      <span>{{pageEnd}}.</span>
-      {{/if}}
-      {{/if}}
-      <span class="badge badge-light">{{toYear publicationDate}}</span>
-    </li>
-    {{/eachSorted}}
-  </ul>
-</div>
+  {{#if pageStart}}
+  {{#if pageEnd}}
+  <span>{{pageStart}}-{{pageEnd}}.</span>
+  {{else}}
+  <span>{{pageStart}}.</span>
+  {{/if}}
+  {{else}}
+  {{#if pageEnd}}
+  <span>{{pageEnd}}.</span>
+  {{/if}}
+  {{/if}}
+  <span class="badge badge-light">{{toYear publicationDate}}</span>
+</span>

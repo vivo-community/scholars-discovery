@@ -1237,8 +1237,12 @@
         - name: publication venue for
           template: "defaults/displayViews/collections/overview/publicationVenueFor.html"
           field: publicationVenueFor
+          paginated: true
           lazyReferences:
             - publicationVenueFor
+          sort:
+            - field: publicationDate
+              direction: DESC
         - name: authors
           template: "defaults/displayViews/collections/overview/authors.html"
           field: authors
