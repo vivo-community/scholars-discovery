@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.concept.AssociatedDepartment;
 import edu.tamu.scholars.middleware.graphql.model.concept.ResearchAreaOf;
-import edu.tamu.scholars.middleware.graphql.model.concept.AwardOrHonorFor;
 import edu.tamu.scholars.middleware.graphql.model.concept.AwardConferredBy;
 import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
@@ -34,8 +33,6 @@ public class Concept extends AbstractNestedDocument {
   private List<AssociatedDepartment> associatedDepartments;
 
   private List<ResearchAreaOf> researchAreaOf;
-
-  private List<AwardOrHonorFor> awardOrHonorFor;
 
   private List<AwardConferredBy> awardConferredBy;
 
@@ -86,14 +83,6 @@ public class Concept extends AbstractNestedDocument {
 
   public void setResearchAreaOf(List<ResearchAreaOf> researchAreaOf) {
     this.researchAreaOf = researchAreaOf;
-  }
-
-  public List<AwardOrHonorFor> getAwardOrHonorFor() {
-    return awardOrHonorFor;
-  }
-
-  public void setAwardOrHonorFor(List<AwardOrHonorFor> awardOrHonorFor) {
-    this.awardOrHonorFor = awardOrHonorFor;
   }
 
   public List<AwardConferredBy> getAwardConferredBy() {
