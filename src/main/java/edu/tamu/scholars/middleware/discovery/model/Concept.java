@@ -36,15 +36,6 @@ public class Concept extends Common {
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
 
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
-    @PropertySource(template = "concept/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> awardOrHonorFor;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "concept/awardOrHonorForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> awardOrHonorForType;
-
     @Indexed(type = "nested_string", searchable = false)
     @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
     @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -124,22 +115,6 @@ public class Concept extends Common {
 
     public void setResearchAreaOf(List<String> researchAreaOf) {
         this.researchAreaOf = researchAreaOf;
-    }
-
-    public List<String> getAwardOrHonorFor() {
-        return awardOrHonorFor;
-    }
-
-    public void setAwardOrHonorFor(List<String> awardOrHonorFor) {
-        this.awardOrHonorFor = awardOrHonorFor;
-    }
-
-    public List<String> getAwardOrHonorForType() {
-        return awardOrHonorForType;
-    }
-
-    public void setAwardOrHonorForType(List<String> awardOrHonorForType) {
-        this.awardOrHonorForType = awardOrHonorForType;
     }
 
     public List<String> getAwardConferredBy() {
