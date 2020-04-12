@@ -44,32 +44,20 @@ public class Concept extends Common {
     @PropertySource(template = "concept/receiptRecipientName", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receiptRecipientName;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "broaderConceptType", key = "type") })
     @PropertySource(template = "concept/broaderConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> broaderConcepts;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "concept/broaderConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> broaderConceptType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "narrowerConceptType", key = "type") })
     @PropertySource(template = "concept/narrowerConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> narrowerConcepts;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "concept/narrowerConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> narrowerConceptType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "relatedConceptType", key = "type") })
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "concept/relatedConceptType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> relatedConceptType;
 
     public Concept() {
 
@@ -123,14 +111,6 @@ public class Concept extends Common {
         this.broaderConcepts = broaderConcepts;
     }
 
-    public List<String> getBroaderConceptType() {
-        return broaderConceptType;
-    }
-
-    public void setBroaderConceptType(List<String> broaderConceptType) {
-        this.broaderConceptType = broaderConceptType;
-    }
-
     public List<String> getNarrowerConcepts() {
         return narrowerConcepts;
     }
@@ -139,28 +119,12 @@ public class Concept extends Common {
         this.narrowerConcepts = narrowerConcepts;
     }
 
-    public List<String> getNarrowerConceptType() {
-        return narrowerConceptType;
-    }
-
-    public void setNarrowerConceptType(List<String> narrowerConceptType) {
-        this.narrowerConceptType = narrowerConceptType;
-    }
-
     public List<String> getRelatedConcepts() {
         return relatedConcepts;
     }
 
     public void setRelatedConcepts(List<String> relatedConcepts) {
         this.relatedConcepts = relatedConcepts;
-    }
-
-    public List<String> getRelatedConceptType() {
-        return relatedConceptType;
-    }
-
-    public void setRelatedConceptType(List<String> relatedConceptType) {
-        this.relatedConceptType = relatedConceptType;
     }
 
 }
