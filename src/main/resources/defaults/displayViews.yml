@@ -1328,6 +1328,8 @@
         - name: research area of
           template: "defaults/displayViews/concepts/overview/researchAreaOf.html"
           field: researchAreaOf
+          lazyReferences:
+            - researchAreaOf
         - name: award conferred by
           template: "defaults/displayViews/concepts/overview/awardConferredBy.html"
           field: awardConferredBy

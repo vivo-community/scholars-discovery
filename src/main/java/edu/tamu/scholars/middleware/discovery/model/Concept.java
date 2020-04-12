@@ -31,20 +31,10 @@ public class Concept extends Common {
     @PropertySource(template = "concept/associatedDepartment", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> associatedDepartments;
 
+    @NestedObject
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "researchAreaOfTitle", key = "title"), @Reference(value = "researchAreaOfOrganization", key = "organizations") })
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "concept/researchAreaOfTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> researchAreaOfTitle;
-
-    @NestedMultiValuedProperty
-    @NestedObject(root = false)
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "concept/researchAreaOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> researchAreaOfOrganization;
 
     @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
@@ -134,22 +124,6 @@ public class Concept extends Common {
 
     public void setResearchAreaOf(List<String> researchAreaOf) {
         this.researchAreaOf = researchAreaOf;
-    }
-
-    public List<String> getResearchAreaOfTitle() {
-        return researchAreaOfTitle;
-    }
-
-    public void setResearchAreaOfTitle(List<String> researchAreaOfTitle) {
-        this.researchAreaOfTitle = researchAreaOfTitle;
-    }
-
-    public List<String> getResearchAreaOfOrganization() {
-        return researchAreaOfOrganization;
-    }
-
-    public void setResearchAreaOfOrganization(List<String> researchAreaOfOrganization) {
-        this.researchAreaOfOrganization = researchAreaOfOrganization;
     }
 
     public List<String> getAwardOrHonorFor() {
