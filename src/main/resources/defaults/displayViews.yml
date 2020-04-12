@@ -1267,6 +1267,8 @@
         - name: publisher
           template: "defaults/displayViews/collections/overview/publisher.html"
           field: publisher
+          lazyReferences:
+            - publisher
         - name: has subject area
           template: "defaults/displayViews/collections/overview/hasSubjectArea.html"
           field: subjectAreas
