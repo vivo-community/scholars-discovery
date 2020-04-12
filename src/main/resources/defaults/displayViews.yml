@@ -1246,12 +1246,21 @@
         - name: authors
           template: "defaults/displayViews/collections/overview/authors.html"
           field: authors
+          paginated: true
+          lazyReferences:
+            - authors
         - name: editors
           template: "defaults/displayViews/collections/overview/editors.html"
           field: editors
+          paginated: true
+          lazyReferences:
+            - editors
         - name: translator
           template: "defaults/displayViews/collections/overview/translator.html"
           field: translators
+          paginated: true
+          lazyReferences:
+            - translators
         - name: publication date
           template: "defaults/displayViews/collections/overview/publicationDate.html"
           field: publicationDate

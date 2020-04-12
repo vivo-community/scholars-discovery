@@ -43,46 +43,20 @@ public class Collection extends Common {
     @PropertySource(template = "collection/publicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publicationVenueFor;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "authorType", key = "type"), @Reference(value = "authorRank", key = "rank"), @Reference(value = "authorOrganization", key = "organizations") })
     @PropertySource(template = "collection/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authors;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/authorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> authorType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/authorRank", predicate = "http://vivoweb.org/ontology/core#rank")
-    private List<String> authorRank;
-
-    @NestedMultiValuedProperty
-    @NestedObject(root = false)
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/authorOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> authorOrganization;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "editorType", key = "type"), @Reference(value = "editorRank", key = "rank") })
     @PropertySource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/editorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> editorType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/editorRank", predicate = "http://vivoweb.org/ontology/core#rank")
-    private List<String> editorRank;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "translatorType", key = "type") })
     @PropertySource(template = "collection/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translators;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/translatorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> translatorType;
 
     @Indexed(type = "pdate", searchable = false)
     @PropertySource(template = "collection/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -234,30 +208,6 @@ public class Collection extends Common {
         this.authors = authors;
     }
 
-    public List<String> getAuthorType() {
-        return authorType;
-    }
-
-    public void setAuthorType(List<String> authorType) {
-        this.authorType = authorType;
-    }
-
-    public List<String> getAuthorRank() {
-        return authorRank;
-    }
-
-    public void setAuthorRank(List<String> authorRank) {
-        this.authorRank = authorRank;
-    }
-
-    public List<String> getAuthorOrganization() {
-        return authorOrganization;
-    }
-
-    public void setAuthorOrganization(List<String> authorOrganization) {
-        this.authorOrganization = authorOrganization;
-    }
-
     public List<String> getEditors() {
         return editors;
     }
@@ -266,36 +216,12 @@ public class Collection extends Common {
         this.editors = editors;
     }
 
-    public List<String> getEditorType() {
-        return editorType;
-    }
-
-    public void setEditorType(List<String> editorType) {
-        this.editorType = editorType;
-    }
-
-    public List<String> getEditorRank() {
-        return editorRank;
-    }
-
-    public void setEditorRank(List<String> editorRank) {
-        this.editorRank = editorRank;
-    }
-
     public List<String> getTranslators() {
         return translators;
     }
 
     public void setTranslators(List<String> translators) {
         this.translators = translators;
-    }
-
-    public List<String> getTranslatorType() {
-        return translatorType;
-    }
-
-    public void setTranslatorType(List<String> translatorType) {
-        this.translatorType = translatorType;
     }
 
     public String getPublicationDate() {
