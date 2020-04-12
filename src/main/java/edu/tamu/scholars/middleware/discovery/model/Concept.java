@@ -4,13 +4,12 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
-import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
@@ -35,23 +34,6 @@ public class Concept extends Common {
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
-
-    @Indexed(type = "nested_string", searchable = false)
-    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
-    @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> awardConferredBy;
-
-    @Indexed(type = "nested_string", searchable = false)
-    @PropertySource(template = "concept/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> awardConferredByType;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
-    private List<String> awardConferredByPreferredLabel;
-
-    @Indexed(type = "pdate")
-    @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private String yearAwarded;
 
     @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "receiptRecipientName", key = "recipientName") })
@@ -115,38 +97,6 @@ public class Concept extends Common {
 
     public void setResearchAreaOf(List<String> researchAreaOf) {
         this.researchAreaOf = researchAreaOf;
-    }
-
-    public List<String> getAwardConferredBy() {
-        return awardConferredBy;
-    }
-
-    public void setAwardConferredBy(List<String> awardConferredBy) {
-        this.awardConferredBy = awardConferredBy;
-    }
-
-    public List<String> getAwardConferredByType() {
-        return awardConferredByType;
-    }
-
-    public void setAwardConferredByType(List<String> awardConferredByType) {
-        this.awardConferredByType = awardConferredByType;
-    }
-
-    public List<String> getAwardConferredByPreferredLabel() {
-        return awardConferredByPreferredLabel;
-    }
-
-    public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
-        this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
-    }
-
-    public String getYearAwarded() {
-        return yearAwarded;
-    }
-
-    public void setYearAwarded(String yearAwarded) {
-        this.yearAwarded = yearAwarded;
     }
 
     public List<String> getReceipts() {

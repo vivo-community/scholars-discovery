@@ -1330,12 +1330,6 @@
           field: researchAreaOf
           lazyReferences:
             - researchAreaOf
-        - name: award conferred by
-          template: "defaults/displayViews/concepts/overview/awardConferredBy.html"
-          field: awardConferredBy
-        - name: award conferred by (preferred label)
-          template: "defaults/displayViews/concepts/overview/awardConferredByPreferredLabel.html"
-          field: awardConferredByPreferredLabel
         - name: broader concept
           template: "defaults/displayViews/concepts/overview/broaderConcept.html"
           field: broaderConcepts
