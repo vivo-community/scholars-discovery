@@ -13,17 +13,15 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "DocumentCitation"
+    name = "DocumentCite"
 )
 @JsonInclude(NON_EMPTY)
-public class Citation extends AbstractNestedDocument {
-  private static final long serialVersionUID = -518721932L;
+public class Cite extends AbstractNestedDocument {
+  private static final long serialVersionUID = 204688228L;
 
   private String label;
 
-  private String type;
-
-  public Citation() {
+  public Cite() {
     super();
   }
 
@@ -33,13 +31,5 @@ public class Citation extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 }

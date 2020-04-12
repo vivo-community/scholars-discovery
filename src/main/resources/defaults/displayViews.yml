@@ -847,6 +847,8 @@
         - name: publisher
           template: "defaults/displayViews/documents/overview/publisher.html"
           field: publisher
+          lazyReferences:
+            - publisher
         - name: has subject area
           template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
           field: subjectAreas
@@ -948,6 +950,9 @@
         - name: issue
           template: "defaults/displayViews/documents/additionalDocumentInfo/issue.html"
           field: issue
+        - name: assignees
+          template: "defaults/displayViews/documents/additionalDocumentInfo/assignees.html"
+          field: assignees
         - name: reproduced in
           template: "defaults/displayViews/documents/additionalDocumentInfo/reproducedIn.html"
           field: reproducedIn

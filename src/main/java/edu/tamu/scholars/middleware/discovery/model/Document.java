@@ -4,12 +4,12 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
@@ -94,14 +94,10 @@ public class Document extends Common {
     @PropertySource(template = "document/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String publicationDate;
 
+    @NestedObject
     @Indexed(type = "nested_string")
-    @NestedObject(properties = { @Reference(value = "publisherType", key = "type") })
     @PropertySource(template = "document/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
-
-    @Indexed(type = "nested_string")
-    @PropertySource(template = "document/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private String publisherType;
 
     @Indexed(type = "pdate", searchable = false)
     @PropertySource(template = "document/dateFiled", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -120,67 +116,43 @@ public class Document extends Common {
     @PropertySource(template = "document/hasRestriction", predicate = "http://purl.obolibrary.org/obo/ERO_0000045")
     private List<String> restrictions;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "documentPartType", key = "type") })
     @PropertySource(template = "document/documentPart", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> documentParts;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/documentPartType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> documentPartType;
 
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/chapter", predicate = "http://purl.org/ontology/bibo/chapter")
     private String chapter;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "featureType", key = "type") })
     @PropertySource(template = "document/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> features;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/featureType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> featureType;
 
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/edition", predicate = "http://purl.org/ontology/bibo/edition")
     private String edition;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
     @PropertySource(template = "document/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/geographicFocusType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> geographicFocusType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "documentationForProjectOrResourceType", key = "type") })
     @PropertySource(template = "document/documentationForProjectOrResource", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> documentationForProjectOrResource;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/documentationForProjectOrResourceType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> documentationForProjectOrResourceType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "outputOfProcessOrEventType", key = "type") })
     @PropertySource(template = "document/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/outputOfProcessOrEventType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> outputOfProcessOrEventType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "presentedAtType", key = "type") })
     @PropertySource(template = "document/presentedAt", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentedAt;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/presentedAtType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> presentedAtType;
 
     @Indexed(type = "whole_strings", copyTo = "_text_")
     @PropertySource(template = "document/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
@@ -242,50 +214,30 @@ public class Document extends Common {
     @PropertySource(template = "document/uri", predicate = "http://purl.org/ontology/bibo/uri")
     private String uri;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "citedByType", key = "type") })
     @PropertySource(template = "document/citedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> citedBy;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/citedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> citedByType;
+    @PropertySource(template = "document/cites", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> cites;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "citationType", key = "type") })
-    @PropertySource(template = "document/citation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> citations;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/citationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> citationType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "citesAsDataSourceType", key = "type") })
     @PropertySource(template = "document/citesAsDataSource", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> citesAsDataSource;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/citesAsDataSourceType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> citesAsDataSourceType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "translationType", key = "type") })
     @PropertySource(template = "document/hasTranslation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translations;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/hasTranslationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> translationType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "translationOfType", key = "type") })
     @PropertySource(template = "document/translationOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translationOf;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/translationOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> translationOfType;
 
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
@@ -320,77 +272,49 @@ public class Document extends Common {
     @PropertySource(template = "document/placeOfPublication", predicate = "http://vivoweb.org/ontology/core#placeOfPublication")
     private String placeOfPublication;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "assigneeType", key = "type") })
     @PropertySource(template = "document/assignee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assignees;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/assigneeType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> assigneeType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "reproducedInType", key = "type") })
     @PropertySource(template = "document/reproducedIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> reproducedIn;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/reproducedInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> reproducedInType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "reproducesType", key = "type") })
     @PropertySource(template = "document/reproduces", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> reproduces;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/reproducesType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> reproducesType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "isAboutType", key = "type") })
     @PropertySource(template = "document/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> isAbout;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/isAboutType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> isAboutType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "document/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/specifiedOutputOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> specifiedOutputOfType;
 
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/isTemplate", predicate = "http://purl.obolibrary.org/obo/ARG_0000001")
     private String isTemplate;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "mentionType", key = "type") })
     @PropertySource(template = "document/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> mentions;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/mentionType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> mentionType;
 
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "supportedByType", key = "type") })
     @PropertySource(template = "document/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedBy;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/supportedByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> supportedByType;
 
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
@@ -529,14 +453,6 @@ public class Document extends Common {
         this.publisher = publisher;
     }
 
-    public String getPublisherType() {
-        return publisherType;
-    }
-
-    public void setPublisherType(String publisherType) {
-        this.publisherType = publisherType;
-    }
-
     public String getDateFiled() {
         return dateFiled;
     }
@@ -577,14 +493,6 @@ public class Document extends Common {
         this.documentParts = documentParts;
     }
 
-    public List<String> getDocumentPartType() {
-        return documentPartType;
-    }
-
-    public void setDocumentPartType(List<String> documentPartType) {
-        this.documentPartType = documentPartType;
-    }
-
     public String getChapter() {
         return chapter;
     }
@@ -599,14 +507,6 @@ public class Document extends Common {
 
     public void setFeatures(List<String> features) {
         this.features = features;
-    }
-
-    public List<String> getFeatureType() {
-        return featureType;
-    }
-
-    public void setFeatureType(List<String> featureType) {
-        this.featureType = featureType;
     }
 
     public String getEdition() {
@@ -625,28 +525,12 @@ public class Document extends Common {
         this.geographicFocus = geographicFocus;
     }
 
-    public List<String> getGeographicFocusType() {
-        return geographicFocusType;
-    }
-
-    public void setGeographicFocusType(List<String> geographicFocusType) {
-        this.geographicFocusType = geographicFocusType;
-    }
-
     public List<String> getDocumentationForProjectOrResource() {
         return documentationForProjectOrResource;
     }
 
     public void setDocumentationForProjectOrResource(List<String> documentationForProjectOrResource) {
         this.documentationForProjectOrResource = documentationForProjectOrResource;
-    }
-
-    public List<String> getDocumentationForProjectOrResourceType() {
-        return documentationForProjectOrResourceType;
-    }
-
-    public void setDocumentationForProjectOrResourceType(List<String> documentationForProjectOrResourceType) {
-        this.documentationForProjectOrResourceType = documentationForProjectOrResourceType;
     }
 
     public List<String> getOutputOfProcessOrEvent() {
@@ -657,28 +541,12 @@ public class Document extends Common {
         this.outputOfProcessOrEvent = outputOfProcessOrEvent;
     }
 
-    public List<String> getOutputOfProcessOrEventType() {
-        return outputOfProcessOrEventType;
-    }
-
-    public void setOutputOfProcessOrEventType(List<String> outputOfProcessOrEventType) {
-        this.outputOfProcessOrEventType = outputOfProcessOrEventType;
-    }
-
     public List<String> getPresentedAt() {
         return presentedAt;
     }
 
     public void setPresentedAt(List<String> presentedAt) {
         this.presentedAt = presentedAt;
-    }
-
-    public List<String> getPresentedAtType() {
-        return presentedAtType;
-    }
-
-    public void setPresentedAtType(List<String> presentedAtType) {
-        this.presentedAtType = presentedAtType;
     }
 
     public List<String> getKeywords() {
@@ -809,28 +677,12 @@ public class Document extends Common {
         this.citedBy = citedBy;
     }
 
-    public List<String> getCitedByType() {
-        return citedByType;
+    public List<String> getCites() {
+        return cites;
     }
 
-    public void setCitedByType(List<String> citedByType) {
-        this.citedByType = citedByType;
-    }
-
-    public List<String> getCitations() {
-        return citations;
-    }
-
-    public void setCitations(List<String> citations) {
-        this.citations = citations;
-    }
-
-    public List<String> getCitationType() {
-        return citationType;
-    }
-
-    public void setCitationType(List<String> citationType) {
-        this.citationType = citationType;
+    public void setCites(List<String> cites) {
+        this.cites = cites;
     }
 
     public List<String> getCitesAsDataSource() {
@@ -841,14 +693,6 @@ public class Document extends Common {
         this.citesAsDataSource = citesAsDataSource;
     }
 
-    public List<String> getCitesAsDataSourceType() {
-        return citesAsDataSourceType;
-    }
-
-    public void setCitesAsDataSourceType(List<String> citesAsDataSourceType) {
-        this.citesAsDataSourceType = citesAsDataSourceType;
-    }
-
     public List<String> getTranslations() {
         return translations;
     }
@@ -857,28 +701,12 @@ public class Document extends Common {
         this.translations = translations;
     }
 
-    public List<String> getTranslationType() {
-        return translationType;
-    }
-
-    public void setTranslationType(List<String> translationType) {
-        this.translationType = translationType;
-    }
-
     public List<String> getTranslationOf() {
         return translationOf;
     }
 
     public void setTranslationOf(List<String> translationOf) {
         this.translationOf = translationOf;
-    }
-
-    public List<String> getTranslationOfType() {
-        return translationOfType;
-    }
-
-    public void setTranslationOfType(List<String> translationOfType) {
-        this.translationOfType = translationOfType;
     }
 
     public List<String> getGlobalCitationFrequency() {
@@ -953,28 +781,12 @@ public class Document extends Common {
         this.assignees = assignees;
     }
 
-    public List<String> getAssigneeType() {
-        return assigneeType;
-    }
-
-    public void setAssigneeType(List<String> assigneeType) {
-        this.assigneeType = assigneeType;
-    }
-
     public List<String> getReproducedIn() {
         return reproducedIn;
     }
 
     public void setReproducedIn(List<String> reproducedIn) {
         this.reproducedIn = reproducedIn;
-    }
-
-    public List<String> getReproducedInType() {
-        return reproducedInType;
-    }
-
-    public void setReproducedInType(List<String> reproducedInType) {
-        this.reproducedInType = reproducedInType;
     }
 
     public List<String> getReproduces() {
@@ -985,14 +797,6 @@ public class Document extends Common {
         this.reproduces = reproduces;
     }
 
-    public List<String> getReproducesType() {
-        return reproducesType;
-    }
-
-    public void setReproducesType(List<String> reproducesType) {
-        this.reproducesType = reproducesType;
-    }
-
     public List<String> getIsAbout() {
         return isAbout;
     }
@@ -1001,28 +805,12 @@ public class Document extends Common {
         this.isAbout = isAbout;
     }
 
-    public List<String> getIsAboutType() {
-        return isAboutType;
-    }
-
-    public void setIsAboutType(List<String> isAboutType) {
-        this.isAboutType = isAboutType;
-    }
-
     public List<String> getSpecifiedOutputOf() {
         return specifiedOutputOf;
     }
 
     public void setSpecifiedOutputOf(List<String> specifiedOutputOf) {
         this.specifiedOutputOf = specifiedOutputOf;
-    }
-
-    public List<String> getSpecifiedOutputOfType() {
-        return specifiedOutputOfType;
-    }
-
-    public void setSpecifiedOutputOfType(List<String> specifiedOutputOfType) {
-        this.specifiedOutputOfType = specifiedOutputOfType;
     }
 
     public String getIsTemplate() {
@@ -1041,14 +829,6 @@ public class Document extends Common {
         this.mentions = mentions;
     }
 
-    public List<String> getMentionType() {
-        return mentionType;
-    }
-
-    public void setMentionType(List<String> mentionType) {
-        this.mentionType = mentionType;
-    }
-
     public List<String> getParticipatesIn() {
         return participatesIn;
     }
@@ -1063,14 +843,6 @@ public class Document extends Common {
 
     public void setSupportedBy(List<String> supportedBy) {
         this.supportedBy = supportedBy;
-    }
-
-    public List<String> getSupportedByType() {
-        return supportedByType;
-    }
-
-    public void setSupportedByType(List<String> supportedByType) {
-        this.supportedByType = supportedByType;
     }
 
     public List<String> getReceipts() {

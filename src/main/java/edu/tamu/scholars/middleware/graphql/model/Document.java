@@ -15,7 +15,7 @@ import edu.tamu.scholars.middleware.graphql.model.document.DocumentationForProje
 import edu.tamu.scholars.middleware.graphql.model.document.OutputOfProcessOrEvent;
 import edu.tamu.scholars.middleware.graphql.model.document.PresentedAt;
 import edu.tamu.scholars.middleware.graphql.model.document.CitedBy;
-import edu.tamu.scholars.middleware.graphql.model.document.Citation;
+import edu.tamu.scholars.middleware.graphql.model.document.Cite;
 import edu.tamu.scholars.middleware.graphql.model.document.CitesAsDataSource;
 import edu.tamu.scholars.middleware.graphql.model.document.Translation;
 import edu.tamu.scholars.middleware.graphql.model.document.TranslationOf;
@@ -83,7 +83,7 @@ public class Document extends AbstractNestedDocument {
 
   private List<CitedBy> citedBy;
 
-  private List<Citation> citations;
+  private List<Cite> cites;
 
   private List<CitesAsDataSource> citesAsDataSource;
 
@@ -324,12 +324,12 @@ public class Document extends AbstractNestedDocument {
     this.citedBy = citedBy;
   }
 
-  public List<Citation> getCitations() {
-    return citations;
+  public List<Cite> getCites() {
+    return cites;
   }
 
-  public void setCitations(List<Citation> citations) {
-    this.citations = citations;
+  public void setCites(List<Cite> cites) {
+    this.cites = cites;
   }
 
   public List<CitesAsDataSource> getCitesAsDataSource() {
