@@ -24,10 +24,6 @@ public class Author extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
-  private String rank;
-
   private List<AuthorOrganization> organizations;
 
   public Author() {
@@ -40,22 +36,6 @@ public class Author extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getRank() {
-    return rank;
-  }
-
-  public void setRank(String rank) {
-    this.rank = rank;
   }
 
   public List<AuthorOrganization> getOrganizations() {

@@ -1,1 +1,9 @@
-<span>Work In Progress</span>
+{{#if translators}}
+<ul class="list-unstyled">
+  {{#each translators}}
+  <li>
+    <span><a href="display/{{id}}">{{label}}</a></span>
+  </li>
+  {{/each}}
+</ul>
+{{/if}}
