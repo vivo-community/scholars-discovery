@@ -38,14 +38,10 @@ public class Document extends Common {
     @PropertySource(template = "document/abbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private String abbreviation;
 
+    @NestedObject
     @Indexed(type = "nested_string", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "publicationVenueType", key = "type") })
     @PropertySource(template = "document/publicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publicationVenue;
-
-    @Indexed(type = "nested_string", searchable = false)
-    @PropertySource(template = "document/publicationVenueType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private String publicationVenueType;
 
     @NestedObject
     @Indexed(type = "nested_string", searchable = false)
@@ -465,14 +461,6 @@ public class Document extends Common {
 
     public void setPublicationVenue(String publicationVenue) {
         this.publicationVenue = publicationVenue;
-    }
-
-    public String getPublicationVenueType() {
-        return publicationVenueType;
-    }
-
-    public void setPublicationVenueType(String publicationVenueType) {
-        this.publicationVenueType = publicationVenueType;
     }
 
     public String getHasPublicationVenueFor() {

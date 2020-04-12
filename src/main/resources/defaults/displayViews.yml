@@ -862,6 +862,8 @@
         - name: published in
           template: "defaults/displayViews/documents/overview/publishedIn.html"
           field: publicationVenue
+          lazyReferences:
+            - publicationVenue
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
