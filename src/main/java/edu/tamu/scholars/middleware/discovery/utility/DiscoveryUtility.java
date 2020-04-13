@@ -6,11 +6,14 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PATH_DEL
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -22,7 +25,9 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 
 public class DiscoveryUtility {
 
-    private final static Set<Class<?>> DISCOVERY_DOCUMENT_TYPES = new HashSet<Class<?>>();
+    private final static Set<Class<?>> DISCOVERY_DOCUMENT_TYPES = new HashSet<>();
+
+    private final static Map<String, String> DISCOVERY_DOCUMENT_PROPERTY_PATH_MAPPING = new HashMap<>();
 
     static {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
@@ -51,13 +56,19 @@ public class DiscoveryUtility {
     }
 
     public static String findProperty(String path) {
+        String actualPath = DISCOVERY_DOCUMENT_PROPERTY_PATH_MAPPING.get(path);
+        if (StringUtils.isNotEmpty(actualPath)) {
+            return actualPath;
+        }
         List<String> properties = new ArrayList<String>(Arrays.asList(path.split(PATH_DELIMETER_REGEX)));
         for (Class<?> type : DISCOVERY_DOCUMENT_TYPES) {
             Optional<String> property = findProperty(type, properties);
             if (property.isPresent()) {
+                DISCOVERY_DOCUMENT_PROPERTY_PATH_MAPPING.put(path, property.get());
                 return property.get();
             }
         }
+        DISCOVERY_DOCUMENT_PROPERTY_PATH_MAPPING.put(path, path);
         return path;
     }
 

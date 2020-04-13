@@ -208,8 +208,6 @@
       valuePath: publicationDate
     - columnHeader: Journal title
       valuePath: publicationVenue
-    - columnHeader: Book title
-      valuePath: bookTitle
     - columnHeader: Author
       valuePath: authors
     - columnHeader: Author's department
@@ -396,6 +394,14 @@
       hidden: true
     - name: Offered By
       field: offeredBy
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Participants
+      field: participants
       type: STRING
       sort: INDEX
       direction: ASC

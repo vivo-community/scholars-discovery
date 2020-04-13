@@ -3,11 +3,11 @@ package edu.tamu.scholars.middleware.discovery.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 

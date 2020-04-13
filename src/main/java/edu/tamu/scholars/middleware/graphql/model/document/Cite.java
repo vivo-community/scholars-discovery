@@ -13,15 +13,15 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "DocumentEtdChairedByOrganization"
+    name = "DocumentCite"
 )
 @JsonInclude(NON_EMPTY)
-public class EtdChairedByOrganization extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1240517274L;
+public class Cite extends AbstractNestedDocument {
+  private static final long serialVersionUID = 204688228L;
 
   private String label;
 
-  public EtdChairedByOrganization() {
+  public Cite() {
     super();
   }
 

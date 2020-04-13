@@ -64,6 +64,9 @@
         - name: overview
           template: "defaults/displayViews/persons/about/overview.html"
           field: overview
+        - name: geographic focus
+          template: "defaults/displayViews/persons/overview/geographicFocus.html"
+          field: geographicFocus
     - name: Affiliation
       sections:
         - name: head of
@@ -210,12 +213,18 @@
         - name: featured in
           template: "defaults/displayViews/persons/publications/featuredIn.html"
           field: featuredIn
+          lazyReferences:
+            - featuredIn
         - name: assignee for patent
           template: "defaults/displayViews/persons/publications/assigneeForPatent.html"
           field: assigneeForPatent
+          lazyReferences:
+            - assigneeForPatent
         - name: translator of
           template: "defaults/displayViews/persons/publications/translatorOf.html"
           field: translatorOf
+          lazyReferences:
+            - translatorOf
     - name: Software
       sections:
         - name: software
@@ -400,27 +409,6 @@
     - name: Identity
       hidden: true
       sections:
-        - name: ISNI
-          template: "defaults/displayViews/persons/identity/isni.html"
-          field: isni
-        - name: NETID
-          template: "defaults/displayViews/persons/identity/netid.html"
-          field: netid
-        - name: ResearcherID
-          template: "defaults/displayViews/persons/identity/researcherId.html"
-          field: researcherId
-        - name: Twitter
-          template: "defaults/displayViews/persons/identity/twitter.html"
-          field: twitter
-        - name: UID
-          template: "defaults/displayViews/persons/identity/uid.html"
-          field: uid
-        - name: UIN
-          template: "defaults/displayViews/persons/identity/uin.html"
-          field: uin
-        - name: YouTube
-          template: "defaults/displayViews/persons/identity/youTube.html"
-          field: youtube
         - name: same as
           template: "defaults/displayViews/persons/identity/sameAs.html"
           field: sameAs
@@ -549,14 +537,29 @@
               direction: DESC
               date: true
         - name: administers grant
+          paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/administersGrant.html"
           field: administersGrant
+          sort:
+            - field: date
+              direction: DESC
+              date: true
         - name: subcontracts grant
+          paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/subcontractsGrant.html"
           field: subcontractsGrant
+          sort:
+            - field: date
+              direction: DESC
+              date: true
         - name: performs human study
+          paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/performsHumanStudy.html"
           field: performsHumanStudy
+          sort:
+            - field: date
+              direction: DESC
+              date: true
     - name: Overview
       sections:
         - name: offers degree
@@ -569,6 +572,7 @@
           template: "defaults/displayViews/organizations/overview/dateTimeInterval.html"
           field: dateTimeInterval
         - name: sponsors award or honor
+          paginated: true
           template: "defaults/displayViews/organizations/overview/sponsorsAwardOrHonor.html"
           field: sponsorsAwardOrHonor
           lazyReferences:
@@ -591,6 +595,9 @@
         - name: keywords
           template: "defaults/displayViews/organizations/overview/keywords.html"
           field: keywords
+        - name: geographic focus
+          template: "defaults/displayViews/organizations/overview/geographicFocus.html"
+          field: geographicFocus
     - name: Affiliation
       sections:
         - name: organization for training
@@ -734,12 +741,18 @@
         - name: featured in
           template: "defaults/displayViews/organizations/publications/featuredIn.html"
           field: featuredIn
+          lazyReferences:
+            - featuredIn
         - name: assignee for patent
           template: "defaults/displayViews/organizations/publications/assigneeForPatent.html"
           field: assigneeForPatent
+          lazyReferences:
+            - assigneeForPatent
         - name: translator of
           template: "defaults/displayViews/organizations/publications/translatorOf.html"
           field: translatorOf
+          lazyReferences:
+            - translatorOf
     - name: Service
       sections:
         - name: contract or provider for service
@@ -756,9 +769,6 @@
           field: courses
     - name: Identity
       sections:
-        - name: OrgID
-          template: "defaults/displayViews/organizations/identity/orgID.html"
-          field: orgId
         - name: same as
           template: "defaults/displayViews/organizations/identity/sameAs.html"
           field: sameAs
@@ -860,12 +870,6 @@
         - name: authors
           template: "defaults/displayViews/documents/overview/authors.html"
           field: authors
-        - name: author list (cited authors)
-          template: "defaults/displayViews/documents/overview/authorList.html"
-          field: authorList
-        - name: editor list (cited editors)
-          template: "defaults/displayViews/documents/overview/editorList.html"
-          field: editorList
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
           field: editors
@@ -891,6 +895,8 @@
         - name: publisher
           template: "defaults/displayViews/documents/overview/publisher.html"
           field: publisher
+          lazyReferences:
+            - publisher
         - name: has subject area
           template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
           field: subjectAreas
@@ -906,6 +912,8 @@
         - name: published in
           template: "defaults/displayViews/documents/overview/publishedIn.html"
           field: publicationVenue
+          lazyReferences:
+            - publicationVenue
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
@@ -996,6 +1004,9 @@
         - name: issue
           template: "defaults/displayViews/documents/additionalDocumentInfo/issue.html"
           field: issue
+        - name: assignees
+          template: "defaults/displayViews/documents/additionalDocumentInfo/assignees.html"
+          field: assignees
         - name: reproduced in
           template: "defaults/displayViews/documents/additionalDocumentInfo/reproducedIn.html"
           field: reproducedIn
@@ -1073,21 +1084,12 @@
         - name: awarded by
           template: "defaults/displayViews/relationships/overview/awardedBy.html"
           field: awardedBy
-        - name: awarded by (preferred label)
-          template: "defaults/displayViews/relationships/overview/awardedByPreferredLabel.html"
-          field: awardedByPreferredLabel
         - name: award conferred by
           template: "defaults/displayViews/relationships/overview/awardConferredBy.html"
           field: awardConferredBy
-        - name: award conferred by (preferred label)
-          template: "defaults/displayViews/relationships/overview/awardConferredByPreferredLabel.html"
-          field: awardConferredByPreferredLabel
         - name: administered by
           template: "defaults/displayViews/relationships/overview/administeredBy.html"
           field: administeredBy
-        - name: administered by (preferred label)
-          template: "defaults/displayViews/relationships/overview/administeredByPreferredLabel.html"
-          field: administeredByPreferredLabel
         - name: subcontracted through
           template: "defaults/displayViews/relationships/overview/subcontractedThrough.html"
           field: grantSubcontractedThrough
@@ -1096,7 +1098,7 @@
           field: geographicFocus
         - name: has sub grant
           template: "defaults/displayViews/relationships/overview/hasSubGrant.html"
-          field: hasSubGrant
+          field: subGrant
         - name: sub grant of
           template: "defaults/displayViews/relationships/overview/subGrantOf.html"
           field: subGrantOf
@@ -1290,23 +1292,38 @@
         - name: publication venue for
           template: "defaults/displayViews/collections/overview/publicationVenueFor.html"
           field: publicationVenueFor
+          paginated: true
           lazyReferences:
             - publicationVenueFor
+          sort:
+            - field: publicationDate
+              direction: DESC
         - name: authors
           template: "defaults/displayViews/collections/overview/authors.html"
           field: authors
+          paginated: true
+          lazyReferences:
+            - authors
         - name: editors
           template: "defaults/displayViews/collections/overview/editors.html"
           field: editors
+          paginated: true
+          lazyReferences:
+            - editors
         - name: translator
           template: "defaults/displayViews/collections/overview/translator.html"
           field: translators
+          paginated: true
+          lazyReferences:
+            - translators
         - name: publication date
           template: "defaults/displayViews/collections/overview/publicationDate.html"
           field: publicationDate
         - name: publisher
           template: "defaults/displayViews/collections/overview/publisher.html"
           field: publisher
+          lazyReferences:
+            - publisher
         - name: has subject area
           template: "defaults/displayViews/collections/overview/hasSubjectArea.html"
           field: subjectAreas
@@ -1382,12 +1399,8 @@
         - name: research area of
           template: "defaults/displayViews/concepts/overview/researchAreaOf.html"
           field: researchAreaOf
-        - name: award conferred by
-          template: "defaults/displayViews/concepts/overview/awardConferredBy.html"
-          field: awardConferredBy
-        - name: award conferred by (preferred label)
-          template: "defaults/displayViews/concepts/overview/awardConferredByPreferredLabel.html"
-          field: awardConferredByPreferredLabel
+          lazyReferences:
+            - researchAreaOf
         - name: broader concept
           template: "defaults/displayViews/concepts/overview/broaderConcept.html"
           field: broaderConcepts
@@ -1416,6 +1429,9 @@
         - name: keywords
           template: "defaults/displayViews/concepts/overview/keywords.html"
           field: keywords
+        - name: geographic focus
+          template: "defaults/displayViews/concepts/overview/geographicFocus.html"
+          field: geographicFocus
     - name: Identity
       sections:
         - name: same as

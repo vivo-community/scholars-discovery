@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
-import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.person.HeadOf;
 import edu.tamu.scholars.middleware.graphql.model.person.MemberOf;
 import edu.tamu.scholars.middleware.graphql.model.person.HasCollaborator;
@@ -21,6 +20,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.FeaturedIn;
 import edu.tamu.scholars.middleware.graphql.model.person.AssigneeForPatent;
 import edu.tamu.scholars.middleware.graphql.model.person.TranslatorOf;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearcherOn;
+import edu.tamu.scholars.middleware.graphql.model.person.ResearcherOnAwardedBy;
 import edu.tamu.scholars.middleware.graphql.model.person.OtherResearchActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.TeachingActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.Advisee;
@@ -31,11 +31,8 @@ import edu.tamu.scholars.middleware.graphql.model.person.ProfessionalServiceActi
 import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunityServiceActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
-import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
-import edu.tamu.scholars.middleware.graphql.model.person.InTheNew;
-import edu.tamu.scholars.middleware.graphql.model.person.FutureResearchIdea;
-import edu.tamu.scholars.middleware.graphql.model.person.CapstoneAdvisedOf;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -51,9 +48,7 @@ import java.util.List;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
-@GraphQLType(
-    name = "Person"
-)
+@GraphQLType(name = "Person")
 @JsonInclude(NON_EMPTY)
 public class Person extends AbstractNestedDocument {
   private static final long serialVersionUID = -3444805L;
@@ -61,8 +56,6 @@ public class Person extends AbstractNestedDocument {
   private List<Relationship> positions;
 
   private List<ResearchArea> researchAreas;
-
-  private List<GeographicFocus> geographicFocus;
 
   private List<HeadOf> headOf;
 
@@ -100,6 +93,8 @@ public class Person extends AbstractNestedDocument {
 
   private List<ResearcherOn> researcherOn;
 
+  private List<ResearcherOnAwardedBy> researcherOnAwardedBy;
+
   private List<OtherResearchActivity> otherResearchActivities;
 
   private List<TeachingActivity> teachingActivities;
@@ -120,15 +115,9 @@ public class Person extends AbstractNestedDocument {
 
   private List<HasExpertiseInTechnique> hasExpertiseInTechnique;
 
-  private List<EtdChairOf> etdChairOf;
-
-  private List<InTheNew> inTheNews;
-
-  private List<FutureResearchIdea> futureResearchIdeas;
-
-  private List<CapstoneAdvisedOf> capstoneAdvisedOf;
-
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -159,20 +148,6 @@ public class Person extends AbstractNestedDocument {
   private String teachingOverview;
 
   private String outreachOverview;
-
-  private String isni;
-
-  private String netid;
-
-  private String researcherId;
-
-  private String twitter;
-
-  private String uid;
-
-  private String uin;
-
-  private String youtube;
 
   private String eraCommonsId;
 
@@ -205,8 +180,6 @@ public class Person extends AbstractNestedDocument {
   private List<String> locatedInFacility;
 
   private String fax;
-
-  private String featuredProfileDisplay;
 
   private List<String> organizations;
 
@@ -241,14 +214,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setResearchAreas(List<ResearchArea> researchAreas) {
     this.researchAreas = researchAreas;
-  }
-
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
   }
 
   public List<HeadOf> getHeadOf() {
@@ -311,8 +276,7 @@ public class Person extends AbstractNestedDocument {
     return credentialEligibilityAttained;
   }
 
-  public void setCredentialEligibilityAttained(
-      List<CredentialEligibilityAttained> credentialEligibilityAttained) {
+  public void setCredentialEligibilityAttained(List<CredentialEligibilityAttained> credentialEligibilityAttained) {
     this.credentialEligibilityAttained = credentialEligibilityAttained;
   }
 
@@ -344,8 +308,7 @@ public class Person extends AbstractNestedDocument {
     return collectionOrSeriesEditorFor;
   }
 
-  public void setCollectionOrSeriesEditorFor(
-      List<CollectionOrSeriesEditorFor> collectionOrSeriesEditorFor) {
+  public void setCollectionOrSeriesEditorFor(List<CollectionOrSeriesEditorFor> collectionOrSeriesEditorFor) {
     this.collectionOrSeriesEditorFor = collectionOrSeriesEditorFor;
   }
 
@@ -397,6 +360,14 @@ public class Person extends AbstractNestedDocument {
     this.researcherOn = researcherOn;
   }
 
+  public List<ResearcherOnAwardedBy> getResearcherOnAwardedBy() {
+    return researcherOnAwardedBy;
+  }
+
+  public void setResearcherOnAwardedBy(List<ResearcherOnAwardedBy> researcherOnAwardedBy) {
+    this.researcherOnAwardedBy = researcherOnAwardedBy;
+  }
+
   public List<OtherResearchActivity> getOtherResearchActivities() {
     return otherResearchActivities;
   }
@@ -433,8 +404,7 @@ public class Person extends AbstractNestedDocument {
     return contactOrProvidorForService;
   }
 
-  public void setContactOrProvidorForService(
-      List<ContactOrProvidorForService> contactOrProvidorForService) {
+  public void setContactOrProvidorForService(List<ContactOrProvidorForService> contactOrProvidorForService) {
     this.contactOrProvidorForService = contactOrProvidorForService;
   }
 
@@ -450,8 +420,7 @@ public class Person extends AbstractNestedDocument {
     return professionalServiceActivities;
   }
 
-  public void setProfessionalServiceActivities(
-      List<ProfessionalServiceActivity> professionalServiceActivities) {
+  public void setProfessionalServiceActivities(List<ProfessionalServiceActivity> professionalServiceActivities) {
     this.professionalServiceActivities = professionalServiceActivities;
   }
 
@@ -459,8 +428,7 @@ public class Person extends AbstractNestedDocument {
     return outreachAndCommunityServiceActivities;
   }
 
-  public void setOutreachAndCommunityServiceActivities(
-      List<OutreachAndCommunityServiceActivity> outreachAndCommunityServiceActivities) {
+  public void setOutreachAndCommunityServiceActivities(List<OutreachAndCommunityServiceActivity> outreachAndCommunityServiceActivities) {
     this.outreachAndCommunityServiceActivities = outreachAndCommunityServiceActivities;
   }
 
@@ -480,44 +448,20 @@ public class Person extends AbstractNestedDocument {
     this.hasExpertiseInTechnique = hasExpertiseInTechnique;
   }
 
-  public List<EtdChairOf> getEtdChairOf() {
-    return etdChairOf;
-  }
-
-  public void setEtdChairOf(List<EtdChairOf> etdChairOf) {
-    this.etdChairOf = etdChairOf;
-  }
-
-  public List<InTheNew> getInTheNews() {
-    return inTheNews;
-  }
-
-  public void setInTheNews(List<InTheNew> inTheNews) {
-    this.inTheNews = inTheNews;
-  }
-
-  public List<FutureResearchIdea> getFutureResearchIdeas() {
-    return futureResearchIdeas;
-  }
-
-  public void setFutureResearchIdeas(List<FutureResearchIdea> futureResearchIdeas) {
-    this.futureResearchIdeas = futureResearchIdeas;
-  }
-
-  public List<CapstoneAdvisedOf> getCapstoneAdvisedOf() {
-    return capstoneAdvisedOf;
-  }
-
-  public void setCapstoneAdvisedOf(List<CapstoneAdvisedOf> capstoneAdvisedOf) {
-    this.capstoneAdvisedOf = capstoneAdvisedOf;
-  }
-
   public List<Website> getWebsites() {
     return websites;
   }
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {
@@ -638,62 +582,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setOutreachOverview(String outreachOverview) {
     this.outreachOverview = outreachOverview;
-  }
-
-  public String getIsni() {
-    return isni;
-  }
-
-  public void setIsni(String isni) {
-    this.isni = isni;
-  }
-
-  public String getNetid() {
-    return netid;
-  }
-
-  public void setNetid(String netid) {
-    this.netid = netid;
-  }
-
-  public String getResearcherId() {
-    return researcherId;
-  }
-
-  public void setResearcherId(String researcherId) {
-    this.researcherId = researcherId;
-  }
-
-  public String getTwitter() {
-    return twitter;
-  }
-
-  public void setTwitter(String twitter) {
-    this.twitter = twitter;
-  }
-
-  public String getUid() {
-    return uid;
-  }
-
-  public void setUid(String uid) {
-    this.uid = uid;
-  }
-
-  public String getUin() {
-    return uin;
-  }
-
-  public void setUin(String uin) {
-    this.uin = uin;
-  }
-
-  public String getYoutube() {
-    return youtube;
-  }
-
-  public void setYoutube(String youtube) {
-    this.youtube = youtube;
   }
 
   public String getEraCommonsId() {
@@ -822,14 +710,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setFax(String fax) {
     this.fax = fax;
-  }
-
-  public String getFeaturedProfileDisplay() {
-    return featuredProfileDisplay;
-  }
-
-  public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
-    this.featuredProfileDisplay = featuredProfileDisplay;
   }
 
   public List<String> getOrganizations() {

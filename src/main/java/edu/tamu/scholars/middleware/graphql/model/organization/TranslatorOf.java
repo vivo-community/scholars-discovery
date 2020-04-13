@@ -21,10 +21,6 @@ public class TranslatorOf extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
-  private String date;
-
   public TranslatorOf() {
     super();
   }
@@ -35,21 +31,5 @@ public class TranslatorOf extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getDate() {
-    return date;
-  }
-
-  public void setDate(String date) {
-    this.date = date;
   }
 }
