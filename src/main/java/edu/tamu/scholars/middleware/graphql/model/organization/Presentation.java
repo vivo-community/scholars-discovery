@@ -21,10 +21,6 @@ public class Presentation extends AbstractNestedDocument {
 
   private String label;
 
-  private String event;
-
-  private String date;
-
   public Presentation() {
     super();
   }
@@ -35,21 +31,5 @@ public class Presentation extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getEvent() {
-    return event;
-  }
-
-  public void setEvent(String event) {
-    this.event = event;
-  }
-
-  public String getDate() {
-    return date;
-  }
-
-  public void setDate(String date) {
-    this.date = date;
   }
 }

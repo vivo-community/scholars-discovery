@@ -7,7 +7,6 @@ import edu.tamu.scholars.middleware.graphql.model.collection.Translator;
 import edu.tamu.scholars.middleware.graphql.model.collection.Publisher;
 import edu.tamu.scholars.middleware.graphql.model.collection.SubjectArea;
 import edu.tamu.scholars.middleware.graphql.model.collection.Feature;
-import edu.tamu.scholars.middleware.graphql.model.collection.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.collection.OutputOfProcessOrEvent;
 import edu.tamu.scholars.middleware.graphql.model.collection.IsAbout;
 import edu.tamu.scholars.middleware.graphql.model.collection.SpecifiedOutputOf;
@@ -15,6 +14,7 @@ import edu.tamu.scholars.middleware.graphql.model.collection.Mention;
 import edu.tamu.scholars.middleware.graphql.model.collection.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.collection.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -51,8 +51,6 @@ public class Collection extends AbstractNestedDocument {
 
   private List<Feature> features;
 
-  private List<GeographicFocus> geographicFocus;
-
   private List<OutputOfProcessOrEvent> outputOfProcessOrEvent;
 
   private List<IsAbout> isAbout;
@@ -66,6 +64,8 @@ public class Collection extends AbstractNestedDocument {
   private List<SupportedBy> supportedBy;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -159,14 +159,6 @@ public class Collection extends AbstractNestedDocument {
     this.features = features;
   }
 
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
-  }
-
   public List<OutputOfProcessOrEvent> getOutputOfProcessOrEvent() {
     return outputOfProcessOrEvent;
   }
@@ -221,6 +213,14 @@ public class Collection extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {
