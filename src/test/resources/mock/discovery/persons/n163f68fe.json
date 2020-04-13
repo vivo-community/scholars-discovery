@@ -704,6 +704,8 @@
     "Instructor::nd65b77ac",
     "Instructor::n2c329222"
   ],
+  "netid": "thartwig",
+  "uid": "819c66615962384f37374d89a0d437cf",
   "email": "thartwig@tamu.edu",
   "firstName": "Karl",
   "lastName": "Hartwig",
@@ -712,5 +714,27 @@
   "region": "TX",
   "postalCode": "77843-3123",
   "country": "USA",
+  "etdChairOf": [
+    "Murudkar, Rahul R. (2009-08). Development of a Continuous Equal Channel Angular Extrusion (ECAE) Process. Master's Thesis.::n6cca7c7a",
+    "Song, Miao (2014-08). Mechanical Properties, Thermal Stability and Radiation Damage of Ferritic Steels Processed by Thermal Mechanical Treatments. Doctoral Dissertation.::n558af149",
+    "Onipede, Bolarinwa O. (2005-12). Design of a cross section reduction extrusion tool for square bars. Master's Thesis.::n6d71c2ca",
+    "Bryant, Don O. (2005-12). Grain refinement of cast niobium via equal channel angular extrusion/annealing. Master's Thesis.::n340d215d",
+    "Foley, David Christopher (2014-08). Texture Control by Selective Deformation Mechanism Activation in Magnesium Alloy. Doctoral Dissertation.::nc535885e",
+    "Balachandran, Shreyas (2015-05). Microstructure Development in Bulk Niobium Following Severe Plastic Deformation and Annealing. Doctoral Dissertation.::na1ed6f8f",
+    "Kadri, Shabibahmed Jehangir (2005-08). Microstructural breakdown and scale-up effects in equal channel angular extrusion of cast copper. Master's Thesis.::n95e4910b",
+    "Mathaudhu, Suveen Nigel (2006-08). Fabrication of amorphous metal matrix composites by severe plastic deformation. Doctoral Dissertation.::nb43a88ca",
+    "Kao, Yi-Tang (2014-12). Effect of Severe Plastic Deformation and Subsequent Heat Treatment on Hardness and Electrical Conductivity of Oxygen-Free High Conductivity (OFHC) Copper, Commercial Pure Copper, and Copper Chromium Alloy. Master's Thesis.::ncd21c0c8"
+  ],
+  "etdChairOfURL": [
+    "http://hdl.handle.net/1969.1/ETD-TAMU-2009-08-7140::n6cca7c7a",
+    "http://hdl.handle.net/1969.1/153503::n558af149",
+    "http://hdl.handle.net/1969.1/4880::n6d71c2ca",
+    "http://hdl.handle.net/1969.1/4771::n340d215d",
+    "http://hdl.handle.net/1969.1/153415::nc535885e",
+    "http://hdl.handle.net/1969.1/155305::na1ed6f8f",
+    "http://hdl.handle.net/1969.1/4341::n95e4910b",
+    "http://hdl.handle.net/1969.1/4389::nb43a88ca",
+    "http://hdl.handle.net/1969.1/154158::ncd21c0c8"
+  ],
   "modTime": "2019-03-01T00:00:00"
 }

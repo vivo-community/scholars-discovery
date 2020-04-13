@@ -160,6 +160,8 @@ public class Organization extends AbstractNestedDocument {
 
   private String geographicLocation;
 
+  private String orgId;
+
   private List<String> type;
 
   private String image;
@@ -585,6 +587,14 @@ public class Organization extends AbstractNestedDocument {
 
   public void setGeographicLocation(String geographicLocation) {
     this.geographicLocation = geographicLocation;
+  }
+
+  public String getOrgId() {
+    return orgId;
+  }
+
+  public void setOrgId(String orgId) {
+    this.orgId = orgId;
   }
 
   public List<String> getType() {

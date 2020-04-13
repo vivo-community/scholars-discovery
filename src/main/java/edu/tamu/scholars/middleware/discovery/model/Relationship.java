@@ -57,7 +57,7 @@ public class Relationship extends Common {
     private List<String> awardOrHonorForType;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByAbbreviation", key = "abbreviation") })
+    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type"), @Reference(value = "awardConferredByAbbreviation", key = "abbreviation"), @Reference(value = "awardConferredByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardConferredBy;
 
@@ -70,7 +70,11 @@ public class Relationship extends Common {
     private List<String> awardConferredByAbbreviation;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation") })
+    @PropertySource(template = "relationship/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
+    private List<String> awardConferredByPreferredLabel;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @NestedObject(properties = { @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation"), @Reference(value = "awardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardedBy;
 
@@ -81,6 +85,10 @@ public class Relationship extends Common {
     @Indexed(type = "nested_strings", copyTo = "_text_")
     @PropertySource(template = "relationship/awardedByAbbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private List<String> awardedByAbbreviation;
+
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @PropertySource(template = "relationship/awardedByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardedBy_label")
+    private List<String> awardedByPreferredLabel;
 
     @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "grantSubcontractedThroughType", key = "type") })
@@ -272,6 +280,14 @@ public class Relationship extends Common {
         this.awardConferredByAbbreviation = awardConferredByAbbreviation;
     }
 
+    public List<String> getAwardConferredByPreferredLabel() {
+        return awardConferredByPreferredLabel;
+    }
+
+    public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
+        this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+    }
+
     public List<String> getAwardedBy() {
         return awardedBy;
     }
@@ -294,6 +310,14 @@ public class Relationship extends Common {
 
     public void setAwardedByAbbreviation(List<String> awardedByAbbreviation) {
         this.awardedByAbbreviation = awardedByAbbreviation;
+    }
+
+    public List<String> getAwardedByPreferredLabel() {
+        return awardedByPreferredLabel;
+    }
+
+    public void setAwardedByPreferredLabel(List<String> awardedByPreferredLabel) {
+        this.awardedByPreferredLabel = awardedByPreferredLabel;
     }
 
     public List<String> getGrantSubcontractedThrough() {

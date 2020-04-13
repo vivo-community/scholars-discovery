@@ -315,20 +315,27 @@ public class Document extends Common {
     @PropertySource(template = "document/note", predicate = "http://www.w3.org/2006/vcard/ns#note")
     private String note;
 
+    @NestedObject
+    @Indexed(type = "nested_strings", searchable = false)
+    @PropertySource(template = "document/etdChairedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> etdChairedBy;
+
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "advisedByEmail", key = "email"), @Reference(value = "advisedByOrganization", key = "organization") })
     @PropertySource(template = "document/advisedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> advisedBy;
 
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "document/advisedByEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
-    private List<String> advisedByEmail;
+    @Indexed(type = "whole_strings")
+    @PropertySource(template = "document/authorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullAuthorList")
+    private List<String> authorList;
 
-    @NestedMultiValuedProperty
-    @NestedObject(root = false)
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "document/advisedByOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> advisedByOrganization;
+    @Indexed(type = "whole_strings", searchable = false)
+    @PropertySource(template = "document/editorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullEditorList")
+    private List<String> editorList;
+
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "document/bookTitle", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#bookTitleForChapter")
+    private String bookTitle;
 
     public Document() {
 
@@ -854,6 +861,14 @@ public class Document extends Common {
         this.note = note;
     }
 
+    public List<String> getEtdChairedBy() {
+        return etdChairedBy;
+    }
+
+    public void setEtdChairedBy(List<String> etdChairedBy) {
+        this.etdChairedBy = etdChairedBy;
+    }
+
     public List<String> getAdvisedBy() {
         return advisedBy;
     }
@@ -862,20 +877,28 @@ public class Document extends Common {
         this.advisedBy = advisedBy;
     }
 
-    public List<String> getAdvisedByEmail() {
-        return advisedByEmail;
+    public List<String> getAuthorList() {
+        return authorList;
     }
 
-    public void setAdvisedByEmail(List<String> advisedByEmail) {
-        this.advisedByEmail = advisedByEmail;
+    public void setAuthorList(List<String> authorList) {
+        this.authorList = authorList;
     }
 
-    public List<String> getAdvisedByOrganization() {
-        return advisedByOrganization;
+    public List<String> getEditorList() {
+        return editorList;
     }
 
-    public void setAdvisedByOrganization(List<String> advisedByOrganization) {
-        this.advisedByOrganization = advisedByOrganization;
+    public void setEditorList(List<String> editorList) {
+        this.editorList = editorList;
+    }
+
+    public String getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 
 }

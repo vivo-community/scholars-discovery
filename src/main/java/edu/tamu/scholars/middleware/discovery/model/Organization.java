@@ -284,6 +284,10 @@ public class Organization extends Common {
     @PropertySource(template = "organization/affiliatedResearchArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> affiliatedResearchAreas;
 
+    @Indexed(type = "whole_string", searchable = false)
+    @PropertySource(template = "organization/orgId", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#OrgID")
+    private String orgId;
+
     public Organization() {
 
     }
@@ -742,6 +746,14 @@ public class Organization extends Common {
 
     public void setAffiliatedResearchAreas(List<String> affiliatedResearchAreas) {
         this.affiliatedResearchAreas = affiliatedResearchAreas;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
 }

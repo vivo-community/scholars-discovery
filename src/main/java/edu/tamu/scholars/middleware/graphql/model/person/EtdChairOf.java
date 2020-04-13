@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.graphql.model.document;
+package edu.tamu.scholars.middleware.graphql.model.person;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -13,15 +13,19 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "DocumentAdvisedByOrganization"
+    name = "PersonEtdChairOf"
 )
 @JsonInclude(NON_EMPTY)
-public class AdvisedByOrganization extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1335447975L;
+public class EtdChairOf extends AbstractNestedDocument {
+  private static final long serialVersionUID = 1764100218L;
 
   private String label;
 
-  public AdvisedByOrganization() {
+  private String url;
+
+  private String publicationDate;
+
+  public EtdChairOf() {
     super();
   }
 
@@ -31,5 +35,21 @@ public class AdvisedByOrganization extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public String getPublicationDate() {
+    return publicationDate;
+  }
+
+  public void setPublicationDate(String publicationDate) {
+    this.publicationDate = publicationDate;
   }
 }

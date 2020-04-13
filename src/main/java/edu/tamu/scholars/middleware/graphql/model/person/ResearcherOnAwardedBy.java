@@ -21,6 +21,8 @@ public class ResearcherOnAwardedBy extends AbstractNestedDocument {
 
   private String label;
 
+  private String preferredLabel;
+
   public ResearcherOnAwardedBy() {
     super();
   }
@@ -31,5 +33,13 @@ public class ResearcherOnAwardedBy extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
+  }
+
+  public String getPreferredLabel() {
+    return preferredLabel;
+  }
+
+  public void setPreferredLabel(String preferredLabel) {
+    this.preferredLabel = preferredLabel;
   }
 }

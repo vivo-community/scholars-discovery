@@ -27,6 +27,7 @@ import edu.tamu.scholars.middleware.graphql.model.document.Mention;
 import edu.tamu.scholars.middleware.graphql.model.document.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.document.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Receipt;
+import edu.tamu.scholars.middleware.graphql.model.document.EtdChairedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.AdvisedBy;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
@@ -107,6 +108,8 @@ public class Document extends AbstractNestedDocument {
   private List<SupportedBy> supportedBy;
 
   private List<Receipt> receipts;
+
+  private List<EtdChairedBy> etdChairedBy;
 
   private List<AdvisedBy> advisedBy;
 
@@ -190,6 +193,12 @@ public class Document extends AbstractNestedDocument {
   private List<String> tags;
 
   private String note;
+
+  private List<String> authorList;
+
+  private List<String> editorList;
+
+  private String bookTitle;
 
   private List<String> type;
 
@@ -421,6 +430,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setReceipts(List<Receipt> receipts) {
     this.receipts = receipts;
+  }
+
+  public List<EtdChairedBy> getEtdChairedBy() {
+    return etdChairedBy;
+  }
+
+  public void setEtdChairedBy(List<EtdChairedBy> etdChairedBy) {
+    this.etdChairedBy = etdChairedBy;
   }
 
   public List<AdvisedBy> getAdvisedBy() {
@@ -749,6 +766,30 @@ public class Document extends AbstractNestedDocument {
 
   public void setNote(String note) {
     this.note = note;
+  }
+
+  public List<String> getAuthorList() {
+    return authorList;
+  }
+
+  public void setAuthorList(List<String> authorList) {
+    this.authorList = authorList;
+  }
+
+  public List<String> getEditorList() {
+    return editorList;
+  }
+
+  public void setEditorList(List<String> editorList) {
+    this.editorList = editorList;
+  }
+
+  public String getBookTitle() {
+    return bookTitle;
+  }
+
+  public void setBookTitle(String bookTitle) {
+    this.bookTitle = bookTitle;
   }
 
   public List<String> getType() {

@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.graphql.model.concept;
+package edu.tamu.scholars.middleware.graphql.model.document;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -13,15 +13,15 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "ConceptFutureResearchIdeaOfOrganization"
+    name = "DocumentEtdChairedBy"
 )
 @JsonInclude(NON_EMPTY)
-public class FutureResearchIdeaOfOrganization extends AbstractNestedDocument {
-  private static final long serialVersionUID = -156761525L;
+public class EtdChairedBy extends AbstractNestedDocument {
+  private static final long serialVersionUID = -1739179885L;
 
   private String label;
 
-  public FutureResearchIdeaOfOrganization() {
+  public EtdChairedBy() {
     super();
   }
 

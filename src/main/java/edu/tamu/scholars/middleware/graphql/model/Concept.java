@@ -6,7 +6,6 @@ import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
-import edu.tamu.scholars.middleware.graphql.model.concept.FutureResearchIdeaOf;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
 import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
@@ -24,7 +23,9 @@ import java.util.List;
  *
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
-@GraphQLType(name = "Concept")
+@GraphQLType(
+    name = "Concept"
+)
 @JsonInclude(NON_EMPTY)
 public class Concept extends AbstractNestedDocument {
   private static final long serialVersionUID = 1522676418L;
@@ -40,8 +41,6 @@ public class Concept extends AbstractNestedDocument {
   private List<NarrowerConcept> narrowerConcepts;
 
   private List<RelatedConcept> relatedConcepts;
-
-  private List<FutureResearchIdeaOf> futureResearchIdeaOf;
 
   private List<Website> websites;
 
@@ -112,14 +111,6 @@ public class Concept extends AbstractNestedDocument {
 
   public void setRelatedConcepts(List<RelatedConcept> relatedConcepts) {
     this.relatedConcepts = relatedConcepts;
-  }
-
-  public List<FutureResearchIdeaOf> getFutureResearchIdeaOf() {
-    return futureResearchIdeaOf;
-  }
-
-  public void setFutureResearchIdeaOf(List<FutureResearchIdeaOf> futureResearchIdeaOf) {
-    this.futureResearchIdeaOf = futureResearchIdeaOf;
   }
 
   public List<Website> getWebsites() {
