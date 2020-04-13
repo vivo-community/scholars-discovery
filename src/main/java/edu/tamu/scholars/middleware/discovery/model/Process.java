@@ -29,14 +29,10 @@ public class Process extends Common {
     @PropertySource(template = "process/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "offeredByType", key = "type") })
     @PropertySource(template = "process/offeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> offeredBy;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/offeredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> offeredByType;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "process/dateTimeIntervalStart", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -75,45 +71,29 @@ public class Process extends Common {
     @PropertySource(template = "process/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "hasPrerequisiteType", key = "type") })
     @PropertySource(template = "process/hasPrerequisite", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasPrerequisite;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/hasPrerequisiteType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> hasPrerequisiteType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "prerequisiteForType", key = "type") })
     @PropertySource(template = "process/prerequisiteFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> prerequisiteFor;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/prerequisiteForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> prerequisiteForType;
 
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "process/credits", predicate = "http://vivoweb.org/ontology/core#courseCredits")
     private String credits;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "outputPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "process/outputPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputPublicationOrOtherWork;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/outputPublicationOrOtherWorkType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> outputPublicationOrOtherWorkType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "relatedDocumentType", key = "type") })
     @PropertySource(template = "process/relatedDocument", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedDocuments;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/relatedDocumentType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> relatedDocumentType;
 
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "process/contactInformation", predicate = "http://vivoweb.org/ontology/core#contactInformation")
@@ -129,23 +109,15 @@ public class Process extends Common {
     @PropertySource(template = "process/heldInGeographicLocation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> heldInGeographicLocation;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "hasOutputType", key = "type") })
     @PropertySource(template = "process/hasOutput", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasOutput;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/hasOutputType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> hasOutputType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "hasParticipantType", key = "type") })
     @PropertySource(template = "process/hasParticipant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasParticipant;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/hasParticipantType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> hasParticipantType;
 
     public Process() {
 
@@ -173,14 +145,6 @@ public class Process extends Common {
 
     public void setOfferedBy(List<String> offeredBy) {
         this.offeredBy = offeredBy;
-    }
-
-    public List<String> getOfferedByType() {
-        return offeredByType;
-    }
-
-    public void setOfferedByType(List<String> offeredByType) {
-        this.offeredByType = offeredByType;
     }
 
     public String getDateTimeIntervalStart() {
@@ -255,28 +219,12 @@ public class Process extends Common {
         this.hasPrerequisite = hasPrerequisite;
     }
 
-    public List<String> getHasPrerequisiteType() {
-        return hasPrerequisiteType;
-    }
-
-    public void setHasPrerequisiteType(List<String> hasPrerequisiteType) {
-        this.hasPrerequisiteType = hasPrerequisiteType;
-    }
-
     public List<String> getPrerequisiteFor() {
         return prerequisiteFor;
     }
 
     public void setPrerequisiteFor(List<String> prerequisiteFor) {
         this.prerequisiteFor = prerequisiteFor;
-    }
-
-    public List<String> getPrerequisiteForType() {
-        return prerequisiteForType;
-    }
-
-    public void setPrerequisiteForType(List<String> prerequisiteForType) {
-        this.prerequisiteForType = prerequisiteForType;
     }
 
     public String getCredits() {
@@ -295,28 +243,12 @@ public class Process extends Common {
         this.outputPublicationOrOtherWork = outputPublicationOrOtherWork;
     }
 
-    public List<String> getOutputPublicationOrOtherWorkType() {
-        return outputPublicationOrOtherWorkType;
-    }
-
-    public void setOutputPublicationOrOtherWorkType(List<String> outputPublicationOrOtherWorkType) {
-        this.outputPublicationOrOtherWorkType = outputPublicationOrOtherWorkType;
-    }
-
     public List<String> getRelatedDocuments() {
         return relatedDocuments;
     }
 
     public void setRelatedDocuments(List<String> relatedDocuments) {
         this.relatedDocuments = relatedDocuments;
-    }
-
-    public List<String> getRelatedDocumentType() {
-        return relatedDocumentType;
-    }
-
-    public void setRelatedDocumentType(List<String> relatedDocumentType) {
-        this.relatedDocumentType = relatedDocumentType;
     }
 
     public String getContactInformation() {
@@ -351,28 +283,12 @@ public class Process extends Common {
         this.hasOutput = hasOutput;
     }
 
-    public List<String> getHasOutputType() {
-        return hasOutputType;
-    }
-
-    public void setHasOutputType(List<String> hasOutputType) {
-        this.hasOutputType = hasOutputType;
-    }
-
     public List<String> getHasParticipant() {
         return hasParticipant;
     }
 
     public void setHasParticipant(List<String> hasParticipant) {
         this.hasParticipant = hasParticipant;
-    }
-
-    public List<String> getHasParticipantType() {
-        return hasParticipantType;
-    }
-
-    public void setHasParticipantType(List<String> hasParticipantType) {
-        this.hasParticipantType = hasParticipantType;
     }
 
 }

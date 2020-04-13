@@ -21,8 +21,6 @@ public class HasOutput extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
   public HasOutput() {
     super();
   }
@@ -33,13 +31,5 @@ public class HasOutput extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 }
