@@ -246,17 +246,21 @@ public class Person extends Common {
     private List<String> adviseeOfEndDate;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "publicationPublisher", key = "publisher"), @Reference(value = "publicationVenue", key = "venue") })
+    @NestedObject(properties = { @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue") })
     @PropertySource(template = "person/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "person/publicationPublisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
-    private List<String> publicationPublisher;
+    @Indexed(type = "nested_dates")
+    @PropertySource(template = "person/selectedPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> selectedPublicationDate;
 
     @Indexed(type = "nested_strings")
-    @PropertySource(template = "person/publicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
-    private List<String> publicationVenue;
+    @PropertySource(template = "person/selectedPublicationPublisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private List<String> selectedPublicationPublisher;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/selectedPublicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private List<String> selectedPublicationVenue;
 
     @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "collectionOrSeriesEditorForType", key = "type"), @Reference(value = "collectionOrSeriesEditorForRole", key = "role"), @Reference(value = "collectionOrSeriesEditorForStartDate", key = "startDate"), @Reference(value = "collectionOrSeriesEditorForEndDate", key = "endDate") })
@@ -1100,20 +1104,28 @@ public class Person extends Common {
         this.publications = publications;
     }
 
-    public List<String> getPublicationPublisher() {
-        return publicationPublisher;
+    public List<String> getSelectedPublicationDate() {
+        return selectedPublicationDate;
     }
 
-    public void setPublicationPublisher(List<String> publicationPublisher) {
-        this.publicationPublisher = publicationPublisher;
+    public void setSelectedPublicationDate(List<String> selectedPublicationDate) {
+        this.selectedPublicationDate = selectedPublicationDate;
     }
 
-    public List<String> getPublicationVenue() {
-        return publicationVenue;
+    public List<String> getSelectedPublicationPublisher() {
+        return selectedPublicationPublisher;
     }
 
-    public void setPublicationVenue(List<String> publicationVenue) {
-        this.publicationVenue = publicationVenue;
+    public void setSelectedPublicationPublisher(List<String> selectedPublicationPublisher) {
+        this.selectedPublicationPublisher = selectedPublicationPublisher;
+    }
+
+    public List<String> getSelectedPublicationVenue() {
+        return selectedPublicationVenue;
+    }
+
+    public void setSelectedPublicationVenue(List<String> selectedPublicationVenue) {
+        this.selectedPublicationVenue = selectedPublicationVenue;
     }
 
     public List<String> getCollectionOrSeriesEditorFor() {

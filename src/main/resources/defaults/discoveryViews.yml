@@ -30,7 +30,7 @@
       collapsed: true
       hidden: false
     - name: Published In
-      field: publicationVenue
+      field: selectedPublicationVenue
       type: STRING
       sort: COUNT
       direction: DESC
@@ -38,7 +38,7 @@
       collapsed: true
       hidden: false
     - name: Publisher
-      field: publicationPublisher
+      field: selectedPublicationPublisher
       type: STRING
       sort: COUNT
       direction: DESC
