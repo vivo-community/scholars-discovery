@@ -45,13 +45,13 @@
 </div>
 <div class="d-inline-flex">
   {{#if doi}}
-  <span class="mr-1"><a href="https://dx.doi.org/{{doi}}"><img src="assets/images/doi-badge.jpg" width="100" alt="doi badge"></a></span>
+  <span class="mr-1"><a href="https://dx.doi.org/{{doi}}" target="_blank"><img src="assets/images/doi-badge.jpg" width="100" alt="doi badge"></a></span>
   {{/if}}
   {{#if pmcid}}
-  <span class="mr-1"><a href="https://www.ncbi.nlm.nih.gov/pubmed/{{pmcid}}"><img src="assets/images/pubmed-badge.jpg" width="100" alt="pubmed badge"></a></span>
+  <span class="mr-1"><a href="https://www.ncbi.nlm.nih.gov/pubmed/{{pmcid}}" target="_blank"><img src="assets/images/pubmed-badge.jpg" width="100" alt="pubmed badge"></a></span>
   {{/if}}
   {{#if uri}}
-  <span class="mr-1"><a href="{{uri}}"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge"></a></span>
+  <span class="mr-1"><a href="{{uri}}" target="_blank"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge"></a></span>
   {{/if}}
   {{#if tags}}
     {{#each tags}}
