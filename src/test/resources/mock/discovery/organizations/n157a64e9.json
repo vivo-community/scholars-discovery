@@ -1,7 +1,7 @@
 {
-  "id" : "n157a64e9",
+  "id": "n157a64e9",
   "class": "Organization",
-  "syncIds" : [
+  "syncIds": [
     "n220731SE",
     "n99195SE",
     "n284357SE",
@@ -36,11 +36,11 @@
     "n120027SE",
     "n382364SE"
   ],
-  "name" : "Taylor & Francis",
-  "type" : [
+  "name": "Taylor & Francis",
+  "type": [
     "Publisher"
   ],
-  "publisherOf" : [
+  "publisherOf": [
     "The spatial analysis of modern pollen rain in big bend national park",
     "Supporting Our Troops: Library Services and Support for Veterans",
     "Masculine Protest in The catcher in the rye",
@@ -73,40 +73,6 @@
     "Insula",
     "Technical Services Report: Involving Users in Preservation Metadata. A Report of the ALCTS PARS Intellectual Access to Preservation Metadata Interest Group Meeting. American Library Association Midwinter Meeting, Philadelphia, January 2014",
     "Immunofluorescence method for the detection and characterization of marine microbes"
-  ],
-  "publisherOfDate" : [
-    "2001-01-01T00:00:00::n106137SE",
-    "2017-01-01T00:00:00::n335094SE",
-    "2007-01-01T00:00:00::n92731SE",
-    "2013-01-01T00:00:00::n98946SE",
-    "2015-01-01T00:00:00::n221995SE",
-    "2006-01-01T00:00:00::n289546SE",
-    "1985-01-01T00:00:00::n98802SE",
-    "1987-01-01T00:00:00::n348840SE",
-    "2006-01-01T00:00:00::n342268SE",
-    "1994-01-01T00:00:00::n92616SE",
-    "2014-01-01T00:00:00::n92769SE",
-    "1999-01-01T00:00:00::n220733SE",
-    "2010-01-01T00:00:00::n46521SE",
-    "1999-01-01T00:00:00::n220731SE",
-    "2010-01-01T00:00:00::n324008SE",
-    "2014-01-01T00:00:00::n119912SE",
-    "2004-01-01T00:00:00::n91846SE",
-    "1987-01-01T00:00:00::n93481SE",
-    "2016-01-01T00:00:00::n119906SE",
-    "2004-01-01T00:00:00::n99195SE",
-    "1989-01-01T00:00:00::n97031SE",
-    "2006-01-01T00:00:00::n113271SE",
-    "1987-01-01T00:00:00::n108682SE",
-    "2002-01-01T00:00:00::n336654SE",
-    "2016-01-01T00:00:00::n284357SE",
-    "2018-01-01T00:00:00::n382364SE",
-    "2014-01-01T00:00:00::n293058SE",
-    "2018-01-01T00:00:00::n348017SE",
-    "2004-01-01T00:00:00::n336698SE",
-    "1999-01-01T00:00:00::n220732SE",
-    "2014-01-01T00:00:00::n120027SE",
-    "1993-01-01T00:00:00::n109861SE"
   ],
   "modTime": "2019-01-01T00:00:00"
 }

@@ -2,8 +2,8 @@
   <ul class="list-unstyled ml-2 mr-2 mb-0">
     {{#each assigneeForPatent}}
     <li class="mb-2">
-      <a href="display/{{id}}">{{label}}</a>
-      <span class="badge badge-light">{{toYear date}}</span>
+      <a href="display/{{id}}">{{title}}</a>
+      <span class="badge badge-light">{{toYear publicationDate}}</span>
     </li>
     {{/each}}
   </ul>

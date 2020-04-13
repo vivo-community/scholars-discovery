@@ -4,10 +4,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
@@ -42,32 +42,20 @@ public class Organization extends Common {
     @PropertySource(template = "organization/date", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String date;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "sponsorsAwardOrHonorType", key = "type") })
     @PropertySource(template = "organization/sponsorsAwardOrHonor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sponsorsAwardOrHonor;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "organization/sponsorsAwardOrHonorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> sponsorsAwardOrHonorType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "awardOrHonorGivenDate", key = "date") })
     @PropertySource(template = "organization/awardOrHonorGiven", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorGiven;
 
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/awardOrHonorGivenDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> awardOrHonorGivenDate;
-
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "awardOrHonorReceivedDate", key = "date") })
     @PropertySource(template = "organization/awardOrHonorReceived", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardOrHonorReceived;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/awardOrHonorReceivedDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> awardOrHonorReceivedDate;
 
     @Indexed(type = "whole_strings", copyTo = "_text_")
     @PropertySource(template = "organization/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
@@ -143,97 +131,45 @@ public class Organization extends Common {
     @PropertySource(template = "organization/clinicalActivity", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> clinicalActivities;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "convenerOfEventDate", key = "date") })
     @PropertySource(template = "organization/convenerOfEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> convenerOfEvents;
 
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/convenerOfEventDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> convenerOfEventDate;
-
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "attendedEventDate", key = "date") })
     @PropertySource(template = "organization/attendedEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> attendedEvents;
 
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/attendedEventDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> attendedEventDate;
-
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "date") })
-    @PropertySource(template = "organization/selectedPublication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @PropertySource(template = "organization/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "organization/selectedPublicationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> selectedPublicationType;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/selectedPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> selectedPublicationDate;
-
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "publisherOfType", key = "type"), @Reference(value = "publisherOfDate", key = "date") })
     @PropertySource(template = "organization/publisherOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> publisherOf;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "organization/publisherOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> publisherOfType;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/publisherOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> publisherOfDate;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "presentationEvent", key = "event"), @Reference(value = "presentationDate", key = "date") })
     @PropertySource(template = "organization/presentation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> presentations;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "organization/presentationEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> presentationEvent;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/presentationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> presentationDate;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "featuredInType", key = "type"), @Reference(value = "featuredInDate", key = "date") })
     @PropertySource(template = "organization/featuredIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> featuredIn;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "organization/featuredInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> featuredInType;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/featuredInDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> featuredInDate;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "assigneeForPatentDate", key = "date") })
     @PropertySource(template = "organization/assigneeForPatent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> assigneeForPatent;
 
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/assigneeForPatentDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> assigneeForPatentDate;
-
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "translatorOfType", key = "type"), @Reference(value = "translatorOfDate", key = "date") })
     @PropertySource(template = "organization/translatorOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translatorOf;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "organization/translatorOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> translatorOfType;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "organization/translatorOfDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> translatorOfDate;
 
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "awardsGrantDate", key = "date") })
@@ -404,14 +340,6 @@ public class Organization extends Common {
         this.sponsorsAwardOrHonor = sponsorsAwardOrHonor;
     }
 
-    public List<String> getSponsorsAwardOrHonorType() {
-        return sponsorsAwardOrHonorType;
-    }
-
-    public void setSponsorsAwardOrHonorType(List<String> sponsorsAwardOrHonorType) {
-        this.sponsorsAwardOrHonorType = sponsorsAwardOrHonorType;
-    }
-
     public List<String> getAwardOrHonorGiven() {
         return awardOrHonorGiven;
     }
@@ -420,28 +348,12 @@ public class Organization extends Common {
         this.awardOrHonorGiven = awardOrHonorGiven;
     }
 
-    public List<String> getAwardOrHonorGivenDate() {
-        return awardOrHonorGivenDate;
-    }
-
-    public void setAwardOrHonorGivenDate(List<String> awardOrHonorGivenDate) {
-        this.awardOrHonorGivenDate = awardOrHonorGivenDate;
-    }
-
     public List<String> getAwardOrHonorReceived() {
         return awardOrHonorReceived;
     }
 
     public void setAwardOrHonorReceived(List<String> awardOrHonorReceived) {
         this.awardOrHonorReceived = awardOrHonorReceived;
-    }
-
-    public List<String> getAwardOrHonorReceivedDate() {
-        return awardOrHonorReceivedDate;
-    }
-
-    public void setAwardOrHonorReceivedDate(List<String> awardOrHonorReceivedDate) {
-        this.awardOrHonorReceivedDate = awardOrHonorReceivedDate;
     }
 
     public List<String> getKeywords() {
@@ -580,28 +492,12 @@ public class Organization extends Common {
         this.convenerOfEvents = convenerOfEvents;
     }
 
-    public List<String> getConvenerOfEventDate() {
-        return convenerOfEventDate;
-    }
-
-    public void setConvenerOfEventDate(List<String> convenerOfEventDate) {
-        this.convenerOfEventDate = convenerOfEventDate;
-    }
-
     public List<String> getAttendedEvents() {
         return attendedEvents;
     }
 
     public void setAttendedEvents(List<String> attendedEvents) {
         this.attendedEvents = attendedEvents;
-    }
-
-    public List<String> getAttendedEventDate() {
-        return attendedEventDate;
-    }
-
-    public void setAttendedEventDate(List<String> attendedEventDate) {
-        this.attendedEventDate = attendedEventDate;
     }
 
     public List<String> getPublications() {
@@ -612,44 +508,12 @@ public class Organization extends Common {
         this.publications = publications;
     }
 
-    public List<String> getSelectedPublicationType() {
-        return selectedPublicationType;
-    }
-
-    public void setSelectedPublicationType(List<String> selectedPublicationType) {
-        this.selectedPublicationType = selectedPublicationType;
-    }
-
-    public List<String> getSelectedPublicationDate() {
-        return selectedPublicationDate;
-    }
-
-    public void setSelectedPublicationDate(List<String> selectedPublicationDate) {
-        this.selectedPublicationDate = selectedPublicationDate;
-    }
-
     public List<String> getPublisherOf() {
         return publisherOf;
     }
 
     public void setPublisherOf(List<String> publisherOf) {
         this.publisherOf = publisherOf;
-    }
-
-    public List<String> getPublisherOfType() {
-        return publisherOfType;
-    }
-
-    public void setPublisherOfType(List<String> publisherOfType) {
-        this.publisherOfType = publisherOfType;
-    }
-
-    public List<String> getPublisherOfDate() {
-        return publisherOfDate;
-    }
-
-    public void setPublisherOfDate(List<String> publisherOfDate) {
-        this.publisherOfDate = publisherOfDate;
     }
 
     public List<String> getPresentations() {
@@ -660,44 +524,12 @@ public class Organization extends Common {
         this.presentations = presentations;
     }
 
-    public List<String> getPresentationEvent() {
-        return presentationEvent;
-    }
-
-    public void setPresentationEvent(List<String> presentationEvent) {
-        this.presentationEvent = presentationEvent;
-    }
-
-    public List<String> getPresentationDate() {
-        return presentationDate;
-    }
-
-    public void setPresentationDate(List<String> presentationDate) {
-        this.presentationDate = presentationDate;
-    }
-
     public List<String> getFeaturedIn() {
         return featuredIn;
     }
 
     public void setFeaturedIn(List<String> featuredIn) {
         this.featuredIn = featuredIn;
-    }
-
-    public List<String> getFeaturedInType() {
-        return featuredInType;
-    }
-
-    public void setFeaturedInType(List<String> featuredInType) {
-        this.featuredInType = featuredInType;
-    }
-
-    public List<String> getFeaturedInDate() {
-        return featuredInDate;
-    }
-
-    public void setFeaturedInDate(List<String> featuredInDate) {
-        this.featuredInDate = featuredInDate;
     }
 
     public List<String> getAssigneeForPatent() {
@@ -708,36 +540,12 @@ public class Organization extends Common {
         this.assigneeForPatent = assigneeForPatent;
     }
 
-    public List<String> getAssigneeForPatentDate() {
-        return assigneeForPatentDate;
-    }
-
-    public void setAssigneeForPatentDate(List<String> assigneeForPatentDate) {
-        this.assigneeForPatentDate = assigneeForPatentDate;
-    }
-
     public List<String> getTranslatorOf() {
         return translatorOf;
     }
 
     public void setTranslatorOf(List<String> translatorOf) {
         this.translatorOf = translatorOf;
-    }
-
-    public List<String> getTranslatorOfType() {
-        return translatorOfType;
-    }
-
-    public void setTranslatorOfType(List<String> translatorOfType) {
-        this.translatorOfType = translatorOfType;
-    }
-
-    public List<String> getTranslatorOfDate() {
-        return translatorOfDate;
-    }
-
-    public void setTranslatorOfDate(List<String> translatorOfDate) {
-        this.translatorOfDate = translatorOfDate;
     }
 
     public List<String> getAwardsGrant() {
