@@ -1,1 +1,9 @@
-<span>Work In Progress</span>
+{{#if editors}}
+<ul class="list-unstyled">
+  {{#each editors}}
+  <li>
+    <span><a href="display/{{id}}">{{label}}</a></span>
+  </li>
+  {{/each}}
+</ul>
+{{/if}}

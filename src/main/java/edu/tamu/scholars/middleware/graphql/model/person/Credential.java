@@ -21,8 +21,6 @@ public class Credential extends AbstractNestedDocument {
 
   private String label;
 
-  private String dateIssued;
-
   public Credential() {
     super();
   }
@@ -33,13 +31,5 @@ public class Credential extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getDateIssued() {
-    return dateIssued;
-  }
-
-  public void setDateIssued(String dateIssued) {
-    this.dateIssued = dateIssued;
   }
 }

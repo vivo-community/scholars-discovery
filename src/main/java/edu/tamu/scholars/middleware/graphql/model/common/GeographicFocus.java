@@ -1,4 +1,4 @@
-package edu.tamu.scholars.middleware.graphql.model.relationship;
+package edu.tamu.scholars.middleware.graphql.model.common;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -13,15 +13,13 @@ import java.lang.String;
  * Do not modify this file -- YOUR CHANGES WILL BE ERASED!
  */
 @GraphQLType(
-    name = "RelationshipGeographicFocus"
+    name = "CommonGeographicFocus"
 )
 @JsonInclude(NON_EMPTY)
 public class GeographicFocus extends AbstractNestedDocument {
-  private static final long serialVersionUID = -1129132911L;
+  private static final long serialVersionUID = 557745860L;
 
   private String label;
-
-  private String type;
 
   public GeographicFocus() {
     super();
@@ -33,13 +31,5 @@ public class GeographicFocus extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 }

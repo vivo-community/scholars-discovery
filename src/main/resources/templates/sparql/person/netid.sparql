@@ -1,7 +1,0 @@
-PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
-
-CONSTRUCT {
-    <{{uri}}> tamu:NETID ?NETID .
-} WHERE {
-    <{{uri}}> tamu:NETID ?NETID .
-}

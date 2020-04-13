@@ -2,13 +2,12 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.concept.AssociatedDepartment;
 import edu.tamu.scholars.middleware.graphql.model.concept.ResearchAreaOf;
-import edu.tamu.scholars.middleware.graphql.model.concept.AwardOrHonorFor;
-import edu.tamu.scholars.middleware.graphql.model.concept.AwardConferredBy;
 import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -35,10 +34,6 @@ public class Concept extends AbstractNestedDocument {
 
   private List<ResearchAreaOf> researchAreaOf;
 
-  private List<AwardOrHonorFor> awardOrHonorFor;
-
-  private List<AwardConferredBy> awardConferredBy;
-
   private List<Receipt> receipts;
 
   private List<BroaderConcept> broaderConcepts;
@@ -49,13 +44,11 @@ public class Concept extends AbstractNestedDocument {
 
   private List<Website> websites;
 
+  private List<GeographicFocus> geographicFocus;
+
   private List<SameAs> sameAs;
 
   private String name;
-
-  private List<String> awardConferredByPreferredLabel;
-
-  private String yearAwarded;
 
   private List<String> type;
 
@@ -86,22 +79,6 @@ public class Concept extends AbstractNestedDocument {
 
   public void setResearchAreaOf(List<ResearchAreaOf> researchAreaOf) {
     this.researchAreaOf = researchAreaOf;
-  }
-
-  public List<AwardOrHonorFor> getAwardOrHonorFor() {
-    return awardOrHonorFor;
-  }
-
-  public void setAwardOrHonorFor(List<AwardOrHonorFor> awardOrHonorFor) {
-    this.awardOrHonorFor = awardOrHonorFor;
-  }
-
-  public List<AwardConferredBy> getAwardConferredBy() {
-    return awardConferredBy;
-  }
-
-  public void setAwardConferredBy(List<AwardConferredBy> awardConferredBy) {
-    this.awardConferredBy = awardConferredBy;
   }
 
   public List<Receipt> getReceipts() {
@@ -144,6 +121,14 @@ public class Concept extends AbstractNestedDocument {
     this.websites = websites;
   }
 
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -158,22 +143,6 @@ public class Concept extends AbstractNestedDocument {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public List<String> getAwardConferredByPreferredLabel() {
-    return awardConferredByPreferredLabel;
-  }
-
-  public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
-    this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
-  }
-
-  public String getYearAwarded() {
-    return yearAwarded;
-  }
-
-  public void setYearAwarded(String yearAwarded) {
-    this.yearAwarded = yearAwarded;
   }
 
   public List<String> getType() {

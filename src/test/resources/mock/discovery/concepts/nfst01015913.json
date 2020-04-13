@@ -1,7 +1,7 @@
 {
-  "id" : "nfst01015913",
+  "id": "nfst01015913",
   "class": "Concept",
-  "syncIds" : [
+  "syncIds": [
     "n699ce527",
     "naaf1953a",
     "nfst01015913",
@@ -9,29 +9,18 @@
     "nd08ea40b",
     "nc5b013b5"
   ],
-  "name" : "Memory",
-  "type" : [
+  "name": "Memory",
+  "type": [
     "Concept"
   ],
-  "associatedDepartments" : [
+  "associatedDepartments": [
     "Neuroscience and Experimental Therapeutics::n5d5efcc4",
     "Center for Health Systems and Design::naaf1953a",
     "College of Nursing::n699ce527"
   ],
-  "researchAreaOf" : [
+  "researchAreaOf": [
     "Dormire, Sharon::nd08ea40b",
     "Montgomery, Karienn::nc5b013b5"
-  ],
-  "researchAreaOfTitle" : [
-    "Faculty Fellow::nd08ea40b",
-    "Professor::nd08ea40b",
-    "Postdoctoral Research Associate::nc5b013b5",
-    "Research Assistant Professor::nc5b013b5"
-  ],
-  "researchAreaOfOrganization" : [
-    "Neuroscience and Experimental Therapeutics::nc5b013b5::n5d5efcc4",
-    "Center for Health Systems and Design::nd08ea40b::naaf1953a",
-    "College of Nursing::nd08ea40b::n699ce527"
   ],
   "modTime": "2019-01-01T00:00:00"
 }
