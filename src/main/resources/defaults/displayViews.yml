@@ -213,12 +213,18 @@
         - name: featured in
           template: "defaults/displayViews/persons/publications/featuredIn.html"
           field: featuredIn
+          lazyReferences:
+            - featuredIn
         - name: assignee for patent
           template: "defaults/displayViews/persons/publications/assigneeForPatent.html"
           field: assigneeForPatent
+          lazyReferences:
+            - assigneeForPatent
         - name: translator of
           template: "defaults/displayViews/persons/publications/translatorOf.html"
           field: translatorOf
+          lazyReferences:
+            - translatorOf
     - name: Patents
       sections:
         - name: patents
