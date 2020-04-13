@@ -245,10 +245,22 @@ public class Person extends Common {
     @PropertySource(template = "person/adviseeOfEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> adviseeOfEndDate;
 
-    @NestedObject
     @Indexed(type = "nested_strings", copyTo = "_text_")
+    @NestedObject(properties = { @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue") })
     @PropertySource(template = "person/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
+
+    @Indexed(type = "nested_dates")
+    @PropertySource(template = "person/selectedPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> selectedPublicationDate;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/selectedPublicationPublisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private List<String> selectedPublicationPublisher;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "person/selectedPublicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private List<String> selectedPublicationVenue;
 
     @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "collectionOrSeriesEditorForType", key = "type"), @Reference(value = "collectionOrSeriesEditorForRole", key = "role"), @Reference(value = "collectionOrSeriesEditorForStartDate", key = "startDate"), @Reference(value = "collectionOrSeriesEditorForEndDate", key = "endDate") })
@@ -1018,6 +1030,30 @@ public class Person extends Common {
 
     public void setPublications(List<String> publications) {
         this.publications = publications;
+    }
+
+    public List<String> getSelectedPublicationDate() {
+        return selectedPublicationDate;
+    }
+
+    public void setSelectedPublicationDate(List<String> selectedPublicationDate) {
+        this.selectedPublicationDate = selectedPublicationDate;
+    }
+
+    public List<String> getSelectedPublicationPublisher() {
+        return selectedPublicationPublisher;
+    }
+
+    public void setSelectedPublicationPublisher(List<String> selectedPublicationPublisher) {
+        this.selectedPublicationPublisher = selectedPublicationPublisher;
+    }
+
+    public List<String> getSelectedPublicationVenue() {
+        return selectedPublicationVenue;
+    }
+
+    public void setSelectedPublicationVenue(List<String> selectedPublicationVenue) {
+        this.selectedPublicationVenue = selectedPublicationVenue;
     }
 
     public List<String> getCollectionOrSeriesEditorFor() {
