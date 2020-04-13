@@ -10,6 +10,7 @@ import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
+import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
@@ -58,6 +59,33 @@ public class Concept extends Common {
     @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
+
+    @Indexed(type = "nested_strings")
+    @NestedObject(properties = { @Reference(value = "futureResearchIdeaOfTitle", key = "title"), @Reference(value = "futureResearchIdeaOfOrganization", key = "organizations") })
+    @PropertySource(template = "concept/futureResearchIdeaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> futureResearchIdeaOf;
+
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "concept/futureResearchIdeaOfTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> futureResearchIdeaOfTitle;
+
+    @NestedMultiValuedProperty
+    @NestedObject(root = false)
+    @Indexed(type = "nested_strings")
+    @PropertySource(template = "concept/futureResearchIdeaOfOrganization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> futureResearchIdeaOfOrganization;
+
+    @Indexed(type = "whole_strings", copyTo = "_text_")
+    @PropertySource(template = "concept/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
+    private List<String> keywords;
+
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "concept/description", predicate = "http://vivoweb.org/ontology/core#description")
+    private String description;
+
+    @Indexed(type = "pdate")
+    @PropertySource(template = "concept/createdDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private String createdDate;
 
     public Concept() {
 
@@ -125,6 +153,54 @@ public class Concept extends Common {
 
     public void setRelatedConcepts(List<String> relatedConcepts) {
         this.relatedConcepts = relatedConcepts;
+    }
+
+    public List<String> getFutureResearchIdeaOf() {
+        return futureResearchIdeaOf;
+    }
+
+    public void setFutureResearchIdeaOf(List<String> futureResearchIdeaOf) {
+        this.futureResearchIdeaOf = futureResearchIdeaOf;
+    }
+
+    public List<String> getFutureResearchIdeaOfTitle() {
+        return futureResearchIdeaOfTitle;
+    }
+
+    public void setFutureResearchIdeaOfTitle(List<String> futureResearchIdeaOfTitle) {
+        this.futureResearchIdeaOfTitle = futureResearchIdeaOfTitle;
+    }
+
+    public List<String> getFutureResearchIdeaOfOrganization() {
+        return futureResearchIdeaOfOrganization;
+    }
+
+    public void setFutureResearchIdeaOfOrganization(List<String> futureResearchIdeaOfOrganization) {
+        this.futureResearchIdeaOfOrganization = futureResearchIdeaOfOrganization;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
 }
