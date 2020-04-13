@@ -272,7 +272,7 @@ public class Person extends Common {
     private List<String> collectionOrSeriesEditorForEndDate;
 
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "editorOfType", key = "type"), @Reference(value = "editorOfPublisher", key = "publisher"), @Reference(value = "editorOfFullAuthorList", key = "authors"), @Reference(value = "editorOfPageStart", key = "pageStart"), @Reference(value = "editorOfPageEnd", key = "pageEnd"), @Reference(value = "editorOfDate", key = "date") })
+    @NestedObject(properties = { @Reference(value = "editorOfType", key = "type"), @Reference(value = "editorOfPublisher", key = "publisher"), @Reference(value = "editorOfPageStart", key = "pageStart"), @Reference(value = "editorOfPageEnd", key = "pageEnd"), @Reference(value = "editorOfDate", key = "date") })
     @PropertySource(template = "person/editorOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editorOf;
 
@@ -283,10 +283,6 @@ public class Person extends Common {
     @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "person/editorOfPublisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> editorOfPublisher;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "person/editorOfFullAuthorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullAuthorList")
-    private List<String> editorOfFullAuthorList;
 
     @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "person/editorOfPageStart", predicate = "http://purl.org/ontology/bibo/pageStart")
@@ -357,14 +353,10 @@ public class Person extends Common {
     @PropertySource(template = "person/researcherOn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researcherOn;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(root = false, properties = { @Reference(value = "researcherOnAwardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "person/researcherOnAwardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researcherOnAwardedBy;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "person/researcherOnAwardedByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardedBy_label")
-    private List<String> researcherOnAwardedByPreferredLabel;
 
     @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "person/researcherOnRole", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
@@ -536,34 +528,6 @@ public class Person extends Common {
     @PropertySource(template = "person/hasExpertiseInTechniqueType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> hasExpertiseInTechniqueType;
 
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/isni", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#ISNI")
-    private String isni;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/netid", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#NETID")
-    private String netid;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/researcherId", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#ResearcherId")
-    private String researcherId;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/twitter", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#twitterID")
-    private String twitter;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/uid", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#UID")
-    private String uid;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/uin", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#UIN")
-    private String uin;
-
-    @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "person/youtube", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#youtube")
-    private String youtube;
-
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/eraCommonsId", predicate = "http://vivoweb.org/ontology/core#eRACommonsId")
     private String eraCommonsId;
@@ -627,23 +591,6 @@ public class Person extends Common {
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "person/fax", predicate = "http://www.w3.org/2006/vcard/ns#fax")
     private String fax;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "etdChairOfURL", key = "url"), @Reference(value = "etdChairOfPublicationDate", key = "publicationDate") })
-    @PropertySource(template = "person/etdChairOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> etdChairOf;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "person/etdChairOfURL", predicate = "http://www.w3.org/2006/vcard/ns#url")
-    private List<String> etdChairOfURL;
-
-    @Indexed(type = "nested_dates", searchable = false)
-    @PropertySource(template = "person/etdChairOfPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
-    private List<String> etdChairOfPublicationDate;
-
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
-    private String featuredProfileDisplay;
 
     @Indexed(type = "whole_strings")
     @PropertySource(template = "person/organization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -1137,14 +1084,6 @@ public class Person extends Common {
         this.editorOfPublisher = editorOfPublisher;
     }
 
-    public List<String> getEditorOfFullAuthorList() {
-        return editorOfFullAuthorList;
-    }
-
-    public void setEditorOfFullAuthorList(List<String> editorOfFullAuthorList) {
-        this.editorOfFullAuthorList = editorOfFullAuthorList;
-    }
-
     public List<String> getEditorOfPageStart() {
         return editorOfPageStart;
     }
@@ -1279,14 +1218,6 @@ public class Person extends Common {
 
     public void setResearcherOnAwardedBy(List<String> researcherOnAwardedBy) {
         this.researcherOnAwardedBy = researcherOnAwardedBy;
-    }
-
-    public List<String> getResearcherOnAwardedByPreferredLabel() {
-        return researcherOnAwardedByPreferredLabel;
-    }
-
-    public void setResearcherOnAwardedByPreferredLabel(List<String> researcherOnAwardedByPreferredLabel) {
-        this.researcherOnAwardedByPreferredLabel = researcherOnAwardedByPreferredLabel;
     }
 
     public List<String> getResearcherOnRole() {
@@ -1609,62 +1540,6 @@ public class Person extends Common {
         this.hasExpertiseInTechniqueType = hasExpertiseInTechniqueType;
     }
 
-    public String getIsni() {
-        return isni;
-    }
-
-    public void setIsni(String isni) {
-        this.isni = isni;
-    }
-
-    public String getNetid() {
-        return netid;
-    }
-
-    public void setNetid(String netid) {
-        this.netid = netid;
-    }
-
-    public String getResearcherId() {
-        return researcherId;
-    }
-
-    public void setResearcherId(String researcherId) {
-        this.researcherId = researcherId;
-    }
-
-    public String getTwitter() {
-        return twitter;
-    }
-
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getUin() {
-        return uin;
-    }
-
-    public void setUin(String uin) {
-        this.uin = uin;
-    }
-
-    public String getYoutube() {
-        return youtube;
-    }
-
-    public void setYoutube(String youtube) {
-        this.youtube = youtube;
-    }
-
     public String getEraCommonsId() {
         return eraCommonsId;
     }
@@ -1791,38 +1666,6 @@ public class Person extends Common {
 
     public void setFax(String fax) {
         this.fax = fax;
-    }
-
-    public List<String> getEtdChairOf() {
-        return etdChairOf;
-    }
-
-    public void setEtdChairOf(List<String> etdChairOf) {
-        this.etdChairOf = etdChairOf;
-    }
-
-    public List<String> getEtdChairOfURL() {
-        return etdChairOfURL;
-    }
-
-    public void setEtdChairOfURL(List<String> etdChairOfURL) {
-        this.etdChairOfURL = etdChairOfURL;
-    }
-
-    public List<String> getEtdChairOfPublicationDate() {
-        return etdChairOfPublicationDate;
-    }
-
-    public void setEtdChairOfPublicationDate(List<String> etdChairOfPublicationDate) {
-        this.etdChairOfPublicationDate = etdChairOfPublicationDate;
-    }
-
-    public String getFeaturedProfileDisplay() {
-        return featuredProfileDisplay;
-    }
-
-    public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
-        this.featuredProfileDisplay = featuredProfileDisplay;
     }
 
     public List<String> getOrganizations() {

@@ -333,17 +333,6 @@
         - name: advisees
           template: "defaults/displayViews/persons/recentCourses/advisees.html"
           field: advisee
-    - name: Works By Students
-      sections:
-        - name: chaired theses and dissertations
-          shared: true
-          paginated: true
-          template: "defaults/displayViews/persons/worksByStudents/chairedThesesAndDissertations.html"
-          field: etdChairOf
-          sort:
-            - field: publicationDate
-              direction: DESC
-              date: true
     - name: Service
       sections:
         - name: outreach overview
@@ -373,27 +362,6 @@
     - name: Identity
       hidden: true
       sections:
-        - name: ISNI
-          template: "defaults/displayViews/persons/identity/isni.html"
-          field: isni
-        - name: NETID
-          template: "defaults/displayViews/persons/identity/netid.html"
-          field: netid
-        - name: ResearcherID
-          template: "defaults/displayViews/persons/identity/researcherId.html"
-          field: researcherId
-        - name: Twitter
-          template: "defaults/displayViews/persons/identity/twitter.html"
-          field: twitter
-        - name: UID
-          template: "defaults/displayViews/persons/identity/uid.html"
-          field: uid
-        - name: UIN
-          template: "defaults/displayViews/persons/identity/uin.html"
-          field: uin
-        - name: YouTube
-          template: "defaults/displayViews/persons/identity/youTube.html"
-          field: youtube
         - name: same as
           template: "defaults/displayViews/persons/identity/sameAs.html"
           field: sameAs
@@ -754,9 +722,6 @@
           field: courses
     - name: Identity
       sections:
-        - name: OrgID
-          template: "defaults/displayViews/organizations/identity/orgID.html"
-          field: orgId
         - name: same as
           template: "defaults/displayViews/organizations/identity/sameAs.html"
           field: sameAs
@@ -855,12 +820,6 @@
         - name: authors
           template: "defaults/displayViews/documents/overview/authors.html"
           field: authors
-        - name: author list (cited authors)
-          template: "defaults/displayViews/documents/overview/authorList.html"
-          field: authorList
-        - name: editor list (cited editors)
-          template: "defaults/displayViews/documents/overview/editorList.html"
-          field: editorList
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
           field: editors
@@ -1061,15 +1020,9 @@
         - name: awarded by
           template: "defaults/displayViews/relationships/overview/awardedBy.html"
           field: awardedBy
-        - name: awarded by (preferred label)
-          template: "defaults/displayViews/relationships/overview/awardedByPreferredLabel.html"
-          field: awardedByPreferredLabel
         - name: award conferred by
           template: "defaults/displayViews/relationships/overview/awardConferredBy.html"
           field: awardConferredBy
-        - name: award conferred by (preferred label)
-          template: "defaults/displayViews/relationships/overview/awardConferredByPreferredLabel.html"
-          field: awardConferredByPreferredLabel
         - name: administered by
           template: "defaults/displayViews/relationships/overview/administeredBy.html"
           field: administeredBy

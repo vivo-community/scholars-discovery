@@ -1,7 +1,0 @@
-PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
-
-CONSTRUCT {
-    <{{uri}}> tamu:UIN ?UIN .
-} WHERE {
-    <{{uri}}> tamu:UIN ?UIN .
-}

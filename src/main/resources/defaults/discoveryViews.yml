@@ -180,8 +180,6 @@
       valuePath: publicationDate
     - columnHeader: Journal title
       valuePath: publicationVenue
-    - columnHeader: Book title
-      valuePath: bookTitle
     - columnHeader: Author
       valuePath: authors
     - columnHeader: Author's department

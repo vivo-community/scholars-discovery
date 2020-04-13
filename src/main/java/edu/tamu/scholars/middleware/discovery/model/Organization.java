@@ -224,10 +224,6 @@ public class Organization extends Common {
     private List<String> courses;
 
     @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "organization/orgId", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#OrgID")
-    private String orgId;
-
-    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "organization/phone", predicate = "http://www.w3.org/2006/vcard/ns#telephone")
     private String phone;
 
@@ -634,14 +630,6 @@ public class Organization extends Common {
 
     public void setCourses(List<String> courses) {
         this.courses = courses;
-    }
-
-    public String getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
     }
 
     public String getPhone() {

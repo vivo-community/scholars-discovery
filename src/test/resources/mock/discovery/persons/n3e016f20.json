@@ -521,8 +521,6 @@
     "Instructor::n889701aa",
     "Instructor::n7933be78"
   ],
-  "netid": "luc-r-berghman",
-  "uid": "e82bc8fb31cd059a06b52b993acf5915",
   "email": "berghman@tamu.edu",
   "firstName": "Luc",
   "lastName": "Berghman",
@@ -531,27 +529,5 @@
   "region": "TX",
   "postalCode": "77843-2472",
   "country": "USA",
-  "etdChairOf": [
-    "Puebla-Osorio, Nahum (2004-12). Transcriptional analysis of chicken immune cells following exposure to 2,3,7,8,-tetrachlorodibenzo-p-dioxin (TCDD). Doctoral Dissertation.::n463041ca",
-    "Abi Ghanem, Daad Ali (2006-08). Phage display selection of recombinant antibodies derived from a chicken immune library against cryopreserved Eimeria tenella sporozoites. Doctoral Dissertation.::n807eaf17",
-    "Dunkley, Claudia Sharene (2006-12). High fiber low energy diet for molt induction in laying hens: the impact of alfalfa on physiology,  immunology and behavior. Doctoral Dissertation.::nd1d6a528",
-    "Wang, Jixin (2006-08). Bioinformatic analysis of chicken chemokines, chemokine receptors, and Toll-like receptor 21. Master's Thesis.::n12d2e773",
-    "Supak, Tiffany Marie (2006-08). Gene expression of beta-defensins in chicken white blood cells. Master's Thesis.::n91161ef6",
-    "Zhang, Xiaodong (2005-12). The diffuse neuroendocrine system and its immuno-modulatory roles in chicken T-cell immunity. Doctoral Dissertation.::naec7569e",
-    "Chen, Chang-Hsin 1977- (2012-08). Enhancing Chicken Mucosal IgA Response Against Clostridium Perfringens a-toxin. Doctoral Dissertation.::nd30d509e",
-    "Chou, Wen-Ko (2013-12). Basic and Applied Aspects of Chicken Macrophage Biology. Doctoral Dissertation.::n8cbcb10f",
-    "Oubre, Cherie Morgan (2003-05). Common messenger molecules and cell types demonstrating neuroendocrine-immune interactions in the chicken. Doctoral Dissertation.::n1a966d07"
-  ],
-  "etdChairOfURL": [
-    "http://hdl.handle.net/1969.1/3165::n463041ca",
-    "http://hdl.handle.net/1969.1/ETD-TAMU-1847::n807eaf17",
-    "http://hdl.handle.net/1969.1/ETD-TAMU-1186::nd1d6a528",
-    "http://hdl.handle.net/1969.1/4212::n12d2e773",
-    "http://hdl.handle.net/1969.1/ETD-TAMU-1849::n91161ef6",
-    "http://hdl.handle.net/1969.1/4829::naec7569e",
-    "http://hdl.handle.net/1969.1/ETD-TAMU-2012-08-11821::nd30d509e",
-    "http://hdl.handle.net/1969.1/158623::n8cbcb10f",
-    "http://hdl.handle.net/1969.1/3972::n1a966d07"
-  ],
   "modTime": "2019-02-01T00:00:00"
 }

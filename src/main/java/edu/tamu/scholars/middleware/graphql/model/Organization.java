@@ -142,8 +142,6 @@ public class Organization extends AbstractNestedDocument {
 
   private List<String> keywords;
 
-  private String orgId;
-
   private String phone;
 
   private String fax;
@@ -515,14 +513,6 @@ public class Organization extends AbstractNestedDocument {
 
   public void setKeywords(List<String> keywords) {
     this.keywords = keywords;
-  }
-
-  public String getOrgId() {
-    return orgId;
-  }
-
-  public void setOrgId(String orgId) {
-    this.orgId = orgId;
   }
 
   public String getPhone() {

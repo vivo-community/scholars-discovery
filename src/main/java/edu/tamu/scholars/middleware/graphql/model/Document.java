@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.document.PublicationVenue;
 import edu.tamu.scholars.middleware.graphql.model.document.HasPublicationVenueFor;
-import edu.tamu.scholars.middleware.graphql.model.document.EtdChairedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Author;
 import edu.tamu.scholars.middleware.graphql.model.document.Editor;
 import edu.tamu.scholars.middleware.graphql.model.document.Translator;
@@ -56,8 +55,6 @@ public class Document extends AbstractNestedDocument {
   private PublicationVenue publicationVenue;
 
   private HasPublicationVenueFor hasPublicationVenueFor;
-
-  private List<EtdChairedBy> etdChairedBy;
 
   private List<Author> authors;
 
@@ -121,12 +118,6 @@ public class Document extends AbstractNestedDocument {
   private String abstractText;
 
   private String abbreviation;
-
-  private List<String> authorList;
-
-  private List<String> editorList;
-
-  private String bookTitle;
 
   private String status;
 
@@ -217,14 +208,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setHasPublicationVenueFor(HasPublicationVenueFor hasPublicationVenueFor) {
     this.hasPublicationVenueFor = hasPublicationVenueFor;
-  }
-
-  public List<EtdChairedBy> getEtdChairedBy() {
-    return etdChairedBy;
-  }
-
-  public void setEtdChairedBy(List<EtdChairedBy> etdChairedBy) {
-    this.etdChairedBy = etdChairedBy;
   }
 
   public List<Author> getAuthors() {
@@ -474,30 +457,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setAbbreviation(String abbreviation) {
     this.abbreviation = abbreviation;
-  }
-
-  public List<String> getAuthorList() {
-    return authorList;
-  }
-
-  public void setAuthorList(List<String> authorList) {
-    this.authorList = authorList;
-  }
-
-  public List<String> getEditorList() {
-    return editorList;
-  }
-
-  public void setEditorList(List<String> editorList) {
-    this.editorList = editorList;
-  }
-
-  public String getBookTitle() {
-    return bookTitle;
-  }
-
-  public void setBookTitle(String bookTitle) {
-    this.bookTitle = bookTitle;
   }
 
   public String getStatus() {
