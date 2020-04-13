@@ -641,7 +641,7 @@ public class Person extends Common {
     @PropertySource(template = "person/etdChairOfPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private List<String> etdChairOfPublicationDate;
 
-    @Indexed(type = "whole_string", searchable = false)
+    @Indexed(type = "whole_string")
     @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
     private String featuredProfileDisplay;
 
