@@ -897,6 +897,9 @@
         - name: Digital Object Identifier (DOI)
           template: "defaults/displayViews/documents/identity/digitalObjectIdentifier.html"
           field: doi
+        - name: URI
+          template: "defaults/displayViews/documents/identity/uri.html"
+          field: uri
         - name: Online Computer Library Center (OCLC) number
           template: "defaults/displayViews/documents/identity/onlineComputerLibraryCenter.html"
           field: oclcnum
