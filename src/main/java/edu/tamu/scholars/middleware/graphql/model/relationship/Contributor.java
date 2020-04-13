@@ -21,8 +21,6 @@ public class Contributor extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
   private String role;
 
   public Contributor() {
@@ -35,14 +33,6 @@ public class Contributor extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 
   public String getRole() {

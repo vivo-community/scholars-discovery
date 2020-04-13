@@ -42,14 +42,10 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/organization", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> organization;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "receiptOfType", key = "type") })
     @PropertySource(template = "relationship/receiptOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receiptOf;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/receiptOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> receiptOfType;
 
     @Indexed(type = "nested_strings")
     @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
@@ -103,41 +99,25 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/grantSubcontractedThroughType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> grantSubcontractedThroughType;
 
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "administeredByType", key = "type") })
     @PropertySource(template = "relationship/administeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> administeredBy;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/administeredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> administeredByType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "subGrantType", key = "type") })
     @PropertySource(template = "relationship/subGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrant;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/subGrantType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> subGrantType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "subGrantOfType", key = "type") })
     @PropertySource(template = "relationship/subGrantOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrantOf;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/subGrantOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> subGrantOfType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "providesFundingForType", key = "type") })
     @PropertySource(template = "relationship/providesFundingFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> providesFundingFor;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/providesFundingForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> providesFundingForType;
 
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "relationship/totalAwardAmount", predicate = "http://vivoweb.org/ontology/core#totalAwardAmount")
@@ -156,17 +136,13 @@ public class Relationship extends Common {
     private String localAwardId;
 
     @Indexed(type = "nested_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "contributorType", key = "type"), @Reference(value = "contributorRole", key = "role") })
+    @NestedObject(properties = { @Reference(value = "contributorRole", key = "role") })
     @PropertySource(template = "relationship/contributor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contributors;
 
     @Indexed(type = "nested_strings")
     @PropertySource(template = "relationship/contributorRole", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> contributorRole;
-
-    @Indexed(type = "nested_strings")
-    @PropertySource(template = "relationship/contributorType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> contributorType;
 
     @NestedObject
     @Indexed(type = "nested_strings", copyTo = "_text_")
@@ -178,14 +154,10 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/coPrincipalInvestigator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> coPrincipalInvestigators;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "supportedPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "relationship/supportedPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedPublicationOrOtherWork;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/supportedPublicationOrOtherWorkType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> supportedPublicationOrOtherWorkType;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "relationship/dateTimeIntervalStart", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -195,54 +167,34 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/dateTimeIntervalEnd", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalEnd;
 
+    @NestedObject
     @Indexed(type = "nested_strings")
-    @NestedObject(properties = { @Reference(value = "subjectAreaType", key = "type") })
     @PropertySource(template = "relationship/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/hasSubjectAreaType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> subjectAreaType;
 
     @Indexed(type = "pdate")
     @PropertySource(template = "relationship/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String yearAwarded;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "inheresInType", key = "type") })
     @PropertySource(template = "relationship/inheresIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inheresIn;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/inheresInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> inheresInType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "specifiedOutputOfType", key = "type") })
     @PropertySource(template = "relationship/isSpecifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/isSpecifiedOutputOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> specifiedOutputOfType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "outputOfType", key = "type") })
     @PropertySource(template = "relationship/outputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOf;
 
+    @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/outputOfType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> outputOfType;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "participatesInType", key = "type") })
     @PropertySource(template = "relationship/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/participatesInType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> participatesInType;
 
     public Relationship() {
 
@@ -286,14 +238,6 @@ public class Relationship extends Common {
 
     public void setReceiptOf(List<String> receiptOf) {
         this.receiptOf = receiptOf;
-    }
-
-    public List<String> getReceiptOfType() {
-        return receiptOfType;
-    }
-
-    public void setReceiptOfType(List<String> receiptOfType) {
-        this.receiptOfType = receiptOfType;
     }
 
     public List<String> getAwardOrHonorFor() {
@@ -400,28 +344,12 @@ public class Relationship extends Common {
         this.administeredBy = administeredBy;
     }
 
-    public List<String> getAdministeredByType() {
-        return administeredByType;
-    }
-
-    public void setAdministeredByType(List<String> administeredByType) {
-        this.administeredByType = administeredByType;
-    }
-
     public List<String> getSubGrant() {
         return subGrant;
     }
 
     public void setSubGrant(List<String> subGrant) {
         this.subGrant = subGrant;
-    }
-
-    public List<String> getSubGrantType() {
-        return subGrantType;
-    }
-
-    public void setSubGrantType(List<String> subGrantType) {
-        this.subGrantType = subGrantType;
     }
 
     public List<String> getSubGrantOf() {
@@ -432,28 +360,12 @@ public class Relationship extends Common {
         this.subGrantOf = subGrantOf;
     }
 
-    public List<String> getSubGrantOfType() {
-        return subGrantOfType;
-    }
-
-    public void setSubGrantOfType(List<String> subGrantOfType) {
-        this.subGrantOfType = subGrantOfType;
-    }
-
     public List<String> getProvidesFundingFor() {
         return providesFundingFor;
     }
 
     public void setProvidesFundingFor(List<String> providesFundingFor) {
         this.providesFundingFor = providesFundingFor;
-    }
-
-    public List<String> getProvidesFundingForType() {
-        return providesFundingForType;
-    }
-
-    public void setProvidesFundingForType(List<String> providesFundingForType) {
-        this.providesFundingForType = providesFundingForType;
     }
 
     public String getTotalAwardAmount() {
@@ -504,14 +416,6 @@ public class Relationship extends Common {
         this.contributorRole = contributorRole;
     }
 
-    public List<String> getContributorType() {
-        return contributorType;
-    }
-
-    public void setContributorType(List<String> contributorType) {
-        this.contributorType = contributorType;
-    }
-
     public List<String> getPrincipalInvestigators() {
         return principalInvestigators;
     }
@@ -534,14 +438,6 @@ public class Relationship extends Common {
 
     public void setSupportedPublicationOrOtherWork(List<String> supportedPublicationOrOtherWork) {
         this.supportedPublicationOrOtherWork = supportedPublicationOrOtherWork;
-    }
-
-    public List<String> getSupportedPublicationOrOtherWorkType() {
-        return supportedPublicationOrOtherWorkType;
-    }
-
-    public void setSupportedPublicationOrOtherWorkType(List<String> supportedPublicationOrOtherWorkType) {
-        this.supportedPublicationOrOtherWorkType = supportedPublicationOrOtherWorkType;
     }
 
     public String getDateTimeIntervalStart() {
@@ -568,14 +464,6 @@ public class Relationship extends Common {
         this.subjectAreas = subjectAreas;
     }
 
-    public List<String> getSubjectAreaType() {
-        return subjectAreaType;
-    }
-
-    public void setSubjectAreaType(List<String> subjectAreaType) {
-        this.subjectAreaType = subjectAreaType;
-    }
-
     public String getYearAwarded() {
         return yearAwarded;
     }
@@ -592,28 +480,12 @@ public class Relationship extends Common {
         this.inheresIn = inheresIn;
     }
 
-    public List<String> getInheresInType() {
-        return inheresInType;
-    }
-
-    public void setInheresInType(List<String> inheresInType) {
-        this.inheresInType = inheresInType;
-    }
-
     public List<String> getSpecifiedOutputOf() {
         return specifiedOutputOf;
     }
 
     public void setSpecifiedOutputOf(List<String> specifiedOutputOf) {
         this.specifiedOutputOf = specifiedOutputOf;
-    }
-
-    public List<String> getSpecifiedOutputOfType() {
-        return specifiedOutputOfType;
-    }
-
-    public void setSpecifiedOutputOfType(List<String> specifiedOutputOfType) {
-        this.specifiedOutputOfType = specifiedOutputOfType;
     }
 
     public List<String> getOutputOf() {
@@ -624,28 +496,12 @@ public class Relationship extends Common {
         this.outputOf = outputOf;
     }
 
-    public List<String> getOutputOfType() {
-        return outputOfType;
-    }
-
-    public void setOutputOfType(List<String> outputOfType) {
-        this.outputOfType = outputOfType;
-    }
-
     public List<String> getParticipatesIn() {
         return participatesIn;
     }
 
     public void setParticipatesIn(List<String> participatesIn) {
         this.participatesIn = participatesIn;
-    }
-
-    public List<String> getParticipatesInType() {
-        return participatesInType;
-    }
-
-    public void setParticipatesInType(List<String> participatesInType) {
-        this.participatesInType = participatesInType;
     }
 
 }

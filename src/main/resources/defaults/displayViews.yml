@@ -1073,9 +1073,6 @@
         - name: administered by
           template: "defaults/displayViews/relationships/overview/administeredBy.html"
           field: administeredBy
-        - name: administered by (preferred label)
-          template: "defaults/displayViews/relationships/overview/administeredByPreferredLabel.html"
-          field: administeredByPreferredLabel
         - name: subcontracted through
           template: "defaults/displayViews/relationships/overview/subcontractedThrough.html"
           field: grantSubcontractedThrough
@@ -1084,7 +1081,7 @@
           field: geographicFocus
         - name: has sub grant
           template: "defaults/displayViews/relationships/overview/hasSubGrant.html"
-          field: hasSubGrant
+          field: subGrant
         - name: sub grant of
           template: "defaults/displayViews/relationships/overview/subGrantOf.html"
           field: subGrantOf
