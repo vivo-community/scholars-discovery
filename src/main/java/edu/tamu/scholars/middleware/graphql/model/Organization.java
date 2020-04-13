@@ -35,6 +35,7 @@ import edu.tamu.scholars.middleware.graphql.model.organization.SuccessorOrganiza
 import edu.tamu.scholars.middleware.graphql.model.organization.GoverningAuthorityFor;
 import edu.tamu.scholars.middleware.graphql.model.organization.AffiliatedResearchArea;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -127,6 +128,8 @@ public class Organization extends AbstractNestedDocument {
 
   private List<Website> websites;
 
+  private List<GeographicFocus> geographicFocus;
+
   private List<SameAs> sameAs;
 
   private String name;
@@ -138,8 +141,6 @@ public class Organization extends AbstractNestedDocument {
   private String date;
 
   private List<String> keywords;
-
-  private String orgId;
 
   private String phone;
 
@@ -158,6 +159,8 @@ public class Organization extends AbstractNestedDocument {
   private String country;
 
   private String geographicLocation;
+
+  private String orgId;
 
   private List<String> type;
 
@@ -458,6 +461,14 @@ public class Organization extends AbstractNestedDocument {
     this.websites = websites;
   }
 
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
+  }
+
   public List<SameAs> getSameAs() {
     return sameAs;
   }
@@ -504,14 +515,6 @@ public class Organization extends AbstractNestedDocument {
 
   public void setKeywords(List<String> keywords) {
     this.keywords = keywords;
-  }
-
-  public String getOrgId() {
-    return orgId;
-  }
-
-  public void setOrgId(String orgId) {
-    this.orgId = orgId;
   }
 
   public String getPhone() {
@@ -584,6 +587,14 @@ public class Organization extends AbstractNestedDocument {
 
   public void setGeographicLocation(String geographicLocation) {
     this.geographicLocation = geographicLocation;
+  }
+
+  public String getOrgId() {
+    return orgId;
+  }
+
+  public void setOrgId(String orgId) {
+    this.orgId = orgId;
   }
 
   public List<String> getType() {

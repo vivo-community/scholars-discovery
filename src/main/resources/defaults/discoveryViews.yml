@@ -402,6 +402,14 @@
       pageSize: 10
       collapsed: true
       hidden: false
+    - name: Participants
+      field: participants
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
     - field: class
       value: Process

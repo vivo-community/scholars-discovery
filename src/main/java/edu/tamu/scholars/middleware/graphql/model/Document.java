@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.document.PublicationVenue;
 import edu.tamu.scholars.middleware.graphql.model.document.HasPublicationVenueFor;
-import edu.tamu.scholars.middleware.graphql.model.document.EtdChairedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Author;
 import edu.tamu.scholars.middleware.graphql.model.document.Editor;
 import edu.tamu.scholars.middleware.graphql.model.document.Translator;
@@ -10,12 +9,11 @@ import edu.tamu.scholars.middleware.graphql.model.document.Publisher;
 import edu.tamu.scholars.middleware.graphql.model.document.SubjectArea;
 import edu.tamu.scholars.middleware.graphql.model.document.DocumentPart;
 import edu.tamu.scholars.middleware.graphql.model.document.Feature;
-import edu.tamu.scholars.middleware.graphql.model.document.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.document.DocumentationForProjectOrResource;
 import edu.tamu.scholars.middleware.graphql.model.document.OutputOfProcessOrEvent;
 import edu.tamu.scholars.middleware.graphql.model.document.PresentedAt;
 import edu.tamu.scholars.middleware.graphql.model.document.CitedBy;
-import edu.tamu.scholars.middleware.graphql.model.document.Citation;
+import edu.tamu.scholars.middleware.graphql.model.document.Cite;
 import edu.tamu.scholars.middleware.graphql.model.document.CitesAsDataSource;
 import edu.tamu.scholars.middleware.graphql.model.document.Translation;
 import edu.tamu.scholars.middleware.graphql.model.document.TranslationOf;
@@ -29,8 +27,10 @@ import edu.tamu.scholars.middleware.graphql.model.document.Mention;
 import edu.tamu.scholars.middleware.graphql.model.document.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.document.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Receipt;
+import edu.tamu.scholars.middleware.graphql.model.document.EtdChairedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.AdvisedBy;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -59,8 +59,6 @@ public class Document extends AbstractNestedDocument {
 
   private HasPublicationVenueFor hasPublicationVenueFor;
 
-  private List<EtdChairedBy> etdChairedBy;
-
   private List<Author> authors;
 
   private List<Editor> editors;
@@ -75,8 +73,6 @@ public class Document extends AbstractNestedDocument {
 
   private List<Feature> features;
 
-  private List<GeographicFocus> geographicFocus;
-
   private List<DocumentationForProjectOrResource> documentationForProjectOrResource;
 
   private List<OutputOfProcessOrEvent> outputOfProcessOrEvent;
@@ -85,7 +81,7 @@ public class Document extends AbstractNestedDocument {
 
   private List<CitedBy> citedBy;
 
-  private List<Citation> citations;
+  private List<Cite> cites;
 
   private List<CitesAsDataSource> citesAsDataSource;
 
@@ -113,9 +109,13 @@ public class Document extends AbstractNestedDocument {
 
   private List<Receipt> receipts;
 
+  private List<EtdChairedBy> etdChairedBy;
+
   private List<AdvisedBy> advisedBy;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -125,12 +125,6 @@ public class Document extends AbstractNestedDocument {
   private String abstractText;
 
   private String abbreviation;
-
-  private List<String> authorList;
-
-  private List<String> editorList;
-
-  private String bookTitle;
 
   private String status;
 
@@ -200,6 +194,12 @@ public class Document extends AbstractNestedDocument {
 
   private String note;
 
+  private List<String> authorList;
+
+  private List<String> editorList;
+
+  private String bookTitle;
+
   private List<String> type;
 
   private String image;
@@ -229,14 +229,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setHasPublicationVenueFor(HasPublicationVenueFor hasPublicationVenueFor) {
     this.hasPublicationVenueFor = hasPublicationVenueFor;
-  }
-
-  public List<EtdChairedBy> getEtdChairedBy() {
-    return etdChairedBy;
-  }
-
-  public void setEtdChairedBy(List<EtdChairedBy> etdChairedBy) {
-    this.etdChairedBy = etdChairedBy;
   }
 
   public List<Author> getAuthors() {
@@ -295,14 +287,6 @@ public class Document extends AbstractNestedDocument {
     this.features = features;
   }
 
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
-  }
-
   public List<DocumentationForProjectOrResource> getDocumentationForProjectOrResource() {
     return documentationForProjectOrResource;
   }
@@ -336,12 +320,12 @@ public class Document extends AbstractNestedDocument {
     this.citedBy = citedBy;
   }
 
-  public List<Citation> getCitations() {
-    return citations;
+  public List<Cite> getCites() {
+    return cites;
   }
 
-  public void setCitations(List<Citation> citations) {
-    this.citations = citations;
+  public void setCites(List<Cite> cites) {
+    this.cites = cites;
   }
 
   public List<CitesAsDataSource> getCitesAsDataSource() {
@@ -448,6 +432,14 @@ public class Document extends AbstractNestedDocument {
     this.receipts = receipts;
   }
 
+  public List<EtdChairedBy> getEtdChairedBy() {
+    return etdChairedBy;
+  }
+
+  public void setEtdChairedBy(List<EtdChairedBy> etdChairedBy) {
+    this.etdChairedBy = etdChairedBy;
+  }
+
   public List<AdvisedBy> getAdvisedBy() {
     return advisedBy;
   }
@@ -462,6 +454,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {
@@ -494,30 +494,6 @@ public class Document extends AbstractNestedDocument {
 
   public void setAbbreviation(String abbreviation) {
     this.abbreviation = abbreviation;
-  }
-
-  public List<String> getAuthorList() {
-    return authorList;
-  }
-
-  public void setAuthorList(List<String> authorList) {
-    this.authorList = authorList;
-  }
-
-  public List<String> getEditorList() {
-    return editorList;
-  }
-
-  public void setEditorList(List<String> editorList) {
-    this.editorList = editorList;
-  }
-
-  public String getBookTitle() {
-    return bookTitle;
-  }
-
-  public void setBookTitle(String bookTitle) {
-    this.bookTitle = bookTitle;
   }
 
   public String getStatus() {
@@ -790,6 +766,30 @@ public class Document extends AbstractNestedDocument {
 
   public void setNote(String note) {
     this.note = note;
+  }
+
+  public List<String> getAuthorList() {
+    return authorList;
+  }
+
+  public void setAuthorList(List<String> authorList) {
+    this.authorList = authorList;
+  }
+
+  public List<String> getEditorList() {
+    return editorList;
+  }
+
+  public void setEditorList(List<String> editorList) {
+    this.editorList = editorList;
+  }
+
+  public String getBookTitle() {
+    return bookTitle;
+  }
+
+  public void setBookTitle(String bookTitle) {
+    this.bookTitle = bookTitle;
   }
 
   public List<String> getType() {
