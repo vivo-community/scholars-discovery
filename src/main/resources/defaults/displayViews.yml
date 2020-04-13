@@ -64,6 +64,9 @@
         - name: overview
           template: "defaults/displayViews/persons/about/overview.html"
           field: overview
+        - name: geographic focus
+          template: "defaults/displayViews/persons/overview/geographicFocus.html"
+          field: geographicFocus
     - name: Affiliation
       sections:
         - name: head of
@@ -571,6 +574,9 @@
         - name: keywords
           template: "defaults/displayViews/organizations/overview/keywords.html"
           field: keywords
+        - name: geographic focus
+          template: "defaults/displayViews/organizations/overview/geographicFocus.html"
+          field: geographicFocus
     - name: Affiliation
       sections:
         - name: organization for training
@@ -1390,6 +1396,9 @@
           sort:
             - field: recipientName
               direction: ASC
+        - name: geographic focus
+          template: "defaults/displayViews/concepts/overview/geographicFocus.html"
+          field: geographicFocus
     - name: Identity
       sections:
         - name: same as

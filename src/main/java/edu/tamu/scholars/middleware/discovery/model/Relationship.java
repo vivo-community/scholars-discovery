@@ -113,15 +113,6 @@ public class Relationship extends Common {
     private List<String> administeredByType;
 
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
-    @PropertySource(template = "relationship/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> geographicFocus;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "relationship/geographicFocusType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> geographicFocusType;
-
-    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "subGrantType", key = "type") })
     @PropertySource(template = "relationship/subGrant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subGrant;
@@ -415,22 +406,6 @@ public class Relationship extends Common {
 
     public void setAdministeredByType(List<String> administeredByType) {
         this.administeredByType = administeredByType;
-    }
-
-    public List<String> getGeographicFocus() {
-        return geographicFocus;
-    }
-
-    public void setGeographicFocus(List<String> geographicFocus) {
-        this.geographicFocus = geographicFocus;
-    }
-
-    public List<String> getGeographicFocusType() {
-        return geographicFocusType;
-    }
-
-    public void setGeographicFocusType(List<String> geographicFocusType) {
-        this.geographicFocusType = geographicFocusType;
     }
 
     public List<String> getSubGrant() {

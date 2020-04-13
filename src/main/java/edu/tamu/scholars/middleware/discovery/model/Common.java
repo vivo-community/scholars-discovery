@@ -35,6 +35,11 @@ public class Common extends AbstractIndexDocument {
 
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
+    @PropertySource(template = "common/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> geographicFocus;
+
+    @NestedObject
+    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "common/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sameAs;
 
@@ -80,6 +85,14 @@ public class Common extends AbstractIndexDocument {
 
     public void setWebsiteUrl(List<String> websiteUrl) {
         this.websiteUrl = websiteUrl;
+    }
+
+    public List<String> getGeographicFocus() {
+        return geographicFocus;
+    }
+
+    public void setGeographicFocus(List<String> geographicFocus) {
+        this.geographicFocus = geographicFocus;
     }
 
     public List<String> getSameAs() {

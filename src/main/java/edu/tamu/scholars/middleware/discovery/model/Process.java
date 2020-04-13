@@ -98,15 +98,6 @@ public class Process extends Common {
     private String credits;
 
     @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "geographicFocusType", key = "type") })
-    @PropertySource(template = "process/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> geographicFocus;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "process/geographicFocusType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> geographicFocusType;
-
-    @Indexed(type = "nested_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "outputPublicationOrOtherWorkType", key = "type") })
     @PropertySource(template = "process/outputPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputPublicationOrOtherWork;
@@ -294,22 +285,6 @@ public class Process extends Common {
 
     public void setCredits(String credits) {
         this.credits = credits;
-    }
-
-    public List<String> getGeographicFocus() {
-        return geographicFocus;
-    }
-
-    public void setGeographicFocus(List<String> geographicFocus) {
-        this.geographicFocus = geographicFocus;
-    }
-
-    public List<String> getGeographicFocusType() {
-        return geographicFocusType;
-    }
-
-    public void setGeographicFocusType(List<String> geographicFocusType) {
-        this.geographicFocusType = geographicFocusType;
     }
 
     public List<String> getOutputPublicationOrOtherWork() {

@@ -10,7 +10,6 @@ import edu.tamu.scholars.middleware.graphql.model.document.Publisher;
 import edu.tamu.scholars.middleware.graphql.model.document.SubjectArea;
 import edu.tamu.scholars.middleware.graphql.model.document.DocumentPart;
 import edu.tamu.scholars.middleware.graphql.model.document.Feature;
-import edu.tamu.scholars.middleware.graphql.model.document.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.document.DocumentationForProjectOrResource;
 import edu.tamu.scholars.middleware.graphql.model.document.OutputOfProcessOrEvent;
 import edu.tamu.scholars.middleware.graphql.model.document.PresentedAt;
@@ -30,6 +29,7 @@ import edu.tamu.scholars.middleware.graphql.model.document.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.document.SupportedBy;
 import edu.tamu.scholars.middleware.graphql.model.document.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -73,8 +73,6 @@ public class Document extends AbstractNestedDocument {
 
   private List<Feature> features;
 
-  private List<GeographicFocus> geographicFocus;
-
   private List<DocumentationForProjectOrResource> documentationForProjectOrResource;
 
   private List<OutputOfProcessOrEvent> outputOfProcessOrEvent;
@@ -112,6 +110,8 @@ public class Document extends AbstractNestedDocument {
   private List<Receipt> receipts;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -283,14 +283,6 @@ public class Document extends AbstractNestedDocument {
     this.features = features;
   }
 
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
-  }
-
   public List<DocumentationForProjectOrResource> getDocumentationForProjectOrResource() {
     return documentationForProjectOrResource;
   }
@@ -442,6 +434,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {

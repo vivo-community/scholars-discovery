@@ -136,11 +136,6 @@ public class Document extends Common {
 
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "document/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> geographicFocus;
-
-    @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/documentationForProjectOrResource", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> documentationForProjectOrResource;
 
@@ -515,14 +510,6 @@ public class Document extends Common {
 
     public void setEdition(String edition) {
         this.edition = edition;
-    }
-
-    public List<String> getGeographicFocus() {
-        return geographicFocus;
-    }
-
-    public void setGeographicFocus(List<String> geographicFocus) {
-        this.geographicFocus = geographicFocus;
     }
 
     public List<String> getDocumentationForProjectOrResource() {

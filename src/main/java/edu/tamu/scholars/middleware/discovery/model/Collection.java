@@ -77,11 +77,6 @@ public class Collection extends Common {
 
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "collection/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> geographicFocus;
-
-    @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "collection/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
@@ -220,14 +215,6 @@ public class Collection extends Common {
 
     public void setFeatures(List<String> features) {
         this.features = features;
-    }
-
-    public List<String> getGeographicFocus() {
-        return geographicFocus;
-    }
-
-    public void setGeographicFocus(List<String> geographicFocus) {
-        this.geographicFocus = geographicFocus;
     }
 
     public List<String> getOutputOfProcessOrEvent() {

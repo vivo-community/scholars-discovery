@@ -35,6 +35,7 @@ import edu.tamu.scholars.middleware.graphql.model.organization.SuccessorOrganiza
 import edu.tamu.scholars.middleware.graphql.model.organization.GoverningAuthorityFor;
 import edu.tamu.scholars.middleware.graphql.model.organization.AffiliatedResearchArea;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -126,6 +127,8 @@ public class Organization extends AbstractNestedDocument {
   private List<AffiliatedResearchArea> affiliatedResearchAreas;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -456,6 +459,14 @@ public class Organization extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {

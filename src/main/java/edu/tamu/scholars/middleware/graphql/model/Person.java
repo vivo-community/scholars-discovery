@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
-import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.person.HeadOf;
 import edu.tamu.scholars.middleware.graphql.model.person.MemberOf;
 import edu.tamu.scholars.middleware.graphql.model.person.HasCollaborator;
@@ -33,6 +32,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -58,8 +58,6 @@ public class Person extends AbstractNestedDocument {
   private List<Relationship> positions;
 
   private List<ResearchArea> researchAreas;
-
-  private List<GeographicFocus> geographicFocus;
 
   private List<HeadOf> headOf;
 
@@ -120,6 +118,8 @@ public class Person extends AbstractNestedDocument {
   private List<EtdChairOf> etdChairOf;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -232,14 +232,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setResearchAreas(List<ResearchArea> researchAreas) {
     this.researchAreas = researchAreas;
-  }
-
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
   }
 
   public List<HeadOf> getHeadOf() {
@@ -485,6 +477,14 @@ public class Person extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {

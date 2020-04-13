@@ -76,15 +76,6 @@ public class Person extends Common {
     @PropertySource(template = "person/researchArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreas;
 
-    @Indexed(type = "nested_strings", searchable = false)
-    @NestedObject(properties = { @Reference(value = "geographicFocusTypes", key = "type") })
-    @PropertySource(template = "person/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> geographicFocus;
-
-    @Indexed(type = "nested_strings", searchable = false)
-    @PropertySource(template = "person/geographicFocusType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> geographicFocusTypes;
-
     @Indexed(type = "whole_string")
     @PropertySource(template = "person/hrJobTitle", predicate = "http://vivoweb.org/ontology/core#hrJobTitle")
     private String hrJobTitle;
@@ -813,22 +804,6 @@ public class Person extends Common {
 
     public void setResearchAreas(List<String> researchAreas) {
         this.researchAreas = researchAreas;
-    }
-
-    public List<String> getGeographicFocus() {
-        return geographicFocus;
-    }
-
-    public void setGeographicFocus(List<String> geographicFocus) {
-        this.geographicFocus = geographicFocus;
-    }
-
-    public List<String> getGeographicFocusTypes() {
-        return geographicFocusTypes;
-    }
-
-    public void setGeographicFocusTypes(List<String> geographicFocusTypes) {
-        this.geographicFocusTypes = geographicFocusTypes;
     }
 
     public String getHrJobTitle() {
