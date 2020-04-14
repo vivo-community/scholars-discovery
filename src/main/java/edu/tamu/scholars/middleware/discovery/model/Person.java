@@ -22,7 +22,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "persons", predicate = "http://xmlns.com/foaf/0.1/Person")
 public class Person extends Common {
 
-    @Indexed(type = "sorting_string")
+    @Indexed(type = "sorting_string", copyTo = "_text_")
     @PropertySource(template = "person/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
 

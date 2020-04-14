@@ -72,6 +72,8 @@
     - field: name
       value: 4
   sort:
+    - field: score
+      direction: DESC
     - field: name
       direction: ASC
   export:
@@ -197,6 +199,8 @@
     - field: abstract
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: title
       direction: ASC
   export:
@@ -300,6 +304,8 @@
     - field: awardedBy
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: title
       direction: ASC
   export:
@@ -366,6 +372,8 @@
     - field: name
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: name
       direction: ASC
   export:
@@ -419,6 +427,8 @@
     - field: title
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: title
       direction: ASC
   export:
@@ -462,6 +472,8 @@
     - field: name
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: name
       direction: ASC
   export:
@@ -509,6 +521,8 @@
     - field: name
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: name
       direction: ASC
   export:
