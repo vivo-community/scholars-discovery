@@ -46,7 +46,13 @@
   {{#if uri}}
   <span class="m-1"><a href="{{uri}}" target="_blank"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge" /></a></span>
   {{/if}}
+  {{#if url}}
+  <span class="m-1"><a href="{{url}}" target="_blank"><img src="assets/images/online-source-badge.jpg" width="100" alt="online source badge" /></a></span>
+  {{/if}}
 
+  {{#if key}}
+  <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-uri="{{key}}"></span>
+  {{else}}
   {{#if doi}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-doi="{{doi}}"></span>
   {{else}}
@@ -62,15 +68,16 @@
   {{/if}}
   {{/if}}
   {{/if}}
+  {{/if}}
 
   {{#if doi}}
   <span class="__dimensions_badge_embed__ m-1" data-hide-zero-citations="true" data-style="small_rectangle" data-legend="hover-top" data-doi="{{doi}}"></span>
   {{/if}}
 
   {{#if tags}}
-    {{#each tags}}
-    <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light">{{this}}</span>
-    {{/each}}
+  {{#each tags}}
+  <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light">{{this}}</span>
+  {{/each}}
   {{/if}}
 </div>
 <style>

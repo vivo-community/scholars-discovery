@@ -194,6 +194,10 @@ public class Document extends AbstractNestedDocument {
 
   private String note;
 
+  private String key;
+
+  private String url;
+
   private List<String> authorList;
 
   private List<String> editorList;
@@ -766,6 +770,22 @@ public class Document extends AbstractNestedDocument {
 
   public void setNote(String note) {
     this.note = note;
+  }
+
+  public String getKey() {
+    return key;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public List<String> getAuthorList() {
