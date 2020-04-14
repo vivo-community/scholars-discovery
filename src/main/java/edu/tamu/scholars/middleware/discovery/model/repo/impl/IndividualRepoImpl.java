@@ -173,7 +173,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     private Optional<Criteria> getBoostCriteria(String query, List<BoostArg> boosts) {
-        return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).is(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
+        return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).expression(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
     }
 
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
