@@ -1,0 +1,7 @@
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+
+CONSTRUCT {
+    <{{uri}}> vcard:url ?note .
+} WHERE {
+    <{{uri}}> vcard:url ?note .
+}

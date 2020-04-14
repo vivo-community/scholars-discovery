@@ -96,11 +96,8 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/publications/default.html"
-    AcademicArticle: "defaults/discoveryViews/publications/default.html"
     Book: "defaults/discoveryViews/publications/Book.html"
     Chapter: "defaults/discoveryViews/publications/Chapter.html"
-    ConferencePaper: "defaults/discoveryViews/publications/default.html"
-    Thesis: "defaults/discoveryViews/publications/default.html"
   styles: []
   facets:
     - name: Type

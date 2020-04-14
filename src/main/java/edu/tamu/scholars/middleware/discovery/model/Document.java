@@ -315,6 +315,14 @@ public class Document extends Common {
     @PropertySource(template = "document/note", predicate = "http://www.w3.org/2006/vcard/ns#note")
     private String note;
 
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "document/key", predicate = "http://www.w3.org/2006/vcard/ns#key")
+    private String key;
+
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "document/url", predicate = "http://www.w3.org/2006/vcard/ns#url")
+    private String url;
+
     @NestedObject
     @Indexed(type = "nested_strings", searchable = false)
     @PropertySource(template = "document/etdChairedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -859,6 +867,22 @@ public class Document extends Common {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public List<String> getEtdChairedBy() {

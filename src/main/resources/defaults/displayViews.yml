@@ -191,6 +191,30 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+            - name: Online Publications
+              field: publications
+              filters:
+                - field: type
+                  value: Webpage
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/selectedPublications/default.html"
+            - name: Reports
+              field: publications
+              filters:
+                - field: type
+                  value: Report
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/organizations/publications/selectedPublications/default.html"
         - name: collection or series editor for
           template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
           field: collectionOrSeriesEditorFor
@@ -877,6 +901,8 @@
     - NewsRelease
     - ERO_0000071
     - Capstone
+    - Webpage
+    - Report
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:
@@ -1078,6 +1104,15 @@
         - name: tags
           template: "defaults/displayViews/documents/other/tags.html"
           field: tags
+        - name: key
+          template: "defaults/displayViews/documents/other/key.html"
+          field: key
+        - name: note
+          template: "defaults/displayViews/documents/other/note.html"
+          field: note
+        - name: url
+          template: "defaults/displayViews/documents/other/url.html"
+          field: url
 
 - name: Relationships
   types:
