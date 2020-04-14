@@ -572,6 +572,8 @@
     - field: name
       value: 2
   sort:
+    - field: score
+      direction: DESC
     - field: name
       direction: ASC
   export:
