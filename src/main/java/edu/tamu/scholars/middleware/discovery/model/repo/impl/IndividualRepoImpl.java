@@ -3,7 +3,6 @@ package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.SCORE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -117,7 +115,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
-            page = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.by(SCORE).descending().and(page.getSort()));
         }
 
         facetQuery.addCriteria(criteria);
@@ -160,7 +157,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
-            sort = Sort.by(SCORE).descending().and(sort);
         }
 
         simpleQuery.addCriteria(criteria);
@@ -177,7 +173,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     private Optional<Criteria> getBoostCriteria(String query, List<BoostArg> boosts) {
-        return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).is(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
+        return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).expression(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
     }
 
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
