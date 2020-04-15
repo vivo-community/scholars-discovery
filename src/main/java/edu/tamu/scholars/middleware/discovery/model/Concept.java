@@ -233,27 +233,27 @@ public class Concept extends Common {
         this.relatedConcepts = relatedConcepts;
     }
 
-    public List<String> getFutureResearchIdeaOf() {
+    public String getFutureResearchIdeaOf() {
         return futureResearchIdeaOf;
     }
 
-    public void setFutureResearchIdeaOf(List<String> futureResearchIdeaOf) {
+    public void setFutureResearchIdeaOf(String futureResearchIdeaOf) {
         this.futureResearchIdeaOf = futureResearchIdeaOf;
     }
 
-    public List<String> getFutureResearchIdeaOfEmail() {
+    public String getFutureResearchIdeaOfEmail() {
         return futureResearchIdeaOfEmail;
     }
 
-    public void setFutureResearchIdeaOfEmail(List<String> futureResearchIdeaOfEmail) {
+    public void setFutureResearchIdeaOfEmail(String futureResearchIdeaOfEmail) {
         this.futureResearchIdeaOfEmail = futureResearchIdeaOfEmail;
     }
 
-    public List<String> getFutureResearchIdeaOfTitle() {
+    public String getFutureResearchIdeaOfTitle() {
         return futureResearchIdeaOfTitle;
     }
 
-    public void setFutureResearchIdeaOfTitle(List<String> futureResearchIdeaOfTitle) {
+    public void setFutureResearchIdeaOfTitle(String futureResearchIdeaOfTitle) {
         this.futureResearchIdeaOfTitle = futureResearchIdeaOfTitle;
     }
 
