@@ -1,3 +1,4 @@
+
 package edu.tamu.scholars.middleware.graphql.service;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
     // @formatter:off
     public DiscoveryFacetPage<Person> facetedSearch(
         @GraphQLArgument(name = "query", defaultValue = "*") String query,
+        @GraphQLArgument(name = "df", defaultValue = "") String df,
         @GraphQLArgument(name = "facets", defaultValue = "[]") List<FacetArg> facets,
         @GraphQLArgument(name = "filters", defaultValue = "[]") List<FilterArg> filters,
         @GraphQLArgument(name = "boosts", defaultValue = "[]") List<BoostArg> boosts,
@@ -42,7 +44,7 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
         @GraphQLEnvironment List<Field> fields
     ) {
         // @formatter:on
-        return super.facetedSearch(query, facets, filters, boosts, page, fields);
+        return super.facetedSearch(query, df, facets, filters, boosts, page, fields);
     }
 
     @Override

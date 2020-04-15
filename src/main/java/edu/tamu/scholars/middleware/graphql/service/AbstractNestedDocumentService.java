@@ -160,38 +160,38 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+    public DiscoveryFacetPage<ND> search(String query, String df, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
     @Override
-    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
+    public DiscoveryFacetPage<ND> search(String query, String df, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
     }
 
     @Override
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
+    public DiscoveryFacetPage<ND> filterSearch(String query, String df, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
     }
 
     @Override
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, boosts, page, fields);
+    public DiscoveryFacetPage<ND> filterSearch(String query, String df, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, new ArrayList<FacetArg>(), filters, boosts, page, fields);
     }
 
     @Override
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
     }
 
     @Override
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, facets, filters, new ArrayList<BoostArg>(), page, fields);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, facets, filters, new ArrayList<BoostArg>(), page, fields);
     }
 
     @Override
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, facets, filters, boosts, page, fields);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return discoveryFacetedSearch(query, df, facets, filters, boosts, page, fields);
     }
 
     @Override
@@ -199,12 +199,12 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return repo.findBySyncIdsIn(syncIds).stream().map(document -> toNested(document, new ArrayList<Field>())).collect(Collectors.toList());
     }
 
-    private DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return DiscoveryFacetPage.from(search(query, facets, filters, boosts, page, fields), facets);
+    private DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        return DiscoveryFacetPage.from(search(query, df, facets, filters, boosts, page, fields), facets);
     }
 
-    private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
+    private FacetPage<ND> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
+        FacetPage<Individual> facetPage = repo.search(query, df, facets, augmentFilters(filters), boosts, page);
         Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
 
         facetPage.getFacetFields().forEach(field -> facetFieldResults.put(field, facetPage.getFacetResultPage(field)));

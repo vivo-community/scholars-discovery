@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,17 +37,19 @@ public class IndividualController {
     @Autowired
     private FacetPagedResourcesAssembler<Individual> pagedResourcesAssembler;
 
+    // TODO: combine query and df into simple object and add argument resolver
     @GetMapping("/search/faceted")
     // @formatter:off
     public ResponseEntity<PagedModel<IndividualResource>> search(
         @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
+        @RequestParam(value = "df", required = false, defaultValue = "") String df,
         @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page,
         List<FacetArg> facets,
         List<FilterArg> filters,
         List<BoostArg> boosts
     ) {
     // @formatter:on
-        return ResponseEntity.ok(pagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, page), assembler));
+        return ResponseEntity.ok(pagedResourcesAssembler.toModel(repo.search(query, df, facets, filters, boosts, page), assembler));
     }
 
     @GetMapping("/search/count")
