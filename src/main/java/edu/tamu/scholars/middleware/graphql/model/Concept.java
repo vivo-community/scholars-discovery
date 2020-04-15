@@ -49,7 +49,7 @@ public class Concept extends AbstractNestedDocument {
 
   private List<RelatedConcept> relatedConcepts;
 
-  private List<FutureResearchIdeaOf> futureResearchIdeaOf;
+  private FutureResearchIdeaOf futureResearchIdeaOf;
 
   private List<Website> websites;
 
@@ -148,11 +148,11 @@ public class Concept extends AbstractNestedDocument {
     this.relatedConcepts = relatedConcepts;
   }
 
-  public List<FutureResearchIdeaOf> getFutureResearchIdeaOf() {
+  public FutureResearchIdeaOf getFutureResearchIdeaOf() {
     return futureResearchIdeaOf;
   }
 
-  public void setFutureResearchIdeaOf(List<FutureResearchIdeaOf> futureResearchIdeaOf) {
+  public void setFutureResearchIdeaOf(FutureResearchIdeaOf futureResearchIdeaOf) {
     this.futureResearchIdeaOf = futureResearchIdeaOf;
   }
 
