@@ -9,15 +9,22 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 
 public class ArgumentUtility {
 
     private final static String FACET_QUERY_PARAM_KEY = "facets";
     private final static String FILTER_QUERY_PARAM_KEY = "filters";
     private final static String BOOST_QUERY_PARAM_KEY = "boost";
+
+    private final static String HIGHLIGHT_FIELDS_QUERY_PARAM_KEY = "hl";
+    private final static String HIGHLIGHT_PRE_QUERY_PARAM_KEY = "hl.pre";
+    private final static String HIGHLIGHT_POST_QUERY_PARAM_KEY = "hl.post";
 
     private final static String FACET_SORT_FORMAT = "%s.sort";
     private final static String FACET_PAGE_SIZE_FORMAT = "%s.pageSize";
@@ -125,6 +132,13 @@ public class ArgumentUtility {
             .map(BoostArg::of)
             .collect(Collectors.toList());
         // @formatter:on
+    }
+
+    public static HighlightArg getHightlightArgument(HttpServletRequest request) {
+        String fields = request.getParameter(HIGHLIGHT_FIELDS_QUERY_PARAM_KEY);
+        Optional<String> pre = Optional.ofNullable(request.getParameter(HIGHLIGHT_PRE_QUERY_PARAM_KEY));
+        Optional<String> post = Optional.ofNullable(request.getParameter(HIGHLIGHT_POST_QUERY_PARAM_KEY));
+        return HighlightArg.of(StringUtils.isNotEmpty(fields) ? fields : StringUtils.EMPTY, pre, post);
     }
 
 }
