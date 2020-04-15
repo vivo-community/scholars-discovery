@@ -324,12 +324,12 @@ public class Document extends Common {
     private String url;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "document/etdChairedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> etdChairedBy;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings")
     @PropertySource(template = "document/advisedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> advisedBy;
 
