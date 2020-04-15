@@ -118,16 +118,14 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         }
 
         facetQuery.addCriteria(criteria);
-
         // NOTE: solr does not return total number of facet entries, nor afford direction of sort
         FacetOptions facetOptions = new FacetOptions();
+        facetOptions.setFacetLimit(-1);        
 
         facets.forEach(facet -> {
             FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
-            facetOptions.addFacetOnField(fieldWithFacetParameters);
-            fieldWithFacetParameters.setLimit(Integer.MAX_VALUE);
-            fieldWithFacetParameters.setOffset(0);
             // NOTE: other possible; method, minCount, missing, and prefix
+            facetOptions.addFacetOnField(fieldWithFacetParameters);
         });
 
         if (facetOptions.hasFacets()) {
