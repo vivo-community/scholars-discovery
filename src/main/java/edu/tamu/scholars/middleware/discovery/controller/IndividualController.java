@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.assembler.FacetPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.IndividualResourceAssembler;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
@@ -46,10 +47,11 @@ public class IndividualController {
         @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page,
         List<FacetArg> facets,
         List<FilterArg> filters,
-        List<BoostArg> boosts
+        List<BoostArg> boosts,
+        HighlightArg highlight
     ) {
     // @formatter:on
-        return ResponseEntity.ok(pagedResourcesAssembler.toModel(repo.search(query, df, facets, filters, boosts, page), assembler));
+        return ResponseEntity.ok(pagedResourcesAssembler.toModel(repo.search(query, df, facets, filters, boosts, highlight, page), assembler));
     }
 
     @GetMapping("/search/count")
