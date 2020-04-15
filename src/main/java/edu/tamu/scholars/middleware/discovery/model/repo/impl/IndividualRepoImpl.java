@@ -107,6 +107,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     @Override
     public FacetPage<Individual> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+        long startTime = System.nanoTime();
         FacetQuery facetQuery = new SimpleFacetQuery();
 
         Criteria criteria = getQueryCriteria(query);
@@ -144,7 +145,10 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         facetQuery.setPageRequest(page);
 
-        return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
+        FacetPage<Individual> results = solrTemplate.queryForFacetPage(collection(), facetQuery, type());
+
+        System.out.println("\tsearch: " + ((System.nanoTime() - startTime) / (double) 1000000));
+        return results;
     }
 
     @Override
