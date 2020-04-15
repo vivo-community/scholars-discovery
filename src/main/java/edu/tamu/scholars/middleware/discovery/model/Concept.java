@@ -35,6 +35,32 @@ public class Concept extends Common {
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
 
+    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @NestedObject(properties = { @Reference(value = "awardOrHonorForType", key = "type") })
+    @PropertySource(template = "concept/awardOrHonorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> awardOrHonorFor;
+
+    @Indexed
+    @PropertySource(template = "concept/awardOrHonorForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> awardOrHonorForType;
+
+    @Indexed(type = "nested_string", copyTo = "_text_")
+    @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
+    @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> awardConferredBy;
+
+    @Indexed(type = "nested_string")
+    @PropertySource(template = "concept/awardConferredByType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> awardConferredByType;
+
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "concept/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
+    private List<String> awardConferredByPreferredLabel;
+
+    @Indexed(type = "pdate")
+    @PropertySource(template = "concept/yearAwarded", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private String yearAwarded;
+
     @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "receiptRecipientName", key = "recipientName") })
     @PropertySource(template = "concept/receipts", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -85,6 +111,54 @@ public class Concept extends Common {
 
     public void setResearchAreaOf(List<String> researchAreaOf) {
         this.researchAreaOf = researchAreaOf;
+    }
+
+    public List<String> getAwardOrHonorFor() {
+        return awardOrHonorFor;
+    }
+
+    public void setAwardOrHonorFor(List<String> awardOrHonorFor) {
+        this.awardOrHonorFor = awardOrHonorFor;
+    }
+
+    public List<String> getAwardOrHonorForType() {
+        return awardOrHonorForType;
+    }
+
+    public void setAwardOrHonorForType(List<String> awardOrHonorForType) {
+        this.awardOrHonorForType = awardOrHonorForType;
+    }
+
+    public List<String> getAwardConferredBy() {
+        return awardConferredBy;
+    }
+
+    public void setAwardConferredBy(List<String> awardConferredBy) {
+        this.awardConferredBy = awardConferredBy;
+    }
+
+    public List<String> getAwardConferredByType() {
+        return awardConferredByType;
+    }
+
+    public void setAwardConferredByType(List<String> awardConferredByType) {
+        this.awardConferredByType = awardConferredByType;
+    }
+
+    public List<String> getAwardConferredByPreferredLabel() {
+        return awardConferredByPreferredLabel;
+    }
+
+    public void setAwardConferredByPreferredLabel(List<String> awardConferredByPreferredLabel) {
+        this.awardConferredByPreferredLabel = awardConferredByPreferredLabel;
+    }
+
+    public String getYearAwarded() {
+        return yearAwarded;
+    }
+
+    public void setYearAwarded(String yearAwarded) {
+        this.yearAwarded = yearAwarded;
     }
 
     public List<String> getReceipts() {
