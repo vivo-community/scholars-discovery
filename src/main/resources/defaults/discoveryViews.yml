@@ -587,6 +587,9 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/researchOverview/default.html"
+  defaultSearchField: overview
+  highlightFields:
+    - overview
   styles: []
   facets:
     - name: People

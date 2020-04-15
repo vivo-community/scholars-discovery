@@ -57,7 +57,11 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                         describeDiscoveryView.withSubsection("boosts", "An array of <<resources-boosts, Boosts resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
-                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>.")
+                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
+                        describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
+                        describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -73,6 +77,10 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("boosts", "An array of <<resources-boosts, Boosts resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
                         describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
+                        describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
+                        describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
                         subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -102,7 +110,11 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
                         describeDiscoveryView.withSubsection("boosts", "An array of <<resources-boosts, Boosts resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
-                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>.")
+                        describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
+                        describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
+                        describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -118,6 +130,10 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("boosts", "An array of <<resources-boosts, Boosts resources>>."),
                         describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
                         describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
+                        describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
+                        describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
                         subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -154,7 +170,11 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                                 describeDiscoveryView.withParameter("filters", "An array of <<resources-filters, Filters resources>>.").optional(),
                                 describeDiscoveryView.withParameter("boosts", "An array of <<resources-boosts, Boosts resources>>.").optional(),
                                 describeDiscoveryView.withParameter("sort", "An array of <<resources-sort, Sort resources>>.").optional(),
-                                describeDiscoveryView.withParameter("export", "An array of <<resources-export, Export resources>>.").optional()
+                                describeDiscoveryView.withParameter("export", "An array of <<resources-export, Export resources>>.").optional(),
+                                describeDiscoveryView.withParameter("defaultSearchField", "The default search field of the Discovery View.").optional(),
+                                describeDiscoveryView.withParameter("highlightFields", "An array of highlight fields of the Discovery View.").optional(),
+                                describeDiscoveryView.withParameter("highlightPre", "The highlight pre of the Discovery View.").optional(),
+                                describeDiscoveryView.withParameter("highlightPost", "The highlight post of the Discovery View.").optional()
                             ),
                             links(
                                 linkWithRel("self").description("Canonical link for this resource."),
@@ -170,6 +190,10 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                                 describeDiscoveryView.withSubsection("boosts", "An array of <<resources-boosts, Boosts resources>>."),
                                 describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
                                 describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
+                                describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
+                                describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
+                                describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
+                                describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
                                 subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                             )
                         )
@@ -207,6 +231,10 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                             describeDiscoveryView.withSubsection("boosts", "An array of <<resources-boosts, Boosts resources>>."),
                             describeDiscoveryView.withSubsection("sort", "An array of <<resources-sort, Sort resources>>."),
                             describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
+                            describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
+                            describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
+                            describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
+                            describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
                             subsectionWithPath("_links").description("<<resources-discovery-view-list-links, Links>> to other resources.")
                         )
                     )
@@ -294,7 +322,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
     private ResultActions performUpdateDiscoveryView() throws JsonProcessingException, Exception {
         DiscoveryView discoveryView = viewRepo.findByName(MOCK_VIEW_NAME).get();
         discoveryView.setName("Organizations");
-//        discoveryView.setCollection("organizations");
 
         // @formatter:off
         return mockMvc.perform(
