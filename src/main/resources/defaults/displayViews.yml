@@ -291,11 +291,11 @@
                 - field: type
                   value: Patent
               sort:
-                - field: title
-                  direction: ASC
                 - field: publicationDate
                   direction: DESC
                   date: true
+                - field: title
+                  direction: ASC
               template: "defaults/displayViews/persons/publications/patents/default.html"
     - name: Grants/Awards
       sections:
