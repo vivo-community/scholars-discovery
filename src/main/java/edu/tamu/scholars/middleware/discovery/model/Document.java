@@ -188,7 +188,7 @@ public class Document extends Common {
     @PropertySource(template = "document/eissn", predicate = "http://purl.org/ontology/bibo/eissn")
     private String eissn;
 
-    @Indexed(type = "whole_strings")
+    @Indexed(type = "whole_string")
     @PropertySource(template = "document/uri", predicate = "http://purl.org/ontology/bibo/uri")
     private String uri;
 
