@@ -29,9 +29,9 @@ public interface SolrDocumentRepoCustom<D extends AbstractIndexDocument> {
 
     public List<D> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters);
 
-    public FacetPage<D> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page);
+    public FacetPage<D> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page);
 
-    public Cursor<D> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort);
+    public Cursor<D> stream(String query, String df, List<FilterArg> filters, List<BoostArg> boosts, Sort sort);
 
     public Class<D> type();
 

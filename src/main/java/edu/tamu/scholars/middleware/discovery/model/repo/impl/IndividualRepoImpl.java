@@ -13,6 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -20,13 +22,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.mapping.SimpleSolrMappingContext;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.data.solr.core.query.FacetOptions.FieldWithFacetParameters;
-import org.springframework.data.solr.core.query.FacetQuery;
 import org.springframework.data.solr.core.query.Query.Operator;
-import org.springframework.data.solr.core.query.SimpleFacetQuery;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
@@ -38,20 +39,30 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
+import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetQuery;
+import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetQueryParser;
 import edu.tamu.scholars.middleware.model.OpKey;
+import io.micrometer.core.instrument.util.StringUtils;
 
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
 
     @Value("${spring.data.solr.parser:edismax}")
-    private String queryParser;
+    private String defType;
 
     @Value("${spring.data.solr.operator:AND}")
-    private Operator queryOperator;
+    private Operator defaultOperator;
 
     @Autowired
     private SolrTemplate solrTemplate;
+
+    @PostConstruct
+    public void setup() {
+        // https://jira.spring.io/browse/DATASOLR-153
+        // https://github.com/spring-projects/spring-data-solr/pull/113
+        solrTemplate.registerQueryParser(CustomSimpleFacetQuery.class, new CustomSimpleFacetQueryParser(new SimpleSolrMappingContext()));
+    }
 
     @Override
     public long count(String query, List<FilterArg> filters) {
@@ -106,9 +117,9 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     @Override
-    public FacetPage<Individual> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
+    public FacetPage<Individual> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
         long startTime = System.nanoTime();
-        FacetQuery facetQuery = new SimpleFacetQuery();
+        CustomSimpleFacetQuery facetQuery = new CustomSimpleFacetQuery();
 
         Criteria criteria = getQueryCriteria(query);
 
@@ -139,11 +150,15 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             facetQuery.addFilterQuery(filterQuery);
         });
 
-        facetQuery.setDefaultOperator(queryOperator);
+        facetQuery.setDefaultOperator(defaultOperator);
 
-        facetQuery.setDefType(queryParser);
+        facetQuery.setDefType(defType);
 
         facetQuery.setPageRequest(page);
+
+        if (StringUtils.isNotEmpty(df)) {
+            facetQuery.setDefaultField(df);
+        }
 
         FacetPage<Individual> results = solrTemplate.queryForFacetPage(collection(), facetQuery, type());
 
@@ -152,7 +167,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     @Override
-    public Cursor<Individual> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+    public Cursor<Individual> stream(String query, String df, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
 
         Criteria criteria = getQueryCriteria(query);
@@ -185,8 +200,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         buildFilterQueries(filters).forEach(filterQuery -> {
             simpleQuery.addFilterQuery(filterQuery);
         });
-        simpleQuery.setDefaultOperator(queryOperator);
-        simpleQuery.setDefType(queryParser);
+        simpleQuery.setDefaultOperator(defaultOperator);
+        simpleQuery.setDefType(defType);
         return simpleQuery;
     }
 

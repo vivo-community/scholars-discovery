@@ -35,6 +35,7 @@ public class CollectionService extends AbstractNestedDocumentService<Collection>
     // @formatter:off
     public DiscoveryFacetPage<Collection> facetedSearch(
         @GraphQLArgument(name = "query", defaultValue = "*") String query,
+        @GraphQLArgument(name = "df", defaultValue = "") String df,
         @GraphQLArgument(name = "facets", defaultValue = "[]") List<FacetArg> facets,
         @GraphQLArgument(name = "filters", defaultValue = "[]") List<FilterArg> filters,
         @GraphQLArgument(name = "boosts", defaultValue = "[]") List<BoostArg> boosts,
@@ -42,7 +43,7 @@ public class CollectionService extends AbstractNestedDocumentService<Collection>
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
-        return super.facetedSearch(query, facets, filters, boosts, page, fields);
+        return super.facetedSearch(query, df, facets, filters, boosts, page, fields);
     }
 
     @Override

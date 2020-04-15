@@ -45,19 +45,19 @@ public interface NestedDocumentService<ND extends AbstractNestedDocument> {
 
     public DiscoveryPage<ND> findAll(List<FilterArg> filters, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> search(String query, String df, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> search(String query, String df, List<BoostArg> boosts, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> filterSearch(String query, String df, List<FilterArg> filters, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> filterSearch(String query, String df, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields);
+    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields);
 
     public List<ND> findBySyncIdsIn(List<String> syncIds);
 
