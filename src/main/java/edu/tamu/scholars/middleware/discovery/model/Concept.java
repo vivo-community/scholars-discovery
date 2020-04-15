@@ -87,9 +87,13 @@ public class Concept extends Common {
     private List<String> relatedConcepts;
 
     @Indexed(type = "nested_whole_strings")
-    @NestedObject(properties = { @Reference(value = "futureResearchIdeaOfTitle", key = "title"), @Reference(value = "futureResearchIdeaOfOrganization", key = "organizations") })
+    @NestedObject(properties = { @Reference(value = "futureResearchIdeaOfEmail", key = "email"), @Reference(value = "futureResearchIdeaOfTitle", key = "title"), @Reference(value = "futureResearchIdeaOfOrganization", key = "organizations") })
     @PropertySource(template = "concept/futureResearchIdeaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> futureResearchIdeaOf;
+
+    @Indexed(type = "nested_whole_strings")
+    @PropertySource(template = "concept/futureResearchIdeaOfEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
+    private List<String> futureResearchIdeaOfEmail;
 
     @Indexed(type = "nested_whole_strings")
     @PropertySource(template = "concept/futureResearchIdeaOfTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -235,6 +239,14 @@ public class Concept extends Common {
 
     public void setFutureResearchIdeaOf(List<String> futureResearchIdeaOf) {
         this.futureResearchIdeaOf = futureResearchIdeaOf;
+    }
+
+    public List<String> getFutureResearchIdeaOfEmail() {
+        return futureResearchIdeaOfEmail;
+    }
+
+    public void setFutureResearchIdeaOfEmail(List<String> futureResearchIdeaOfEmail) {
+        this.futureResearchIdeaOfEmail = futureResearchIdeaOfEmail;
     }
 
     public List<String> getFutureResearchIdeaOfTitle() {
