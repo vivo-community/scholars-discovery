@@ -22,41 +22,41 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "concepts", predicate = "http://www.w3.org/2004/02/skos/core#Concept")
 public class Concept extends Common {
 
-    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "concept/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings")
     @PropertySource(template = "concept/associatedDepartment", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> associatedDepartments;
 
     @NestedObject
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
     @PropertySource(template = "concept/researchAreaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreaOf;
 
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "receiptRecipientName", key = "recipientName") })
     @PropertySource(template = "concept/receipts", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receipts;
 
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "concept/receiptRecipientName", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> receiptRecipientName;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "concept/broaderConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> broaderConcepts;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "concept/narrowerConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> narrowerConcepts;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
 

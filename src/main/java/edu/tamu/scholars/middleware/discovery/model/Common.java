@@ -24,22 +24,22 @@ public class Common extends AbstractIndexDocument {
     @PropertySource(template = "common/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
     private String thumbnail;
 
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
     @PropertySource(template = "common/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> websites;
 
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "common/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
     private List<String> websiteUrl;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "common/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> geographicFocus;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "common/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sameAs;
 

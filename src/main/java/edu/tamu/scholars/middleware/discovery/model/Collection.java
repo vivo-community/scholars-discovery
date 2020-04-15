@@ -22,13 +22,13 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "collections", predicate = "http://purl.org/ontology/bibo/Collection")
 public class Collection extends Common {
 
-    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @Indexed(type = "whole_string", copyTo = "_text_")
     @PropertySource(template = "collection/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
 
     @Field("abstract")
     @JsonProperty("abstract")
-    @Indexed(type = "whole_string", value = "abstract", copyTo = "_text_")
+    @Indexed(type = "tokenized_string", value = "abstract", copyTo = "_text_")
     @PropertySource(template = "collection/abstract", predicate = "http://purl.org/ontology/bibo/abstract")
     private String abstractText;
 
@@ -37,22 +37,22 @@ public class Collection extends Common {
     private String abbreviation;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/publicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publicationVenueFor;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authors;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translators;
 
@@ -61,22 +61,22 @@ public class Collection extends Common {
     private String publicationDate;
 
     @NestedObject
-    @Indexed(type = "nested_string", searchable = false)
+    @Indexed(type = "nested_whole_string", searchable = false)
     @PropertySource(template = "collection/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> features;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
@@ -101,27 +101,27 @@ public class Collection extends Common {
     private String oclcnum;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> isAbout;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> mentions;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedBy;
 
