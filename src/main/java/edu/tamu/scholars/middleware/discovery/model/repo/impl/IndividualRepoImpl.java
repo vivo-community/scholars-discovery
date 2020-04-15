@@ -118,7 +118,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         }
 
         facetQuery.addCriteria(criteria);
-   
         // NOTE: solr does not return total number of facet entries, nor afford direction of sort
         FacetOptions facetOptions = new FacetOptions();
         facetOptions.setFacetLimit(-1);        
