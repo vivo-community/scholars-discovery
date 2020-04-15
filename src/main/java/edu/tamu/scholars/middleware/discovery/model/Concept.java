@@ -86,18 +86,18 @@ public class Concept extends Common {
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
 
-    @Indexed(type = "nested_whole_strings")
+    @Indexed(type = "nested_whole_string")
     @NestedObject(properties = { @Reference(value = "futureResearchIdeaOfEmail", key = "email"), @Reference(value = "futureResearchIdeaOfTitle", key = "title"), @Reference(value = "futureResearchIdeaOfOrganization", key = "organizations") })
     @PropertySource(template = "concept/futureResearchIdeaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> futureResearchIdeaOf;
+    private String futureResearchIdeaOf;
 
-    @Indexed(type = "nested_whole_strings")
+    @Indexed(type = "nested_whole_string")
     @PropertySource(template = "concept/futureResearchIdeaOfEmail", predicate = "http://www.w3.org/2006/vcard/ns#email")
-    private List<String> futureResearchIdeaOfEmail;
+    private String futureResearchIdeaOfEmail;
 
-    @Indexed(type = "nested_whole_strings")
+    @Indexed(type = "nested_whole_string")
     @PropertySource(template = "concept/futureResearchIdeaOfTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> futureResearchIdeaOfTitle;
+    private String futureResearchIdeaOfTitle;
 
     @NestedMultiValuedProperty
     @NestedObject(root = false)
