@@ -19,7 +19,7 @@ import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
-import edu.tamu.scholars.middleware.discovery.assembler.FacetAndHighlightPagedResourcesAssembler;
+import edu.tamu.scholars.middleware.discovery.assembler.DiscoveryPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.IndividualResourceAssembler;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
@@ -36,7 +36,7 @@ public class IndividualController {
     private IndividualResourceAssembler assembler;
 
     @Autowired
-    private FacetAndHighlightPagedResourcesAssembler<Individual> facetAndHighlightPagedResourcesAssembler;
+    private DiscoveryPagedResourcesAssembler<Individual> discoveryPagedResourcesAssembler;
 
     // TODO: combine query and df into simple object and add argument resolver
     @GetMapping("/search/faceted")
@@ -51,7 +51,7 @@ public class IndividualController {
         HighlightArg highlight
     ) {
     // @formatter:on
-        return ResponseEntity.ok(facetAndHighlightPagedResourcesAssembler.toModel(repo.search(query, df, facets, filters, boosts, highlight, page), assembler));
+        return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, df, facets, filters, boosts, highlight, page), assembler));
     }
 
     @GetMapping("/search/count")

@@ -13,7 +13,6 @@ import org.springframework.data.solr.core.query.result.HighlightEntry;
 
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
-import edu.tamu.scholars.middleware.discovery.assembler.FacetAndHighlightPagedResourcesAssembler.Highlight;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import io.leangen.graphql.annotations.types.GraphQLType;
 
@@ -27,9 +26,11 @@ public class DiscoveryFacetAndHighlightPage<T> extends DiscoveryFacetPage<T> {
         this.highlights = highlights;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> DiscoveryFacetAndHighlightPage<T> from(FacetAndHighlightPage<T> facetAndHighlightPage, List<FacetArg> facetArguments, HighlightArg highlightArg) {
         List<Facet> facets = buildFacets((FacetPage<T>) facetAndHighlightPage, facetArguments);
         List<Highlight> highlights = buildHighlights(facetAndHighlightPage, highlightArg);
+        System.out.println("\n\nBUILDING IN PAGE\n\n");
         return new DiscoveryFacetAndHighlightPage<T>(facetAndHighlightPage.getContent(), PageInfo.from(facetAndHighlightPage), facets, highlights);
     }
 
@@ -57,6 +58,28 @@ public class DiscoveryFacetAndHighlightPage<T> extends DiscoveryFacetPage<T> {
 
     public List<Highlight> getHighlights() {
         return highlights;
+    }
+
+    @GraphQLType(name = "Highlight")
+    public static class Highlight {
+
+        private final String id;
+
+        private final Map<String, List<String>> snippets;
+
+        public Highlight(String id, Map<String, List<String>> snippets) {
+            this.id = id;
+            this.snippets = snippets;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public Map<String, List<String>> getSnippets() {
+            return snippets;
+        }
+
     }
 
 }

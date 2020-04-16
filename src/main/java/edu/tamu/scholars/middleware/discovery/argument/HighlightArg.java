@@ -7,43 +7,43 @@ import org.apache.commons.lang3.StringUtils;
 
 public class HighlightArg {
 
-    private final String fields;
+    private final String[] fields;
 
-    private final String pre;
+    private final String prefix;
 
-    private final String post;
+    private final String postfix;
 
-    public HighlightArg(String fields, String pre, String post) {
+    public HighlightArg(String[] fields, String prefix, String postfix) {
         this.fields = fields;
-        this.pre = pre;
-        this.post = post;
+        this.prefix = prefix;
+        this.postfix = postfix;
     }
 
-    public String getFields() {
+    public String[] getFields() {
         return fields;
     }
 
-    public String getPre() {
-        return pre;
+    public String getPrefix() {
+        return prefix;
     }
 
-    public String getPost() {
-        return post;
+    public String getPostfix() {
+        return postfix;
     }
 
     @SuppressWarnings("unchecked")
     public static HighlightArg of(Object input) {
         Map<String, Object> highlight = (Map<String, Object>) input;
-        String fields = (String) highlight.get("fields");
-        String pre = highlight.containsKey("pre") ? (String) highlight.get("pre") : StringUtils.EMPTY;
-        String post = highlight.containsKey("post") ? (String) highlight.get("post") : StringUtils.EMPTY;
-        return new HighlightArg(fields, pre, post);
+        String[] fields = (String[]) highlight.get("fields");
+        String prefix = highlight.containsKey("prefix") ? (String) highlight.get("prefix") : StringUtils.EMPTY;
+        String postfix = highlight.containsKey("postfix") ? (String) highlight.get("postfix") : StringUtils.EMPTY;
+        return new HighlightArg(fields, prefix, postfix);
     }
 
-    public static HighlightArg of(String fields, Optional<String> pre, Optional<String> post) {
-        String preParam = pre.isPresent() ? pre.get() : StringUtils.EMPTY;
-        String postParam = post.isPresent() ? post.get() : StringUtils.EMPTY;
-        return new HighlightArg(fields, preParam, postParam);
+    public static HighlightArg of(String[] fields, Optional<String> prefix, Optional<String> postfix) {
+        String prefixParam = prefix.isPresent() ? prefix.get() : StringUtils.EMPTY;
+        String postfixParam = postfix.isPresent() ? postfix.get() : StringUtils.EMPTY;
+        return new HighlightArg(fields, prefixParam, postfixParam);
     }
 
 }

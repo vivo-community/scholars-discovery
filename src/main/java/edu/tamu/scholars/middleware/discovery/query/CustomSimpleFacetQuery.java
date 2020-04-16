@@ -2,7 +2,7 @@ package edu.tamu.scholars.middleware.discovery.query;
 
 import org.springframework.data.solr.core.query.SimpleFacetQuery;
 
-public class CustomSimpleFacetQuery extends SimpleFacetQuery {
+public class CustomSimpleFacetQuery extends SimpleFacetQuery implements CustomSimpleQuery {
 
     private String defaultField;
 

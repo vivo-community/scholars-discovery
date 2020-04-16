@@ -78,7 +78,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                             subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
                             subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "individual")),
                             subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("highlights").description(String.format("Highlights for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
                         )
                     )
                 );
@@ -148,7 +149,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                             subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
                             subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "individual")),
                             subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("highlights").description(String.format("Highlights for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
                         )
                     )
                 );

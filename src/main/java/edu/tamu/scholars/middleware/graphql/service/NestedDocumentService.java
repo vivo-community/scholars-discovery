@@ -8,7 +8,8 @@ import org.springframework.data.domain.Sort;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
 import graphql.language.Field;
@@ -45,19 +46,7 @@ public interface NestedDocumentService<ND extends AbstractNestedDocument> {
 
     public DiscoveryPage<ND> findAll(List<FilterArg> filters, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetPage<ND> search(String query, String df, Pageable page, List<Field> fields);
-
-    public DiscoveryFacetPage<ND> search(String query, String df, List<BoostArg> boosts, Pageable page, List<Field> fields);
-
-    public DiscoveryFacetPage<ND> filterSearch(String query, String df, List<FilterArg> filters, Pageable page, List<Field> fields);
-
-    public DiscoveryFacetPage<ND> filterSearch(String query, String df, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields);
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, Pageable page, List<Field> fields);
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields);
-
-    public DiscoveryFacetPage<ND> facetedSearch(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields);
+    public DiscoveryFacetAndHighlightPage<ND> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields);
 
     public List<ND> findBySyncIdsIn(List<String> syncIds);
 

@@ -35,7 +35,6 @@ public class ViewTestUtility {
         DirectoryView directoryView = new DirectoryView();
 
         directoryView.setName(MOCK_VIEW_NAME);
-//        directoryView.setCollection("persons");
         directoryView.setLayout(Layout.LIST);
 
         Map<String, String> templates = new HashMap<String, String>();
@@ -128,8 +127,13 @@ public class ViewTestUtility {
     public static DiscoveryView getMockDiscoveryView() {
         DiscoveryView discoveryView = new DiscoveryView();
 
+        List<String> highlightFields = new ArrayList<String>();
+        highlightFields.add("overview");
+        discoveryView.setHighlightFields(highlightFields);
+        discoveryView.setHighlightPre("<em>");
+        discoveryView.setHighlightPost("</em>");
+
         discoveryView.setName(MOCK_VIEW_NAME);
-//        discoveryView.setCollection("persons");
         discoveryView.setLayout(Layout.GRID);
 
         Map<String, String> templates = new HashMap<String, String>();
@@ -258,7 +262,7 @@ public class ViewTestUtility {
         DisplaySectionView section = new DisplaySectionView();
         section.setName("Test");
         section.setTemplate("<span>Hello, World!</span>");
-        
+
         section.setField("name");
 
         Filter sectionFilter = new Filter();
