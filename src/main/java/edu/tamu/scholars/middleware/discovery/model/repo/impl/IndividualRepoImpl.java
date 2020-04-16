@@ -125,7 +125,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     @Override
     public FacetAndHighlightPage<Individual> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page) {
-        CustomSimpleFacetAndHighlightQuery facetQuery = new CustomSimpleFacetAndHighlightQuery();
+        CustomSimpleFacetAndHighlightQuery advancedQuery = new CustomSimpleFacetAndHighlightQuery();
 
         Criteria criteria = getQueryCriteria(query.getExpression());
 
@@ -135,7 +135,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             criteria = boostCriteria.get().or(criteria);
         }
 
-        facetQuery.addCriteria(criteria);
+        advancedQuery.addCriteria(criteria);
 
         // NOTE: solr does not return total number of facet entries, nor afford direction of sort
         FacetOptions facetOptions = new FacetOptions();
@@ -148,37 +148,37 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         if (facetOptions.hasFacets()) {
             facetOptions.setFacetLimit(-1);
-            facetQuery.setFacetOptions(facetOptions);
+            advancedQuery.setFacetOptions(facetOptions);
         }
 
         buildFilterQueries(filters).forEach(filterQuery -> {
-            facetQuery.addFilterQuery(filterQuery);
+            advancedQuery.addFilterQuery(filterQuery);
         });
 
-        facetQuery.setDefaultOperator(defaultOperator);
+        advancedQuery.setDefaultOperator(defaultOperator);
 
-        facetQuery.setDefType(defType);
+        advancedQuery.setDefType(defType);
 
-        facetQuery.setPageRequest(page);
+        advancedQuery.setPageRequest(page);
 
         if (StringUtils.isNotEmpty(query.getDefaultField())) {
-            facetQuery.setDefaultField(query.getDefaultField());
+            advancedQuery.setDefaultField(query.getDefaultField());
         }
 
         if (StringUtils.isNotEmpty(query.getMinimumShouldMatch())) {
-            facetQuery.setMinimumShouldMatch(query.getMinimumShouldMatch());
+            advancedQuery.setMinimumShouldMatch(query.getMinimumShouldMatch());
         }
 
         if (StringUtils.isNotEmpty(query.getQueryField())) {
-            facetQuery.setQueryField(query.getQueryField());
+            advancedQuery.setQueryField(query.getQueryField());
         }
 
         if (StringUtils.isNotEmpty(query.getBoostQuery())) {
-            facetQuery.setBoostQuery(query.getBoostQuery());
+            advancedQuery.setBoostQuery(query.getBoostQuery());
         }
 
         if (StringUtils.isNotEmpty(query.getFields())) {
-            facetQuery.setFields(query.getFields());
+            advancedQuery.setFields(query.getFields());
         }
 
         if (ArrayUtils.isNotEmpty(highlight.getFields())) {
@@ -190,10 +190,10 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             if (StringUtils.isNotBlank(highlight.getPostfix())) {
                 highlightOptions.setSimplePostfix(highlight.getPostfix());
             }
-            facetQuery.setHighlightOptions(highlightOptions);
+            advancedQuery.setHighlightOptions(highlightOptions);
         }
 
-        return solrTemplate.queryForFacetAndHighlightPage(collection(), facetQuery, type());
+        return solrTemplate.queryForFacetAndHighlightPage(collection(), advancedQuery, type());
     }
 
     @Override

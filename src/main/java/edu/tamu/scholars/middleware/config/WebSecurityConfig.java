@@ -194,7 +194,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
-                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/faceted", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
+                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/advanced", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,

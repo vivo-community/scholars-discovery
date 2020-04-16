@@ -6,7 +6,7 @@ import org.springframework.data.solr.core.mapping.SolrPersistentProperty;
 
 import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetQuery;
 
-public class CustomSimpleFacetQueryParser extends CustomSimpleQueryParser<CustomSimpleFacetQuery> {
+public class CustomSimpleFacetQueryParser extends DiscoveryQueryParser<CustomSimpleFacetQuery> {
 
     public CustomSimpleFacetQueryParser(MappingContext<? extends SolrPersistentEntity<?>, SolrPersistentProperty> mappingContext) {
         super(mappingContext);

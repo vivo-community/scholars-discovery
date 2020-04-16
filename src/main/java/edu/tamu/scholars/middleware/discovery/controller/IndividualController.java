@@ -40,7 +40,7 @@ public class IndividualController {
     private DiscoveryPagedResourcesAssembler<Individual> discoveryPagedResourcesAssembler;
 
     // TODO: combine query and df into simple object and add argument resolver
-    @GetMapping("/search/faceted")
+    @GetMapping("/search/advanced")
     // @formatter:off
     public ResponseEntity<PagedModel<IndividualResource>> search(
         QueryArg query,
