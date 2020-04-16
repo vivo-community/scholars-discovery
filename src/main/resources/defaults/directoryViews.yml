@@ -34,7 +34,7 @@
       value: Person
   boosts: []
   sort:
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: First name
@@ -52,7 +52,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: name
+    field: name_sort
     opKey: STARTS_WITH
     options:
       - A
@@ -101,7 +101,7 @@
       value: Organization
   boosts: []
   sort:
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Name
@@ -109,7 +109,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: name
+    field: name_sort
     opKey: STARTS_WITH
     options:
       - A
@@ -175,7 +175,7 @@
       value: Document
   boosts: []
   sort:
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Publication type
@@ -203,7 +203,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: title
+    field: title_sort
     opKey: STARTS_WITH
     options:
       - A

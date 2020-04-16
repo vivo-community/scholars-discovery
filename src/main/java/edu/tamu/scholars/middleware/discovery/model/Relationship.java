@@ -23,7 +23,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "relationships", predicate = "http://vivoweb.org/ontology/core#Relationship")
 public class Relationship extends Common {
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string", copyTo = { "_text_", "title_sort" })
     @PropertySource(template = "relationship/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
 

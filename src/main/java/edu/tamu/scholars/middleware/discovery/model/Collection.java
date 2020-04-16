@@ -22,7 +22,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "collections", predicate = "http://purl.org/ontology/bibo/Collection")
 public class Collection extends Common {
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string", copyTo = { "_text_", "name_sort" })
     @PropertySource(template = "collection/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
 

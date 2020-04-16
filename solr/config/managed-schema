@@ -202,6 +202,9 @@
       </analyzer>
     </fieldType>
 
+    <!-- Scholars dynamic sort field -->
+    <dynamicField name="*_sort" type="whole_string" indexed="true" stored="true"/>
+
     <!-- Scholars whole strings type -->
     <fieldType name="whole_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
       <analyzer>
@@ -240,6 +243,9 @@
         <tokenizer class="solr.KeywordTokenizerFactory"/>
       </analyzer>
     </fieldType>
+
+    <!-- Scholars dynamic nested sort field -->
+    <dynamicField name="*_nested_sort" type="nested_whole_string" indexed="true" stored="true"/>
 
     <!-- Scholars nested whole strings type -->
     <fieldType name="nested_whole_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
