@@ -56,19 +56,19 @@ include::../{snippets}/relationships/search/findByIdIn/curl-request.adoc[]
 This search will return a json response listing all the relationships, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/relationships/search/faceted/request-parameters.adoc[]
+include::../{snippets}/relationships/search/advanced/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/relationships/search/faceted/response-fields.adoc[]
+include::../{snippets}/relationships/search/advanced/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/relationships/search/faceted/http-request.adoc[]
+include::../{snippets}/relationships/search/advanced/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/relationships/search/faceted/http-response.adoc[]
+include::../{snippets}/relationships/search/advanced/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/relationships/search/faceted/curl-request.adoc[]
+include::../{snippets}/relationships/search/advanced/curl-request.adoc[]
 
 ==== Export Search
 
