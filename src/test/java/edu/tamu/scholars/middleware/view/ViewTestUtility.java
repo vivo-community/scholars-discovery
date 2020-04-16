@@ -127,14 +127,15 @@ public class ViewTestUtility {
     public static DiscoveryView getMockDiscoveryView() {
         DiscoveryView discoveryView = new DiscoveryView();
 
+        discoveryView.setName(MOCK_VIEW_NAME);
+        discoveryView.setLayout(Layout.GRID);
+        discoveryView.setDefaultSearchField("overview");
+
         List<String> highlightFields = new ArrayList<String>();
         highlightFields.add("overview");
         discoveryView.setHighlightFields(highlightFields);
         discoveryView.setHighlightPre("<em>");
         discoveryView.setHighlightPost("</em>");
-
-        discoveryView.setName(MOCK_VIEW_NAME);
-        discoveryView.setLayout(Layout.GRID);
 
         Map<String, String> templates = new HashMap<String, String>();
         templates.put("default", "<h1>Person template from WSYWIG</h1>");
