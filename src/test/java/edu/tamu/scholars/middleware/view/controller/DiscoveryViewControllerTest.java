@@ -322,7 +322,6 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
     private ResultActions performUpdateDiscoveryView() throws JsonProcessingException, Exception {
         DiscoveryView discoveryView = viewRepo.findByName(MOCK_VIEW_NAME).get();
         discoveryView.setName("Organizations");
-
         // @formatter:off
         return mockMvc.perform(
             put("/discoveryViews/{id}", discoveryView.getId())

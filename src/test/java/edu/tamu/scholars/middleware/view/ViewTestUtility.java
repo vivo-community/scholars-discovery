@@ -35,7 +35,6 @@ public class ViewTestUtility {
         DirectoryView directoryView = new DirectoryView();
 
         directoryView.setName(MOCK_VIEW_NAME);
-        // directoryView.setCollection("persons");
         directoryView.setLayout(Layout.LIST);
 
         Map<String, String> templates = new HashMap<String, String>();

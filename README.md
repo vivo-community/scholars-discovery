@@ -1,14 +1,14 @@
 [![Build Status](https://travis-ci.org/vivo-community/scholars-discovery.svg?branch=master)](https://travis-ci.org/vivo-community/scholars-discovery)
 [![Coverage Status](https://coveralls.io/repos/github/vivo-community/scholars-discovery/badge.svg?branch=master)](https://coveralls.io/github/vivo-community/scholars-discovery?branch=master)
 
-# scholars-discovery
+# [scholars-discovery](https://vivo-community.github.io/scholars-discovery/)
 
 VIVO Scholars Discovery is a middleware project that pulls [VIVO](https://duraspace.org/vivo/) content into its own search index (Solr) and then exposes that content via a RESTful service endpoint.
 
 Various frontend applications are available (or can be built) to display the content as read-only websites.
 Existing frontend applications include:
 1. [VIVO Scholars Angular](https://github.com/vivo-community/scholars-angular)
-1. [VIVO Scholars React](https://github.com/vivo-community/scholars-react)
+2. [VIVO Scholars React](https://github.com/vivo-community/scholars-react)
 
 # Background
 
@@ -98,8 +98,8 @@ docker run -d -p 9000:9000 -e SPRING_APPLICATION_JSON="{\"spring\":{\"data\":{\"
 With the above installation instructions, the following service endpoints can be verified:
 
 1. [REST API (9000/individual)](http://localhost:9000/individual)
-1. [REST API Docs (9000/api)](http://localhost:9000/api)
-1. [GraphQL UI (9000/gui)](http://localhost:9000/gui)
+2. [REST API Docs (9000/api)](http://localhost:9000/api)
+3. [GraphQL UI (9000/gui)](http://localhost:9000/gui)
 
 If the JSON [HAL(Hypertext Application Language)](https://www.baeldung.com/spring-rest-hal) browser is enabled by changing the [authorize-hal-browser](https://github.com/vivo-community/scholars-discovery/blob/master/src/main/resources/application.yml#L103) configuration to `true`, http://localhost:9000/ can be used to browse scholars-discovery resources.
 If the authorize-hal-browser is set to `false`, http://localhost:9000/ will respond with the following message:

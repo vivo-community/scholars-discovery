@@ -195,14 +195,6 @@
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" docValues="true" />
     <fieldType name="strings" class="solr.StrField" sortMissingLast="true" multiValued="true" docValues="true" />
 
-    <!-- Scholars sorting string type  -->
-    <fieldType name="sorting_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
-      <analyzer>
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
     <!-- Scholars whole string type  -->
     <fieldType name="whole_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
       <analyzer>
@@ -217,19 +209,71 @@
       </analyzer>
     </fieldType>
 
-    <!-- Scholars nested string type  -->
-    <fieldType name="nested_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
+    <!-- Scholars tokenized string type  -->
+    <fieldType name="tokenized_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- Scholars tokenized strings type -->
+    <fieldType name="tokenized_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- Scholars nested whole string type  -->
+    <fieldType name="nested_whole_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
       <analyzer>
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
       </analyzer>
     </fieldType>
 
-    <!-- Scholars nested strings type -->
-    <fieldType name="nested_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
+    <!-- Scholars nested whole strings type -->
+    <fieldType name="nested_whole_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
       <analyzer>
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <!-- Scholars nested tokenized string type  -->
+    <fieldType name="nested_tokenized_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
+      <analyzer type="index">
+        <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- Scholars nested tokenized strings type -->
+    <fieldType name="nested_tokenized_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
+      <analyzer type="index">
+        <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
       </analyzer>
     </fieldType>
 

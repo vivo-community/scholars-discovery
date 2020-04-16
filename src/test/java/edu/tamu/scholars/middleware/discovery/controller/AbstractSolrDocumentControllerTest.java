@@ -111,7 +111,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
     public void testSearchSolrDocumentsFacetPage() throws Exception {
         // @formatter:off
         mockMvc.perform(get("/individual/search/advanced")
-            .param("query", "*")
+            .param("q", "*:*")
+            .param("df", "_text_")
             .param("facets", "type")
             .param("type.limit", "5")
             .param("type.offset", "0")
@@ -131,7 +132,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                     document(
                         getDocPath() + "/search/advanced",
                         requestParameters(
-                            parameterWithName("query").description("The search query."),
+                            parameterWithName("q").description("The search query."),
+                            parameterWithName("df").description("The default search field."),
                             parameterWithName("facets").description("The facet fields."),
                             parameterWithName("type.limit").description("Type facet limit."),
                             parameterWithName("type.offset").description("Type facet offset."),
@@ -161,7 +163,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
     public void testSearchSolrDocumentsCount() throws Exception {
         // @formatter:off
         mockMvc.perform(get("/individual/search/count")
-            .param("query", "*")
+            .param("q", "*:*")
             .param("filters", "class")
             .param("class.filter", getType().getSimpleName()))
                 .andExpect(status().isOk())
@@ -171,7 +173,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                     document(
                         getDocPath() + "/search/count",
                         requestParameters(
-                            parameterWithName("query").description("The search query."),
+                            parameterWithName("q").description("The search query."),
                             parameterWithName("filters").description("The filter fields."),
                             parameterWithName("class.filter").description("Class filter value.")
                         ),
