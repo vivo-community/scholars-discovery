@@ -21,7 +21,7 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "processes", predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
 public class Process extends Common {
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string", copyTo = { "_text_", "title_sort" })
     @PropertySource(template = "process/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
 

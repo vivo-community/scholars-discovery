@@ -74,7 +74,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: First name
@@ -173,7 +173,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Publication type
@@ -276,7 +276,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Grant title
@@ -344,7 +344,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Award title
@@ -399,7 +399,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Course number and title
@@ -444,7 +444,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Name
@@ -493,7 +493,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Concept name
