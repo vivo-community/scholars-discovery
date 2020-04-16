@@ -56,19 +56,19 @@ include::../{snippets}/processes/search/findByIdIn/curl-request.adoc[]
 This search will return a json response listing all the processes, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/processes/search/faceted/request-parameters.adoc[]
+include::../{snippets}/processes/search/advanced/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/processes/search/faceted/response-fields.adoc[]
+include::../{snippets}/processes/search/advanced/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/processes/search/faceted/http-request.adoc[]
+include::../{snippets}/processes/search/advanced/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/processes/search/faceted/http-response.adoc[]
+include::../{snippets}/processes/search/advanced/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/processes/search/faceted/curl-request.adoc[]
+include::../{snippets}/processes/search/advanced/curl-request.adoc[]
 
 ==== Export Search
 
