@@ -20,4 +20,8 @@ public interface CustomSimpleQuery extends Query {
 
     public void setBoostQuery(String boostQuery);
 
+    public String getFields();
+
+    public void setFields(String fields);
+
 }

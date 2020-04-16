@@ -30,7 +30,6 @@ public class DiscoveryFacetAndHighlightPage<T> extends DiscoveryFacetPage<T> {
     public static <T> DiscoveryFacetAndHighlightPage<T> from(FacetAndHighlightPage<T> facetAndHighlightPage, List<FacetArg> facetArguments, HighlightArg highlightArg) {
         List<Facet> facets = buildFacets((FacetPage<T>) facetAndHighlightPage, facetArguments);
         List<Highlight> highlights = buildHighlights(facetAndHighlightPage, highlightArg);
-        System.out.println("\n\nBUILDING IN PAGE\n\n");
         return new DiscoveryFacetAndHighlightPage<T>(facetAndHighlightPage.getContent(), PageInfo.from(facetAndHighlightPage), facets, highlights);
     }
 
