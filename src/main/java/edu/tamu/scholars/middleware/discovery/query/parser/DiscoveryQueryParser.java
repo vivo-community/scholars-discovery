@@ -9,13 +9,13 @@ import org.springframework.data.solr.core.mapping.SolrPersistentEntity;
 import org.springframework.data.solr.core.mapping.SolrPersistentProperty;
 import org.springframework.data.solr.core.query.AbstractQueryDecorator;
 
-import edu.tamu.scholars.middleware.discovery.query.CustomSimpleQuery;
+import edu.tamu.scholars.middleware.discovery.query.DiscoveryQuery;
 
-public class CustomSimpleQueryParser<Q extends CustomSimpleQuery> extends QueryParserBase<AbstractQueryDecorator> {
+public class DiscoveryQueryParser<Q extends DiscoveryQuery> extends QueryParserBase<AbstractQueryDecorator> {
 
     private final DefaultQueryParser defaultQueryParser;
 
-    public CustomSimpleQueryParser(MappingContext<? extends SolrPersistentEntity<?>, SolrPersistentProperty> mappingContext) {
+    public DiscoveryQueryParser(MappingContext<? extends SolrPersistentEntity<?>, SolrPersistentProperty> mappingContext) {
         super(mappingContext);
         defaultQueryParser = new DefaultQueryParser(mappingContext);
     }
@@ -23,9 +23,10 @@ public class CustomSimpleQueryParser<Q extends CustomSimpleQuery> extends QueryP
     @Override
     @SuppressWarnings("unchecked")
     public SolrQuery doConstructSolrQuery(AbstractQueryDecorator queryDecorator, Class<?> domainType) {
-        Q query = (Q) queryDecorator.getDecoratedQuery();
 
-        SolrQuery solrQuery = defaultQueryParser.doConstructSolrQuery(query, domainType);
+        SolrQuery solrQuery = defaultQueryParser.doConstructSolrQuery(queryDecorator, domainType);
+
+        Q query = (Q) queryDecorator.getDecoratedQuery();
 
         if (StringUtils.isNotEmpty(query.getDefaultField())) {
             solrQuery.add("df", query.getDefaultField());

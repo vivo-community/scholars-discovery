@@ -2,7 +2,7 @@ package edu.tamu.scholars.middleware.discovery.query;
 
 import org.springframework.data.solr.core.query.Query;
 
-public interface CustomSimpleQuery extends Query {
+public interface DiscoveryQuery extends Query {
 
     public String getDefaultField();
 
