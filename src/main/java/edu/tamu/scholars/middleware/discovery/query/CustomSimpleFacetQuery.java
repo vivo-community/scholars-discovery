@@ -12,6 +12,8 @@ public class CustomSimpleFacetQuery extends SimpleFacetQuery implements CustomSi
 
     private String boostQuery;
 
+    private String fields;
+
     public CustomSimpleFacetQuery() {
         super();
     }
@@ -46,6 +48,14 @@ public class CustomSimpleFacetQuery extends SimpleFacetQuery implements CustomSi
 
     public void setBoostQuery(String boostQuery) {
         this.boostQuery = boostQuery;
+    }
+
+    public String getFields() {
+        return fields;
+    }
+
+    public void setFields(String fields) {
+        this.fields = fields;
     }
 
 }

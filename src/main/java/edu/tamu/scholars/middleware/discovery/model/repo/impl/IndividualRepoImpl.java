@@ -40,6 +40,7 @@ import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetAndHighlightQuery;
@@ -123,12 +124,12 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     @Override
-    public FacetAndHighlightPage<Individual> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page) {
+    public FacetAndHighlightPage<Individual> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page) {
         CustomSimpleFacetAndHighlightQuery facetQuery = new CustomSimpleFacetAndHighlightQuery();
 
-        Criteria criteria = getQueryCriteria(query);
+        Criteria criteria = getQueryCriteria(query.getExpression());
 
-        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+        Optional<Criteria> boostCriteria = getBoostCriteria(query.getExpression(), boosts);
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
@@ -160,8 +161,24 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         facetQuery.setPageRequest(page);
 
-        if (StringUtils.isNotEmpty(df)) {
-            facetQuery.setDefaultField(df);
+        if (StringUtils.isNotEmpty(query.getDefaultField())) {
+            facetQuery.setDefaultField(query.getDefaultField());
+        }
+
+        if (StringUtils.isNotEmpty(query.getMinimumShouldMatch())) {
+            facetQuery.setMinimumShouldMatch(query.getMinimumShouldMatch());
+        }
+
+        if (StringUtils.isNotEmpty(query.getQueryField())) {
+            facetQuery.setQueryField(query.getQueryField());
+        }
+
+        if (StringUtils.isNotEmpty(query.getBoostQuery())) {
+            facetQuery.setBoostQuery(query.getBoostQuery());
+        }
+
+        if (StringUtils.isNotEmpty(query.getFields())) {
+            facetQuery.setFields(query.getFields());
         }
 
         if (ArrayUtils.isNotEmpty(highlight.getFields())) {
@@ -180,12 +197,12 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     @Override
-    public Cursor<Individual> stream(String query, String df, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+    public Cursor<Individual> stream(QueryArg query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
 
-        Criteria criteria = getQueryCriteria(query);
+        Criteria criteria = getQueryCriteria(query.getExpression());
 
-        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+        Optional<Criteria> boostCriteria = getBoostCriteria(query.getExpression(), boosts);
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);

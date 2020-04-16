@@ -10,10 +10,12 @@ import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
 import edu.tamu.scholars.middleware.graphql.model.Person;
 import edu.tamu.scholars.middleware.graphql.provider.DefaultHighlightProvider;
 import edu.tamu.scholars.middleware.graphql.provider.DefaultPageRequestProvider;
+import edu.tamu.scholars.middleware.graphql.provider.DefaultQueryProvider;
 import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLEnvironment;
@@ -37,8 +39,7 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
     @GraphQLQuery(name = "people")
     // @formatter:off
     public DiscoveryFacetAndHighlightPage<Person> search(
-        @GraphQLArgument(name = "query", defaultValue = "*") String query,
-        @GraphQLArgument(name = "df", defaultValue = "") String df,
+        @GraphQLArgument(name = "query", defaultValueProvider = DefaultQueryProvider.class) QueryArg query,
         @GraphQLArgument(name = "facets", defaultValue = "[]") List<FacetArg> facets,
         @GraphQLArgument(name = "filters", defaultValue = "[]") List<FilterArg> filters,
         @GraphQLArgument(name = "boosts", defaultValue = "[]") List<BoostArg> boosts,
@@ -47,7 +48,7 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
         @GraphQLEnvironment List<Field> fields
     ) {
         // @formatter:on
-        return super.search(query, df, facets, filters, boosts, highlight, page, fields);
+        return super.search(query, facets, filters, boosts, highlight, page, fields);
     }
 
     @Override

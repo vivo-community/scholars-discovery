@@ -9,6 +9,7 @@ import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.model.AbstractNestedDocument;
@@ -46,7 +47,7 @@ public interface NestedDocumentService<ND extends AbstractNestedDocument> {
 
     public DiscoveryPage<ND> findAll(List<FilterArg> filters, Pageable page, List<Field> fields);
 
-    public DiscoveryFacetAndHighlightPage<ND> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields);
+    public DiscoveryFacetAndHighlightPage<ND> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields);
 
     public List<ND> findBySyncIdsIn(List<String> syncIds);
 

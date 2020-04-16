@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
@@ -40,8 +41,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
     // @formatter:off
     public ResponseEntity<StreamingResponseBody> export(
         @RequestParam(value = "type", required = false, defaultValue = "csv") String type,
-        @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
-        @RequestParam(value = "df", required = false, defaultValue = "") String df,
+        QueryArg query,
         @SortDefault Sort sort,
         List<FilterArg> filters,
         List<BoostArg> boosts,
@@ -51,7 +51,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition("export"))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
-            .body(exporter.streamSolrResponse(repo.stream(query, df, filters, boosts, sort), export));
+            .body(exporter.streamSolrResponse(repo.stream(query, filters, boosts, sort), export));
     }
     // @formatter:on
 

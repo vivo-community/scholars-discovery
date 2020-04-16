@@ -34,12 +34,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.solr.core.query.result.FacetAndHighlightPage;
 import org.springframework.data.solr.core.query.result.FacetFieldEntry;
+import org.springframework.data.solr.core.query.result.HighlightEntry;
 import org.springframework.data.solr.core.query.result.SolrResultPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
@@ -161,18 +163,32 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public DiscoveryFacetAndHighlightPage<ND> search(String query, String df, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields) {
-        FacetAndHighlightPage<Individual> facetPage = repo.search(query, df, facets, augmentFilters(filters), boosts, highlight, page);
+    public DiscoveryFacetAndHighlightPage<ND> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields) {
+        FacetAndHighlightPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, highlight, page);
         Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
 
         facetPage.getFacetFields().forEach(field -> facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
 
-        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
+        Map<String, ND> documents = new HashMap<>();
+
+        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).peek(document -> {
+            documents.put(document.getId(), document);
+        }).collect(Collectors.toList());
 
         Pageable resultsPaging = facetPage.getPageable();
         SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
 
         results.addAllFacetFieldResultPages(facetFieldResults);
+
+        List<HighlightEntry<ND>> highlighted = facetPage.getHighlighted().stream().map(entry -> {
+            HighlightEntry<ND> ndEntry = new HighlightEntry<>(documents.get(entry.getEntity().getId()));
+            entry.getHighlights().forEach(highlights -> {
+                ndEntry.addSnipplets(highlights.getField(), highlights.getSnipplets());
+            });
+            return ndEntry;
+        }).collect(Collectors.toList());
+
+        results.setHighlighted(highlighted);
 
         return DiscoveryFacetAndHighlightPage.from((FacetAndHighlightPage<ND>) results, facets, highlight);
     }

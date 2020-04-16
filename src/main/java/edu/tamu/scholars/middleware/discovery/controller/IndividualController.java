@@ -19,6 +19,7 @@ import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.assembler.DiscoveryPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.IndividualResourceAssembler;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
@@ -42,16 +43,15 @@ public class IndividualController {
     @GetMapping("/search/faceted")
     // @formatter:off
     public ResponseEntity<PagedModel<IndividualResource>> search(
-        @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
-        @RequestParam(value = "df", required = false, defaultValue = "") String df,
-        @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page,
+        QueryArg query,
         List<FacetArg> facets,
         List<FilterArg> filters,
         List<BoostArg> boosts,
-        HighlightArg highlight
+        HighlightArg highlight,
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page
     ) {
     // @formatter:on
-        return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, df, facets, filters, boosts, highlight, page), assembler));
+        return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, highlight, page), assembler));
     }
 
     @GetMapping("/search/count")

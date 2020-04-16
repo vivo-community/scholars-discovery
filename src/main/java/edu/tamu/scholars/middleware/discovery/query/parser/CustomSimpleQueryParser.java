@@ -39,6 +39,9 @@ public class CustomSimpleQueryParser<Q extends CustomSimpleQuery> extends QueryP
         if (StringUtils.isNotEmpty(query.getBoostQuery())) {
             solrQuery.add("bq", query.getBoostQuery());
         }
+        if (StringUtils.isNotEmpty(query.getFields())) {
+            solrQuery.add("fl", query.getFields());
+        }
 
         return solrQuery;
     }
