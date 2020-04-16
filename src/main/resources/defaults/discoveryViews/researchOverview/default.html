@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex highlighted">
   <div class="mr-4">
     {{#if thumbnail}}
     <div class="rounded-circle person-avatar" style="background-image: url('{{vivoUrl}}{{thumbnail}}')"></div>
@@ -14,15 +14,28 @@
       <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
       {{/each}}
-      {{#if overview}}
     </div>
+    {{#if highlights.overview}}
     <div class="mt-1">
-      <span>{{overview}}</span>
+      {{#each highlights.overview}}
+      <span>{{{snippet this ../overview}}}</span>
+      {{/each}}
     </div>
+    {{else}}
+    {{#if overview}}
+    <div class="mt-1">
+      <span>{{truncate overview 80}}</span>
+    </div>
+    {{/if}}
     {{/if}}
   </div>
 </div>
 <style>
+  .highlighted em {
+    background: yellow;
+    font-style: normal;
+  }
+
   .name {
     font-size: 15px;
   }
