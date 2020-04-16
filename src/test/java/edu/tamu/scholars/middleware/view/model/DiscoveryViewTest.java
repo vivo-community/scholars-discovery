@@ -43,8 +43,8 @@ public class DiscoveryViewTest {
 
         assertEquals(1, discoveryView.getHighlightFields().size());
         assertEquals("overview", discoveryView.getHighlightFields().get(0));
-        assertEquals("<em>", discoveryView.getHighlightPre());
-        assertEquals("</em>", discoveryView.getHighlightPost());
+        assertEquals("<em>", discoveryView.getHighlightPrefix());
+        assertEquals("</em>", discoveryView.getHighlightPostfix());
 
         assertTrue(discoveryView.getTemplates().containsKey("default"));
         assertEquals("<h1>Person template from WSYWIG</h1>", discoveryView.getTemplates().get("default"));

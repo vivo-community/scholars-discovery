@@ -23,6 +23,7 @@ import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.export.argument.ExportArg;
 import edu.tamu.scholars.middleware.model.OpKey;
 import edu.tamu.scholars.middleware.view.model.FacetType;
@@ -39,8 +40,6 @@ import io.leangen.graphql.metadata.strategy.query.DefaultOperationBuilder;
 import io.leangen.graphql.metadata.strategy.query.DefaultOperationBuilder.TypeInference;
 import io.leangen.graphql.metadata.strategy.value.InputFieldBuilder;
 import io.leangen.graphql.metadata.strategy.value.InputFieldBuilderParams;
-
-
 
 @Configuration
 public class GraphQLConfig {
@@ -89,6 +88,18 @@ public class GraphQLConfig {
             @Override
             public boolean supports(AnnotatedType type, Parameter parameter) {
                 return BoostArg.class.equals(type.getType());
+            }
+
+        }).prepend(new ArgumentInjector() {
+
+            @Override
+            public Object getArgumentValue(ArgumentInjectorParams params) {
+                return HighlightArg.of(params);
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type, Parameter parameter) {
+                return HighlightArg.class.equals(type.getType());
             }
 
         }).prepend(new ArgumentInjector() {
@@ -177,6 +188,21 @@ public class GraphQLConfig {
                 Set<InputField> fields = new HashSet<>();
                 fields.add(new InputField("field", "Boost field", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 fields.add(new InputField("value", "Boost value", new TypedElement(GenericTypeReflector.annotate(Float.class)), GenericTypeReflector.annotate(Float.class), null));
+                return fields;
+            }
+
+            @Override
+            public boolean supports(AnnotatedType type) {
+                return BoostArg.class.equals(type.getType());
+            }
+        }).prepend(new InputFieldBuilder() {
+
+            @Override
+            public Set<InputField> getInputFields(InputFieldBuilderParams params) {
+                Set<InputField> fields = new HashSet<>();
+                fields.add(new InputField("fields", "Highlight fields", new TypedElement(GenericTypeReflector.annotate(String[].class)), GenericTypeReflector.annotate(String[].class), new String[] {}));
+                fields.add(new InputField("prefix", "Highlight simple prefix", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("postfix", "Highlight simple postfix", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 return fields;
             }
 

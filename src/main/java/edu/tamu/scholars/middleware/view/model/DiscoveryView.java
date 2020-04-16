@@ -26,10 +26,10 @@ public class DiscoveryView extends CollectionView {
     private List<String> highlightFields;
 
     @Column(nullable = true)
-    private String highlightPre;
+    private String highlightPrefix;
 
     @Column(nullable = true)
-    private String highlightPost;
+    private String highlightPostfix;
 
     public DiscoveryView() {
         super();
@@ -52,20 +52,20 @@ public class DiscoveryView extends CollectionView {
         this.highlightFields = highlightFields;
     }
 
-    public String getHighlightPre() {
-        return highlightPre;
+    public String getHighlightPrefix() {
+        return highlightPrefix;
     }
 
-    public void setHighlightPre(String highlightPre) {
-        this.highlightPre = highlightPre;
+    public void setHighlightPre(String highlightPrefix) {
+        this.highlightPrefix = highlightPrefix;
     }
 
-    public String getHighlightPost() {
-        return highlightPost;
+    public String getHighlightPostfix() {
+        return highlightPostfix;
     }
 
-    public void setHighlightPost(String highlightPost) {
-        this.highlightPost = highlightPost;
+    public void setHighlightPost(String highlightPostfix) {
+        this.highlightPostfix = highlightPostfix;
     }
 
 }

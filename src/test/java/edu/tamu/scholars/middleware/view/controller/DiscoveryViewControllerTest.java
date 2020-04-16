@@ -60,8 +60,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                         describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
                         describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View.")
+                        describeDiscoveryView.withField("highlightPrefix", "The highlight prefix of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPostfix", "The highlight postfix of the Discovery View.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -79,8 +79,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                         describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
                         describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPrefix", "The highlight prefix of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPostfix", "The highlight postfix of the Discovery View."),
                         subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -113,8 +113,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                         describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
                         describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View.")
+                        describeDiscoveryView.withField("highlightPrefix", "The highlight prefix of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPostfix", "The highlight postfix of the Discovery View.")
                     ),
                     links(
                         linkWithRel("self").description("Canonical link for this resource."),
@@ -132,8 +132,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                         describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                         describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
                         describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
-                        describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPrefix", "The highlight prefix of the Discovery View."),
+                        describeDiscoveryView.withField("highlightPostfix", "The highlight postfix of the Discovery View."),
                         subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                     )
                 )
@@ -173,8 +173,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                                 describeDiscoveryView.withParameter("export", "An array of <<resources-export, Export resources>>.").optional(),
                                 describeDiscoveryView.withParameter("defaultSearchField", "The default search field of the Discovery View.").optional(),
                                 describeDiscoveryView.withParameter("highlightFields", "An array of highlight fields of the Discovery View.").optional(),
-                                describeDiscoveryView.withParameter("highlightPre", "The highlight pre of the Discovery View.").optional(),
-                                describeDiscoveryView.withParameter("highlightPost", "The highlight post of the Discovery View.").optional()
+                                describeDiscoveryView.withParameter("highlightPrefix", "The highlight prefix of the Discovery View.").optional(),
+                                describeDiscoveryView.withParameter("highlightPostfix", "The highlight postfix of the Discovery View.").optional()
                             ),
                             links(
                                 linkWithRel("self").description("Canonical link for this resource."),
@@ -192,8 +192,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                                 describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                                 describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
                                 describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
-                                describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
-                                describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
+                                describeDiscoveryView.withField("highlightPrefix", "The highlight prefix of the Discovery View."),
+                                describeDiscoveryView.withField("highlightPostfix", "The highlight postfix of the Discovery View."),
                                 subsectionWithPath("_links").description("<<resources-discovery-views-list-links, Links>> to other resources.")
                             )
                         )
@@ -233,8 +233,8 @@ public class DiscoveryViewControllerTest extends ResourceViewIntegrationTest<Dis
                             describeDiscoveryView.withSubsection("export", "An array of <<resources-export, Export resources>>."),
                             describeDiscoveryView.withField("defaultSearchField", "The default search field of the Discovery View."),
                             describeDiscoveryView.withField("highlightFields", "An array of highlight fields of the Discovery View."),
-                            describeDiscoveryView.withField("highlightPre", "The highlight pre of the Discovery View."),
-                            describeDiscoveryView.withField("highlightPost", "The highlight post of the Discovery View."),
+                            describeDiscoveryView.withField("highlightPrefix", "The highlight prefix of the Discovery View."),
+                            describeDiscoveryView.withField("highlightPostfix", "The highlight postfix of the Discovery View."),
                             subsectionWithPath("_links").description("<<resources-discovery-view-list-links, Links>> to other resources.")
                         )
                     )

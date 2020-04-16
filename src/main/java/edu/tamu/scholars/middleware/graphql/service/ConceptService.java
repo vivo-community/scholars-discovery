@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
-import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
 import edu.tamu.scholars.middleware.graphql.model.Concept;
+import edu.tamu.scholars.middleware.graphql.provider.DefaultHighlightProvider;
 import edu.tamu.scholars.middleware.graphql.provider.DefaultPageRequestProvider;
 import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -33,17 +35,18 @@ public class ConceptService extends AbstractNestedDocumentService<Concept> {
     @Override
     @GraphQLQuery(name = "concepts")
     // @formatter:off
-    public DiscoveryFacetPage<Concept> facetedSearch(
+    public DiscoveryFacetAndHighlightPage<Concept> search(
         @GraphQLArgument(name = "query", defaultValue = "*") String query,
         @GraphQLArgument(name = "df", defaultValue = "") String df,
         @GraphQLArgument(name = "facets", defaultValue = "[]") List<FacetArg> facets,
         @GraphQLArgument(name = "filters", defaultValue = "[]") List<FilterArg> filters,
         @GraphQLArgument(name = "boosts", defaultValue = "[]") List<BoostArg> boosts,
+        @GraphQLArgument(name = "highlight", defaultValueProvider = DefaultHighlightProvider.class) HighlightArg highlight,
         @GraphQLArgument(name = "paging", defaultValueProvider = DefaultPageRequestProvider.class) Pageable page,
         @GraphQLEnvironment List<Field> fields
     ) {
     // @formatter:on
-        return super.facetedSearch(query, df, facets, filters, boosts, page, fields);
+        return super.search(query, df, facets, filters, boosts, highlight, page, fields);
     }
 
     @Override
