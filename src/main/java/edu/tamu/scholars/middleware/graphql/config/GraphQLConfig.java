@@ -238,7 +238,7 @@ public class GraphQLConfig {
             @Override
             public Set<InputField> getInputFields(InputFieldBuilderParams params) {
                 Set<InputField> fields = new HashSet<>();
-                fields.add(new InputField("fields", "Highlight fields", new TypedElement(GenericTypeReflector.annotate(String[].class)), GenericTypeReflector.annotate(String[].class), new String[] {}));
+                fields.add(new InputField("fields", "Highlight fields", new TypedElement(GenericTypeReflector.annotate(String[].class)), GenericTypeReflector.annotate(String[].class), new ArrayList<String>()));
                 fields.add(new InputField("prefix", "Highlight simple prefix", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), StringUtils.EMPTY));
                 fields.add(new InputField("postfix", "Highlight simple postfix", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), StringUtils.EMPTY));
                 return fields;
