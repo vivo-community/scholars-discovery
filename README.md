@@ -106,3 +106,19 @@ If the authorize-hal-browser is set to `false`, http://localhost:9000/ will resp
 > Full authentication is required to access this resource
 
 ..due to the a whitelist security access policy. Everything else requires authentication and if authenticated will return 404 if not found or 401 if unauthorized or the result of the endpoint.
+
+## Workarounds Waiting Dependency Patches
+
+1. `spring-data-solr` dependency from TAMU Maven repository.
+   - Added `tamu-releases` repository in pom.xml
+   - Added dependency `4.1.6.TAMU.RELEASE` version of `spring-data-solr` in pom.xml
+   - Excluded `spring-data-solr` from `spring-boot-starter-data-solr` dependency
+
+   > Waiting on https://jira.spring.io/browse/DATASOLR-572
+
+2. Using custom query and query parser to add edismax/dismax query parameters.
+   - Added package `edu.tamu.scholars.middleware.discovery.query`
+   - Registered parsers on `@PostConstruct` of `IndividualRepoImpl`
+
+   > Waiting on https://jira.spring.io/browse/DATASOLR-153
+
