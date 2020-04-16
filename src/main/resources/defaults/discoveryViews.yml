@@ -74,7 +74,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: First name
@@ -198,7 +198,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Publication type
@@ -303,7 +303,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Grant title
@@ -371,7 +371,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Award title
@@ -426,7 +426,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Course number and title
@@ -471,7 +471,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Name
@@ -520,7 +520,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Concept
@@ -571,7 +571,7 @@
   sort:
     - field: score
       direction: DESC
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Future Research Idea
@@ -580,5 +580,74 @@
       valuePath: futureResearchIdeaOf
     - columnHeader: Researcher Organization
       valuePath: futureResearchIdeaOfOrganization
+    - columnHeader: Individual
+      valuePath: individual
+
+- name: Research Overview
+  layout: LIST
+  templates:
+    default: "defaults/discoveryViews/researchOverview/default.html"
+  defaultSearchField: overview
+  highlightFields:
+    - overview
+  styles: []
+  facets:
+    - name: People
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Organization
+      field: positionOrganization
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Area
+      field: researchAreas
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Keywords
+      field: keywords
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Position
+      field: positions
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Person
+  sort:
+    - field: score
+      direction: DESC
+    - field: name_sort
+      direction: ASC
+  export:
+    - columnHeader: Name
+      valuePath: name
+    - columnHeader: Position
+      valuePath: preferredTitle
+    - columnHeader: Department
+      valuePath: positions.organizations
+    - columnHeader: Overview
+      valuePath: overview
     - columnHeader: Individual
       valuePath: individual

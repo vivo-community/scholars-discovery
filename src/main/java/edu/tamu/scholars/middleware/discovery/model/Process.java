@@ -21,16 +21,16 @@ import io.leangen.graphql.annotations.GraphQLIgnore;
 @CollectionSource(name = "processes", predicate = "http://purl.obolibrary.org/obo/BFO_0000015")
 public class Process extends Common {
 
-    @Indexed(type = "sorting_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string", copyTo = { "_text_", "title_sort" })
     @PropertySource(template = "process/title", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String title;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "tokenized_string")
     @PropertySource(template = "process/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings")
     @PropertySource(template = "process/offeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> offeredBy;
 
@@ -43,41 +43,41 @@ public class Process extends Common {
     private String dateTimeIntervalEnd;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/occursWithinEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> occursWithinEvent;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/includesEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> includesEvent;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/inEventSeries", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inEventSeries;
 
-    @Indexed(type = "nested_strings", copyTo = "_text_")
+    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "participantRole", key = "role") })
     @PropertySource(template = "process/participant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participants;
 
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/participantRole", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participantRole;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings")
     @PropertySource(template = "process/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/hasPrerequisite", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasPrerequisite;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/prerequisiteFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> prerequisiteFor;
 
@@ -86,12 +86,12 @@ public class Process extends Common {
     private String credits;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/outputPublicationOrOtherWork", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputPublicationOrOtherWork;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/relatedDocument", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedDocuments;
 
@@ -100,22 +100,22 @@ public class Process extends Common {
     private String contactInformation;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/heldInFacility", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> heldInFacility;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/heldInGeographicLocation", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> heldInGeographicLocation;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/hasOutput", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasOutput;
 
     @NestedObject
-    @Indexed(type = "nested_strings", searchable = false)
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/hasParticipant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> hasParticipant;
 

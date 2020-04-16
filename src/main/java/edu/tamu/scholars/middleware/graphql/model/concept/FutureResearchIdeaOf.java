@@ -24,6 +24,8 @@ public class FutureResearchIdeaOf extends AbstractNestedDocument {
 
   private String label;
 
+  private String email;
+
   private String title;
 
   private List<FutureResearchIdeaOfOrganization> organizations;
@@ -38,6 +40,14 @@ public class FutureResearchIdeaOf extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public String getTitle() {
