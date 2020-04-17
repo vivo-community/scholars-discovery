@@ -23,6 +23,8 @@ import edu.tamu.scholars.middleware.auth.model.repo.handler.UserEventHandler;
 import edu.tamu.scholars.middleware.discovery.resolver.BoostArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FacetArgumentResolver;
 import edu.tamu.scholars.middleware.discovery.resolver.FilterArgumentResolver;
+import edu.tamu.scholars.middleware.discovery.resolver.HighlightArgumentResolver;
+import edu.tamu.scholars.middleware.discovery.resolver.QueryArgumentResolver;
 import edu.tamu.scholars.middleware.export.resolver.ExportArgumentResolver;
 import edu.tamu.scholars.middleware.theme.model.repo.handler.ThemeEventHandler;
 
@@ -55,9 +57,11 @@ public class RepositoryRestMvcConfig extends RepositoryRestMvcConfiguration {
         List<HandlerMethodArgumentResolver> resolvers = new ArrayList<>();
         resolvers.add(pageableResolver());
         resolvers.add(sortResolver());
+        resolvers.add(new QueryArgumentResolver());
         resolvers.add(new FilterArgumentResolver());
         resolvers.add(new FacetArgumentResolver());
         resolvers.add(new BoostArgumentResolver());
+        resolvers.add(new HighlightArgumentResolver());
         resolvers.add(new ExportArgumentResolver());
         super.defaultMethodArgumentResolvers().forEach(resolver -> {
             if (!(resolver instanceof MappingAwarePageableArgumentResolver || resolver instanceof MappingAwareSortArgumentResolver)) {

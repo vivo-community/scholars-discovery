@@ -56,19 +56,19 @@ include::../{snippets}/concepts/search/findByIdIn/curl-request.adoc[]
 This search will return a json response listing all the concepts, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/concepts/search/faceted/request-parameters.adoc[]
+include::../{snippets}/concepts/search/advanced/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/concepts/search/faceted/response-fields.adoc[]
+include::../{snippets}/concepts/search/advanced/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/concepts/search/faceted/http-request.adoc[]
+include::../{snippets}/concepts/search/advanced/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/concepts/search/faceted/http-response.adoc[]
+include::../{snippets}/concepts/search/advanced/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/concepts/search/faceted/curl-request.adoc[]
+include::../{snippets}/concepts/search/advanced/curl-request.adoc[]
 
 ==== Export Search
 

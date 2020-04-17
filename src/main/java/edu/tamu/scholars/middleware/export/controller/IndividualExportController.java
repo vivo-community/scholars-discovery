@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
@@ -40,7 +41,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
     // @formatter:off
     public ResponseEntity<StreamingResponseBody> export(
         @RequestParam(value = "type", required = false, defaultValue = "csv") String type,
-        @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
+        QueryArg query,
         @SortDefault Sort sort,
         List<FilterArg> filters,
         List<BoostArg> boosts,

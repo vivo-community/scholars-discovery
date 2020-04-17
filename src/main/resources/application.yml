@@ -103,7 +103,7 @@ spring:
       max-page-size: 10000
     solr:
       host: http://localhost:8983/solr
-      operator: AND
+      operator: OR
       parser: edismax
     # NOTE: this does not work yet, https://jira.spring.io/browse/DATAREST-1290
     web:
