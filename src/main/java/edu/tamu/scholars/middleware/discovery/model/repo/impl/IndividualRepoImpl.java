@@ -6,6 +6,7 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -178,7 +179,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         }
 
         if (StringUtils.isNotEmpty(query.getFields())) {
-            advancedQuery.setFields(query.getFields());
+            advancedQuery.addProjectionOnFields(buildFields(query));
         }
 
         if (ArrayUtils.isNotEmpty(highlight.getFields())) {
@@ -210,11 +211,21 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         simpleQuery.addCriteria(criteria);
         simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
+
+        if (StringUtils.isNotEmpty(query.getFields())) {
+            simpleQuery.addProjectionOnFields(buildFields(query));
+        }
+
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 
     public String collection() {
         return type().getAnnotation(SolrDocument.class).collection();
+    }
+
+    private String buildFields(QueryArg query) {
+        String fields = String.join(",", "id", "class", query.getFields());
+        return String.join(",", Arrays.stream(fields.split(",")).collect(Collectors.toSet()));
     }
 
     private Criteria getQueryCriteria(String query) {

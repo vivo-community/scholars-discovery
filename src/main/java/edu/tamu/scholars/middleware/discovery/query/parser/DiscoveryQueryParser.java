@@ -40,16 +40,6 @@ public class DiscoveryQueryParser<Q extends DiscoveryQuery> extends QueryParserB
         if (StringUtils.isNotEmpty(query.getBoostQuery())) {
             solrQuery.add("bq", query.getBoostQuery());
         }
-        if (StringUtils.isNotEmpty(query.getFields())) {
-            // NOTE: id and class property are required for serialization
-            if (!query.getFields().contains("id")) {
-                query.setFields(String.join(",", "id", query.getFields()));
-            }
-            if (!query.getFields().contains("class")) {
-                query.setFields(String.join(",", "class", query.getFields()));
-            }
-            solrQuery.add("fl", query.getFields());
-        }
 
         return solrQuery;
     }
