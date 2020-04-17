@@ -4,6 +4,14 @@
   templates:
     default: "defaults/discoveryViews/people/default.html"
   styles: []
+  fields:
+    - type
+    - name
+    - preferredTitle
+    - researchAreas
+    - positions
+    - positions.organizations
+    - thumbnail
   facets:
     - name: People
       field: type
@@ -102,6 +110,18 @@
     ConferencePaper: "defaults/discoveryViews/publications/default.html"
     Thesis: "defaults/discoveryViews/publications/default.html"
   styles: []
+  fields:
+    - type
+    - title
+    - bookTitle
+    - publicationDate
+    - publisher
+    - authors
+    - authors.organizations
+    - doi
+    - pmcid
+    - uri
+    - tags
   facets:
     - name: Type
       field: type
@@ -204,6 +224,14 @@
   templates:
     default: "defaults/discoveryViews/grants/default.html"
   styles: []
+  fields:
+    - type
+    - title
+    - dateTimeIntervalStart
+    - dateTimeIntervalEnd
+    - awardedBy
+    - contributors
+    - contributors.role
   facets:
     - name: Grants
       field: type
@@ -299,6 +327,10 @@
   templates:
     default: "defaults/discoveryViews/awards/default.html"
   styles: []
+  fields:
+    - type
+    - name
+    - awardConferredBy
   facets:
     - name: Awards
       field: type
@@ -363,6 +395,10 @@
   templates:
     default: "defaults/discoveryViews/courses/default.html"
   styles: []
+  fields:
+    - type
+    - title
+    - participants
   facets:
     - name: Courses
       field: type
@@ -410,6 +446,9 @@
   templates:
     default: "defaults/discoveryViews/organizations/default.html"
   styles: []
+  fields:
+    - type
+    - name
   facets:
     - name: Type
       field: type
@@ -457,6 +496,9 @@
   templates:
     default: "defaults/discoveryViews/concepts/default.html"
   styles: []
+  fields:
+    - type
+    - name
   facets:
     - name: Type
       field: type

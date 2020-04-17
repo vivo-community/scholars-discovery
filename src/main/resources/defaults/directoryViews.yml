@@ -8,9 +8,9 @@
     - type
     - name
     - preferredTitle
-    - positionOrganization
     - researchAreas
     - positions
+    - positions.organizations
     - thumbnail
   facets:
     - name: Type
@@ -22,7 +22,7 @@
       collapsed: true
       hidden: false
     - name: Organization
-      field: positionOrganization
+      field: positions.organizations
       type: STRING
       sort: INDEX
       direction: ASC
@@ -160,7 +160,7 @@
     - title
     - publicationDate
     - authors
-    - authorOrganization
+    - authors.organizations
     - doi
     - pmcid
     - uri
@@ -184,7 +184,7 @@
       collapsed: true
       hidden: false
     - name: Author Organization
-      field: authorOrganization
+      field: authors.organizations
       type: STRING
       sort: COUNT
       direction: DESC
