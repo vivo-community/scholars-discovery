@@ -165,31 +165,41 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     @Override
     public DiscoveryFacetAndHighlightPage<ND> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields) {
         FacetAndHighlightPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, highlight, page);
-        Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
 
-        facetPage.getFacetFields().forEach(field -> facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
+        boolean facetsSelected = selected(fields, "facets");
+        boolean highlightsSelected = selected(fields, "highlights");
 
+        // current document cache after serialzed from Individuel
         Map<String, ND> documents = new HashMap<>();
 
         List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).peek(document -> {
-            documents.put(document.getId(), document);
+            // only need document cache for matching highlights
+            if (highlightsSelected) {
+                documents.put(document.getId(), document);
+            }
         }).collect(Collectors.toList());
 
         Pageable resultsPaging = facetPage.getPageable();
         SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
 
-        results.addAllFacetFieldResultPages(facetFieldResults);
+        // only process facets if selected in GraphQL query
+        if (facetsSelected) {
+            Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
+            facetPage.getFacetFields().forEach(field -> facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
+            results.addAllFacetFieldResultPages(facetFieldResults);
+        }
 
-        List<HighlightEntry<ND>> highlighted = facetPage.getHighlighted().stream().map(entry -> {
-            HighlightEntry<ND> ndEntry = new HighlightEntry<>(documents.get(entry.getEntity().getId()));
-            entry.getHighlights().forEach(highlights -> {
-                ndEntry.addSnipplets(highlights.getField(), highlights.getSnipplets());
-            });
-            return ndEntry;
-        }).collect(Collectors.toList());
-
-        results.setHighlighted(highlighted);
-
+        // only process highlight if selected in GraphQL query
+        if (highlightsSelected) {
+            List<HighlightEntry<ND>> highlighted = facetPage.getHighlighted().stream().map(entry -> {
+                HighlightEntry<ND> ndEntry = new HighlightEntry<>(documents.get(entry.getEntity().getId()));
+                entry.getHighlights().forEach(highlights -> {
+                    ndEntry.addSnipplets(highlights.getField(), highlights.getSnipplets());
+                });
+                return ndEntry;
+            }).collect(Collectors.toList());
+            results.setHighlighted(highlighted);
+        }
         return DiscoveryFacetAndHighlightPage.from((FacetAndHighlightPage<ND>) results, facets, highlight);
     }
 
@@ -243,6 +253,10 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
             });
         }
         return mapper.convertValue(node, type());
+    }
+
+    private boolean selected(List<Field> fields, String fieldName) {
+        return fields.stream().filter(f -> f.getSelectionSet().getSelections().stream().filter(s -> ((Field) s).getName().equals(fieldName)).findAny().isPresent()).findAny().isPresent();
     }
 
     @SuppressWarnings("rawtypes")
