@@ -6,6 +6,7 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,6 +48,7 @@ import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetAndHighligh
 import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetQuery;
 import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetAndHighlightQueryParser;
 import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetQueryParser;
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.model.OpKey;
 import io.micrometer.core.instrument.util.StringUtils;
 
@@ -74,7 +76,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public long count(String query, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(query));
+        simpleQuery.addCriteria(buildQueryCriteria(query));
         return solrTemplate.count(collection(), simpleQuery, type());
     }
 
@@ -92,7 +94,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public List<Individual> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(Sort.by(MOD_TIME).descending());
         simpleQuery.setRows(limit);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
@@ -101,7 +103,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public List<Individual> findAll(List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.setRows(Integer.MAX_VALUE);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
     }
@@ -109,7 +111,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public List<Individual> findAll(List<FilterArg> filters, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(sort);
         simpleQuery.setRows(Integer.MAX_VALUE);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
@@ -118,7 +120,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public Page<Individual> findAll(List<FilterArg> filters, Pageable page) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.setPageRequest(page);
         return solrTemplate.queryForPage(collection(), simpleQuery, type());
     }
@@ -127,9 +129,9 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     public FacetAndHighlightPage<Individual> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page) {
         CustomSimpleFacetAndHighlightQuery advancedQuery = new CustomSimpleFacetAndHighlightQuery();
 
-        Criteria criteria = getQueryCriteria(query.getExpression());
+        Criteria criteria = buildQueryCriteria(query.getExpression());
 
-        Optional<Criteria> boostCriteria = getBoostCriteria(query.getExpression(), boosts);
+        Optional<Criteria> boostCriteria = buildBoostCriteria(query.getExpression(), boosts);
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
@@ -178,7 +180,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         }
 
         if (StringUtils.isNotEmpty(query.getFields())) {
-            advancedQuery.setFields(query.getFields());
+            advancedQuery.addProjectionOnFields(buildFields(query));
         }
 
         if (ArrayUtils.isNotEmpty(highlight.getFields())) {
@@ -200,9 +202,9 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     public Cursor<Individual> stream(QueryArg query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
 
-        Criteria criteria = getQueryCriteria(query.getExpression());
+        Criteria criteria = buildQueryCriteria(query.getExpression());
 
-        Optional<Criteria> boostCriteria = getBoostCriteria(query.getExpression(), boosts);
+        Optional<Criteria> boostCriteria = buildBoostCriteria(query.getExpression(), boosts);
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
@@ -210,6 +212,11 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         simpleQuery.addCriteria(criteria);
         simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
+
+        if (StringUtils.isNotEmpty(query.getFields())) {
+            simpleQuery.addProjectionOnFields(buildFields(query));
+        }
+
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 
@@ -217,12 +224,17 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return type().getAnnotation(SolrDocument.class).collection();
     }
 
-    private Criteria getQueryCriteria(String query) {
+    private Criteria buildQueryCriteria(String query) {
         return query.equals(DEFAULT_QUERY) ? new Criteria(WILDCARD).expression(WILDCARD) : new SimpleStringCriteria(query);
     }
 
-    private Optional<Criteria> getBoostCriteria(String query, List<BoostArg> boosts) {
+    private Optional<Criteria> buildBoostCriteria(String query, List<BoostArg> boosts) {
         return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).expression(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
+    }
+
+    private String buildFields(QueryArg query) {
+        String fields = String.join(",", "id", "class", query.getFields());
+        return String.join(",", Arrays.stream(fields.split(",")).map(DiscoveryUtility::findProperty).collect(Collectors.toSet()));
     }
 
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {

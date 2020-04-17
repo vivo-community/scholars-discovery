@@ -47,6 +47,9 @@ public class DirectoryViewTest {
         assertEquals(1, directoryView.getStyles().size());
         assertEquals("color: maroon;", directoryView.getStyles().get(0));
 
+        assertEquals(1, directoryView.getFields().size());
+        assertEquals("title", directoryView.getFields().get(0));
+
         assertEquals(1, directoryView.getFacets().size());
         assertEquals("Name", directoryView.getFacets().get(0).getName());
         assertEquals("name", directoryView.getFacets().get(0).getField());

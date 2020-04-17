@@ -48,6 +48,12 @@ public class ViewTestUtility {
 
         directoryView.setStyles(styles);
 
+        List<String> fields = new ArrayList<String>();
+
+        fields.add("title");
+
+        directoryView.setFields(fields);
+
         List<Facet> facets = new ArrayList<Facet>();
 
         Facet facet = new Facet();
@@ -147,6 +153,12 @@ public class ViewTestUtility {
         styles.add("color: maroon;");
 
         discoveryView.setStyles(styles);
+
+        List<String> fields = new ArrayList<String>();
+
+        fields.add("title");
+
+        discoveryView.setFields(fields);
 
         List<Facet> facets = new ArrayList<Facet>();
 

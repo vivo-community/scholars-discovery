@@ -53,6 +53,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -69,6 +70,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -100,6 +102,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -116,6 +119,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -155,6 +159,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                                 describeDirectoryView.withParameter("index", "A <<resources-index, Index resource>>.").optional(),
                                 describeDirectoryView.withParameter("templates", "The result templates of the Directory View.").optional(),
                                 describeDirectoryView.withParameter("styles", "An array of result style strings of the Directory View.").optional(),
+                                describeDirectoryView.withParameter("fields", "An array of fields of the Directory View.").optional(),
                                 describeDirectoryView.withParameter("facets", "An array of <<resources-facets, Facet resources>>.").optional(),
                                 describeDirectoryView.withParameter("filters", "An array of <<resources-filters, Filters resources>>.").optional(),
                                 describeDirectoryView.withParameter("boosts", "An array of <<resources-boosts, Boosts resources>>.").optional(),
@@ -170,6 +175,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                                 describeDirectoryView.withField("layout", "The layout of the Directory View."),
                                 describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                                 describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                                describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                                 describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                                 describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                                 describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -208,6 +214,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                             describeDirectoryView.withField("layout", "The layout of the Directory View."),
                             describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                             describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                            describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                             describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                             describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                             describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -301,7 +308,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
     private ResultActions performUpdateDirectoryView() throws JsonProcessingException, Exception {
         DirectoryView directoryView = viewRepo.findByName(MOCK_VIEW_NAME).get();
         directoryView.setName("Organizations");
-//        directoryView.setCollection("organizations");
+        // directoryView.setCollection("organizations");
 
         // @formatter:off
         return mockMvc.perform(

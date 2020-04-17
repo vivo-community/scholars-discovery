@@ -4,6 +4,14 @@
   templates:
     default: "defaults/directoryViews/people/default.html"
   styles: []
+  fields:
+    - type
+    - name
+    - preferredTitle
+    - researchAreas
+    - positions
+    - positions.organizations
+    - thumbnail
   facets:
     - name: Type
       field: type
@@ -14,7 +22,7 @@
       collapsed: true
       hidden: false
     - name: Organization
-      field: positionOrganization
+      field: positions.organizations
       type: STRING
       sort: INDEX
       direction: ASC
@@ -87,6 +95,9 @@
   templates:
     default: "defaults/directoryViews/organizations/default.html"
   styles: []
+  fields:
+    - type
+    - name
   facets:
     - name: Type
       field: type
@@ -144,6 +155,16 @@
   templates:
     default: "defaults/directoryViews/research/default.html"
   styles: []
+  fields:
+    - type
+    - title
+    - publicationDate
+    - authors
+    - authors.organizations
+    - doi
+    - pmcid
+    - uri
+    - tags
   facets:
     - name: Type
       field: type
@@ -163,7 +184,7 @@
       collapsed: true
       hidden: false
     - name: Author Organization
-      field: authorOrganization
+      field: authors.organizations
       type: STRING
       sort: COUNT
       direction: DESC
