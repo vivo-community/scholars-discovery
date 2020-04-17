@@ -13,9 +13,9 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-//@ValidCollectionFacets(message = "{CollectionView.validCollectionFacets}")
-//@ValidCollectionFilters(message = "{CollectionView.validCollectionFilters}")
-//@ValidCollectionExport(message = "{CollectionView.validCollectionExport}")
+// @ValidCollectionFacets(message = "{CollectionView.validCollectionFacets}")
+// @ValidCollectionFilters(message = "{CollectionView.validCollectionFilters}")
+// @ValidCollectionExport(message = "{CollectionView.validCollectionExport}")
 public abstract class CollectionView extends View {
 
     private static final long serialVersionUID = 6875458024293994230L;
@@ -31,6 +31,9 @@ public abstract class CollectionView extends View {
 
     @ElementCollection
     private List<String> styles;
+
+    @ElementCollection
+    private List<String> fields;
 
     @ElementCollection
     private List<Facet> facets;
@@ -51,6 +54,7 @@ public abstract class CollectionView extends View {
         super();
         templates = new HashMap<String, String>();
         styles = new ArrayList<String>();
+        fields = new ArrayList<String>();
         facets = new ArrayList<Facet>();
         filters = new ArrayList<Filter>();
         boosts = new ArrayList<Boost>();
@@ -80,6 +84,14 @@ public abstract class CollectionView extends View {
 
     public void setStyles(List<String> styles) {
         this.styles = styles;
+    }
+
+    public List<String> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<String> fields) {
+        this.fields = fields;
     }
 
     public List<Facet> getFacets() {
