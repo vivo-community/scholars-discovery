@@ -6,6 +6,7 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -20,43 +24,59 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.mapping.SimpleSolrMappingContext;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.data.solr.core.query.FacetOptions.FieldWithFacetParameters;
-import org.springframework.data.solr.core.query.FacetQuery;
+import org.springframework.data.solr.core.query.HighlightOptions;
 import org.springframework.data.solr.core.query.Query.Operator;
-import org.springframework.data.solr.core.query.SimpleFacetQuery;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.data.solr.core.query.result.Cursor;
-import org.springframework.data.solr.core.query.result.FacetPage;
+import org.springframework.data.solr.core.query.result.FacetAndHighlightPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
+import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetAndHighlightQuery;
+import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetQuery;
+import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetAndHighlightQueryParser;
+import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetQueryParser;
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.model.OpKey;
+import io.micrometer.core.instrument.util.StringUtils;
 
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
 
     @Value("${spring.data.solr.parser:edismax}")
-    private String queryParser;
+    private String defType;
 
     @Value("${spring.data.solr.operator:AND}")
-    private Operator queryOperator;
+    private Operator defaultOperator;
 
     @Autowired
     private SolrTemplate solrTemplate;
 
+    @PostConstruct
+    public void setup() {
+        // https://jira.spring.io/browse/DATASOLR-153
+        // https://github.com/spring-projects/spring-data-solr/pull/113
+        solrTemplate.registerQueryParser(CustomSimpleFacetQuery.class, new CustomSimpleFacetQueryParser(new SimpleSolrMappingContext()));
+        solrTemplate.registerQueryParser(CustomSimpleFacetAndHighlightQuery.class, new CustomSimpleFacetAndHighlightQueryParser(new SimpleSolrMappingContext()));
+    }
+
     @Override
     public long count(String query, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(query));
+        simpleQuery.addCriteria(buildQueryCriteria(query));
         return solrTemplate.count(collection(), simpleQuery, type());
     }
 
@@ -74,7 +94,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public List<Individual> findMostRecentlyUpdate(Integer limit, List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(Sort.by(MOD_TIME).descending());
         simpleQuery.setRows(limit);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
@@ -83,7 +103,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public List<Individual> findAll(List<FilterArg> filters) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.setRows(Integer.MAX_VALUE);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
     }
@@ -91,7 +111,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public List<Individual> findAll(List<FilterArg> filters, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.addSort(sort);
         simpleQuery.setRows(Integer.MAX_VALUE);
         return solrTemplate.query(collection(), simpleQuery, type()).getContent();
@@ -100,27 +120,27 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Override
     public Page<Individual> findAll(List<FilterArg> filters, Pageable page) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
-        simpleQuery.addCriteria(getQueryCriteria(DEFAULT_QUERY));
+        simpleQuery.addCriteria(buildQueryCriteria(DEFAULT_QUERY));
         simpleQuery.setPageRequest(page);
         return solrTemplate.queryForPage(collection(), simpleQuery, type());
     }
 
     @Override
-    public FacetPage<Individual> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page) {
-        FacetQuery facetQuery = new SimpleFacetQuery();
+    public FacetAndHighlightPage<Individual> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page) {
+        CustomSimpleFacetAndHighlightQuery advancedQuery = new CustomSimpleFacetAndHighlightQuery();
 
-        Criteria criteria = getQueryCriteria(query);
+        Criteria criteria = buildQueryCriteria(query.getExpression());
 
-        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+        Optional<Criteria> boostCriteria = buildBoostCriteria(query.getExpression(), boosts);
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
         }
 
-        facetQuery.addCriteria(criteria);
+        advancedQuery.addCriteria(criteria);
+
         // NOTE: solr does not return total number of facet entries, nor afford direction of sort
         FacetOptions facetOptions = new FacetOptions();
-        facetOptions.setFacetLimit(-1);        
 
         facets.forEach(facet -> {
             FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
@@ -129,29 +149,62 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         });
 
         if (facetOptions.hasFacets()) {
-            facetQuery.setFacetOptions(facetOptions);
+            facetOptions.setFacetLimit(-1);
+            advancedQuery.setFacetOptions(facetOptions);
         }
 
         buildFilterQueries(filters).forEach(filterQuery -> {
-            facetQuery.addFilterQuery(filterQuery);
+            advancedQuery.addFilterQuery(filterQuery);
         });
 
-        facetQuery.setDefaultOperator(queryOperator);
+        advancedQuery.setDefaultOperator(defaultOperator);
 
-        facetQuery.setDefType(queryParser);
+        advancedQuery.setDefType(defType);
 
-        facetQuery.setPageRequest(page);
+        advancedQuery.setPageRequest(page);
 
-        return solrTemplate.queryForFacetPage(collection(), facetQuery, type());
+        if (StringUtils.isNotEmpty(query.getDefaultField())) {
+            advancedQuery.setDefaultField(query.getDefaultField());
+        }
+
+        if (StringUtils.isNotEmpty(query.getMinimumShouldMatch())) {
+            advancedQuery.setMinimumShouldMatch(query.getMinimumShouldMatch());
+        }
+
+        if (StringUtils.isNotEmpty(query.getQueryField())) {
+            advancedQuery.setQueryField(query.getQueryField());
+        }
+
+        if (StringUtils.isNotEmpty(query.getBoostQuery())) {
+            advancedQuery.setBoostQuery(query.getBoostQuery());
+        }
+
+        if (StringUtils.isNotEmpty(query.getFields())) {
+            advancedQuery.addProjectionOnFields(buildFields(query));
+        }
+
+        if (ArrayUtils.isNotEmpty(highlight.getFields())) {
+            HighlightOptions highlightOptions = new HighlightOptions();
+            highlightOptions.addField(highlight.getFields());
+            if (StringUtils.isNotBlank(highlight.getPrefix())) {
+                highlightOptions.setSimplePrefix(highlight.getPrefix());
+            }
+            if (StringUtils.isNotBlank(highlight.getPostfix())) {
+                highlightOptions.setSimplePostfix(highlight.getPostfix());
+            }
+            advancedQuery.setHighlightOptions(highlightOptions);
+        }
+
+        return solrTemplate.queryForFacetAndHighlightPage(collection(), advancedQuery, type());
     }
 
     @Override
-    public Cursor<Individual> stream(String query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
+    public Cursor<Individual> stream(QueryArg query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
 
-        Criteria criteria = getQueryCriteria(query);
+        Criteria criteria = buildQueryCriteria(query.getExpression());
 
-        Optional<Criteria> boostCriteria = getBoostCriteria(query, boosts);
+        Optional<Criteria> boostCriteria = buildBoostCriteria(query.getExpression(), boosts);
 
         if (boostCriteria.isPresent()) {
             criteria = boostCriteria.get().or(criteria);
@@ -159,6 +212,11 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         simpleQuery.addCriteria(criteria);
         simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
+
+        if (StringUtils.isNotEmpty(query.getFields())) {
+            simpleQuery.addProjectionOnFields(buildFields(query));
+        }
+
         return solrTemplate.queryForCursor(collection(), simpleQuery, type());
     }
 
@@ -166,12 +224,17 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return type().getAnnotation(SolrDocument.class).collection();
     }
 
-    private Criteria getQueryCriteria(String query) {
+    private Criteria buildQueryCriteria(String query) {
         return query.equals(DEFAULT_QUERY) ? new Criteria(WILDCARD).expression(WILDCARD) : new SimpleStringCriteria(query);
     }
 
-    private Optional<Criteria> getBoostCriteria(String query, List<BoostArg> boosts) {
+    private Optional<Criteria> buildBoostCriteria(String query, List<BoostArg> boosts) {
         return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).expression(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
+    }
+
+    private String buildFields(QueryArg query) {
+        String fields = String.join(",", "id", "class", query.getFields());
+        return String.join(",", Arrays.stream(fields.split(",")).map(DiscoveryUtility::findProperty).collect(Collectors.toSet()));
     }
 
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
@@ -179,8 +242,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         buildFilterQueries(filters).forEach(filterQuery -> {
             simpleQuery.addFilterQuery(filterQuery);
         });
-        simpleQuery.setDefaultOperator(queryOperator);
-        simpleQuery.setDefType(queryParser);
+        simpleQuery.setDefaultOperator(defaultOperator);
+        simpleQuery.setDefType(defType);
         return simpleQuery;
     }
 

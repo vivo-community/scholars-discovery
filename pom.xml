@@ -26,6 +26,13 @@
 
   <packaging>jar</packaging>
 
+  <repositories>
+    <repository>
+      <id>tamu-releases</id>
+      <url>https://artifacts.library.tamu.edu/repository/maven-releases/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
 
     <dependency>
@@ -54,8 +61,19 @@
       <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-solr</artifactId>
+      <version>4.1.6.TAMU.RELEASE</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-solr</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.data</groupId>
+          <artifactId>spring-data-solr</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

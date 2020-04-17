@@ -56,19 +56,19 @@ include::../{snippets}/collections/search/findByIdIn/curl-request.adoc[]
 This search will return a json response listing all the collections, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/collections/search/faceted/request-parameters.adoc[]
+include::../{snippets}/collections/search/advanced/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/collections/search/faceted/response-fields.adoc[]
+include::../{snippets}/collections/search/advanced/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/collections/search/faceted/http-request.adoc[]
+include::../{snippets}/collections/search/advanced/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/collections/search/faceted/http-response.adoc[]
+include::../{snippets}/collections/search/advanced/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/collections/search/faceted/curl-request.adoc[]
+include::../{snippets}/collections/search/advanced/curl-request.adoc[]
 
 ==== Export Search
 

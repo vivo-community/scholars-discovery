@@ -4,6 +4,14 @@
   templates:
     default: "defaults/directoryViews/people/default.html"
   styles: []
+  fields:
+    - type
+    - name
+    - preferredTitle
+    - researchAreas
+    - positions
+    - positions.organizations
+    - thumbnail
   facets:
     - name: Type
       field: type
@@ -14,7 +22,7 @@
       collapsed: true
       hidden: false
     - name: Organization
-      field: positionOrganization
+      field: positions.organizations
       type: STRING
       sort: INDEX
       direction: ASC
@@ -34,7 +42,7 @@
       value: Person
   boosts: []
   sort:
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: First name
@@ -52,7 +60,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: name
+    field: name_sort
     opKey: STARTS_WITH
     options:
       - A
@@ -87,6 +95,9 @@
   templates:
     default: "defaults/directoryViews/organizations/default.html"
   styles: []
+  fields:
+    - type
+    - name
   facets:
     - name: Type
       field: type
@@ -101,7 +112,7 @@
       value: Organization
   boosts: []
   sort:
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Name
@@ -109,7 +120,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: name
+    field: name_sort
     opKey: STARTS_WITH
     options:
       - A
@@ -144,6 +155,16 @@
   templates:
     default: "defaults/directoryViews/research/default.html"
   styles: []
+  fields:
+    - type
+    - title
+    - publicationDate
+    - authors
+    - authors.organizations
+    - doi
+    - pmcid
+    - uri
+    - tags
   facets:
     - name: Type
       field: type
@@ -163,7 +184,7 @@
       collapsed: true
       hidden: false
     - name: Author Organization
-      field: authorOrganization
+      field: authors.organizations
       type: STRING
       sort: COUNT
       direction: DESC
@@ -175,7 +196,7 @@
       value: Document
   boosts: []
   sort:
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Publication type
@@ -201,7 +222,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: title
+    field: title_sort
     opKey: STARTS_WITH
     options:
       - A

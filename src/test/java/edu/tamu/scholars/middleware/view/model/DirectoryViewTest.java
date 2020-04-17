@@ -39,7 +39,6 @@ public class DirectoryViewTest {
 
         assertEquals(1L, directoryView.getId(), 1);
         assertEquals(MOCK_VIEW_NAME, directoryView.getName());
-//        assertEquals("persons", directoryView.getCollection());
         assertEquals(Layout.LIST, directoryView.getLayout());
 
         assertTrue(directoryView.getTemplates().containsKey("default"));
@@ -47,6 +46,9 @@ public class DirectoryViewTest {
 
         assertEquals(1, directoryView.getStyles().size());
         assertEquals("color: maroon;", directoryView.getStyles().get(0));
+
+        assertEquals(1, directoryView.getFields().size());
+        assertEquals("title", directoryView.getFields().get(0));
 
         assertEquals(1, directoryView.getFacets().size());
         assertEquals("Name", directoryView.getFacets().get(0).getName());
