@@ -52,6 +52,9 @@ public class DiscoveryViewTest {
         assertEquals(1, discoveryView.getStyles().size());
         assertEquals("color: maroon;", discoveryView.getStyles().get(0));
 
+        assertEquals(1, discoveryView.getFields().size());
+        assertEquals("title", discoveryView.getFields().get(0));
+
         assertEquals(1, discoveryView.getFacets().size());
         assertEquals("Name", discoveryView.getFacets().get(0).getName());
         assertEquals("name", discoveryView.getFacets().get(0).getField());
