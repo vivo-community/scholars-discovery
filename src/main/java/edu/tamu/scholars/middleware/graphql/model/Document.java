@@ -204,6 +204,8 @@ public class Document extends AbstractNestedDocument {
 
   private String bookTitle;
 
+  private String newsOutlet;
+
   private List<String> type;
 
   private String image;
@@ -810,6 +812,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setBookTitle(String bookTitle) {
     this.bookTitle = bookTitle;
+  }
+
+  public String getNewsOutlet() {
+    return newsOutlet;
+  }
+
+  public void setNewsOutlet(String newsOutlet) {
+    this.newsOutlet = newsOutlet;
   }
 
   public List<String> getType() {

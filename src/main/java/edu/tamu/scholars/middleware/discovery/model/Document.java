@@ -345,6 +345,10 @@ public class Document extends Common {
     @PropertySource(template = "document/bookTitle", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#bookTitleForChapter")
     private String bookTitle;
 
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "document/newsOutlet", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#NewsOutlet")
+    private String newsOutlet;
+
     public Document() {
 
     }
@@ -923,6 +927,14 @@ public class Document extends Common {
 
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
+    }
+
+    public String getNewsOutlet() {
+        return newsOutlet;
+    }
+
+    public void setNewsOutlet(String newsOutlet) {
+        this.newsOutlet = newsOutlet;
     }
 
 }

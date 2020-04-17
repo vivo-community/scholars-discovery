@@ -991,6 +991,9 @@
         - name: citation count
           template: "defaults/displayViews/documents/overview/citationCount.html"
           field: citationCount
+        - name: news outlet
+          template: "defaults/displayViews/documents/overview/newsOutlet.html"
+          field: newsOutlet
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
