@@ -12,8 +12,6 @@ public class CustomSimpleFacetAndHighlightQuery extends SimpleFacetAndHighlightQ
 
     private String boostQuery;
 
-    private String fields;
-
     public CustomSimpleFacetAndHighlightQuery() {
         super();
     }
@@ -48,14 +46,6 @@ public class CustomSimpleFacetAndHighlightQuery extends SimpleFacetAndHighlightQ
 
     public void setBoostQuery(String boostQuery) {
         this.boostQuery = boostQuery;
-    }
-
-    public String getFields() {
-        return fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
     }
 
 }
