@@ -20,8 +20,7 @@ public class FilterArgTest {
     public void testDefaultConstructor() {
         FilterArg filterArg = new FilterArg("class", "Concept", OpKey.EQUALS, "CLAZZ");
         assertNotNull(filterArg);
-        assertEquals("class", filterArg.getProperty());
-        assertEquals("class", filterArg.getPath());
+        assertEquals("class", filterArg.getField());
         assertEquals("Concept", filterArg.getValue());
         assertEquals(OpKey.EQUALS, filterArg.getOpKey());
         assertEquals("{!tag=CLAZZ}class", filterArg.getCommand());
@@ -36,8 +35,7 @@ public class FilterArgTest {
         params.put("tag", "CLAZZ");
         FilterArg filterArg = FilterArg.of(params);
         assertNotNull(filterArg);
-        assertEquals("class", filterArg.getProperty());
-        assertEquals("class", filterArg.getPath());
+        assertEquals("class", filterArg.getField());
         assertEquals("Concept", filterArg.getValue());
         assertEquals(OpKey.EQUALS, filterArg.getOpKey());
         assertEquals("{!tag=CLAZZ}class", filterArg.getCommand());
@@ -50,8 +48,7 @@ public class FilterArgTest {
         Optional<String> tag = Optional.of("CLAZZ");
         FilterArg filterArg = FilterArg.of("class", value, opKey, tag);
         assertNotNull(filterArg);
-        assertEquals("class", filterArg.getProperty());
-        assertEquals("class", filterArg.getPath());
+        assertEquals("class", filterArg.getField());
         assertEquals("Concept", filterArg.getValue());
         assertEquals(OpKey.EQUALS, filterArg.getOpKey());
         assertEquals("{!tag=CLAZZ}class", filterArg.getCommand());

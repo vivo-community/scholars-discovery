@@ -42,7 +42,7 @@ public class Person extends Common {
     @PropertySource(template = "person/orcidId", predicate = "http://vivoweb.org/ontology/core#orcidId", parse = true)
     private String orcidId;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "tokenized_string")
     @PropertySource(template = "person/preferredTitle", predicate = "http://www.w3.org/2006/vcard/ns#title")
     private String preferredTitle;
 
@@ -72,7 +72,7 @@ public class Person extends Common {
     private String overview;
 
     @NestedObject
-    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_tokenized_strings", copyTo = { "_text_", "researchAreas_nested_facets" })
     @PropertySource(template = "person/researchArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> researchAreas;
 

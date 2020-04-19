@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 import edu.tamu.scholars.middleware.discovery.DiscoveryConstants;
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 
 public class QueryArg {
 
@@ -22,11 +23,11 @@ public class QueryArg {
 
     public QueryArg(String expression, String defaultField, String minimumShouldMatch, String queryField, String boostQuery, String fields) {
         this.expression = expression;
-        this.defaultField = defaultField;
+        this.defaultField = DiscoveryUtility.processFields(defaultField);
         this.minimumShouldMatch = minimumShouldMatch;
-        this.queryField = queryField;
+        this.queryField = DiscoveryUtility.processFields(queryField);
         this.boostQuery = boostQuery;
-        this.fields = fields;
+        this.fields = DiscoveryUtility.processFields(fields);
     }
 
     public String getExpression() {

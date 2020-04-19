@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.view.model.FacetType;
 
-public class FacetArg extends MappingArg {
+public class FacetArg {
+
+    private final String field;
 
     private final FacetSortArg sort;
 
@@ -17,18 +20,19 @@ public class FacetArg extends MappingArg {
 
     private final FacetType type;
 
-    private final String field;
-
     private final String exclusionTag;
 
     public FacetArg(String field, String sort, int pageSize, int pageNumber, String type, String exclusionTag) {
-        super(field);
-        this.field = field;
+        this.field = DiscoveryUtility.findProperty(field);
         this.sort = FacetSortArg.of(sort);
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
         this.type = FacetType.valueOf(type);
         this.exclusionTag = exclusionTag;
+    }
+
+    public String getField() {
+        return field;
     }
 
     public FacetSortArg getSort() {
@@ -47,13 +51,8 @@ public class FacetArg extends MappingArg {
         return type;
     }
 
-    public String getField() {
-        return field;
-    }
-
     public String getCommand() {
-        String property = getProperty();
-        return StringUtils.isEmpty(exclusionTag) ? property : String.format("{!ex=%s}%s", exclusionTag, property);
+        return StringUtils.isEmpty(exclusionTag) ? field : String.format("{!ex=%s}%s", exclusionTag, field);
     }
 
     @SuppressWarnings("unchecked")
