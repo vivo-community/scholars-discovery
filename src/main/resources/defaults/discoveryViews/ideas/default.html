@@ -1,8 +1,12 @@
-<div>
+<div class="highlighted">
   {{#if name}}
-  <a href="display/{{id}}">{{name}}</a>
+  {{#if highlights.name}}
+  <a href="display/{{id}}">{{{highlights.name}}}</a>
   {{else}}
-  <a href="display/{{id}}">No title available ({{id}})</a>
+  <a href="display/{{id}}">{{name}}</a>
+  {{/if}}
+  {{else}}
+  <a href="display/{{id}}">No name available ({{id}})</a>
   {{/if}}
 </div>
 {{#if futureResearchIdeaOf}}
@@ -20,6 +24,17 @@
 {{/if}}
 {{#if createdDate}}
 <div>
-  <span>Created: <span>{{toYear createdDate}}</span></span>
+  <span><span class="label">Created</span>: <span>{{toYear createdDate}}</span></span>
 </div>
 {{/if}}
+<style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+
+  .label {
+    font-weight: 550;
+    margin-right: 2px;
+  }
+</style>

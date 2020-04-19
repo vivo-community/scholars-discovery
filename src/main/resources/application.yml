@@ -1,8 +1,11 @@
+ui:
+  url: http://localhost:4200
+
 middleware:
   load-defaults: true
   update-defaults: true
   allowed-origins:
-  - http://localhost:4200
+  - ${ui.url}
   auth:
     password:
       duration: 180
@@ -54,10 +57,7 @@ middleware:
     - edu.tamu.scholars.middleware.discovery.model.Relationship
   export:
     individualKey: individual
-    individualBaseUri: http://localhost:4200/display
-
-ui:
-  url: http://localhost:4200
+    individualBaseUri: ${ui.url}/display
 
 vivo:
   email: vivo_root@school.edu

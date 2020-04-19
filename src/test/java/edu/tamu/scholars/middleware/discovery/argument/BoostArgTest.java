@@ -17,8 +17,7 @@ public class BoostArgTest {
     public void testDefaultConstructor() {
         BoostArg boostArg = new BoostArg("title", 2.0f);
         assertNotNull(boostArg);
-        assertEquals("title", boostArg.getProperty());
-        assertEquals("title", boostArg.getPath());
+        assertEquals("title", boostArg.getField());
         assertEquals(2.0f, boostArg.getValue());
     }
 
@@ -29,8 +28,7 @@ public class BoostArgTest {
         params.put("value", 2.0f);
         BoostArg boostArg = BoostArg.of(params);
         assertNotNull(boostArg);
-        assertEquals("title", boostArg.getProperty());
-        assertEquals("title", boostArg.getPath());
+        assertEquals("title", boostArg.getField());
         assertEquals(2.0f, boostArg.getValue());
     }
 
@@ -38,8 +36,7 @@ public class BoostArgTest {
     public void testOfQueryParameter() {
         BoostArg boostArg = BoostArg.of("title,2.0");
         assertNotNull(boostArg);
-        assertEquals("title", boostArg.getProperty());
-        assertEquals("title", boostArg.getPath());
+        assertEquals("title", boostArg.getField());
         assertEquals(2.0f, boostArg.getValue());
     }
 

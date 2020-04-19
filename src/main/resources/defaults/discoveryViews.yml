@@ -4,13 +4,18 @@
   templates:
     default: "defaults/discoveryViews/people/default.html"
   styles: []
+  highlightFields:
+    - name
+    - preferredTitle
+    - researchAreas
+    - positions.organizations
   fields:
     - type
     - name
     - preferredTitle
-    - researchAreas
     - positions
     - positions.organizations
+    - researchAreas
     - thumbnail
   facets:
     - name: People
@@ -22,7 +27,7 @@
       collapsed: true
       hidden: false
     - name: Organization
-      field: positionOrganization
+      field: positions.organizations
       type: STRING
       sort: COUNT
       direction: DESC
@@ -30,7 +35,7 @@
       collapsed: true
       hidden: false
     - name: Research Area
-      field: researchAreas
+      field: researchAreas_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -104,17 +109,17 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/researchOverview/default.html"
+  styles: []
   defaultSearchField: overview
   highlightFields:
     - overview
-  styles: []
   fields:
     - type
     - name
     - preferredTitle
     - overview
     - positions
-    - positions.organizations
+    - positionOrpositions.organizationsganization
     - thumbnail
   facets:
     - name: People
@@ -126,7 +131,7 @@
       collapsed: true
       hidden: false
     - name: Organization
-      field: positionOrganization
+      field: positions.organizations
       type: STRING
       sort: COUNT
       direction: DESC
@@ -181,9 +186,10 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/publications/default.html"
-    Book: "defaults/discoveryViews/publications/Book.html"
-    Chapter: "defaults/discoveryViews/publications/Chapter.html"
   styles: []
+  highlightFields:
+    - title
+    - bookTitle
   fields:
     - type
     - title
@@ -223,7 +229,7 @@
       collapsed: true
       hidden: false
     - name: Author Organization
-      field: authorOrganization
+      field: authors.organizations
       type: STRING
       sort: COUNT
       direction: DESC
@@ -328,6 +334,8 @@
   templates:
     default: "defaults/discoveryViews/grants/default.html"
   styles: []
+  highlightFields:
+    - title
   fields:
     - type
     - title
@@ -413,8 +421,10 @@
   export:
     - columnHeader: Grant title
       valuePath: title
-    - columnHeader: Grant date
-      valuePath: yearAwarded
+    - columnHeader: Grant date start
+      valuePath: dateTimeIntervalStart
+    - columnHeader: Grant date end
+      valuePath: dateTimeIntervalEnd
     - columnHeader: Awarded by
       valuePath: awardedBy
     - columnHeader: Principal investigators
@@ -431,6 +441,8 @@
   templates:
     default: "defaults/discoveryViews/awards/default.html"
   styles: []
+  highlightFields:
+    - name
   fields:
     - type
     - name
@@ -498,6 +510,9 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/courses/default.html"
+  highlightFields:
+    - title
+    - participants
   styles: []
   fields:
     - type
@@ -521,7 +536,7 @@
       collapsed: true
       hidden: false
     - name: Participants
-      field: participants
+      field: participants_nested_facets
       type: STRING
       sort: INDEX
       direction: ASC
@@ -550,6 +565,8 @@
   templates:
     default: "defaults/discoveryViews/concepts/default.html"
   styles: []
+  highlightFields:
+    - name
   fields:
     - type
     - name
@@ -604,6 +621,8 @@
   templates:
     default: "defaults/discoveryViews/ideas/default.html"
   styles: []
+  highlightFields:
+    - name
   fields:
     - type
     - name
@@ -663,6 +682,8 @@
   templates:
     default: "defaults/discoveryViews/organizations/default.html"
   styles: []
+  highlightFields:
+    - name
   fields:
     - type
     - name
