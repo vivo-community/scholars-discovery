@@ -139,7 +139,7 @@
       collapsed: true
       hidden: false
     - name: Research Area
-      field: researchAreas
+      field: researchAreas_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
