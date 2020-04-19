@@ -58,6 +58,13 @@ public class MiddlewareConfigTest {
         ExportConfig exportConfig = middlewareConfig.getExport();
         assertNotNull(exportConfig);
         assertEquals("http://localhost:4200/display", exportConfig.getIndividualBaseUri());
+        IndexConfig indexConfig = middlewareConfig.getIndex();
+        assertNotNull(indexConfig);
+        assertEquals("0 0 0 * * SUN", indexConfig.getCron());
+        assertEquals("America/Chicago", indexConfig.getZone());
+        assertEquals(true, indexConfig.isOnStartup());
+        assertEquals(10000, indexConfig.getOnStartupDelay());
+        assertEquals(10000, indexConfig.getBatchSize());
     }
 
     @Test
@@ -112,6 +119,24 @@ public class MiddlewareConfigTest {
         assertEquals(90000, httpConfig.getTimeToLive());
         assertEquals(15000, httpConfig.getRequestTimeout());
         assertEquals(450000, httpConfig.getSocketTimeout());
+    }
+
+    @Test
+    public void testIndexGetterSetter() {
+        MiddlewareConfig middlewareConfig = new MiddlewareConfig();
+        IndexConfig newIndexConfig = new IndexConfig();
+        newIndexConfig.setCron("0 0 0 * * MON");
+        newIndexConfig.setZone("America/Chicago");
+        newIndexConfig.setOnStartup(false);
+        newIndexConfig.setOnStartupDelay(1000);
+        newIndexConfig.setBatchSize(25000);
+        middlewareConfig.setIndex(newIndexConfig);
+        IndexConfig indexConfig = middlewareConfig.getIndex();
+        assertEquals("0 0 0 * * MON", indexConfig.getCron());
+        assertEquals("America/Chicago", indexConfig.getZone());
+        assertEquals(false, indexConfig.isOnStartup());
+        assertEquals(1000, indexConfig.getOnStartupDelay());
+        assertEquals(25000, indexConfig.getBatchSize());
     }
 
     @Test
