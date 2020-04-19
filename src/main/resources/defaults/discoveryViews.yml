@@ -119,7 +119,7 @@
     - preferredTitle
     - overview
     - positions
-    - positionOrpositions.organizationsganization
+    - positions.organizations
     - thumbnail
   facets:
     - name: People
