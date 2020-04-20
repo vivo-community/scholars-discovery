@@ -5,13 +5,6 @@
     <span class="ml-1">{{formalize type}}</span>
     <span class="ml-1"><a href="{{_links.self.href}}" title="View individual in JSON format" download target="_blank"><i class="fa fa-link"><span class="d-none">individual record</span></i></a></span>
   </span>
-  {{#if futureResearchIdeaOf}}
-  {{#if futureResearchIdeaOf.email}}
-  <div class="mt-1 email-link-custom">
-    <span><a href="mailto:{{futureResearchIdeaOf.email}}" rel="noopener noreferrer" class="btn btn-light">Contact the owner</a></span>
-  </div>
-  {{/if}}
-  {{/if}}
   {{#if associatedDepartments}}
   <div class="mt-1">
     <span class="label">Associated Departments:</span>
@@ -22,14 +15,17 @@
     {{/each}}
   </div>
   {{/if}}
+  {{#if futureResearchIdeaOf}}
+  {{#if futureResearchIdeaOf.email}}
+  <div class="mt-2">
+    <span><a href="mailto:{{futureResearchIdeaOf.email}}" rel="noopener noreferrer" class="btn btn-primary">Contact the owner</a></span>
+  </div>
+  {{/if}}
+  {{/if}}
 </div>
 <style>
   .label {
     font-weight: 550;
     margin-right: 2px;
-  }
-  .email-link-custom {
-    clear: both;
-    float: right;
   }
 </style>
