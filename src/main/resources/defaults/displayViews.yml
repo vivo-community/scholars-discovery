@@ -1115,7 +1115,7 @@
         - name: note
           template: "defaults/displayViews/documents/other/note.html"
           field: note
-        - name: url
+        - name: URL
           template: "defaults/displayViews/documents/other/url.html"
           field: url
 
