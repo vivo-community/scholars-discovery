@@ -21,9 +21,9 @@
     <ul>
       {{#each authors}}
       <li>
-        <span><a href="display/{{id}}">{{label}}{{#if organizations}}, {{/if}}</a></span>
+        <span><a href="display/{{id}}">{{label}}</a>{{#if organizations}}, {{/if}}</span>
         {{#each organizations}}
-        <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+        <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
         {{/each}}
       </li>
       {{/each}}

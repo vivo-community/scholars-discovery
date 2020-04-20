@@ -16,7 +16,7 @@
     {{#each positions}}
     <div>
       {{#each organizations}}
-      <span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{label}}{{/if}}{{#if @last}}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{label}}</a>{{/if}}{{#if @last}}{{else}}, {{/if}}</span>
       {{/each}}
     </div>
     {{/each}}
@@ -26,7 +26,7 @@
     </div>
     <div>
       {{#each researchAreas}}
-      <span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{label}}{{/if}}{{#if @last}}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{label}}</a>{{/if}}{{#if @last}}{{else}}, {{/if}}</span>
       {{/each}}
     </div>
     {{/if}}
