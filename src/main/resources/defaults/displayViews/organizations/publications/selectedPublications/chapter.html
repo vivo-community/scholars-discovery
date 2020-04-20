@@ -46,6 +46,9 @@
   <span class="m-1"><a href="{{uri}}" target="_blank"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge" /></a></span>
   {{/if}}
 
+  {{#if key}}
+  <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-uri="{{key}}"></span>
+  {{else}}
   {{#if doi}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-doi="{{doi}}"></span>
   {{else}}
@@ -57,6 +60,7 @@
   {{else}}
   {{#if isbn10}}
   <span class="altmetric-embed m-1" data-hide-no-mentions="true" data-badge-popover="top" data-isbn="{{isbn10}}"></span>
+  {{/if}}
   {{/if}}
   {{/if}}
   {{/if}}
