@@ -623,6 +623,7 @@
   styles: []
   highlightFields:
     - name
+    - futureResearchIdeaOf
   fields:
     - type
     - name
@@ -631,7 +632,7 @@
     - createdDate
   facets:
     - name: People
-      field: futureResearchIdeaOf
+      field: futureResearchIdeaOf_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -705,7 +706,7 @@
       collapsed: true
       hidden: false
     - name: Research Areas
-      field: affiliatedResearchAreas
+      field: affiliatedResearchAreas_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC

@@ -86,7 +86,7 @@ public class Concept extends Common {
     @PropertySource(template = "concept/relatedConcept", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> relatedConcepts;
 
-    @Indexed(type = "nested_whole_string")
+    @Indexed(type = "nested_tokenized_string", copyTo = { "_text_", "futureResearchIdeaOf_nested_facets" })
     @NestedObject(properties = { @Reference(value = "futureResearchIdeaOfEmail", key = "email"), @Reference(value = "futureResearchIdeaOfTitle", key = "title"), @Reference(value = "futureResearchIdeaOfOrganization", key = "organizations") })
     @PropertySource(template = "concept/futureResearchIdeaOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String futureResearchIdeaOf;
@@ -109,7 +109,7 @@ public class Concept extends Common {
     @PropertySource(template = "concept/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string", copyTo = "_text_")
     @PropertySource(template = "concept/description", predicate = "http://vivoweb.org/ontology/core#description")
     private String description;
 

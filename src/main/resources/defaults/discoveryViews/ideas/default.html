@@ -11,15 +11,19 @@
 </div>
 {{#if futureResearchIdeaOf}}
 <div>
-  {{#each futureResearchIdeaOf}}
-  <div><a href="display/{{id}}">{{label}}</a></div>
-  <span>{{title}}</span>
-  {{#if organizations}}
-  {{#each organizations}}
+  <div>
+    {{#if futureResearchIdeaOf.snippet}}
+    <a href="display/{{futureResearchIdeaOf.id}}">{{{futureResearchIdeaOf.snippet}}}</a>
+    {{else}}
+    <a href="display/{{futureResearchIdeaOf.id}}">{{futureResearchIdeaOf.label}}</a>
+    {{/if}}
+  </div>
+  <span>{{futureResearchIdeaOf.title}}</span>
+  {{#if futureResearchIdeaOf.organizations}}
+  {{#each futureResearchIdeaOf.organizations}}
   <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
   {{/each}}
   {{/if}}
-  {{/each}}
 </div>
 {{/if}}
 {{#if createdDate}}
