@@ -10,7 +10,7 @@
     - preferredTitle
     - researchAreas
     - positions
-    - positions.organizations
+    - positionOrganization
     - thumbnail
   facets:
     - name: Type
@@ -22,7 +22,7 @@
       collapsed: true
       hidden: false
     - name: Organization
-      field: positions.organizations
+      field: positionOrganization
       type: STRING
       sort: INDEX
       direction: ASC
@@ -30,7 +30,7 @@
       collapsed: true
       hidden: false
     - name: Research Area
-      field: researchAreas
+      field: researchAreas_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -56,7 +56,7 @@
     - columnHeader: Position
       valuePath: positions
     - columnHeader: Department
-      valuePath: positions.organizations
+      valuePath: positionOrganization
     - columnHeader: Individual
       valuePath: individual
   index:
@@ -160,7 +160,7 @@
     - title
     - publicationDate
     - authors
-    - authors.organizations
+    - authorOrganization
     - doi
     - pmcid
     - uri
@@ -184,7 +184,7 @@
       collapsed: true
       hidden: false
     - name: Author Organization
-      field: authors.organizations
+      field: authorOrganization
       type: STRING
       sort: COUNT
       direction: DESC
@@ -212,7 +212,7 @@
     - columnHeader: Author
       valuePath: authors
     - columnHeader: Author's department
-      valuePath: authors.organizations
+      valuePath: authorOrganization
     - columnHeader: DOI
       valuePath: doi
     - columnHeader: PubMed ID

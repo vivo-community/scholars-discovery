@@ -1,8 +1,21 @@
-<div class="d-flex flex-nowrap justify-content-between">
-  <span><a href="display/{{id}}">{{#if name}}{{name}}{{else}}No name available{{/if}}</a></span>
+<div class="d-flex flex-nowrap justify-content-between highlighted">
+  {{#if name}}
+  {{#if highlights.name}}
+  <a href="display/{{id}}">{{{highlights.name}}}</a>
+  {{else}}
+  <a href="display/{{id}}">{{name}}</a>
+  {{/if}}
+  {{else}}
+  <a href="display/{{id}}">No name available ({{id}})</a>
+  {{/if}}
   <span class="badge badge-light badge-custom">{{formalize type}}</span>
 </div>
 <style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+
   .badge-custom {
     height: 18px;
   }

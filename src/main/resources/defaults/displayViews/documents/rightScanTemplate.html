@@ -1,9 +1,13 @@
 <div class="d-flex h-100 justify-content-center align-items-center">
+  {{#if key}}
+  <span class="altmetric-embed mr-1" data-badge-type='donut' data-hide-no-mentions="true" data-badge-popover="left" data-uri="{{key}}"></span>
+  {{else}}
   {{#if doi}}
   <span class="altmetric-embed mr-1" data-badge-type='donut' data-hide-no-mentions="true" data-badge-popover="left" data-doi="{{doi}}"></span>
   {{else}}
   {{#if uri}}
   <span class="altmetric-embed mr-1" data-badge-type='donut' data-hide-no-mentions="true" data-badge-popover="left" data-handle="{{replace uri 'http://hdl.handle.net/' ''}}"></span>
+  {{/if}}
   {{/if}}
   {{/if}}
 </div>

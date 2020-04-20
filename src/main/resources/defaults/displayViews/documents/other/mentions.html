@@ -1,1 +1,10 @@
-<span>Work In Progress</span>
+{{#if mentions}}
+<ul class="list-unstyled">
+  {{#each mentions}}
+  <li>
+    <span class="mr-1"><a href="display/{{id}}">{{name}}</a></span>
+    <span>{{preferredTitle}}</span>
+  </li>
+  {{/each}}
+</ul>
+{{/if}}

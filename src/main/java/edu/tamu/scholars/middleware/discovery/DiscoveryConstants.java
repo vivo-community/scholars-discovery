@@ -10,6 +10,10 @@ public class DiscoveryConstants {
 
     public static final String CLASS = "class";
 
+    public static final String TYPE = "type";
+
+    public static final String SNIPPET = "snippet";
+
     public static final String MOD_TIME = "modTime";
 
     public static final String DEFAULT_QUERY = String.format("%s:%s", WILDCARD, WILDCARD);

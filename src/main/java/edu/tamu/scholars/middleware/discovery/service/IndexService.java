@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import edu.tamu.scholars.middleware.service.Triplestore;
@@ -26,6 +27,9 @@ public class IndexService {
     @Value("${middleware.index.onStartup:false}")
     public boolean indexOnStartup;
 
+    @Value("${middleware.index.onStartupDelay:10000}")
+    private int indexOnStartupDelay;
+
     @Value("${middleware.index.batchSize:10000}")
     private int indexBatchSize;
 
@@ -38,10 +42,20 @@ public class IndexService {
     @Autowired
     private Triplestore triplestore;
 
+    @Autowired
+    private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+
     @PostConstruct
     public void indexOnStartup() {
         if (indexOnStartup) {
-            index();
+            threadPoolTaskScheduler.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    index();
+                }
+
+            }, indexOnStartupDelay);
         }
     }
 

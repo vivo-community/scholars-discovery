@@ -5,21 +5,21 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.model.OpKey;
 
-public class FilterArg extends MappingArg {
+public class FilterArg {
+
+    private final String field;
 
     private final String value;
 
     private final OpKey opKey;
 
-    private final String field;
-
     private final String tag;
 
     public FilterArg(String field, String value, OpKey opKey, String tag) {
-        super(field);
-        this.field = field;
+        this.field = DiscoveryUtility.findProperty(field);
         this.value = value;
         this.opKey = opKey;
         this.tag = tag;
@@ -42,8 +42,7 @@ public class FilterArg extends MappingArg {
     }
 
     public String getCommand() {
-        String property = getProperty();
-        return StringUtils.isEmpty(tag) ? property : String.format("{!tag=%s}%s", tag, property);
+        return StringUtils.isEmpty(tag) ? field : String.format("{!tag=%s}%s", tag, field);
     }
 
     @SuppressWarnings("unchecked")

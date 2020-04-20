@@ -1088,7 +1088,9 @@
           field: isTemplate
         - name: mentions
           template: "defaults/displayViews/documents/other/mentions.html"
-          field: mention
+          field: mentions
+          lazyReferences:
+            - mentions
         - name: output of
           template: "defaults/displayViews/documents/other/outputOf.html"
           field: outputOf
@@ -1506,6 +1508,8 @@
         - name: idea of
           template: "defaults/displayViews/concepts/overview/futureResearchIdeaOf.html"
           field: futureResearchIdeaOf
+          requiredFields:
+            - futureResearchIdeaOf
         - name: creation date
           template: "defaults/displayViews/concepts/overview/createdDate.html"
           field: createdDate

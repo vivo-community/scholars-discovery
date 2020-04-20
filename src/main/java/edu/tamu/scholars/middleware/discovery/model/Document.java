@@ -341,7 +341,7 @@ public class Document extends Common {
     @PropertySource(template = "document/editorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullEditorList")
     private List<String> editorList;
 
-    @Indexed(type = "whole_string")
+    @Indexed(type = "tokenized_string", copyTo = "_text_")
     @PropertySource(template = "document/bookTitle", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#bookTitleForChapter")
     private String bookTitle;
 

@@ -21,9 +21,9 @@
     <ul>
       {{#each authors}}
       <li>
-        <span><a href="display/{{id}}">{{label}}{{#if organizations}}, {{/if}}</a></span>
+        <span><a href="display/{{id}}">{{label}}</a>{{#if organizations}}, {{/if}}</span>
         {{#each organizations}}
-        <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+        <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
         {{/each}}
       </li>
       {{/each}}
@@ -47,12 +47,17 @@
     <a href="{{uri}}" target="_blank"><img src="assets/images/open-access-badge.jpg" width="100" alt="open access badge" /></a>
   </span>
   {{/if}}
+  {{#if url}}
+  <span class="mr-1">
+    <a href="{{url}}" target="_blank"><img src="assets/images/online-source-badge.png" width="100" alt="online source badge" /></a>
+  </span>
+  {{/if}}
   {{#if tags}}
-    {{#each tags}}
-    <span class="mr-1">
-      <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light">{{this}}</span>
-    </span>
-    {{/each}}
+  {{#each tags}}
+  <span class="mr-1">
+    <span class="fa fa-tag" alt="tag icon" role="img" aria-label="tag"></span><span class="badge badge-light">{{this}}</span>
+  </span>
+  {{/each}}
   {{/if}}
 </div>
 <style>

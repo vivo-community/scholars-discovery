@@ -212,6 +212,9 @@
       </analyzer>
     </fieldType>
 
+    <!-- Scholars dynamic facet field -->
+    <dynamicField name="*_facets" type="whole_strings" indexed="true" stored="true" multiValued="true"/>
+
     <!-- Scholars tokenized string type  -->
     <fieldType name="tokenized_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
       <analyzer type="index">
@@ -254,6 +257,9 @@
         <tokenizer class="solr.KeywordTokenizerFactory"/>
       </analyzer>
     </fieldType>
+
+    <!-- Scholars dynamic nested facet field -->
+    <dynamicField name="*_nested_facets" type="nested_whole_strings" indexed="true" stored="true" multiValued="true"/>
 
     <!-- Scholars nested tokenized string type  -->
     <fieldType name="nested_tokenized_string" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true">
