@@ -77,10 +77,14 @@ public class Document extends Common {
     @PropertySource(template = "document/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String publicationDate;
 
-    @NestedObject
     @Indexed(type = "nested_whole_string")
+    @NestedObject(properties = { @Reference(value = "publisherType", key = "type") })
     @PropertySource(template = "document/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
+
+    @Indexed(type = "nested_whole_string")
+    @PropertySource(template = "document/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private String publisherType;
 
     @Indexed(type = "pdate", searchable = false)
     @PropertySource(template = "document/dateFiled", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -447,6 +451,14 @@ public class Document extends Common {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    public String getPublisherType() {
+        return publisherType;
+    }
+
+    public void setPublisherType(String publisherType) {
+        this.publisherType = publisherType;
     }
 
     public String getDateFiled() {
