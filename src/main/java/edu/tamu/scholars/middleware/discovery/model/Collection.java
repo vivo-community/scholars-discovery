@@ -13,6 +13,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
+import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 import io.leangen.graphql.annotations.GraphQLIgnore;
 
@@ -60,10 +61,14 @@ public class Collection extends Common {
     @PropertySource(template = "collection/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String publicationDate;
 
-    @NestedObject
-    @Indexed(type = "nested_whole_string", searchable = false)
+    @Indexed(type = "nested_whole_string")
+    @NestedObject(properties = { @Reference(value = "publisherType", key = "type") })
     @PropertySource(template = "collection/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
+
+    @Indexed(type = "nested_whole_string")
+    @PropertySource(template = "collection/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private String publisherType;
 
     @NestedObject
     @Indexed(type = "nested_whole_strings", searchable = false)
@@ -199,6 +204,14 @@ public class Collection extends Common {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    public String getPublisherType() {
+        return publisherType;
+    }
+
+    public void setPublisherType(String publisherType) {
+        this.publisherType = publisherType;
     }
 
     public List<String> getSubjectAreas() {
