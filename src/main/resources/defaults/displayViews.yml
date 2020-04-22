@@ -191,7 +191,7 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
-            - name: Online Publications
+            - name: Internet Publications
               field: publications
               filters:
                 - field: type
