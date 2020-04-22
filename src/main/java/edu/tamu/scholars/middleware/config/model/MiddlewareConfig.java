@@ -24,6 +24,8 @@ public class MiddlewareConfig {
 
     private HttpConfig http = new HttpConfig();
 
+    private IndexConfig index = new IndexConfig();
+
     private ExportConfig export = new ExportConfig();
 
     private TriplestoreConfig triplestore = new TriplestoreConfig();
@@ -48,16 +50,16 @@ public class MiddlewareConfig {
         return updateDefaults;
     }
 
+    public void setUpdateDefaults(boolean updateDefaults) {
+        this.updateDefaults = updateDefaults;
+    }
+
     public List<String> getAllowedOrigins() {
         return allowedOrigins;
     }
 
     public void setAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
-    }
-
-    public void setUpdateDefaults(boolean updateDefaults) {
-        this.updateDefaults = updateDefaults;
     }
 
     public AuthConfig getAuth() {
@@ -82,6 +84,14 @@ public class MiddlewareConfig {
 
     public void setHttp(HttpConfig http) {
         this.http = http;
+    }
+
+    public IndexConfig getIndex() {
+        return index;
+    }
+
+    public void setIndex(IndexConfig index) {
+        this.index = index;
     }
 
     public ExportConfig getExport() {

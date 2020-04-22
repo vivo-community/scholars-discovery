@@ -2,15 +2,21 @@ package edu.tamu.scholars.middleware.export.argument;
 
 import java.util.Map;
 
-import edu.tamu.scholars.middleware.discovery.argument.MappingArg;
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 
-public class ExportArg extends MappingArg {
+public class ExportArg {
+
+    private final String field;
 
     private final String label;
 
     public ExportArg(String field, String label) {
-        super(field);
+        this.field = DiscoveryUtility.findProperty(field);
         this.label = label;
+    }
+
+    public String getField() {
+        return field;
     }
 
     public String getLabel() {

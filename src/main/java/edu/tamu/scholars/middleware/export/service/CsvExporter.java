@@ -58,7 +58,7 @@ public class CsvExporter implements Exporter {
             try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.DEFAULT.withHeader(headers))) {
                 while (cursor.hasNext()) {
                     Individual document = cursor.next();
-                    List<String> properties = export.stream().map(e -> e.getProperty()).collect(Collectors.toList());
+                    List<String> properties = export.stream().map(e -> e.getField()).collect(Collectors.toList());
                     List<Object> row = getRow(document, properties);
                     printer.printRecord(row.toArray(new Object[row.size()]));
                 }

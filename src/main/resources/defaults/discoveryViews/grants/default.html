@@ -1,5 +1,13 @@
-<div class="d-flex">
-  <span><a href="display/{{id}}">{{{title}}}</a></span>
+<div class="highlighted">
+  {{#if title}}
+  {{#if highlights.title}}
+  <a href="display/{{id}}">{{{highlights.title}}}</a>
+  {{else}}
+  <a href="display/{{id}}">{{title}}</a>
+  {{/if}}
+  {{else}}
+  <a href="display/{{id}}">No title available ({{id}})</a>
+  {{/if}}
 </div>
 <div>
   <div>
@@ -49,6 +57,11 @@
   {{/if}}
 </div>
 <style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+
   .label {
     font-weight: 550;
     margin-right: 2px;

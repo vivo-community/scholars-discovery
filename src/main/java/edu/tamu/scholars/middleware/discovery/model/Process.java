@@ -57,7 +57,7 @@ public class Process extends Common {
     @PropertySource(template = "process/inEventSeries", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> inEventSeries;
 
-    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_tokenized_strings", copyTo = { "_text_", "participants_nested_facets" })
     @NestedObject(properties = { @Reference(value = "participantRole", key = "role") })
     @PropertySource(template = "process/participant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participants;
