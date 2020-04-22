@@ -12,23 +12,18 @@
 {{#if futureResearchIdeaOf}}
 <div>
   <div>
+    <span><span class="label">Idea Of</span>: </span>
     {{#if futureResearchIdeaOf.snippet}}
     <a href="display/{{futureResearchIdeaOf.id}}">{{{futureResearchIdeaOf.snippet}}}</a>
     {{else}}
     <a href="display/{{futureResearchIdeaOf.id}}">{{futureResearchIdeaOf.label}}</a>
     {{/if}}
   </div>
-  <span>{{futureResearchIdeaOf.title}}</span>
-  {{#if futureResearchIdeaOf.organizations}}
-  {{#each futureResearchIdeaOf.organizations}}
-  <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
-  {{/each}}
-  {{/if}}
 </div>
 {{/if}}
 {{#if createdDate}}
 <div>
-  <span><span class="label">Created</span>: <span>{{toYear createdDate}}</span></span>
+  <span><span class="label">Created</span>: <span>{{toSimpleDate createdDate}}</span></span>
 </div>
 {{/if}}
 <style>
