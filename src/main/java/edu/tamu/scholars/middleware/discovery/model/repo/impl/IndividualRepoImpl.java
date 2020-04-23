@@ -1,8 +1,11 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.*;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.REQUEST_PARAM_DELIMETER;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.TYPE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.ArrayList;
@@ -48,7 +51,6 @@ import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetAndHighligh
 import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetQuery;
 import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetAndHighlightQueryParser;
 import edu.tamu.scholars.middleware.discovery.query.parser.CustomSimpleFacetQueryParser;
-import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.model.OpKey;
 import io.micrometer.core.instrument.util.StringUtils;
 
@@ -82,7 +84,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     @Override
     public List<Individual> findByType(String type, List<FilterArg> filters) {
-        filters.add(FilterArg.of("type", Optional.of(type), Optional.of(OpKey.EQUALS.getKey()), Optional.empty()));
+        filters.add(FilterArg.of(TYPE, Optional.of(type), Optional.of(OpKey.EQUALS.getKey()), Optional.empty()));
         return findAll(filters);
     }
 
@@ -129,13 +131,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     public FacetAndHighlightPage<Individual> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page) {
         CustomSimpleFacetAndHighlightQuery advancedQuery = new CustomSimpleFacetAndHighlightQuery();
 
-        Criteria criteria = buildQueryCriteria(query.getExpression());
-
-        Optional<Criteria> boostCriteria = buildBoostCriteria(query.getExpression(), boosts);
-
-        if (boostCriteria.isPresent()) {
-            criteria = boostCriteria.get().or(criteria);
-        }
+        Criteria criteria = buildBoostedQueryCriteria(query.getExpression(), boosts);
 
         advancedQuery.addCriteria(criteria);
 
@@ -202,13 +198,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     public Cursor<Individual> stream(QueryArg query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort) {
         SimpleQuery simpleQuery = buildSimpleQuery(filters);
 
-        Criteria criteria = buildQueryCriteria(query.getExpression());
-
-        Optional<Criteria> boostCriteria = buildBoostCriteria(query.getExpression(), boosts);
-
-        if (boostCriteria.isPresent()) {
-            criteria = boostCriteria.get().or(criteria);
-        }
+        Criteria criteria = buildBoostedQueryCriteria(query.getExpression(), boosts);
 
         simpleQuery.addCriteria(criteria);
         simpleQuery.addSort(sort.and(Sort.by(Direction.ASC, ID)));
@@ -228,13 +218,21 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         return query.equals(DEFAULT_QUERY) ? new Criteria(WILDCARD).expression(WILDCARD) : new SimpleStringCriteria(query);
     }
 
-    private Optional<Criteria> buildBoostCriteria(String query, List<BoostArg> boosts) {
-        return query.equals(DEFAULT_QUERY) ? Optional.empty() : boosts.stream().map(boost -> Criteria.where(boost.getProperty()).expression(query).boost(boost.getValue())).reduce((c1, c2) -> c1.or(c2));
+    private Criteria buildBoostedQueryCriteria(String query, List<BoostArg> boosts) {
+        if (query.equals(DEFAULT_QUERY)) {
+            return new Criteria(WILDCARD).expression(WILDCARD);
+        }
+        Criteria criteria = new SimpleStringCriteria(query).connect();
+        String expression = String.format(PARENTHESES_TEMPLATE, query);
+        boosts.stream().map(boost -> Criteria.where(boost.getField()).expression(expression).boost(boost.getValue())).forEach(boostCriteria -> {
+            criteria.or(boostCriteria.connect());
+        });
+        return criteria;
     }
 
     private String buildFields(QueryArg query) {
-        String fields = String.join(",", "id", "class", query.getFields());
-        return String.join(",", Arrays.stream(fields.split(",")).map(DiscoveryUtility::findProperty).collect(Collectors.toSet()));
+        String fields = String.join(REQUEST_PARAM_DELIMETER, ID, CLASS, query.getFields());
+        return String.join(REQUEST_PARAM_DELIMETER, Arrays.stream(fields.split(REQUEST_PARAM_DELIMETER)).collect(Collectors.toSet()));
     }
 
     private SimpleQuery buildSimpleQuery(List<FilterArg> filters) {
@@ -249,11 +247,10 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
         List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
-        Map<String, List<FilterArg>> filtersGrouped = filters.stream().collect(Collectors.groupingBy(w -> w.getProperty()));
+        Map<String, List<FilterArg>> filtersGrouped = filters.stream().collect(Collectors.groupingBy(w -> w.getField()));
         filtersGrouped.forEach((field, filterList) -> {
             FilterArg firstOne = filterList.get(0);
             Criteria crit = new CriteriaBuilder(firstOne).buildCriteria();
-
             // the rest (of that field) are Or'd
             if (filterList.size() > 1) {
                 for (FilterArg arg : filterList.subList(1, filterList.size())) {
@@ -283,7 +280,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         }
 
         public Criteria buildCriteria() {
-            String field = skipTag ? filter.getProperty() : filter.getCommand();
+            String field = skipTag ? filter.getField() : filter.getCommand();
             String value = filter.getValue();
             Criteria criteria = Criteria.where(field);
             switch (filter.getOpKey()) {

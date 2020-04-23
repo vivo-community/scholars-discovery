@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex highlighted">
   <div class="mr-4">
     {{#if thumbnail}}
     <div class="rounded-circle person-avatar" style="background-image: url('{{vivoUrl}}{{thumbnail}}')"></div>
@@ -7,30 +7,44 @@
     {{/if}}
   </div>
   <div class="align-self-center">
+    {{#if highlights.name}}
+    <div class="name"><a href="display/{{id}}">{{{highlights.name}}}</a></div>
+    {{else}}
     <div class="name"><a href="display/{{id}}">{{name}}</a></div>
-    <div class="mt-1"><span>{{preferredTitle}}</span></div>
+    {{/if}}
+    <div class="mt-1"><span>{{#if highlights.preferredTitle}}{{{highlights.preferredTitle}}}{{else}}{{preferredTitle}}{{/if}}</span></div>
     {{#each positions}}
     <div>
       {{#each organizations}}
-      <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{label}}{{/if}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     {{/each}}
     {{#if researchAreas}}
     <div class="mt-1">
-      <span>Research Areas</span>
+      <span class="label">Research Areas:</span>
     </div>
     <div>
       {{#each researchAreas}}
-      <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+      <span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{label}}{{/if}}{{#if @last}}{{else}}, {{/if}}</a></span>
       {{/each}}
     </div>
     {{/if}}
   </div>
 </div>
 <style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+
   .name {
     font-size: 15px;
+  }
+
+  .label {
+    font-weight: 550;
+    margin-right: 2px;
   }
 
   .person-avatar {

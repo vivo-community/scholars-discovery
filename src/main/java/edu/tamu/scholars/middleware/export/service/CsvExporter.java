@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.export.service;
 
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EMPTY_STRING;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 
 import java.io.OutputStreamWriter;
@@ -11,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.stereotype.Service;
@@ -58,7 +58,7 @@ public class CsvExporter implements Exporter {
             try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.DEFAULT.withHeader(headers))) {
                 while (cursor.hasNext()) {
                     Individual document = cursor.next();
-                    List<String> properties = export.stream().map(e -> e.getProperty()).collect(Collectors.toList());
+                    List<String> properties = export.stream().map(e -> e.getField()).collect(Collectors.toList());
                     List<Object> row = getRow(document, properties);
                     printer.printRecord(row.toArray(new Object[row.size()]));
                 }
@@ -88,7 +88,7 @@ public class CsvExporter implements Exporter {
                 row.add(String.format("%s/%s", config.getIndividualBaseUri(), document.getId()));
                 continue;
             }
-            String value = EMPTY_STRING;
+            String value = StringUtils.EMPTY;
             if (content.containsKey(property)) {
                 List<String> values = content.get(property);
                 if (values.size() > 0) {
