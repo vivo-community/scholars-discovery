@@ -628,7 +628,7 @@
     - type
     - name
     - futureResearchIdeaOf
-    - organizations
+    - futureResearchIdeaOfOrganization
     - createdDate
   facets:
     - name: People

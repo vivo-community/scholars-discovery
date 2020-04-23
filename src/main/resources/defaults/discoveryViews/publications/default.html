@@ -29,13 +29,12 @@
   {{#if publicationDate}}
   <div>
     <span class="label">Publication Date:</span>
+    {{#when type '~' 'NewsRelease' }}
+    <span>{{toSimpleDate publicationDate}}</span>
+    {{/when}}
+    {{#when type '!~' 'NewsRelease' }}
     <span>{{toYear publicationDate}}</span>
-  </div>
-  {{/if}}
-  {{#if publisher}}
-  <div>
-    <span class="label">Publisher:</span>
-    <span><a href="display/{{publisher.id}}">{{publisher.label}}</a></span>
+    {{/when}}
   </div>
   {{/if}}
   {{#if authors}}

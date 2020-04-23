@@ -14,10 +14,13 @@
   <div>
     <span><span class="label">Idea Of</span>: </span>
     {{#if futureResearchIdeaOf.snippet}}
-    <a href="display/{{futureResearchIdeaOf.id}}">{{{futureResearchIdeaOf.snippet}}}</a>
+    <span><a href="display/{{futureResearchIdeaOf.id}}">{{{futureResearchIdeaOf.snippet}}}</a>{{#if futureResearchIdeaOf.organizations}}, {{/if}}</span>
     {{else}}
-    <a href="display/{{futureResearchIdeaOf.id}}">{{futureResearchIdeaOf.label}}</a>
+    <span><a href="display/{{futureResearchIdeaOf.id}}">{{futureResearchIdeaOf.label}}</a>{{#if futureResearchIdeaOf.organizations}}, {{/if}}</span>
     {{/if}}
+    {{#each futureResearchIdeaOf.organizations}}
+    <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
+    {{/each}}
   </div>
 </div>
 {{/if}}

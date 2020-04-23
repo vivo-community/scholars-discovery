@@ -167,7 +167,7 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
-            - name: Thesis
+            - name: Theses
               field: publications
               filters:
                 - field: type
