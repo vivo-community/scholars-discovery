@@ -45,7 +45,7 @@ public class Concept extends Common {
     @PropertySource(template = "concept/awardOrHonorForType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> awardOrHonorForType;
 
-    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_tokenized_strings", copyTo = { "_text_", "awardConferredBy_nested_facets" })
     @NestedObject(properties = { @Reference(value = "awardConferredByType", key = "type") })
     @PropertySource(template = "concept/awardConferredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardConferredBy;

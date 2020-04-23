@@ -73,7 +73,7 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/awardConferredByPreferredLabel", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#awardConferredBy_label")
     private List<String> awardConferredByPreferredLabel;
 
-    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_tokenized_strings", copyTo = { "_text_", "awardedBy_nested_facets" })
     @NestedObject(properties = { @Reference(value = "awardedByType", key = "type"), @Reference(value = "awardedByAbbreviation", key = "abbreviation"), @Reference(value = "awardedByPreferredLabel", key = "preferredLabel") })
     @PropertySource(template = "relationship/awardedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> awardedBy;
@@ -135,7 +135,7 @@ public class Relationship extends Common {
     @PropertySource(template = "relationship/localAwardId", predicate = "http://vivoweb.org/ontology/core#localAwardId")
     private String localAwardId;
 
-    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
+    @Indexed(type = "nested_tokenized_strings", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "contributorRole", key = "role") })
     @PropertySource(template = "relationship/contributor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> contributors;

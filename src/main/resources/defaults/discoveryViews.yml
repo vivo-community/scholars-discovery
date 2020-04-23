@@ -336,6 +336,8 @@
   styles: []
   highlightFields:
     - title
+    - awardedBy
+    - contributors
   fields:
     - type
     - title
@@ -370,7 +372,7 @@
       collapsed: true
       hidden: false
     - name: Awarded By
-      field: awardedBy
+      field: awardedBy_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -443,6 +445,7 @@
   styles: []
   highlightFields:
     - name
+    - awardConferredBy
   fields:
     - type
     - name
@@ -474,7 +477,7 @@
       collapsed: true
       hidden: false
     - name: Conferred By
-      field: awardConferredBy
+      field: awardConferredBy_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
