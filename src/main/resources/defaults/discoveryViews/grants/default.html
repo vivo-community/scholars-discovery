@@ -32,10 +32,10 @@
   <div>
     <span class="label">Awarded By:</span>
   </div>
-  <div>
+  <div class="highlighted">
     <ul>
       {{#each awardedBy}}
-      <li><span><a href="display/{{id}}">{{label}}</a></span></li>
+      <li><span><a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{./label}}{{/if}}</a></span></li>
       {{/each}}
     </ul>
   </div>
@@ -44,11 +44,11 @@
   <div>
     <span class="label">Contributors:</span>
   </div>
-  <div>
+  <div class="highlighted">
     <ul>
       {{#each contributors}}
       <li>
-        <a href="display/{{id}}">{{label}}</a>
+        <a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{./label}}{{/if}}</a>
         <span class="badge badge-light">{{formalize role}}</span>
       </li>
       {{/each}}
