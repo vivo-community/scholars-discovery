@@ -1,6 +1,6 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.*;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
@@ -223,7 +223,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             return new Criteria(WILDCARD).expression(WILDCARD);
         }
         Criteria criteria = new SimpleStringCriteria(query).connect();
-        boosts.stream().map(boost -> Criteria.where(boost.getField()).expression(query).boost(boost.getValue())).forEach(boostCriteria -> {
+        String expression = String.format(PARENTHESES_TEMPLATE, query);
+        boosts.stream().map(boost -> Criteria.where(boost.getField()).expression(expression).boost(boost.getValue())).forEach(boostCriteria -> {
             criteria.or(boostCriteria.connect());
         });
         return criteria;

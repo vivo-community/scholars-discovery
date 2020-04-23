@@ -560,15 +560,15 @@ public class Person extends Common {
     @PropertySource(template = "person/email", predicate = "http://www.w3.org/2006/vcard/ns#email")
     private String email;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string")
     @PropertySource(template = "person/firstName", predicate = "http://www.w3.org/2006/vcard/ns#givenName")
     private String firstName;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string")
     @PropertySource(template = "person/middleName", predicate = "http://www.w3.org/2006/vcard/ns#middleName")
     private String middleName;
 
-    @Indexed(type = "whole_string", copyTo = "_text_")
+    @Indexed(type = "tokenized_string")
     @PropertySource(template = "person/lastName", predicate = "http://www.w3.org/2006/vcard/ns#familyName")
     private String lastName;
 

@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.export.service;
 
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.EMPTY_STRING;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 
 import java.io.OutputStreamWriter;
@@ -11,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.stereotype.Service;
@@ -88,7 +88,7 @@ public class CsvExporter implements Exporter {
                 row.add(String.format("%s/%s", config.getIndividualBaseUri(), document.getId()));
                 continue;
             }
-            String value = EMPTY_STRING;
+            String value = StringUtils.EMPTY;
             if (content.containsKey(property)) {
                 List<String> values = content.get(property);
                 if (values.size() > 0) {
