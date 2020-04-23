@@ -24,8 +24,8 @@ public class DiscoveryConstants {
 
     public static final String PATH_DELIMETER_REGEX = "\\.";
 
-    public static final String EMPTY_STRING = "";
-
     public static final String DISCOVERY_MODEL_PACKAGE = "edu.tamu.scholars.middleware.discovery.model";
+
+    public static final String PARENTHESES_TEMPLATE = "(%s)";
 
 }
