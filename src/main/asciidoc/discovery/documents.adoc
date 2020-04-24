@@ -56,19 +56,19 @@ include::../{snippets}/documents/search/findByIdIn/curl-request.adoc[]
 This search will return a json response listing all the documents, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/documents/search/faceted/request-parameters.adoc[]
+include::../{snippets}/documents/search/advanced/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/documents/search/faceted/response-fields.adoc[]
+include::../{snippets}/documents/search/advanced/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/documents/search/faceted/http-request.adoc[]
+include::../{snippets}/documents/search/advanced/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/documents/search/faceted/http-response.adoc[]
+include::../{snippets}/documents/search/advanced/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/documents/search/faceted/curl-request.adoc[]
+include::../{snippets}/documents/search/advanced/curl-request.adoc[]
 
 ==== Export Search
 

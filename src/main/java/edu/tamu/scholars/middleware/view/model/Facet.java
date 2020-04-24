@@ -9,12 +9,16 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
 import edu.tamu.scholars.middleware.model.OpKey;
 
 @Embeddable
+@JsonInclude(Include.NON_NULL)
 public class Facet {
 
     @Column(nullable = false)
@@ -50,6 +54,12 @@ public class Facet {
 
     @Column(nullable = false)
     private boolean hidden;
+
+    @Column(nullable = true)
+    private int rangeMin;
+
+    @Column(nullable = true)
+    private int rangeMax;
 
     public Facet() {
         opKey = OpKey.EQUALS;
@@ -140,6 +150,22 @@ public class Facet {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public int getRangeMin() {
+        return rangeMin;
+    }
+
+    public void setRangeMin(int rangeMin) {
+        this.rangeMin = rangeMin;
+    }
+
+    public int getRangeMax() {
+        return rangeMax;
+    }
+
+    public void setRangeMax(int rangeMax) {
+        this.rangeMax = rangeMax;
     }
 
 }

@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.Relationship;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearchArea;
-import edu.tamu.scholars.middleware.graphql.model.person.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.person.HeadOf;
 import edu.tamu.scholars.middleware.graphql.model.person.MemberOf;
 import edu.tamu.scholars.middleware.graphql.model.person.HasCollaborator;
@@ -31,8 +30,12 @@ import edu.tamu.scholars.middleware.graphql.model.person.ProfessionalServiceActi
 import edu.tamu.scholars.middleware.graphql.model.person.OutreachAndCommunityServiceActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.PerformsTechnique;
 import edu.tamu.scholars.middleware.graphql.model.person.HasExpertiseInTechnique;
+import edu.tamu.scholars.middleware.graphql.model.person.InTheNew;
+import edu.tamu.scholars.middleware.graphql.model.person.FutureResearchIdea;
 import edu.tamu.scholars.middleware.graphql.model.person.EtdChairOf;
+import edu.tamu.scholars.middleware.graphql.model.person.CapstoneAdvisedOf;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -58,8 +61,6 @@ public class Person extends AbstractNestedDocument {
   private List<Relationship> positions;
 
   private List<ResearchArea> researchAreas;
-
-  private List<GeographicFocus> geographicFocus;
 
   private List<HeadOf> headOf;
 
@@ -117,9 +118,17 @@ public class Person extends AbstractNestedDocument {
 
   private List<HasExpertiseInTechnique> hasExpertiseInTechnique;
 
+  private List<InTheNew> inTheNews;
+
+  private List<FutureResearchIdea> futureResearchIdeas;
+
   private List<EtdChairOf> etdChairOf;
 
+  private List<CapstoneAdvisedOf> capstoneAdvisedOf;
+
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -150,20 +159,6 @@ public class Person extends AbstractNestedDocument {
   private String teachingOverview;
 
   private String outreachOverview;
-
-  private String isni;
-
-  private String netid;
-
-  private String researcherId;
-
-  private String twitter;
-
-  private String uid;
-
-  private String uin;
-
-  private String youtube;
 
   private String eraCommonsId;
 
@@ -197,6 +192,24 @@ public class Person extends AbstractNestedDocument {
 
   private String fax;
 
+  private List<String> organizations;
+
+  private List<String> schools;
+
+  private String isni;
+
+  private String netid;
+
+  private String researcherId;
+
+  private String twitter;
+
+  private String uid;
+
+  private String uin;
+
+  private String youtube;
+
   private String featuredProfileDisplay;
 
   private List<String> type;
@@ -228,14 +241,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setResearchAreas(List<ResearchArea> researchAreas) {
     this.researchAreas = researchAreas;
-  }
-
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
   }
 
   public List<HeadOf> getHeadOf() {
@@ -467,6 +472,22 @@ public class Person extends AbstractNestedDocument {
     this.hasExpertiseInTechnique = hasExpertiseInTechnique;
   }
 
+  public List<InTheNew> getInTheNews() {
+    return inTheNews;
+  }
+
+  public void setInTheNews(List<InTheNew> inTheNews) {
+    this.inTheNews = inTheNews;
+  }
+
+  public List<FutureResearchIdea> getFutureResearchIdeas() {
+    return futureResearchIdeas;
+  }
+
+  public void setFutureResearchIdeas(List<FutureResearchIdea> futureResearchIdeas) {
+    this.futureResearchIdeas = futureResearchIdeas;
+  }
+
   public List<EtdChairOf> getEtdChairOf() {
     return etdChairOf;
   }
@@ -475,12 +496,28 @@ public class Person extends AbstractNestedDocument {
     this.etdChairOf = etdChairOf;
   }
 
+  public List<CapstoneAdvisedOf> getCapstoneAdvisedOf() {
+    return capstoneAdvisedOf;
+  }
+
+  public void setCapstoneAdvisedOf(List<CapstoneAdvisedOf> capstoneAdvisedOf) {
+    this.capstoneAdvisedOf = capstoneAdvisedOf;
+  }
+
   public List<Website> getWebsites() {
     return websites;
   }
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {
@@ -601,62 +638,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setOutreachOverview(String outreachOverview) {
     this.outreachOverview = outreachOverview;
-  }
-
-  public String getIsni() {
-    return isni;
-  }
-
-  public void setIsni(String isni) {
-    this.isni = isni;
-  }
-
-  public String getNetid() {
-    return netid;
-  }
-
-  public void setNetid(String netid) {
-    this.netid = netid;
-  }
-
-  public String getResearcherId() {
-    return researcherId;
-  }
-
-  public void setResearcherId(String researcherId) {
-    this.researcherId = researcherId;
-  }
-
-  public String getTwitter() {
-    return twitter;
-  }
-
-  public void setTwitter(String twitter) {
-    this.twitter = twitter;
-  }
-
-  public String getUid() {
-    return uid;
-  }
-
-  public void setUid(String uid) {
-    this.uid = uid;
-  }
-
-  public String getUin() {
-    return uin;
-  }
-
-  public void setUin(String uin) {
-    this.uin = uin;
-  }
-
-  public String getYoutube() {
-    return youtube;
-  }
-
-  public void setYoutube(String youtube) {
-    this.youtube = youtube;
   }
 
   public String getEraCommonsId() {
@@ -785,6 +766,78 @@ public class Person extends AbstractNestedDocument {
 
   public void setFax(String fax) {
     this.fax = fax;
+  }
+
+  public List<String> getOrganizations() {
+    return organizations;
+  }
+
+  public void setOrganizations(List<String> organizations) {
+    this.organizations = organizations;
+  }
+
+  public List<String> getSchools() {
+    return schools;
+  }
+
+  public void setSchools(List<String> schools) {
+    this.schools = schools;
+  }
+
+  public String getIsni() {
+    return isni;
+  }
+
+  public void setIsni(String isni) {
+    this.isni = isni;
+  }
+
+  public String getNetid() {
+    return netid;
+  }
+
+  public void setNetid(String netid) {
+    this.netid = netid;
+  }
+
+  public String getResearcherId() {
+    return researcherId;
+  }
+
+  public void setResearcherId(String researcherId) {
+    this.researcherId = researcherId;
+  }
+
+  public String getTwitter() {
+    return twitter;
+  }
+
+  public void setTwitter(String twitter) {
+    this.twitter = twitter;
+  }
+
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
+
+  public String getUin() {
+    return uin;
+  }
+
+  public void setUin(String uin) {
+    this.uin = uin;
+  }
+
+  public String getYoutube() {
+    return youtube;
+  }
+
+  public void setYoutube(String youtube) {
+    this.youtube = youtube;
   }
 
   public String getFeaturedProfileDisplay() {

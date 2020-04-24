@@ -1,0 +1,8 @@
+<ul class="list-unstyled">
+  <li>
+    <span><a href="display/{{futureResearchIdeaOf.id}}">{{futureResearchIdeaOf.label}}</a>{{#if futureResearchIdeaOf.organizations}}, {{/if}}</span>
+    {{#each futureResearchIdeaOf.organizations}}
+    <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
+    {{/each}}
+  </li>
+</ul>

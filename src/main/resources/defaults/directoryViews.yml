@@ -4,6 +4,14 @@
   templates:
     default: "defaults/directoryViews/people/default.html"
   styles: []
+  fields:
+    - type
+    - name
+    - preferredTitle
+    - researchAreas
+    - positions
+    - positionOrganization
+    - thumbnail
   facets:
     - name: Type
       field: type
@@ -22,7 +30,7 @@
       collapsed: true
       hidden: false
     - name: Research Area
-      field: researchAreas
+      field: researchAreas_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -34,7 +42,7 @@
       value: Person
   boosts: []
   sort:
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: First name
@@ -48,11 +56,11 @@
     - columnHeader: Position
       valuePath: positions
     - columnHeader: Department
-      valuePath: positions.organizations
+      valuePath: positionOrganization
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: name
+    field: name_sort
     opKey: STARTS_WITH
     options:
       - A
@@ -87,6 +95,9 @@
   templates:
     default: "defaults/directoryViews/organizations/default.html"
   styles: []
+  fields:
+    - type
+    - name
   facets:
     - name: Type
       field: type
@@ -101,7 +112,7 @@
       value: Organization
   boosts: []
   sort:
-    - field: name
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Name
@@ -109,7 +120,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: name
+    field: name_sort
     opKey: STARTS_WITH
     options:
       - A
@@ -144,6 +155,16 @@
   templates:
     default: "defaults/directoryViews/research/default.html"
   styles: []
+  fields:
+    - type
+    - title
+    - publicationDate
+    - authors
+    - authorOrganization
+    - doi
+    - pmcid
+    - uri
+    - tags
   facets:
     - name: Type
       field: type
@@ -175,7 +196,7 @@
       value: Document
   boosts: []
   sort:
-    - field: title
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Publication type
@@ -191,7 +212,7 @@
     - columnHeader: Author
       valuePath: authors
     - columnHeader: Author's department
-      valuePath: authors.organizations
+      valuePath: authorOrganization
     - columnHeader: DOI
       valuePath: doi
     - columnHeader: PubMed ID
@@ -203,7 +224,7 @@
     - columnHeader: Individual
       valuePath: individual
   index:
-    field: title
+    field: title_sort
     opKey: STARTS_WITH
     options:
       - A

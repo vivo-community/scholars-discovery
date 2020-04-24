@@ -1,3 +1,16 @@
-<span>
-  <a href="display/{{id}}">{{name}}</a>{{#each awardConferredBy}}, conferred by <a href="display/{{id}}">{{label}}</a>{{/each}}
+<span class="highlighted">
+  <a href="display/{{id}}">
+    {{#if highlights.name}}
+    {{{highlights.name}}}
+    {{else}}
+    {{name}}
+    {{/if}}
+  </a>
+  {{#each awardConferredBy}}, conferred by <a href="display/{{id}}">{{#if ./snippet}}{{{./snippet}}}{{else}}{{./label}}{{/if}}</a>{{/each}}
 </span>
+<style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+</style>

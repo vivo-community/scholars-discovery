@@ -18,12 +18,12 @@ public class FilterArgTest {
 
     @Test
     public void testDefaultConstructor() {
-        FilterArg filterArg = new FilterArg("class", "Concept", OpKey.EQUALS);
+        FilterArg filterArg = new FilterArg("class", "Concept", OpKey.EQUALS, "CLAZZ");
         assertNotNull(filterArg);
-        assertEquals("class", filterArg.getProperty());
-        assertEquals("class", filterArg.getPath());
+        assertEquals("class", filterArg.getField());
         assertEquals("Concept", filterArg.getValue());
         assertEquals(OpKey.EQUALS, filterArg.getOpKey());
+        assertEquals("{!tag=CLAZZ}class", filterArg.getCommand());
     }
 
     @Test
@@ -32,24 +32,26 @@ public class FilterArgTest {
         params.put("field", "class");
         params.put("value", "Concept");
         params.put("opKey", OpKey.EQUALS.getKey());
+        params.put("tag", "CLAZZ");
         FilterArg filterArg = FilterArg.of(params);
         assertNotNull(filterArg);
-        assertEquals("class", filterArg.getProperty());
-        assertEquals("class", filterArg.getPath());
+        assertEquals("class", filterArg.getField());
         assertEquals("Concept", filterArg.getValue());
         assertEquals(OpKey.EQUALS, filterArg.getOpKey());
+        assertEquals("{!tag=CLAZZ}class", filterArg.getCommand());
     }
 
     @Test
     public void testOfQueryParameter() {
         Optional<String> value = Optional.of("Concept");
         Optional<String> opKey = Optional.of(OpKey.EQUALS.getKey());
-        FilterArg filterArg = FilterArg.of("class", value, opKey);
+        Optional<String> tag = Optional.of("CLAZZ");
+        FilterArg filterArg = FilterArg.of("class", value, opKey, tag);
         assertNotNull(filterArg);
-        assertEquals("class", filterArg.getProperty());
-        assertEquals("class", filterArg.getPath());
+        assertEquals("class", filterArg.getField());
         assertEquals("Concept", filterArg.getValue());
         assertEquals(OpKey.EQUALS, filterArg.getOpKey());
+        assertEquals("{!tag=CLAZZ}class", filterArg.getCommand());
     }
 
 }

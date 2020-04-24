@@ -53,6 +53,15 @@ public abstract class AbstractIndexDocumentTest<D extends AbstractIndexDocument>
             } else if (String.class.isAssignableFrom(field.getType())) {
                 MethodUtils.invokeMethod(document, true, setter(property), "Test");
                 assertEquals("Test", MethodUtils.invokeMethod(document, true, getter(property)));
+            } else if (Integer.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), 1);
+                assertEquals(1, MethodUtils.invokeMethod(document, true, getter(property)));
+            } else if (Float.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), 2f);
+                assertEquals(2f, MethodUtils.invokeMethod(document, true, getter(property)));
+            } else if (Double.class.isAssignableFrom(field.getType())) {
+                MethodUtils.invokeMethod(document, true, setter(property), 3.2);
+                assertEquals(3.2, MethodUtils.invokeMethod(document, true, getter(property)));
             } else {
                 throw new RuntimeException("Unexpected type");
             }

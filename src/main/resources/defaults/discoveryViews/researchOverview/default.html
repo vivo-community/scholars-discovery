@@ -1,0 +1,50 @@
+<div class="d-flex">
+  <div class="mr-4">
+    {{#if thumbnail}}
+    <div class="rounded-circle person-avatar" style="background-image: url('{{vivoUrl}}{{thumbnail}}')"></div>
+    {{else}}
+    <div class="rounded-circle person-avatar" style="background-image: url('assets/images/default-avatar.png')"></div>
+    {{/if}}
+  </div>
+  <div class="align-self-center highlighted">
+    <div class="name"><a href="display/{{id}}">{{name}}</a></div>
+    <div class="mt-1"><span>{{preferredTitle}}</span>
+      {{#each positions}}
+      {{#each organizations}}
+      <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
+      {{/each}}
+      {{/each}}
+    </div>
+    {{#if highlights.overview}}
+    <div class="mt-1">
+      {{#each highlights.overview}}
+      <span>{{{snippet this ../overview}}}</span>
+      {{/each}}
+    </div>
+    {{else}}
+    {{#if overview}}
+    <div class="mt-1">
+      <span>{{truncate overview 80}}</span>
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+</div>
+<style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .person-avatar {
+    height: 60px;
+    width: 60px;
+    background-size: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+</style>

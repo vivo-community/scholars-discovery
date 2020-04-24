@@ -1,1 +1,6 @@
-<span>{{#toYear publicationDate}}{{/toYear}}</span>
+{{#when type '~' 'NewsRelease' }}
+<span>{{toSimpleDate publicationDate}}</span>
+{{/when}}
+{{#when type '!~' 'NewsRelease' }}
+<span>{{toYear publicationDate}}</span>
+{{/when}}

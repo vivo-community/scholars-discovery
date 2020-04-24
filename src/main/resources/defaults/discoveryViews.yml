@@ -4,6 +4,19 @@
   templates:
     default: "defaults/discoveryViews/people/default.html"
   styles: []
+  highlightFields:
+    - name
+    - preferredTitle
+    - researchAreas
+    - positionOrganization
+  fields:
+    - type
+    - name
+    - preferredTitle
+    - positions
+    - positionOrganization
+    - researchAreas
+    - thumbnail
   facets:
     - name: People
       field: type
@@ -22,7 +35,7 @@
       collapsed: true
       hidden: false
     - name: Research Area
-      field: researchAreas
+      field: researchAreas_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -72,7 +85,9 @@
     - field: name
       value: 4
   sort:
-    - field: name
+    - field: score
+      direction: DESC
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: First name
@@ -86,7 +101,84 @@
     - columnHeader: Position
       valuePath: positions
     - columnHeader: Department
-      valuePath: positions.organizations
+      valuePath: positionOrganization
+    - columnHeader: Individual
+      valuePath: individual
+
+- name: Research Overview
+  layout: LIST
+  templates:
+    default: "defaults/discoveryViews/researchOverview/default.html"
+  styles: []
+  defaultSearchField: overview
+  highlightFields:
+    - overview
+  fields:
+    - type
+    - name
+    - preferredTitle
+    - overview
+    - positions
+    - positionOrganization
+    - thumbnail
+  facets:
+    - name: People
+      field: type
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Organization
+      field: positionOrganization
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Area
+      field: researchAreas_nested_facets
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Keywords
+      field: keywords
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Position
+      field: positions
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Person
+  sort:
+    - field: score
+      direction: DESC
+    - field: name_sort
+      direction: ASC
+  export:
+    - columnHeader: Name
+      valuePath: name
+    - columnHeader: Position
+      valuePath: preferredTitle
+    - columnHeader: Department
+      valuePath: positionOrganization
+    - columnHeader: Overview
+      valuePath: overview
     - columnHeader: Individual
       valuePath: individual
 
@@ -94,12 +186,22 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/publications/default.html"
-    AcademicArticle: "defaults/discoveryViews/publications/default.html"
-    Book: "defaults/discoveryViews/publications/Book.html"
-    Chapter: "defaults/discoveryViews/publications/Chapter.html"
-    ConferencePaper: "defaults/discoveryViews/publications/default.html"
-    Thesis: "defaults/discoveryViews/publications/default.html"
   styles: []
+  highlightFields:
+    - title
+    - bookTitle
+  fields:
+    - type
+    - title
+    - bookTitle
+    - publicationDate
+    - publisher
+    - authors
+    - authorOrganization
+    - doi
+    - pmcid
+    - uri
+    - tags
   facets:
     - name: Type
       field: type
@@ -158,6 +260,34 @@
       pageSize: 10
       collapsed: true
       hidden: false
+    - name: Research Tag
+      field: tags
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Altmetric Score Range
+      field: altmetricScore
+      type: RANGE_SLIDER
+      sort: INDEX
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+      rangeMin: 0
+      rangeMax: 1000
+    - name: Citation Count Range
+      field: citationCount
+      type: RANGE_SLIDER
+      sort: INDEX
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+      rangeMin: 0
+      rangeMax: 10000
   filters:
     - field: class
       value: Document
@@ -169,7 +299,9 @@
     - field: abstract
       value: 2
   sort:
-    - field: title
+    - field: score
+      direction: DESC
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Publication type
@@ -185,7 +317,7 @@
     - columnHeader: Author
       valuePath: authors
     - columnHeader: Author's department
-      valuePath: authors.organizations
+      valuePath: authorOrganization
     - columnHeader: DOI
       valuePath: doi
     - columnHeader: PubMed ID
@@ -202,6 +334,18 @@
   templates:
     default: "defaults/discoveryViews/grants/default.html"
   styles: []
+  highlightFields:
+    - title
+    - awardedBy
+    - contributors
+  fields:
+    - type
+    - title
+    - dateTimeIntervalStart
+    - dateTimeIntervalEnd
+    - awardedBy
+    - contributors
+    - contributors.role
   facets:
     - name: Grants
       field: type
@@ -228,7 +372,7 @@
       collapsed: true
       hidden: false
     - name: Awarded By
-      field: awardedBy
+      field: awardedBy_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -272,13 +416,17 @@
     - field: awardedBy
       value: 2
   sort:
-    - field: title
+    - field: score
+      direction: DESC
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Grant title
       valuePath: title
-    - columnHeader: Grant date
-      valuePath: yearAwarded
+    - columnHeader: Grant date start
+      valuePath: dateTimeIntervalStart
+    - columnHeader: Grant date end
+      valuePath: dateTimeIntervalEnd
     - columnHeader: Awarded by
       valuePath: awardedBy
     - columnHeader: Principal investigators
@@ -295,6 +443,13 @@
   templates:
     default: "defaults/discoveryViews/awards/default.html"
   styles: []
+  highlightFields:
+    - name
+    - awardConferredBy
+  fields:
+    - type
+    - name
+    - awardConferredBy
   facets:
     - name: Awards
       field: type
@@ -322,7 +477,7 @@
       collapsed: true
       hidden: false
     - name: Conferred By
-      field: awardConferredBy
+      field: awardConferredBy_nested_facets
       type: STRING
       sort: COUNT
       direction: DESC
@@ -338,7 +493,9 @@
     - field: name
       value: 2
   sort:
-    - field: name
+    - field: score
+      direction: DESC
+    - field: name_sort
       direction: ASC
   export:
     - columnHeader: Award title
@@ -356,7 +513,14 @@
   layout: LIST
   templates:
     default: "defaults/discoveryViews/courses/default.html"
+  highlightFields:
+    - title
+    - participants
   styles: []
+  fields:
+    - type
+    - title
+    - participants
   facets:
     - name: Courses
       field: type
@@ -374,6 +538,14 @@
       pageSize: 10
       collapsed: true
       hidden: false
+    - name: Participants
+      field: participants_nested_facets
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
     - field: class
       value: Process
@@ -383,62 +555,24 @@
     - field: title
       value: 2
   sort:
-    - field: title
+    - field: score
+      direction: DESC
+    - field: title_sort
       direction: ASC
   export:
     - columnHeader: Course number and title
       valuePath: title
-
-- name: Organizations
-  layout: LIST
-  templates:
-    default: "defaults/discoveryViews/organizations/default.html"
-  styles: []
-  facets:
-    - name: Type
-      field: type
-      type: STRING
-      sort: INDEX
-      direction: ASC
-      pageSize: 10
-      collapsed: true
-      hidden: false
-    - name: Within Organization
-      field: organizationWithin
-      type: STRING
-      sort: COUNT
-      direction: DESC
-      pageSize: 10
-      collapsed: true
-      hidden: false
-    - name: Research Areas
-      field: affiliatedResearchAreas
-      type: STRING
-      sort: COUNT
-      direction: DESC
-      pageSize: 10
-      collapsed: true
-      hidden: false
-  filters:
-    - field: class
-      value: Organization
-  boosts:
-    - field: name
-      value: 2
-  sort:
-    - field: name
-      direction: ASC
-  export:
-    - columnHeader: Name
-      valuePath: name
-    - columnHeader: Individual
-      valuePath: individual
 
 - name: Concepts
   layout: LIST
   templates:
     default: "defaults/discoveryViews/concepts/default.html"
   styles: []
+  highlightFields:
+    - name
+  fields:
+    - type
+    - name
   facets:
     - name: Type
       field: type
@@ -473,12 +607,128 @@
     - field: name
       value: 2
   sort:
-    - field: name
+    - field: score
+      direction: DESC
+    - field: name_sort
       direction: ASC
   export:
-    - columnHeader: Concept name
+    - columnHeader: Concept
       valuePath: name
     - columnHeader: Associated departments
       valuePath: associatedDepartments
+    - columnHeader: Individual
+      valuePath: individual
+
+- name: Ideas
+  layout: LIST
+  templates:
+    default: "defaults/discoveryViews/ideas/default.html"
+  styles: []
+  highlightFields:
+    - name
+    - futureResearchIdeaOf
+  fields:
+    - type
+    - name
+    - futureResearchIdeaOf
+    - futureResearchIdeaOfOrganization
+    - createdDate
+  facets:
+    - name: People
+      field: futureResearchIdeaOf_nested_facets
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Organization
+      field: futureResearchIdeaOfOrganization
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Keyword
+      field: keywords
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Concept
+    - field: type
+      value: FutureResearchIdea
+  boosts:
+    - field: name
+      value: 2
+  sort:
+    - field: score
+      direction: DESC
+    - field: name_sort
+      direction: ASC
+  export:
+    - columnHeader: Future Research Idea
+      valuePath: name
+    - columnHeader: Researcher
+      valuePath: futureResearchIdeaOf
+    - columnHeader: Researcher Organization
+      valuePath: futureResearchIdeaOfOrganization
+    - columnHeader: Individual
+      valuePath: individual
+
+- name: Organizations
+  layout: LIST
+  templates:
+    default: "defaults/discoveryViews/organizations/default.html"
+  styles: []
+  highlightFields:
+    - name
+  fields:
+    - type
+    - name
+  facets:
+    - name: Type
+      field: type
+      type: STRING
+      sort: INDEX
+      direction: ASC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Within Organization
+      field: organizationWithin
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: Research Areas
+      field: affiliatedResearchAreas_nested_facets
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+  filters:
+    - field: class
+      value: Organization
+  boosts:
+    - field: name
+      value: 2
+  sort:
+    - field: score
+      direction: DESC
+    - field: name_sort
+      direction: ASC
+  export:
+    - columnHeader: Name
+      valuePath: name
     - columnHeader: Individual
       valuePath: individual

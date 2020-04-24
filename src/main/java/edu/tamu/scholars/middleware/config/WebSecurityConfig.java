@@ -54,9 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.h2.console.enabled:false}")
     private boolean h2ConsoleEnabled;
 
-    @Value("${spring.data.rest.authorize-hal-browser:false}")
-    private boolean halBrowserAuthorized;
-
     @Autowired
     private MiddlewareConfig config;
 
@@ -132,14 +129,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        if(authorizeHalBrowser()) {
-            // NOTE: permit all access for HAL browser
-            http
-                .authorizeRequests()
-                    .antMatchers("/**")
-                        .permitAll();
-        }
-        if(enableH2Console()) {
+        if (enableH2Console()) {
             // NOTE: permit all access to h2console
             http
                 .authorizeRequests()
@@ -204,7 +194,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/directoryViews", "/directoryViews/{id}",
                         "/discoveryViews", "/discoveryViews/{id}",
                         "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
-                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/faceted", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
+                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/advanced", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
                     )
                     .permitAll()
                 .antMatchers(GET,
@@ -275,10 +265,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private NullRequestCache nullRequestCache() {
         return new NullRequestCache();
-    }
-
-    private boolean authorizeHalBrowser() {
-        return halBrowserAuthorized && !profile.equals("production") && !profile.equals("test");
     }
 
     private boolean enableH2Console() {

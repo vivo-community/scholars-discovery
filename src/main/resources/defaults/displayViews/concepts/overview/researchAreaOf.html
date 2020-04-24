@@ -1,9 +1,11 @@
 <ul class="list-unstyled">
   {{#each researchAreaOf}}
   <li>
-    <span><a href="display/{{id}}">{{label}}{{#if organizations}}, {{/if}}</a></span>
+    <span><a href="display/{{id}}">{{name}}</a>{{#if positions}}, {{/if}}</span>
+    {{#each positions}}
     {{#each organizations}}
-    <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+    <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
+    {{/each}}
     {{/each}}
   </li>
   {{/each}}

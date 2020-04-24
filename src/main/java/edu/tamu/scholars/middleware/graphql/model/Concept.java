@@ -8,7 +8,9 @@ import edu.tamu.scholars.middleware.graphql.model.concept.Receipt;
 import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
+import edu.tamu.scholars.middleware.graphql.model.concept.FutureResearchIdeaOf;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -47,7 +49,11 @@ public class Concept extends AbstractNestedDocument {
 
   private List<RelatedConcept> relatedConcepts;
 
+  private FutureResearchIdeaOf futureResearchIdeaOf;
+
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -56,6 +62,12 @@ public class Concept extends AbstractNestedDocument {
   private List<String> awardConferredByPreferredLabel;
 
   private String yearAwarded;
+
+  private List<String> keywords;
+
+  private String description;
+
+  private String createdDate;
 
   private List<String> type;
 
@@ -136,12 +148,28 @@ public class Concept extends AbstractNestedDocument {
     this.relatedConcepts = relatedConcepts;
   }
 
+  public FutureResearchIdeaOf getFutureResearchIdeaOf() {
+    return futureResearchIdeaOf;
+  }
+
+  public void setFutureResearchIdeaOf(FutureResearchIdeaOf futureResearchIdeaOf) {
+    this.futureResearchIdeaOf = futureResearchIdeaOf;
+  }
+
   public List<Website> getWebsites() {
     return websites;
   }
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {
@@ -174,6 +202,30 @@ public class Concept extends AbstractNestedDocument {
 
   public void setYearAwarded(String yearAwarded) {
     this.yearAwarded = yearAwarded;
+  }
+
+  public List<String> getKeywords() {
+    return keywords;
+  }
+
+  public void setKeywords(List<String> keywords) {
+    this.keywords = keywords;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(String createdDate) {
+    this.createdDate = createdDate;
   }
 
   public List<String> getType() {

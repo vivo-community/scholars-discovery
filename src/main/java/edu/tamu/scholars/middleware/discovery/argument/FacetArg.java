@@ -3,9 +3,14 @@ package edu.tamu.scholars.middleware.discovery.argument;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
+import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 import edu.tamu.scholars.middleware.view.model.FacetType;
 
-public class FacetArg extends MappingArg {
+public class FacetArg {
+
+    private final String field;
 
     private final FacetSortArg sort;
 
@@ -15,12 +20,19 @@ public class FacetArg extends MappingArg {
 
     private final FacetType type;
 
-    public FacetArg(String field, String sort, int pageSize, int pageNumber, String type) {
-        super(field);
+    private final String exclusionTag;
+
+    public FacetArg(String field, String sort, int pageSize, int pageNumber, String type, String exclusionTag) {
+        this.field = DiscoveryUtility.findProperty(field);
         this.sort = FacetSortArg.of(sort);
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
         this.type = FacetType.valueOf(type);
+        this.exclusionTag = exclusionTag;
+    }
+
+    public String getField() {
+        return field;
     }
 
     public FacetSortArg getSort() {
@@ -39,6 +51,10 @@ public class FacetArg extends MappingArg {
         return type;
     }
 
+    public String getCommand() {
+        return StringUtils.isEmpty(exclusionTag) ? field : String.format("{!ex=%s}%s", exclusionTag, field);
+    }
+
     @SuppressWarnings("unchecked")
     public static FacetArg of(Object input) {
         Map<String, Object> facet = (Map<String, Object>) input;
@@ -47,17 +63,17 @@ public class FacetArg extends MappingArg {
         int pageSize = (int) facet.get("pageSize");
         int pageNumber = (int) facet.get("pageNumber");
         String type = (String) facet.get("type");
-        return new FacetArg(field, sort, pageSize, pageNumber, type);
+        String exclusionTag = facet.containsKey("exclusionTag") ? (String) facet.get("exclusionTag") : StringUtils.EMPTY;
+        return new FacetArg(field, sort, pageSize, pageNumber, type, exclusionTag);
     }
 
-    public static FacetArg of(String field, Optional<String> sort, Optional<String> pageSize, Optional<String> pageNumber, Optional<String> type) {
-        // @formatter:off
-        return new FacetArg(field,
-            sort.isPresent() ? sort.get() : "COUNT,DESC",
-            pageSize.isPresent() ? Integer.valueOf(pageSize.get()) : 10,
-            pageNumber.isPresent() ? Integer.valueOf(pageNumber.get()) : 1,
-            type.isPresent() ? type.get() : "STRING");
-        // @formatter:on
+    public static FacetArg of(String field, Optional<String> sort, Optional<String> pageSize, Optional<String> pageNumber, Optional<String> type, Optional<String> exclusionTag) {
+        String sortParam = sort.isPresent() ? sort.get() : "COUNT,DESC";
+        int pageSizeParam = pageSize.isPresent() ? Integer.valueOf(pageSize.get()) : 10;
+        int pageNumberParam = pageNumber.isPresent() ? Integer.valueOf(pageNumber.get()) : 1;
+        String typeParam = type.isPresent() ? type.get() : "STRING";
+        String exclusionTagParam = exclusionTag.isPresent() ? exclusionTag.get() : StringUtils.EMPTY;
+        return new FacetArg(field, sortParam, pageSizeParam, pageNumberParam, typeParam, exclusionTagParam);
     }
 
 }

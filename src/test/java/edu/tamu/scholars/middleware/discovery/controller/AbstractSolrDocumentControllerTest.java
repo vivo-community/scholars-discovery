@@ -1,8 +1,8 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -53,7 +53,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
             .param("size", "10")
             .param("sort", "id"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath("page.size", equalTo(10)))
                 .andExpect(jsonPath("page.totalElements", equalTo(numberOfDocuments)))
                 .andExpect(jsonPath("page.totalPages", equalTo(3)))
@@ -78,7 +78,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                             subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
                             subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "individual")),
                             subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("highlights").description(String.format("Highlights for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
                         )
                     )
                 );
@@ -93,7 +94,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
             // @formatter:off
             mockMvc.perform(get("/individual/{id}", mockDocument.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andDo(
                     document(
                         getDocPath() + "/findById",
@@ -109,8 +110,9 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
     @Test
     public void testSearchSolrDocumentsFacetPage() throws Exception {
         // @formatter:off
-        mockMvc.perform(get("/individual/search/faceted")
-            .param("query", "*")
+        mockMvc.perform(get("/individual/search/advanced")
+            .param("q", "*:*")
+            .param("df", "_text_")
             .param("facets", "type")
             .param("type.limit", "5")
             .param("type.offset", "0")
@@ -121,16 +123,17 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
             .param("size", "20")
             .param("sort", "id"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath("page.size", equalTo(20)))
                 .andExpect(jsonPath("page.totalElements", equalTo(mockDocuments.size())))
                 .andExpect(jsonPath("page.totalPages", equalTo(1)))
                 .andExpect(jsonPath("page.number", equalTo(1)))
                 .andDo(
                     document(
-                        getDocPath() + "/search/faceted",
+                        getDocPath() + "/search/advanced",
                         requestParameters(
-                            parameterWithName("query").description("The search query."),
+                            parameterWithName("q").description("The search query."),
+                            parameterWithName("df").description("The default search field."),
                             parameterWithName("facets").description("The facet fields."),
                             parameterWithName("type.limit").description("Type facet limit."),
                             parameterWithName("type.offset").description("Type facet offset."),
@@ -148,7 +151,8 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                             subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
                             subsectionWithPath("_links").description(String.format("<<resources-%s-list-links, Links>> to other resources.", "individual")),
                             subsectionWithPath("page").description(String.format("Page details for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
-                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
+                            subsectionWithPath("facets").description(String.format("Facets for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),
+                            subsectionWithPath("highlights").description(String.format("Highlights for <<resources-%s, %s resources>>.", "individual", getType().getSimpleName()))
                         )
                     )
                 );
@@ -159,17 +163,17 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
     public void testSearchSolrDocumentsCount() throws Exception {
         // @formatter:off
         mockMvc.perform(get("/individual/search/count")
-            .param("query", "*")
+            .param("q", "*:*")
             .param("filters", "class")
             .param("class.filter", getType().getSimpleName()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("value", equalTo(mockDocuments.size())))
                 .andDo(
                     document(
                         getDocPath() + "/search/count",
                         requestParameters(
-                            parameterWithName("query").description("The search query."),
+                            parameterWithName("q").description("The search query."),
                             parameterWithName("filters").description("The filter fields."),
                             parameterWithName("class.filter").description("Class filter value.")
                         ),
@@ -189,7 +193,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
             .param("filters", "class")
             .param("class.filter", getType().getSimpleName()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath(String.format("$._embedded.individual.length()"), equalTo(2)))
                 .andDo(
                     document(
@@ -218,7 +222,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
         mockMvc.perform(get("/individual/search/findByIdIn")
             .param("ids", String.join(",", ids)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andDo(
                     document(
                         getDocPath() + "/search/findByIdIn",

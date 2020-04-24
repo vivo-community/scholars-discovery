@@ -20,15 +20,15 @@ public class FacetArgTest {
 
     @Test
     public void testDefaultConstructor() {
-        FacetArg facetArg = new FacetArg("class", "COUNT,DESC", 10, 1, "STRING");
+        FacetArg facetArg = new FacetArg("class", "COUNT,DESC", 10, 1, "STRING", "CLAZZ");
         assertNotNull(facetArg);
-        assertEquals("class", facetArg.getPath());
-        assertEquals("class", facetArg.getProperty());
+        assertEquals("class", facetArg.getField());
         assertEquals(FacetSort.COUNT, facetArg.getSort().getProperty());
         assertEquals(Direction.DESC, facetArg.getSort().getDirection());
         assertEquals(10, facetArg.getPageSize());
         assertEquals(1, facetArg.getPageNumber());
         assertEquals(FacetType.STRING, facetArg.getType());
+        assertEquals("{!ex=CLAZZ}class", facetArg.getCommand());
     }
 
     @Test
@@ -39,15 +39,16 @@ public class FacetArgTest {
         params.put("pageSize", 10);
         params.put("pageNumber", 1);
         params.put("type", "STRING");
+        params.put("exclusionTag", "CLAZZ");
         FacetArg facetArg = FacetArg.of(params);
         assertNotNull(facetArg);
-        assertEquals("class", facetArg.getPath());
-        assertEquals("class", facetArg.getProperty());
+        assertEquals("class", facetArg.getField());
         assertEquals(FacetSort.COUNT, facetArg.getSort().getProperty());
         assertEquals(Direction.DESC, facetArg.getSort().getDirection());
         assertEquals(10, facetArg.getPageSize());
         assertEquals(1, facetArg.getPageNumber());
         assertEquals(FacetType.STRING, facetArg.getType());
+        assertEquals("{!ex=CLAZZ}class", facetArg.getCommand());
     }
 
     @Test
@@ -56,15 +57,16 @@ public class FacetArgTest {
         Optional<String> pageSize = Optional.of("10");
         Optional<String> pageNumber = Optional.of("1");
         Optional<String> type = Optional.of("STRING");
-        FacetArg facetArg = FacetArg.of("class", sort, pageSize, pageNumber, type);
+        Optional<String> exclusionTag = Optional.of("CLAZZ");
+        FacetArg facetArg = FacetArg.of("class", sort, pageSize, pageNumber, type, exclusionTag);
         assertNotNull(facetArg);
-        assertEquals("class", facetArg.getPath());
-        assertEquals("class", facetArg.getProperty());
+        assertEquals("class", facetArg.getField());
         assertEquals(FacetSort.COUNT, facetArg.getSort().getProperty());
         assertEquals(Direction.DESC, facetArg.getSort().getDirection());
         assertEquals(10, facetArg.getPageSize());
         assertEquals(1, facetArg.getPageNumber());
         assertEquals(FacetType.STRING, facetArg.getType());
+        assertEquals("{!ex=CLAZZ}class", facetArg.getCommand());
     }
 
 }

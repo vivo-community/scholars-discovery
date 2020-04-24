@@ -1,0 +1,42 @@
+<div class="highlighted">
+  {{#if name}}
+  {{#if highlights.name}}
+  <a href="display/{{id}}">{{{highlights.name}}}</a>
+  {{else}}
+  <a href="display/{{id}}">{{name}}</a>
+  {{/if}}
+  {{else}}
+  <a href="display/{{id}}">No name available ({{id}})</a>
+  {{/if}}
+</div>
+{{#if futureResearchIdeaOf}}
+<div class="highlighted">
+  <div>
+    <span><span class="label">Idea Of</span>: </span>
+    {{#if futureResearchIdeaOf.snippet}}
+    <span><a href="display/{{futureResearchIdeaOf.id}}">{{{futureResearchIdeaOf.snippet}}}</a>{{#if futureResearchIdeaOf.organizations}}, {{/if}}</span>
+    {{else}}
+    <span><a href="display/{{futureResearchIdeaOf.id}}">{{futureResearchIdeaOf.label}}</a>{{#if futureResearchIdeaOf.organizations}}, {{/if}}</span>
+    {{/if}}
+    {{#each futureResearchIdeaOf.organizations}}
+    <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
+    {{/each}}
+  </div>
+</div>
+{{/if}}
+{{#if createdDate}}
+<div>
+  <span><span class="label">Created</span>: <span>{{toSimpleDate createdDate}}</span></span>
+</div>
+{{/if}}
+<style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+
+  .label {
+    font-weight: 550;
+    margin-right: 2px;
+  }
+</style>

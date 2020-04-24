@@ -2,19 +2,10 @@ package edu.tamu.scholars.middleware.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Service;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
@@ -25,6 +16,10 @@ import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import edu.tamu.scholars.middleware.auth.controller.request.Registration;
 
@@ -40,7 +35,7 @@ public class TemplateService {
     private String vivoUrl;
 
     @Autowired
-    private ResourceLoader resourceLoader;
+    private ResourceService resourceService;
 
     public TemplateService() {
         handlebars.with(new HighConcurrencyTemplateCache());
@@ -49,7 +44,7 @@ public class TemplateService {
 
     @PostConstruct
     public void init() throws IOException, Exception {
-        InputStream helpers = getResource("classpath:templates/helpers.js");
+        InputStream helpers = resourceService.getResource("classpath:templates/helpers.js");
         handlebars.registerHelpers("helpers.js", helpers);
     }
 
@@ -67,7 +62,7 @@ public class TemplateService {
         data.put("uri", uri);
         Context context = Context.newBuilder(data).build();
         try {
-            return handlebars.compileInline(getTemplate(path)).apply(context);
+            return handlebars.compileInline(resourceService.getTemplate(path)).apply(context);
         } catch (IOException e) {
             throw new RuntimeException(String.format("Unable to template %s sparql", name), e);
         }
@@ -80,7 +75,7 @@ public class TemplateService {
         data.put("link", String.format("%s?key=%s", uiUrl, key));
         Context context = Context.newBuilder(data).build();
         try {
-            return handlebars.compileInline(getTemplate(path)).apply(context);
+            return handlebars.compileInline(resourceService.getTemplate(path)).apply(context);
         } catch (IOException e) {
             throw new RuntimeException("Unable to template registration messsage", e);
         }
@@ -96,16 +91,6 @@ public class TemplateService {
             MethodValueResolver.INSTANCE
         ).build();
         // @formatter:on
-    }
-
-    @Cacheable("templates")
-    private String getTemplate(String path) throws IOException {
-        return IOUtils.toString(getResource(path), StandardCharsets.UTF_8.name());
-    }
-
-    private InputStream getResource(String path) throws IOException {
-        Resource resource = resourceLoader.getResource(path);
-        return resource.getInputStream();
     }
 
 }

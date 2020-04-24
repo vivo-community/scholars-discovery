@@ -3,7 +3,7 @@ package edu.tamu.scholars.middleware.view.controller;
 import static edu.tamu.scholars.middleware.view.ViewTestUtility.MOCK_VIEW_NAME;
 import static edu.tamu.scholars.middleware.view.ViewTestUtility.getMockDirectoryView;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -53,6 +53,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -69,6 +70,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -100,6 +102,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -116,6 +119,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                         describeDirectoryView.withField("layout", "The layout of the Directory View."),
                         describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                         describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                        describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                         describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                         describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                         describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -140,7 +144,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                 .content("{\"name\": \"Organizations\"}")
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                    .andExpect(content().contentType(HAL_JSON_VALUE))
                     .andExpect(jsonPath("name", equalTo("Organizations")))
                     .andDo(
                         document(
@@ -155,6 +159,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                                 describeDirectoryView.withParameter("index", "A <<resources-index, Index resource>>.").optional(),
                                 describeDirectoryView.withParameter("templates", "The result templates of the Directory View.").optional(),
                                 describeDirectoryView.withParameter("styles", "An array of result style strings of the Directory View.").optional(),
+                                describeDirectoryView.withParameter("fields", "An array of fields of the Directory View.").optional(),
                                 describeDirectoryView.withParameter("facets", "An array of <<resources-facets, Facet resources>>.").optional(),
                                 describeDirectoryView.withParameter("filters", "An array of <<resources-filters, Filters resources>>.").optional(),
                                 describeDirectoryView.withParameter("boosts", "An array of <<resources-boosts, Boosts resources>>.").optional(),
@@ -170,6 +175,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                                 describeDirectoryView.withField("layout", "The layout of the Directory View."),
                                 describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                                 describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                                describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                                 describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                                 describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                                 describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -191,7 +197,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
         mockMvc.perform(
             get("/directoryViews/{id}", directoryView.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath("name", equalTo(MOCK_VIEW_NAME)))
                 .andDo(
                     document(
@@ -208,6 +214,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                             describeDirectoryView.withField("layout", "The layout of the Directory View."),
                             describeDirectoryView.withSubsection("templates", "The result templates of the Directory View."),
                             describeDirectoryView.withField("styles", "An array of result style strings of the Directory View."),
+                            describeDirectoryView.withField("fields", "An array of fields of the Directory View."),
                             describeDirectoryView.withSubsection("index", "A <<resources-index, Index resource>>."),
                             describeDirectoryView.withSubsection("facets", "An array of <<resources-facets, Facet resources>>."),
                             describeDirectoryView.withSubsection("filters", "An array of <<resources-filters, Filters resources>>."),
@@ -228,7 +235,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
         mockMvc.perform(
             get("/directoryViews").param("page", "0").param("size", "20").param("sort", "name"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(HAL_JSON_VALUE))
                 .andExpect(jsonPath("page.size", equalTo(20)))
                 .andExpect(jsonPath("page.totalElements", equalTo(1)))
                 .andExpect(jsonPath("page.totalPages", equalTo(1)))
@@ -293,7 +300,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                 .contentType(MediaType.APPLICATION_JSON)
                 .cookie(loginAdmin()))
                     .andExpect(status().isCreated())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE)
+                    .andExpect(content().contentType(HAL_JSON_VALUE)
             );
         // @formatter:on
     }
@@ -301,7 +308,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
     private ResultActions performUpdateDirectoryView() throws JsonProcessingException, Exception {
         DirectoryView directoryView = viewRepo.findByName(MOCK_VIEW_NAME).get();
         directoryView.setName("Organizations");
-//        directoryView.setCollection("organizations");
+        // directoryView.setCollection("organizations");
 
         // @formatter:off
         return mockMvc.perform(
@@ -309,7 +316,7 @@ public class DirectoryViewControllerTest extends ResourceViewIntegrationTest<Dir
                 .content(objectMapper.writeValueAsString(directoryView))
                 .cookie(loginAdmin()))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE)
+                    .andExpect(content().contentType(HAL_JSON_VALUE)
             );
         // @formatter:on
     }

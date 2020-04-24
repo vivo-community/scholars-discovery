@@ -11,9 +11,16 @@
   </div>
   <div class="ml-1">
     {{#each associatedDepartments}}
-    <span><a href="display/{{id}}">{{label}}{{#if @last}}{{else}}, {{/if}}</a></span>
+    <span><a href="display/{{id}}">{{label}}</a>{{#if @last}}{{else}}, {{/if}}</span>
     {{/each}}
   </div>
+  {{/if}}
+  {{#if futureResearchIdeaOf}}
+  {{#if futureResearchIdeaOf.email}}
+  <div class="mt-2">
+    <span><a href="mailto:{{futureResearchIdeaOf.email}}" rel="noopener noreferrer" class="btn btn-primary">Contact the owner</a></span>
+  </div>
+  {{/if}}
   {{/if}}
 </div>
 <style>

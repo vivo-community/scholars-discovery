@@ -12,6 +12,21 @@
   </div>
   {{/if}}
 
+  {{#hasTags publications}}
+  <div class="d-block d-lg-none mt-2 mb-2">
+    <div>
+      <span><i class="fa fa-tag"></i></span>
+      <span class="label">Research Tags:</span>
+    </div>
+    <div class="m-1 text-center">
+      {{#tags publications}}
+      <span class="badge badge-light"><a href="discovery/Publications?collection=individual&fl=type,title,bookTitle,publicationDate,publisher,authors,authors.organizations,doi,pmcid,uri,tags&facets=type,publicationDate,authors,authors.organizations,publicationVenue,publisher,keywords,tags,altmetricScore,citationCount&type.type=STRING&type.pageSize=10&type.pageNumber=1&type.sort=COUNT,DESC&publicationDate.type=DATE_YEAR&publicationDate.pageSize=10&publicationDate.pageNumber=1&publicationDate.sort=INDEX,DESC&authors.type=STRING&authors.pageSize=10&authors.pageNumber=1&authors.sort=COUNT,DESC&authors.organizations.type=STRING&authors.organizations.pageSize=10&authors.organizations.pageNumber=1&authors.organizations.sort=COUNT,DESC&publicationVenue.type=STRING&publicationVenue.pageSize=10&publicationVenue.pageNumber=1&publicationVenue.sort=COUNT,DESC&publisher.type=STRING&publisher.pageSize=10&publisher.pageNumber=1&publisher.sort=COUNT,DESC&keywords.type=STRING&keywords.pageSize=10&keywords.pageNumber=1&keywords.sort=COUNT,DESC&tags.type=STRING&tags.pageSize=10&tags.pageNumber=1&tags.sort=COUNT,DESC&altmetricScore.type=RANGE_SLIDER&altmetricScore.pageSize=10&altmetricScore.pageNumber=1&altmetricScore.sort=INDEX,DESC&citationCount.type=RANGE_SLIDER&citationCount.pageSize=10&citationCount.pageNumber=1&citationCount.sort=INDEX,DESC&class.filter=Document&class.opKey=EQUALS&tags.filter={{this}}&tags.opKey=EQUALS&filters=class,tags&boost=title,2&boost=keywords,2&boost=abstract,2&sort=score,DESC&sort=title_sort,ASC&hl=title&hl=bookTitle&size=10" target="_blank">{{this}}</a></span>
+      {{/tags}}
+    </div>
+    <hr />
+  </div>
+  {{/hasTags}}
+
   <div>
     <div class="text-nowrap">
       <a href="{{serviceUrl}}/individual/{{id}}/export"><i class="fa fa-user"><span class="d-none">export individual record</span></i><span class="info">Single Page Bio</span></a>
@@ -56,7 +71,7 @@
     <span class="label">Websites</span>
     <ul class="list-unstyled ml-1">
       {{#each websites}}
-      <li><span><a href="{{url}}">{{label}}</a></span></li>
+      <li><span><a href="{{url}}" target="_blank">{{label}}</a></span></li>
       {{/each}}
     </ul>
   </div>
@@ -69,7 +84,23 @@
       <span class="label">ORCID</span>
     </div>
     <div>
-      <span><a href="https://orcid.org/{{orcidId}}">{{orcidId}}</a></span>
+      <span><a href="https://orcid.org/{{orcidId}}" target="_blank">{{orcidId}}</a></span>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if futureResearchIdeas}}
+  <div class="d-none d-lg-block">
+    <hr />
+    <div class="mt-1">
+      <span class="label">Future Research Ideas:</span>
+    </div>
+    <div class="ml-1">
+      <ul class="list-unstyled ml-1">
+        {{#each futureResearchIdeas}}
+        <li><span><a href="display/{{id}}">{{label}}</a></span></li>
+        {{/each}}
+      </ul>
     </div>
   </div>
   {{/if}}
@@ -88,10 +119,27 @@
   </div>
   {{/if}}
 
+  {{#hasTags publications}}
+  <div class="d-none d-lg-block">
+    <hr />
+    <div class="mt-1">
+      <span><i class="fa fa-tag"></i></span>
+      <span class="label">Research Tags:</span>
+    </div>
+    <div class="m-1 text-center">
+      {{#tags publications}}
+      <span class="badge badge-light"><a href="discovery/Publications?collection=individual&fl=type,title,bookTitle,publicationDate,publisher,authors,authors.organizations,doi,pmcid,uri,tags&facets=type,publicationDate,authors,authors.organizations,publicationVenue,publisher,keywords,tags,altmetricScore,citationCount&type.type=STRING&type.pageSize=10&type.pageNumber=1&type.sort=COUNT,DESC&publicationDate.type=DATE_YEAR&publicationDate.pageSize=10&publicationDate.pageNumber=1&publicationDate.sort=INDEX,DESC&authors.type=STRING&authors.pageSize=10&authors.pageNumber=1&authors.sort=COUNT,DESC&authors.organizations.type=STRING&authors.organizations.pageSize=10&authors.organizations.pageNumber=1&authors.organizations.sort=COUNT,DESC&publicationVenue.type=STRING&publicationVenue.pageSize=10&publicationVenue.pageNumber=1&publicationVenue.sort=COUNT,DESC&publisher.type=STRING&publisher.pageSize=10&publisher.pageNumber=1&publisher.sort=COUNT,DESC&keywords.type=STRING&keywords.pageSize=10&keywords.pageNumber=1&keywords.sort=COUNT,DESC&tags.type=STRING&tags.pageSize=10&tags.pageNumber=1&tags.sort=COUNT,DESC&altmetricScore.type=RANGE_SLIDER&altmetricScore.pageSize=10&altmetricScore.pageNumber=1&altmetricScore.sort=INDEX,DESC&citationCount.type=RANGE_SLIDER&citationCount.pageSize=10&citationCount.pageNumber=1&citationCount.sort=INDEX,DESC&class.filter=Document&class.opKey=EQUALS&tags.filter={{this}}&tags.opKey=EQUALS&filters=class,tags&boost=title,2&boost=keywords,2&boost=abstract,2&sort=score,DESC&sort=title_sort,ASC&hl=title&hl=bookTitle&size=10" target="_blank">{{this}}</a></span>
+      {{/tags}}
+    </div>
+  </div>
+  {{/hasTags}}
+
 </div>
 <style>
   .aside .info,
-  .aside .fa {
+  .aside .fa-user,
+  .aside .fa-envelope-o,
+  .aside .fa-phone {
     font-size: 16px;
     width: 25px;
     height: 25px;
