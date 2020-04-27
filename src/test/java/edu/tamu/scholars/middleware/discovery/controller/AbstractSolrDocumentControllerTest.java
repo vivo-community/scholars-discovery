@@ -188,7 +188,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
     @Test
     public void testRecentlyUpdated() throws Exception {
         // @formatter:off
-        mockMvc.perform(get("/individual/search/recently-updated")
+        mockMvc.perform(get("/individual/search/recentlyUpdated")
             .param("limit", "2")
             .param("filters", "class")
             .param("class.filter", getType().getSimpleName()))
@@ -197,7 +197,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                 .andExpect(jsonPath(String.format("$._embedded.individual.length()"), equalTo(2)))
                 .andDo(
                     document(
-                        getDocPath() + "/search/recently-updated",
+                        getDocPath() + "/search/recentlyUpdated",
                         requestParameters(
                             parameterWithName("limit").description("The number of recently updated documents to return."),
                             parameterWithName("filters").description("The filter fields."),
