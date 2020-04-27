@@ -132,91 +132,73 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         if (enableH2Console()) {
             // NOTE: permit all access to h2console
             http
-                .authorizeRequests()
-                    .antMatchers("/h2console/**")
-                        .permitAll()
-                .and()
-                    .headers()
-                        .frameOptions()
-                            .sameOrigin();
+                .headers()
+                    .frameOptions()
+                        .sameOrigin();
         }
         http
             .authorizeRequests()
                 .expressionHandler(securityExpressionHandler)
 
-                .antMatchers("/connect/**")
-                    .permitAll()
-
                 .antMatchers(PATCH,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}",
-                        "/users/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}",
+                    "/users/{id}")
                     .hasRole("ADMIN")
 
                 .antMatchers(POST,
-                        "/registration",
-                        "/graphql"
-                    )
+                    "/registration",
+                    "/graphql")
                     .permitAll()
+
                 .antMatchers(POST,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
+
                 .antMatchers(POST, "/users/{id}")
                     .denyAll()
 
                 .antMatchers(PUT, "/registration")
                     .permitAll()
+
                 .antMatchers(PUT,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
+
                 .antMatchers(PUT, "/users/{id}")
                     .denyAll()
 
+                .antMatchers(GET, "/user")
+                    .hasRole("USER")
+
                 .antMatchers(GET,
-                        "/actuator/health",
-                        "/actuator/info",
-                        "/api",
-                        "/gui",
-                        "/graphql",
-                        "/registration",
-                        "/themes/search/active",
-                        "/directoryViews", "/directoryViews/{id}",
-                        "/discoveryViews", "/discoveryViews/{id}",
-                        "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
-                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/advanced", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
-                    )
-                    .permitAll()
-                .antMatchers(GET,
-                        "/users",
-                        "/users/{id}",
-                        "/themes",
-                        "/themes/{id}"
-                    )
+                    "/users",
+                    "/users/{id}",
+                    "/themes",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
 
                 .antMatchers(DELETE,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
+
                 .antMatchers(DELETE, "/users/{id}")
                     .hasRole("SUPER_ADMIN")
 
                 .anyRequest()
-                    .authenticated()
+                    .permitAll()
+
             .and()
                 .formLogin()
                     .successHandler(authenticationSuccessHandler())
