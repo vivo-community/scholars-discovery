@@ -126,16 +126,16 @@ include::../{snippets}/concepts/search/count/curl-request.adoc[]
 This will return a json response listing recently updated concepts, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/concepts/search/recently-updated/request-parameters.adoc[]
+include::../{snippets}/concepts/search/recentlyUpdated/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/concepts/search/recently-updated/response-fields.adoc[]
+include::../{snippets}/concepts/search/recentlyUpdated/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/concepts/search/recently-updated/http-request.adoc[]
+include::../{snippets}/concepts/search/recentlyUpdated/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/concepts/search/recently-updated/http-response.adoc[]
+include::../{snippets}/concepts/search/recentlyUpdated/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/concepts/search/recently-updated/curl-request.adoc[]
+include::../{snippets}/concepts/search/recentlyUpdated/curl-request.adoc[]

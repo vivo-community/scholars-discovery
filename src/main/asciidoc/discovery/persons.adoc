@@ -126,16 +126,16 @@ include::../{snippets}/persons/search/count/curl-request.adoc[]
 This will return a json response listing recently updated persons, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/persons/search/recently-updated/request-parameters.adoc[]
+include::../{snippets}/persons/search/recentlyUpdated/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/persons/search/recently-updated/response-fields.adoc[]
+include::../{snippets}/persons/search/recentlyUpdated/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/persons/search/recently-updated/http-request.adoc[]
+include::../{snippets}/persons/search/recentlyUpdated/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/persons/search/recently-updated/http-response.adoc[]
+include::../{snippets}/persons/search/recentlyUpdated/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/persons/search/recently-updated/curl-request.adoc[]
+include::../{snippets}/persons/search/recentlyUpdated/curl-request.adoc[]

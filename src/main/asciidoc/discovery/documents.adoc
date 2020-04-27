@@ -126,16 +126,16 @@ include::../{snippets}/documents/search/count/curl-request.adoc[]
 This will return a json response listing recently updated documents, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/documents/search/recently-updated/request-parameters.adoc[]
+include::../{snippets}/documents/search/recentlyUpdated/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/documents/search/recently-updated/response-fields.adoc[]
+include::../{snippets}/documents/search/recentlyUpdated/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/documents/search/recently-updated/http-request.adoc[]
+include::../{snippets}/documents/search/recentlyUpdated/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/documents/search/recently-updated/http-response.adoc[]
+include::../{snippets}/documents/search/recentlyUpdated/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/documents/search/recently-updated/curl-request.adoc[]
+include::../{snippets}/documents/search/recentlyUpdated/curl-request.adoc[]
