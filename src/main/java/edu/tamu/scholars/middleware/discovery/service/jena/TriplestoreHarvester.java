@@ -26,6 +26,7 @@ import org.apache.jena.shared.InvalidPropertyURIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.solr.core.mapping.Indexed;
 
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
@@ -53,6 +54,9 @@ public class TriplestoreHarvester implements Harvester {
 
     @Autowired
     private TemplateService templateService;
+
+    @Value("${vivo.base-url:http://localhost:8080/vivo}")
+    private String vivoUrl;
 
     private final Class<AbstractIndexDocument> type;
 
@@ -170,6 +174,9 @@ public class TriplestoreHarvester implements Harvester {
             String value = source.parse() ? parse(object) : object;
             if (value.contains("^^")) {
                 value = value.substring(0, value.indexOf("^^"));
+            }
+            if (source.relative()) {
+                value = vivoUrl + value;
             }
             if (source.unique() && values.stream().map(v -> v.toString()).anyMatch(value::equalsIgnoreCase)) {
                 if (logger.isDebugEnabled()) {
