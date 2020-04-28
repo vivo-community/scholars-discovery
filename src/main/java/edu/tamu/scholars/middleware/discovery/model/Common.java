@@ -17,11 +17,11 @@ public class Common extends AbstractIndexDocument {
     private List<String> type;
 
     @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "common/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
+    @PropertySource(template = "common/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl", relative = true)
     private String image;
 
     @Indexed(type = "whole_string", searchable = false)
-    @PropertySource(template = "common/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
+    @PropertySource(template = "common/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl", relative = true)
     private String thumbnail;
 
     @Indexed(type = "nested_whole_strings", searchable = false)

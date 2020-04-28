@@ -21,4 +21,6 @@ public @interface PropertySource {
 
     boolean unique() default false;
 
+    boolean relative() default false;
+
 }
