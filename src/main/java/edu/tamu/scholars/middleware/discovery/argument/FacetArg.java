@@ -22,13 +22,16 @@ public class FacetArg {
 
     private final String exclusionTag;
 
-    public FacetArg(String field, String sort, int pageSize, int pageNumber, String type, String exclusionTag) {
+    private final int minCount;
+
+    public FacetArg(String field, String sort, int pageSize, int pageNumber, String type, String exclusionTag, int minCount) {
         this.field = DiscoveryUtility.findProperty(field);
         this.sort = FacetSortArg.of(sort);
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
         this.type = FacetType.valueOf(type);
         this.exclusionTag = exclusionTag;
+        this.minCount = minCount;
     }
 
     public String getField() {
@@ -55,6 +58,10 @@ public class FacetArg {
         return StringUtils.isEmpty(exclusionTag) ? field : String.format("{!ex=%s}%s", exclusionTag, field);
     }
 
+    public int getMinCount() {
+        return minCount;
+    }
+
     @SuppressWarnings("unchecked")
     public static FacetArg of(Object input) {
         Map<String, Object> facet = (Map<String, Object>) input;
@@ -64,16 +71,18 @@ public class FacetArg {
         int pageNumber = (int) facet.get("pageNumber");
         String type = (String) facet.get("type");
         String exclusionTag = facet.containsKey("exclusionTag") ? (String) facet.get("exclusionTag") : StringUtils.EMPTY;
-        return new FacetArg(field, sort, pageSize, pageNumber, type, exclusionTag);
+        int minCount = (int) facet.get("minCount");
+        return new FacetArg(field, sort, pageSize, pageNumber, type, exclusionTag, minCount);
     }
 
-    public static FacetArg of(String field, Optional<String> sort, Optional<String> pageSize, Optional<String> pageNumber, Optional<String> type, Optional<String> exclusionTag) {
+    public static FacetArg of(String field, Optional<String> sort, Optional<String> pageSize, Optional<String> pageNumber, Optional<String> type, Optional<String> exclusionTag, Optional<String> minCount) {
         String sortParam = sort.isPresent() ? sort.get() : "COUNT,DESC";
         int pageSizeParam = pageSize.isPresent() ? Integer.valueOf(pageSize.get()) : 10;
         int pageNumberParam = pageNumber.isPresent() ? Integer.valueOf(pageNumber.get()) : 1;
         String typeParam = type.isPresent() ? type.get() : "STRING";
         String exclusionTagParam = exclusionTag.isPresent() ? exclusionTag.get() : StringUtils.EMPTY;
-        return new FacetArg(field, sortParam, pageSizeParam, pageNumberParam, typeParam, exclusionTagParam);
+        int minCountParam = minCount.isPresent() ? Integer.valueOf(minCount.get()) : 1;
+        return new FacetArg(field, sortParam, pageSizeParam, pageNumberParam, typeParam, exclusionTagParam, minCountParam);
     }
 
 }
