@@ -39,6 +39,7 @@ public class ArgumentUtility {
     private final static String FACET_PAGE_NUMBER_FORMAT = "%s.pageNumber";
     private final static String FACET_TYPE_FORMAT = "%s.type";
     private final static String FACET_EXCLUDE_TAG_FORMAT = "%s.exclusionTag";
+    private final static String FACET_MIN_COUNT_FORMAT = "%s.minCount";
 
     private final static String FILTER_VALUE_FORMAT = "%s.filter";
     private final static String FILTER_OPKEY_FORMAT = "%s.opKey";
@@ -86,8 +87,14 @@ public class ArgumentUtility {
                 .map(request::getParameterValues)
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
-                .findAny();               
-            return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag);
+                .findAny();  
+            Optional<String> minCount = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FACET_MIN_COUNT_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();                             
+            return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag, minCount);
         }).collect(Collectors.toList());
         // @formatter:on
     }
