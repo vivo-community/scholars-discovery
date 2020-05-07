@@ -92,6 +92,7 @@ logging:
 
 server:
   connection-timeout: 900000
+  max-http-header-size: 16384
   port: 9000
   servlet:
     context-path:

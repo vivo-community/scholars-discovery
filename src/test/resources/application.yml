@@ -90,6 +90,7 @@ logging:
 
 server:
   connection-timeout: 30000
+  max-http-header-size: 16384
   port: 9001
   servlet:
     contextPath:
