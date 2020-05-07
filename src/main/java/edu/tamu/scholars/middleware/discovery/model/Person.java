@@ -246,9 +246,13 @@ public class Person extends Common {
     private List<String> adviseeOfEndDate;
 
     @Indexed(type = "nested_whole_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue") })
+    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue") })
     @PropertySource(template = "person/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
+
+    @Indexed(type = "nested_whole_strings")
+    @PropertySource(template = "person/selectedPublicationType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> selectedPublicationType;
 
     @Indexed(type = "nested_dates")
     @PropertySource(template = "person/selectedPublicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
@@ -1102,6 +1106,14 @@ public class Person extends Common {
 
     public void setPublications(List<String> publications) {
         this.publications = publications;
+    }
+
+    public List<String> getSelectedPublicationType() {
+        return selectedPublicationType;
+    }
+
+    public void setSelectedPublicationType(List<String> selectedPublicationType) {
+        this.selectedPublicationType = selectedPublicationType;
     }
 
     public List<String> getSelectedPublicationDate() {
