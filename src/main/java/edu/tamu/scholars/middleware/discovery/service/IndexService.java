@@ -45,6 +45,10 @@ public class IndexService {
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
+    public Boolean isIndexing() {
+        return indexing.get();
+    }
+
     @PostConstruct
     public void indexOnStartup() {
         if (indexOnStartup) {
