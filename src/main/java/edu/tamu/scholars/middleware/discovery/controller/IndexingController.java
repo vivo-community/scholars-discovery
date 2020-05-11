@@ -19,7 +19,7 @@ public class IndexingController {
   @GetMapping("/isIndexing")
   public ResponseEntity<Boolean>  isIndexing() {
     Boolean isIndexing = indexService.isIndexing();
-    return isIndexing ? ResponseEntity.status(HttpStatus.ACCEPTED).body(isIndexing) : ResponseEntity.ok(isIndexing);
+    return isIndexing ? ResponseEntity.status(HttpStatus.TOO_EARLY).body(isIndexing) : ResponseEntity.ok(isIndexing);
   }
   
 }
