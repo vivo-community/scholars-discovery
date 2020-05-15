@@ -7,7 +7,7 @@ CONSTRUCT {
 } WHERE {
     <{{uri}}> vivo:relatedBy ?position .
     ?position a vivo:Position .
-    ?position vivo:relatedBy ?organization .
+    ?position vivo:relates ?organization .
     ?organization a foaf:Organization .
     ?organization rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?position), "(^.*/)", "::"), REPLACE(STR(?organization), "(^.*/)", "::") ) AS ?labelWithIds ) .
