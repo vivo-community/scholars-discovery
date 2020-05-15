@@ -47,13 +47,21 @@ public class Person extends Common {
     private String preferredTitle;
 
     @Indexed(type = "nested_whole_strings")
-    @NestedObject(properties = { @Reference(value = "positionType", key = "type"), @Reference(value = "positionOrganization", key = "organizations") })
+    @NestedObject(properties = { @Reference(value = "positionType", key = "type"), @Reference(value = "positionStartDate", key = "startDate"), @Reference(value = "positionEndDate", key = "endDate"), @Reference(value = "positionOrganization", key = "organizations") })
     @PropertySource(template = "person/position", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> positions;
 
     @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "person/positionType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> positionType;
+
+    @Indexed(type = "nested_dates", searchable = false)
+    @PropertySource(template = "person/positionStartDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> positionStartDate;
+
+    @Indexed(type = "nested_dates", searchable = false)
+    @PropertySource(template = "person/positionEndDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    private List<String> positionEndDate;
 
     @NestedMultiValuedProperty
     @Indexed(type = "nested_whole_strings")
@@ -678,6 +686,22 @@ public class Person extends Common {
 
     public void setPositionType(List<String> positionType) {
         this.positionType = positionType;
+    }
+
+    public List<String> getPositionStartDate() {
+        return positionStartDate;
+    }
+
+    public void setPositionStartDate(List<String> positionStartDate) {
+        this.positionStartDate = positionStartDate;
+    }
+
+    public List<String> getPositionEndDate() {
+        return positionEndDate;
+    }
+
+    public void setPositionEndDate(List<String> positionEndDate) {
+        this.positionEndDate = positionEndDate;
     }
 
     public List<String> getPositionOrganization() {

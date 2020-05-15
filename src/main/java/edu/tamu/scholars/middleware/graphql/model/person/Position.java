@@ -26,6 +26,10 @@ public class Position extends AbstractNestedDocument {
 
   private String type;
 
+  private String startDate;
+
+  private String endDate;
+
   private List<PositionOrganization> organizations;
 
   public Position() {
@@ -46,6 +50,22 @@ public class Position extends AbstractNestedDocument {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
+  }
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
   }
 
   public List<PositionOrganization> getOrganizations() {
