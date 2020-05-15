@@ -8,7 +8,7 @@ CONSTRUCT {
 } WHERE {
     <{{uri}}> vivo:relatedBy ?position .
     ?position a vivo:Position .
-    ?position vivo:relatedBy ?organization .
+    ?position vivo:relates ?organization .
     ?organization a foaf:Organization .
     ?organization obo:BFO_0000050 ?parentOrganization .
     ?parentOrganization a foaf:Organization .
