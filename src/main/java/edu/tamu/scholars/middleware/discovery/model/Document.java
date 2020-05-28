@@ -48,7 +48,7 @@ public class Document extends Common {
     @PropertySource(template = "document/hasPublicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String hasPublicationVenueFor;
 
-    @Indexed(type = "nested_whole_strings")
+    @Indexed(type = "tokenized_strings", copyTo = "_text_")
     @NestedObject(properties = { @Reference(value = "authorOrganization", key = "organizations") })
     @PropertySource(template = "document/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authors;
