@@ -21,10 +21,6 @@ public class Editor extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
-  private String rank;
-
   public Editor() {
     super();
   }
@@ -35,21 +31,5 @@ public class Editor extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getRank() {
-    return rank;
-  }
-
-  public void setRank(String rank) {
-    this.rank = rank;
   }
 }

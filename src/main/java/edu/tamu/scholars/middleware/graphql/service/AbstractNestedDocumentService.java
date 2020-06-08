@@ -16,16 +16,6 @@ import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.solr.core.query.result.FacetFieldEntry;
-import org.springframework.data.solr.core.query.result.FacetPage;
-import org.springframework.data.solr.core.query.result.SolrResultPage;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -36,12 +26,25 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.solr.core.query.result.FacetAndHighlightPage;
+import org.springframework.data.solr.core.query.result.FacetFieldEntry;
+import org.springframework.data.solr.core.query.result.HighlightEntry;
+import org.springframework.data.solr.core.query.result.SolrResultPage;
+
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
-import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetPage;
+import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryPage;
 import edu.tamu.scholars.middleware.graphql.config.model.Composite;
 import edu.tamu.scholars.middleware.graphql.config.model.CompositeReference;
@@ -160,62 +163,49 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     @Override
-    public DiscoveryFacetPage<ND> search(String query, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
-    }
+    public DiscoveryFacetAndHighlightPage<ND> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page, List<Field> fields) {
+        FacetAndHighlightPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, highlight, page);
 
-    @Override
-    public DiscoveryFacetPage<ND> search(String query, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), new ArrayList<FilterArg>(), boosts, page, fields);
-    }
+        boolean facetsSelected = selected(fields, "facets");
+        boolean highlightsSelected = selected(fields, "highlights");
 
-    @Override
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, new ArrayList<BoostArg>(), page, fields);
-    }
+        // current document cache after serialzed from Individuel
+        Map<String, ND> documents = new HashMap<>();
 
-    @Override
-    public DiscoveryFacetPage<ND> filterSearch(String query, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, new ArrayList<FacetArg>(), filters, boosts, page, fields);
-    }
+        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).peek(document -> {
+            // only need document cache for matching highlights
+            if (highlightsSelected) {
+                documents.put(document.getId(), document);
+            }
+        }).collect(Collectors.toList());
 
-    @Override
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, facets, new ArrayList<FilterArg>(), new ArrayList<BoostArg>(), page, fields);
-    }
+        Pageable resultsPaging = facetPage.getPageable();
+        SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
 
-    @Override
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, facets, filters, new ArrayList<BoostArg>(), page, fields);
-    }
+        // only process facets if selected in GraphQL query
+        if (facetsSelected) {
+            Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
+            facetPage.getFacetFields().forEach(field -> facetFieldResults.put(field, facetPage.getFacetResultPage(field)));
+            results.addAllFacetFieldResultPages(facetFieldResults);
+        }
 
-    @Override
-    public DiscoveryFacetPage<ND> facetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return discoveryFacetedSearch(query, facets, filters, boosts, page, fields);
+        // only process highlight if selected in GraphQL query
+        if (highlightsSelected) {
+            List<HighlightEntry<ND>> highlighted = facetPage.getHighlighted().stream().map(entry -> {
+                HighlightEntry<ND> ndEntry = new HighlightEntry<>(documents.get(entry.getEntity().getId()));
+                entry.getHighlights().forEach(highlights -> {
+                    ndEntry.addSnipplets(highlights.getField(), highlights.getSnipplets());
+                });
+                return ndEntry;
+            }).collect(Collectors.toList());
+            results.setHighlighted(highlighted);
+        }
+        return DiscoveryFacetAndHighlightPage.from((FacetAndHighlightPage<ND>) results, facets, highlight);
     }
 
     @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
         return repo.findBySyncIdsIn(syncIds).stream().map(document -> toNested(document, new ArrayList<Field>())).collect(Collectors.toList());
-    }
-
-    private DiscoveryFacetPage<ND> discoveryFacetedSearch(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        return DiscoveryFacetPage.from(search(query, facets, filters, boosts, page, fields), facets);
-    }
-
-    private FacetPage<ND> search(String query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, Pageable page, List<Field> fields) {
-        FacetPage<Individual> facetPage = repo.search(query, facets, augmentFilters(filters), boosts, page);
-        Map<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>> facetFieldResults = new HashMap<org.springframework.data.solr.core.query.Field, Page<FacetFieldEntry>>();
-   
-        facetPage.getFacetFields().forEach(field -> 
-          facetFieldResults.put(field, facetPage.getFacetResultPage(field))
-        );
-        List<ND> content = facetPage.getContent().stream().map(document -> toNested(document, fields)).collect(Collectors.toList());
-        
-        Pageable resultsPaging = facetPage.getPageable();
-        SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
-        results.addAllFacetFieldResultPages(facetFieldResults);        
-        return results;
     }
 
     private Optional<ND> findById(String id, List<Field> fields) {
@@ -265,6 +255,10 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         return mapper.convertValue(node, type());
     }
 
+    private boolean selected(List<Field> fields, String fieldName) {
+        return fields.stream().filter(f -> f.getSelectionSet().getSelections().stream().filter(s -> ((Field) s).getName().equals(fieldName)).findAny().isPresent()).findAny().isPresent();
+    }
+
     @SuppressWarnings("rawtypes")
     private boolean dereference(CompositeReference reference, List<Field> fields) {
         for (Field field : fields) {
@@ -306,10 +300,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     }
 
     protected FilterArg getCollectionFilter() {
-        return FilterArg.of(CLASS, 
-        Optional.of(type().getSimpleName()), 
-        Optional.of(OpKey.EQUALS.getKey()),
-        Optional.empty());
+        return FilterArg.of(CLASS, Optional.of(type().getSimpleName()), Optional.of(OpKey.EQUALS.getKey()), Optional.empty());
     }
 
 }

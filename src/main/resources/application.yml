@@ -1,11 +1,11 @@
+ui:
+  url: http://localhost:4200
+
 middleware:
   load-defaults: true
   update-defaults: true
-  allowed-origins: 
-  - http://cythna.colorado.edu:4200
-  - http://cythna.colorado.edu
-  - http://web:4200
-  - http://localhost:4200
+  allowed-origins:
+  - ${ui.url}
   auth:
     password:
       duration: 180
@@ -28,6 +28,7 @@ middleware:
     cron: 0 0 0 * * SUN
     zone: America/Chicago
     onStartup: true
+    onStartupDelay: 10000
     batchSize: 10000
   triplestore:
     type: edu.tamu.scholars.middleware.service.TDBTriplestore
@@ -57,10 +58,7 @@ middleware:
     - edu.tamu.scholars.middleware.discovery.model.Relationship
   export:
     individualKey: individual
-    individualBaseUri: http://localhost:4200/display
-
-ui:
-  url: http://localhost:4200
+    individualBaseUri: ${ui.url}/display
 
 vivo:
   email: vivo_root@school.edu
@@ -91,7 +89,6 @@ logging:
       springframework:
         security: INFO
         web: INFO
-  path:
 
 server:
   connection-timeout: 900000
@@ -102,14 +99,12 @@ server:
 spring:
   data:
     rest:
-      # CAUTION: leaving this on will permit all requests from localhost, breaks various UI requests and SSR
-      authorize-hal-browser: true
       return-body-on-create: true
       return-body-on-update: true
       max-page-size: 10000
     solr:
       host: http://solr:8983/solr
-      operator: AND
+      operator: OR
       parser: edismax
     # NOTE: this does not work yet, https://jira.spring.io/browse/DATAREST-1290
     web:

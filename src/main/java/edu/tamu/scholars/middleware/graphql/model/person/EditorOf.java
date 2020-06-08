@@ -25,8 +25,6 @@ public class EditorOf extends AbstractNestedDocument {
 
   private String publisher;
 
-  private String authors;
-
   private String pageStart;
 
   private String pageEnd;
@@ -59,14 +57,6 @@ public class EditorOf extends AbstractNestedDocument {
 
   public void setPublisher(String publisher) {
     this.publisher = publisher;
-  }
-
-  public String getAuthors() {
-    return authors;
-  }
-
-  public void setAuthors(String authors) {
-    this.authors = authors;
   }
 
   public String getPageStart() {

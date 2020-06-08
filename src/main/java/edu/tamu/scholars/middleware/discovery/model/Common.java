@@ -16,25 +16,30 @@ public class Common extends AbstractIndexDocument {
     @PropertySource(template = "common/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private List<String> type;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "common/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
+    @Indexed(type = "whole_string", searchable = false)
+    @PropertySource(template = "common/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl", relative = true)
     private String image;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "common/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl")
+    @Indexed(type = "whole_string", searchable = false)
+    @PropertySource(template = "common/thumbnail", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl", relative = true)
     private String thumbnail;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "websiteUrl", key = "url") })
     @PropertySource(template = "common/website", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> websites;
 
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "common/websiteUrl", predicate = "http://www.w3.org/2006/vcard/ns#url")
     private List<String> websiteUrl;
 
     @NestedObject
-    @Indexed(type = "nested_strings")
+    @Indexed(type = "nested_whole_strings", searchable = false)
+    @PropertySource(template = "common/geographicFocus", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> geographicFocus;
+
+    @NestedObject
+    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "common/sameAs", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> sameAs;
 
@@ -80,6 +85,14 @@ public class Common extends AbstractIndexDocument {
 
     public void setWebsiteUrl(List<String> websiteUrl) {
         this.websiteUrl = websiteUrl;
+    }
+
+    public List<String> getGeographicFocus() {
+        return geographicFocus;
+    }
+
+    public void setGeographicFocus(List<String> geographicFocus) {
+        this.geographicFocus = geographicFocus;
     }
 
     public List<String> getSameAs() {

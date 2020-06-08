@@ -1,7 +1,17 @@
-<span>
+<div class="highlighted">
   {{#if name}}
-  <a href="display/{{id}}">{{name}}</a>
+  {{#if highlights.name}}
+  <a href="display/{{id}}">{{{highlights.name}}}</a>
   {{else}}
-  <a href="display/{{id}}">No title available ({{id}})</a>
+  <a href="display/{{id}}">{{name}}</a>
   {{/if}}
-</span>
+  {{else}}
+  <a href="display/{{id}}">No name available ({{id}})</a>
+  {{/if}}
+</div>
+<style>
+  .highlighted em {
+    background: #E3D67F;
+    font-style: normal;
+  }
+</style>

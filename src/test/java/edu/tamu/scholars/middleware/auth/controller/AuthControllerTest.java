@@ -51,7 +51,7 @@ public class AuthControllerTest extends UserIntegrationTest {
         mockMvc.perform(get("/user")
             .cookie(cookie))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andDo(
                     document(
                         "user",

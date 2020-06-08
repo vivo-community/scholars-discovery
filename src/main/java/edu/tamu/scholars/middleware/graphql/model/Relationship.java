@@ -7,7 +7,6 @@ import edu.tamu.scholars.middleware.graphql.model.relationship.AwardConferredBy;
 import edu.tamu.scholars.middleware.graphql.model.relationship.AwardedBy;
 import edu.tamu.scholars.middleware.graphql.model.relationship.GrantSubcontractedThrough;
 import edu.tamu.scholars.middleware.graphql.model.relationship.AdministeredBy;
-import edu.tamu.scholars.middleware.graphql.model.relationship.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SubGrant;
 import edu.tamu.scholars.middleware.graphql.model.relationship.SubGrantOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.ProvidesFundingFor;
@@ -21,6 +20,7 @@ import edu.tamu.scholars.middleware.graphql.model.relationship.SpecifiedOutputOf
 import edu.tamu.scholars.middleware.graphql.model.relationship.OutputOf;
 import edu.tamu.scholars.middleware.graphql.model.relationship.ParticipatesIn;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -57,8 +57,6 @@ public class Relationship extends AbstractNestedDocument {
 
   private List<AdministeredBy> administeredBy;
 
-  private List<GeographicFocus> geographicFocus;
-
   private List<SubGrant> subGrant;
 
   private List<SubGrantOf> subGrantOf;
@@ -84,6 +82,8 @@ public class Relationship extends AbstractNestedDocument {
   private List<ParticipatesIn> participatesIn;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -178,14 +178,6 @@ public class Relationship extends AbstractNestedDocument {
 
   public void setAdministeredBy(List<AdministeredBy> administeredBy) {
     this.administeredBy = administeredBy;
-  }
-
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
   }
 
   public List<SubGrant> getSubGrant() {
@@ -291,6 +283,14 @@ public class Relationship extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {
