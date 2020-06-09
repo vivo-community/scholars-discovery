@@ -65,11 +65,11 @@ public class IndexService {
             triplestore.init();
             Instant start = Instant.now();
             logger.info("Indexing...");
-            harvesters.parallelStream().forEach(harvester -> {
+            harvesters.stream().forEach(harvester -> {
                 logger.info(String.format("Indexing %s documents.", harvester.type().getSimpleName()));
                 if (indexers.stream().anyMatch(indexer -> indexer.type().equals(harvester.type()))) {
                     harvester.harvest().buffer(indexBatchSize).subscribe(batch -> {
-                        indexers.parallelStream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
+                        indexers.stream().filter(indexer -> indexer.type().equals(harvester.type())).forEach(indexer -> {
                             indexer.index(batch);
                         });
                     });
