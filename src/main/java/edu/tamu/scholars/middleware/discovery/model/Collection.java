@@ -43,7 +43,7 @@ public class Collection extends Common {
     private List<String> publicationVenueFor;
 
     @NestedObject
-    @Indexed(type = "nested_tokenized_strings", copyTo = "_text_")
+    @Indexed(type = "nested_whole_strings", copyTo = "_text_")
     @PropertySource(template = "collection/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> authors;
 
