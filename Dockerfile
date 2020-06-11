@@ -7,6 +7,8 @@ COPY ./pom.xml ./pom.xml
 # copy src files
 COPY ./src ./src
 
+COPY ./triplestore ./triplestore
+
 # build
 RUN mvn package
 
@@ -18,6 +20,7 @@ WORKDIR /scholars
 
 # copy over the built artifact from the maven image
 COPY --from=maven /target/middleware*.jar ./scholars-discovery.jar
+COPY --from=maven /triplestore ./triplestore
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./scholars-discovery.jar"]
