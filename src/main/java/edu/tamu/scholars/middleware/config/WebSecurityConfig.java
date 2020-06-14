@@ -54,9 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.h2.console.enabled:false}")
     private boolean h2ConsoleEnabled;
 
-    @Value("${spring.data.rest.authorize-hal-browser:false}")
-    private boolean halBrowserAuthorized;
-
     @Autowired
     private MiddlewareConfig config;
 
@@ -132,101 +129,76 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        if(authorizeHalBrowser()) {
-            // NOTE: permit all access for HAL browser
-            http
-                .authorizeRequests()
-                    .antMatchers("/**")
-                        .permitAll();
-        }
-        if(enableH2Console()) {
+        if (enableH2Console()) {
             // NOTE: permit all access to h2console
             http
-                .authorizeRequests()
-                    .antMatchers("/h2console/**")
-                        .permitAll()
-                .and()
-                    .headers()
-                        .frameOptions()
-                            .sameOrigin();
+                .headers()
+                    .frameOptions()
+                        .sameOrigin();
         }
         http
             .authorizeRequests()
                 .expressionHandler(securityExpressionHandler)
 
-                .antMatchers("/connect/**")
-                    .permitAll()
-
                 .antMatchers(PATCH,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}",
-                        "/users/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}",
+                    "/users/{id}")
                     .hasRole("ADMIN")
 
                 .antMatchers(POST,
-                        "/registration",
-                        "/graphql"
-                    )
+                    "/registration",
+                    "/graphql")
                     .permitAll()
+
                 .antMatchers(POST,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
+
                 .antMatchers(POST, "/users/{id}")
                     .denyAll()
 
                 .antMatchers(PUT, "/registration")
                     .permitAll()
+
                 .antMatchers(PUT,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
+
                 .antMatchers(PUT, "/users/{id}")
                     .denyAll()
 
+                .antMatchers(GET, "/user")
+                    .hasRole("USER")
+
                 .antMatchers(GET,
-                        "/actuator/health",
-                        "/actuator/info",
-                        "/api",
-                        "/gui",
-                        "/graphql",
-                        "/registration",
-                        "/themes/search/active",
-                        "/directoryViews", "/directoryViews/{id}",
-                        "/discoveryViews", "/discoveryViews/{id}",
-                        "/displayViews", "/displayViews/{id}", "/displayViews/search/findByTypesIn", "/displayViews/search/findByName",
-                        "/individual", "/individual/{id}", "/individual/{id}/export", "/individual/search/findByIdIn", "/individual/search/faceted", "/individual/search/export", "/individual/search/count", "/individual/search/recently-updated"
-                    )
-                    .permitAll()
-                .antMatchers(GET,
-                        "/users",
-                        "/users/{id}",
-                        "/themes",
-                        "/themes/{id}"
-                    )
+                    "/users",
+                    "/users/{id}",
+                    "/themes",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
 
                 .antMatchers(DELETE,
-                        "/directoryViews/{id}",
-                        "/discoveryViews/{id}",
-                        "/displayViews/{id}",
-                        "/themes/{id}"
-                    )
+                    "/directoryViews/{id}",
+                    "/discoveryViews/{id}",
+                    "/displayViews/{id}",
+                    "/themes/{id}")
                     .hasRole("ADMIN")
+
                 .antMatchers(DELETE, "/users/{id}")
                     .hasRole("SUPER_ADMIN")
 
                 .anyRequest()
-                    .authenticated()
+                    .permitAll()
+
             .and()
                 .formLogin()
                     .successHandler(authenticationSuccessHandler())
@@ -275,10 +247,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private NullRequestCache nullRequestCache() {
         return new NullRequestCache();
-    }
-
-    private boolean authorizeHalBrowser() {
-        return halBrowserAuthorized && !profile.equals("production") && !profile.equals("test");
     }
 
     private boolean enableH2Console() {

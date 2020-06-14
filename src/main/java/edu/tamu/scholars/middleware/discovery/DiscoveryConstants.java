@@ -10,7 +10,9 @@ public class DiscoveryConstants {
 
     public static final String CLASS = "class";
 
-    public static final String SCORE = "score";
+    public static final String TYPE = "type";
+
+    public static final String SNIPPET = "snippet";
 
     public static final String MOD_TIME = "modTime";
 
@@ -22,8 +24,8 @@ public class DiscoveryConstants {
 
     public static final String PATH_DELIMETER_REGEX = "\\.";
 
-    public static final String EMPTY_STRING = "";
-
     public static final String DISCOVERY_MODEL_PACKAGE = "edu.tamu.scholars.middleware.discovery.model";
+
+    public static final String PARENTHESES_TEMPLATE = "(%s)";
 
 }

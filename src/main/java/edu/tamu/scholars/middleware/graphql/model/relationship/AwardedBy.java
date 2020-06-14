@@ -25,8 +25,6 @@ public class AwardedBy extends AbstractNestedDocument {
 
   private String abbreviation;
 
-  private String preferredLabel;
-
   public AwardedBy() {
     super();
   }
@@ -53,13 +51,5 @@ public class AwardedBy extends AbstractNestedDocument {
 
   public void setAbbreviation(String abbreviation) {
     this.abbreviation = abbreviation;
-  }
-
-  public String getPreferredLabel() {
-    return preferredLabel;
-  }
-
-  public void setPreferredLabel(String preferredLabel) {
-    this.preferredLabel = preferredLabel;
   }
 }

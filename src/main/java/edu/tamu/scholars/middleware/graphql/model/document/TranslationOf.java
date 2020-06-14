@@ -21,8 +21,6 @@ public class TranslationOf extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
   public TranslationOf() {
     super();
   }
@@ -33,13 +31,5 @@ public class TranslationOf extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 }

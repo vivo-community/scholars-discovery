@@ -18,7 +18,7 @@ import edu.tamu.scholars.middleware.discovery.model.Organization;
 import edu.tamu.scholars.middleware.discovery.model.Person;
 import edu.tamu.scholars.middleware.discovery.model.Process;
 import edu.tamu.scholars.middleware.discovery.model.Relationship;
-import edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester;
+import edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester;
 
 @ExtendWith(SpringExtension.class)
 public class HarvesterConfigTest {
@@ -27,7 +27,7 @@ public class HarvesterConfigTest {
     public void testDefaultConstructor() {
         HarvesterConfig harvesterConfig = new HarvesterConfig();
         assertNotNull(harvesterConfig);
-        assertEquals(LocalTriplestoreHarvester.class, harvesterConfig.getType());
+        assertEquals(TriplestoreHarvester.class, harvesterConfig.getType());
         assertNotNull(harvesterConfig.getDocumentTypes());
         assertEquals(0, harvesterConfig.getDocumentTypes().size());
     }
@@ -35,8 +35,8 @@ public class HarvesterConfigTest {
     @Test
     public void testTypeGetterSetter() {
         HarvesterConfig harvesterConfig = new HarvesterConfig();
-        harvesterConfig.setType(LocalTriplestoreHarvester.class);
-        assertEquals(LocalTriplestoreHarvester.class, harvesterConfig.getType());
+        harvesterConfig.setType(TriplestoreHarvester.class);
+        assertEquals(TriplestoreHarvester.class, harvesterConfig.getType());
     }
 
     @Test

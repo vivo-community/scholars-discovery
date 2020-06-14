@@ -18,6 +18,7 @@ WORKDIR /scholars
 
 # copy over the built artifact from the maven image
 COPY --from=maven /target/middleware*.jar ./scholars-discovery.jar
+COPY ./triplestore ./triplestore
 
 # set the startup command to run your binary
 CMD ["java", "-jar", "./scholars-discovery.jar"]

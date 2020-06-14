@@ -1,7 +1,7 @@
 package edu.tamu.scholars.middleware.auth.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON_UTF8_VALUE;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -52,7 +52,7 @@ public class UserControllerTest extends UserIntegrationTest {
             get("/users").param("page", "0").param("size", "20").param("sort", "id")
                 .cookie(login(admin)))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+                    .andExpect(content().contentType(HAL_JSON_VALUE))
                     .andExpect(jsonPath("page.size", equalTo(20)))
                     .andExpect(jsonPath("page.totalElements", equalTo(1)))
                     .andExpect(jsonPath("page.totalPages", equalTo(1)))
@@ -85,7 +85,7 @@ public class UserControllerTest extends UserIntegrationTest {
         // @formatter:off
         mockMvc.perform(patch("/users/{id}", admin.getId()).cookie(login(admin)).content("{\"role\": \"ROLE_USER\", \"active\": false}"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(HAL_JSON_VALUE))
             .andExpect(jsonPath("active", equalTo(false)))
             .andExpect(jsonPath("role", equalTo("ROLE_USER")))
             .andDo(
@@ -204,7 +204,7 @@ public class UserControllerTest extends UserIntegrationTest {
         // @formatter:off
         mockMvc.perform(get("/users/{id}", admin.getId()).cookie(login(admin)))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(HAL_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(HAL_JSON_VALUE))
             .andDo(
                 document(
                     "users/find-by-id",

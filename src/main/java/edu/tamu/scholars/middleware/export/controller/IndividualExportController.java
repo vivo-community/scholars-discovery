@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.SortDefault;
-import org.springframework.hateoas.ResourceProcessor;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
+import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
@@ -28,7 +29,7 @@ import edu.tamu.scholars.middleware.export.service.ExporterRegistry;
 
 @RepositoryRestController
 @RequestMapping("/individual")
-public class IndividualExportController implements ResourceProcessor<IndividualResource> {
+public class IndividualExportController implements RepresentationModelProcessor<IndividualResource> {
 
     @Autowired
     private IndividualRepo repo;
@@ -40,7 +41,7 @@ public class IndividualExportController implements ResourceProcessor<IndividualR
     // @formatter:off
     public ResponseEntity<StreamingResponseBody> export(
         @RequestParam(value = "type", required = false, defaultValue = "csv") String type,
-        @RequestParam(value = "query", required = false, defaultValue = "*:*") String query,
+        QueryArg query,
         @SortDefault Sort sort,
         List<FilterArg> filters,
         List<BoostArg> boosts,
@@ -75,11 +76,11 @@ public class IndividualExportController implements ResourceProcessor<IndividualR
         try {
             // @formatter:off
             resource.add(
-              ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder
-                  .methodOn(this.getClass())
-                  .export(resource.getContent().getId(), "docx")
-              ).withRel("export")
+                WebMvcLinkBuilder.linkTo(
+                  WebMvcLinkBuilder
+                    .methodOn(this.getClass())
+                    .export(resource.getContent().getId(), "docx")
+                ).withRel("export")
             );
             // @formatter:on
         } catch (UnknownExporterTypeException | IllegalArgumentException | IllegalAccessException e) {

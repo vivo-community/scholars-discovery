@@ -37,14 +37,23 @@ public class DiscoveryViewTest {
 
         assertEquals(1L, discoveryView.getId(), 1);
         assertEquals(MOCK_VIEW_NAME, discoveryView.getName());
-//        assertEquals("persons", discoveryView.getCollection());
         assertEquals(Layout.GRID, discoveryView.getLayout());
+
+        assertEquals("overview", discoveryView.getDefaultSearchField());
+
+        assertEquals(1, discoveryView.getHighlightFields().size());
+        assertEquals("overview", discoveryView.getHighlightFields().get(0));
+        assertEquals("<em>", discoveryView.getHighlightPrefix());
+        assertEquals("</em>", discoveryView.getHighlightPostfix());
 
         assertTrue(discoveryView.getTemplates().containsKey("default"));
         assertEquals("<h1>Person template from WSYWIG</h1>", discoveryView.getTemplates().get("default"));
 
         assertEquals(1, discoveryView.getStyles().size());
         assertEquals("color: maroon;", discoveryView.getStyles().get(0));
+
+        assertEquals(1, discoveryView.getFields().size());
+        assertEquals("title", discoveryView.getFields().get(0));
 
         assertEquals(1, discoveryView.getFacets().size());
         assertEquals("Name", discoveryView.getFacets().get(0).getName());

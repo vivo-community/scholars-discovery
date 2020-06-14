@@ -56,19 +56,19 @@ include::../{snippets}/processes/search/findByIdIn/curl-request.adoc[]
 This search will return a json response listing all the processes, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/processes/search/faceted/request-parameters.adoc[]
+include::../{snippets}/processes/search/advanced/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/processes/search/faceted/response-fields.adoc[]
+include::../{snippets}/processes/search/advanced/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/processes/search/faceted/http-request.adoc[]
+include::../{snippets}/processes/search/advanced/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/processes/search/faceted/http-response.adoc[]
+include::../{snippets}/processes/search/advanced/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/processes/search/faceted/curl-request.adoc[]
+include::../{snippets}/processes/search/advanced/curl-request.adoc[]
 
 ==== Export Search
 
@@ -126,16 +126,16 @@ include::../{snippets}/processes/search/count/curl-request.adoc[]
 This will return a json response listing recently updated processes, based on the query parameters as shown in *Request Parameters*.
 
 ===== Request Parameters
-include::../{snippets}/processes/search/recently-updated/request-parameters.adoc[]
+include::../{snippets}/processes/search/recentlyUpdated/request-parameters.adoc[]
 
 ===== Response Fields
-include::../{snippets}/processes/search/recently-updated/response-fields.adoc[]
+include::../{snippets}/processes/search/recentlyUpdated/response-fields.adoc[]
 
 ===== Sample Request
-include::../{snippets}/processes/search/recently-updated/http-request.adoc[]
+include::../{snippets}/processes/search/recentlyUpdated/http-request.adoc[]
 
 ===== Sample Response
-include::../{snippets}/processes/search/recently-updated/http-response.adoc[]
+include::../{snippets}/processes/search/recentlyUpdated/http-response.adoc[]
 
 ===== CURL Sample
-include::../{snippets}/processes/search/recently-updated/curl-request.adoc[]
+include::../{snippets}/processes/search/recentlyUpdated/curl-request.adoc[]

@@ -8,7 +8,6 @@ import edu.tamu.scholars.middleware.graphql.model.process.Participant;
 import edu.tamu.scholars.middleware.graphql.model.process.SubjectArea;
 import edu.tamu.scholars.middleware.graphql.model.process.HasPrerequisite;
 import edu.tamu.scholars.middleware.graphql.model.process.PrerequisiteFor;
-import edu.tamu.scholars.middleware.graphql.model.process.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.process.OutputPublicationOrOtherWork;
 import edu.tamu.scholars.middleware.graphql.model.process.RelatedDocument;
 import edu.tamu.scholars.middleware.graphql.model.process.HeldInFacility;
@@ -16,6 +15,7 @@ import edu.tamu.scholars.middleware.graphql.model.process.HeldInGeographicLocati
 import edu.tamu.scholars.middleware.graphql.model.process.HasOutput;
 import edu.tamu.scholars.middleware.graphql.model.process.HasParticipant;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -54,8 +54,6 @@ public class Process extends AbstractNestedDocument {
 
   private List<PrerequisiteFor> prerequisiteFor;
 
-  private List<GeographicFocus> geographicFocus;
-
   private List<OutputPublicationOrOtherWork> outputPublicationOrOtherWork;
 
   private List<RelatedDocument> relatedDocuments;
@@ -69,6 +67,8 @@ public class Process extends AbstractNestedDocument {
   private List<HasParticipant> hasParticipant;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -163,14 +163,6 @@ public class Process extends AbstractNestedDocument {
     this.prerequisiteFor = prerequisiteFor;
   }
 
-  public List<GeographicFocus> getGeographicFocus() {
-    return geographicFocus;
-  }
-
-  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
-    this.geographicFocus = geographicFocus;
-  }
-
   public List<OutputPublicationOrOtherWork> getOutputPublicationOrOtherWork() {
     return outputPublicationOrOtherWork;
   }
@@ -226,6 +218,14 @@ public class Process extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {

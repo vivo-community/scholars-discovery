@@ -21,8 +21,6 @@ public class Mention extends AbstractNestedDocument {
 
   private String label;
 
-  private String type;
-
   public Mention() {
     super();
   }
@@ -33,13 +31,5 @@ public class Mention extends AbstractNestedDocument {
 
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 }

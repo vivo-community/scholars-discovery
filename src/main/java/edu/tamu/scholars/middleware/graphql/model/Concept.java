@@ -9,6 +9,7 @@ import edu.tamu.scholars.middleware.graphql.model.concept.BroaderConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.NarrowerConcept;
 import edu.tamu.scholars.middleware.graphql.model.concept.RelatedConcept;
 import edu.tamu.scholars.middleware.graphql.model.common.Website;
+import edu.tamu.scholars.middleware.graphql.model.common.GeographicFocus;
 import edu.tamu.scholars.middleware.graphql.model.common.SameAs;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -48,6 +49,8 @@ public class Concept extends AbstractNestedDocument {
   private List<RelatedConcept> relatedConcepts;
 
   private List<Website> websites;
+
+  private List<GeographicFocus> geographicFocus;
 
   private List<SameAs> sameAs;
 
@@ -142,6 +145,14 @@ public class Concept extends AbstractNestedDocument {
 
   public void setWebsites(List<Website> websites) {
     this.websites = websites;
+  }
+
+  public List<GeographicFocus> getGeographicFocus() {
+    return geographicFocus;
+  }
+
+  public void setGeographicFocus(List<GeographicFocus> geographicFocus) {
+    this.geographicFocus = geographicFocus;
   }
 
   public List<SameAs> getSameAs() {

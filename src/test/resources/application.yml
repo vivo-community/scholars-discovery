@@ -33,7 +33,7 @@ middleware:
     username:
     password:
   harvesters:
-  - type: edu.tamu.scholars.middleware.discovery.service.jena.LocalTriplestoreHarvester
+  - type: edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester
     documentTypes:
     - edu.tamu.scholars.middleware.discovery.model.Collection
     - edu.tamu.scholars.middleware.discovery.model.Concept
@@ -87,7 +87,6 @@ logging:
       springframework:
         security: INFO
         web: INFO
-  path:
 
 server:
   connection-timeout: 30000
@@ -98,7 +97,6 @@ server:
 spring:
   data:
     rest:
-      authorize-hal-browser: false
       return-body-on-create: true
       return-body-on-update: true
       max-page-size: 1000
