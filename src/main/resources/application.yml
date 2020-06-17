@@ -29,7 +29,7 @@ middleware:
     zone: America/Chicago
     onStartup: true
     onStartupDelay: 10000
-    batchSize: 10000  
+    batchSize: 10000
   triplestore:
     type: edu.tamu.scholars.middleware.service.TTLTriplestore
     directory: data
