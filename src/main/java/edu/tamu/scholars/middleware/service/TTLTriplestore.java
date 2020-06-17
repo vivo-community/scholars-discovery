@@ -44,9 +44,7 @@ public class TTLTriplestore implements Triplestore {
         File[] files = f.listFiles();
         // read them into data set
         for (File file : files) {
-            // Print the names of files and directories
-            System.out.println("loading ..." + file.getAbsolutePath());
-            dataset = RDFDataMgr.loadDataset(file.getAbsolutePath(), RDFLanguages.TTL) ;
+            dataset = RDFDataMgr.loadDataset(file.getAbsolutePath(), RDFLanguages.TTL);
         }
         logger.info(String.format("%s ready. %s seconds", config.getType().getSimpleName(), Duration.between(start, Instant.now()).toMillis() / 1000.0));
     }
