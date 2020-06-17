@@ -29,10 +29,10 @@ middleware:
     zone: America/Chicago
     onStartup: true
     onStartupDelay: 10000
-    batchSize: 10000
+    batchSize: 10000  
   triplestore:
-    type: edu.tamu.scholars.middleware.service.TDBTriplestore
-    directory: triplestore
+    type: edu.tamu.scholars.middleware.service.TTLTriplestore
+    directory: data
     datasourceUrl: jdbc:mysql://localhost/vivo?useLegacyDatetimeCode=false&serverTimezone=America/Chicago
     username:
     password:
