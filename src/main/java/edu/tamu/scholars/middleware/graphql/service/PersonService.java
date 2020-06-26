@@ -20,6 +20,9 @@ import graphql.language.Field;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLEnvironment;
 import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.GraphQLMutation;
+import io.leangen.graphql.annotations.GraphQLContext;
+
 
 @Service
 public class PersonService extends AbstractNestedDocumentService<Person> {
@@ -51,6 +54,17 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
         return super.search(query, facets, filters, boosts, highlight, page, fields);
     }
 
+    // @Override
+    @GraphQLMutation(name = "updatePersonPhone")
+    public Person updatePersonPhone(
+        @GraphQLContext Person person,
+        @GraphQLArgument(name = "id") String id,
+        @GraphQLArgument(name = "phone") String phone,
+        @GraphQLEnvironment List<Field> fields) {
+        Person p = this.updateFieldValue(id, fields, "phone", phone);
+        return p;
+    }
+
     @Override
     public Class<Person> type() {
         return Person.class;
@@ -60,5 +74,4 @@ public class PersonService extends AbstractNestedDocumentService<Person> {
     protected Class<?> getOriginDocumentType() {
         return edu.tamu.scholars.middleware.discovery.model.Person.class;
     }
-
 }

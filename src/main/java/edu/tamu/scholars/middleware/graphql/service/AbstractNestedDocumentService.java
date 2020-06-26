@@ -5,8 +5,13 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +32,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -206,6 +212,60 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
     @Override
     public List<ND> findBySyncIdsIn(List<String> syncIds) {
         return repo.findBySyncIdsIn(syncIds).stream().map(document -> toNested(document, new ArrayList<Field>())).collect(Collectors.toList());
+    }
+
+    /* For Debugging @@@ erik */
+    public void dumpContentMap(Map<String, List<String>> map) {
+        System.out.println("\n\n** Content Map Dump **\n");
+        Set<String> contentKeys = map.keySet();
+        Iterator<String> keyIter = contentKeys.iterator();
+        while (keyIter.hasNext()) {
+            String key = keyIter.next();
+            System.out.println("fieldName contained in content: " + key);
+            List<String> curValues = map.get(key);
+            if (curValues != null) {
+                Iterator iter = curValues.iterator();
+                String s = "";
+                while (iter.hasNext()) {
+                    s += (iter.next() + "\n");
+                }
+                System.out.println("values for fieldName: " + key + " \nlist: " + s);
+            } else {
+                System.out.println("No Values for fieldName: " + key);
+            }
+        }
+    }
+    public Map<String, List<String>> adjustModTime(Map<String, List<String>> map) { // @@@ erik
+        // NOTE! - returns a modified version of the input rather than a deep copy.
+        List<String> curModTime = map.get("modTime"); // for now, just overwrite rather than trying to re-format
+        ArrayList<String> newModTime = new ArrayList<String>();
+        String modTime = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT );
+        newModTime.add(modTime);
+        map.put("modTime", newModTime);
+        return map;
+    }
+    public ND updateFieldValue(String id, List<Field> fields, String fieldName, String value) { // @@@ erik
+       Optional<ND> nestedDocument = Optional.empty();
+       Optional<Individual> document = repo.findById(id);
+       if (document.isPresent()) {
+           Individual originalDetail = document.get();
+           Map<String, List<String>> content = originalDetail.getContent();
+           this.dumpContentMap(content);
+
+           ArrayList<String> newValues = new ArrayList<String>();
+           newValues.add(value);
+           content.put(fieldName, (List<String>)newValues);
+
+           content = this.adjustModTime(content);
+
+           originalDetail.setContent(content);
+           this.dumpContentMap(content);
+
+           this.repo.save(originalDetail);
+           nestedDocument = Optional.of(toNested(originalDetail, fields));
+           return nestedDocument.get();
+       }
+       throw new DocumentNotFoundException(String.format("Could not find %s with id %s", type(), id));
     }
 
     private Optional<ND> findById(String id, List<Field> fields) {
