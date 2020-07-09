@@ -239,7 +239,8 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         // NOTE! - returns a modified version of the input rather than a deep copy.
         List<String> curModTime = map.get("modTime"); // for now, just overwrite rather than trying to re-format
         ArrayList<String> newModTime = new ArrayList<String>();
-        String modTime = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT );
+        // String modTime = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT );
+        String modTime = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_OFFSET_DATE_TIME );
         newModTime.add(modTime);
         map.put("modTime", newModTime);
         return map;
