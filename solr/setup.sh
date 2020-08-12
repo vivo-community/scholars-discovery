@@ -4,7 +4,7 @@ set -e
 
 # allow easier debugging with `docker run -e VERBOSE=yes`
 if [[ "$VERBOSE" = "yes" ]]; then
-    set -x
+  set -x
 fi
 
 if [ ! -f "/opt/solr/server/solr/mycores/scholars-discovery/core.properties" ]; then
