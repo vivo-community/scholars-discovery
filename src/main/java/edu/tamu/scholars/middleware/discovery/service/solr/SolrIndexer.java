@@ -13,7 +13,7 @@ import edu.tamu.scholars.middleware.discovery.service.Indexer;
 
 public class SolrIndexer implements Indexer {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(SolrIndexer.class);
 
     @Autowired
     private SolrTemplate solrTemplate;
