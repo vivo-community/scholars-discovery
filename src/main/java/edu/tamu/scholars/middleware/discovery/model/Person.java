@@ -420,6 +420,11 @@ public class Person extends Common {
     @PropertySource(template = "person/teachingActivityRole", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> teachingActivityRole;
 
+    @NestedObject
+    @Indexed(type = "nested_whole_strings")
+    @PropertySource(template = "person/teachingMaterials", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    private List<String> teachingMaterials;
+
     @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "adviseeType", key = "type"), @Reference(value = "adviseeCandidacy", key = "candidacy"), @Reference(value = "adviseeStartDate", key = "startDate"), @Reference(value = "adviseeEndDate", key = "endDate") })
     @PropertySource(template = "person/advisee", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -1426,6 +1431,14 @@ public class Person extends Common {
 
     public void setTeachingActivityRole(List<String> teachingActivityRole) {
         this.teachingActivityRole = teachingActivityRole;
+    }
+
+    public List<String> getTeachingMaterials() {
+        return teachingMaterials;
+    }
+
+    public void setTeachingMaterials(List<String> teachingMaterials) {
+        this.teachingMaterials = teachingMaterials;
     }
 
     public List<String> getAdvisee() {

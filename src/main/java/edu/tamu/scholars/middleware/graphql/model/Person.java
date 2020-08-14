@@ -22,6 +22,7 @@ import edu.tamu.scholars.middleware.graphql.model.person.TranslatorOf;
 import edu.tamu.scholars.middleware.graphql.model.person.ResearcherOn;
 import edu.tamu.scholars.middleware.graphql.model.person.OtherResearchActivity;
 import edu.tamu.scholars.middleware.graphql.model.person.TeachingActivity;
+import edu.tamu.scholars.middleware.graphql.model.person.TeachingMaterial;
 import edu.tamu.scholars.middleware.graphql.model.person.Advisee;
 import edu.tamu.scholars.middleware.graphql.model.person.ReviewerOf;
 import edu.tamu.scholars.middleware.graphql.model.person.ContactOrProvidorForService;
@@ -101,6 +102,8 @@ public class Person extends AbstractNestedDocument {
   private List<OtherResearchActivity> otherResearchActivities;
 
   private List<TeachingActivity> teachingActivities;
+
+  private List<TeachingMaterial> teachingMaterials;
 
   private List<Advisee> advisee;
 
@@ -403,6 +406,14 @@ public class Person extends AbstractNestedDocument {
 
   public void setTeachingActivities(List<TeachingActivity> teachingActivities) {
     this.teachingActivities = teachingActivities;
+  }
+
+  public List<TeachingMaterial> getTeachingMaterials() {
+    return teachingMaterials;
+  }
+
+  public void setTeachingMaterials(List<TeachingMaterial> teachingMaterials) {
+    this.teachingMaterials = teachingMaterials;
   }
 
   public List<Advisee> getAdvisee() {

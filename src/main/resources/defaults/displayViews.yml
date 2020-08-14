@@ -369,17 +369,29 @@
               date: true
           lazyReferences:
             - awardsAndHonors
-    - name: Recent Courses
+    - name: Teaching
+      lazyReferences:
+        - teachingMaterials
       sections:
         - name: teaching overview
           template: "defaults/displayViews/persons/recentCourses/teachingOverview.html"
           field: teachingOverview
-        - name: teaching activities
+        - name: recent teaching activities
           paginated: true
           template: "defaults/displayViews/persons/recentCourses/teachingActivities.html"
           field: teachingActivities
           sort:
             - field: label
+              direction: ASC
+        - name: open teaching materials
+          paginated: true
+          template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
+          field: teachingMaterials
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
+            - field: title
               direction: ASC
         - name: advisees
           template: "defaults/displayViews/persons/recentCourses/advisees.html"
