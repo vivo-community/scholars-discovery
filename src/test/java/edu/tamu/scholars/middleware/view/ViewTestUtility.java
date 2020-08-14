@@ -277,6 +277,7 @@ public class ViewTestUtility {
         section.setTemplate("<span>Hello, World!</span>");
 
         section.setField("name");
+        section.setOrder(1);
 
         Filter sectionFilter = new Filter();
         sectionFilter.setField("type");
@@ -310,6 +311,7 @@ public class ViewTestUtility {
 
         subsection.setName("Test");
         subsection.setField("publications");
+        subsection.setOrder(1);
 
         Filter subsectionFilter = new Filter();
         subsectionFilter.setField("type");
@@ -367,6 +369,7 @@ public class ViewTestUtility {
 
         exportField.setName("Test");
         exportField.setField("publications");
+        exportField.setOrder(1);
 
         Filter filter = new Filter();
         filter.setField("type");

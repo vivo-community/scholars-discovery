@@ -36,6 +36,9 @@ public class DisplaySectionViewTest {
         section.setField("name");
         assertEquals("name", section.getField());
 
+        section.setOrder(1);
+        assertEquals(1, section.getOrder());
+
         Filter filter = new Filter();
         filter.setField("type");
         filter.setValue("Test");

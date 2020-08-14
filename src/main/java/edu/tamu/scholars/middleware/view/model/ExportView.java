@@ -10,6 +10,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -34,6 +35,7 @@ public class ExportView extends View {
     @ElementCollection
     private List<String> lazyReferences;
 
+    @OrderBy("order")
     @JoinColumn(name = "export_field_id")
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

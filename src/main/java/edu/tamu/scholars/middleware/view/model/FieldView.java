@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Min;
 
 @MappedSuperclass
 public abstract class FieldView extends View {
@@ -14,6 +15,10 @@ public abstract class FieldView extends View {
 
     @Column(nullable = false)
     public String field;
+
+    @Min(1)
+    @Column(name = "\"order\"", nullable = false)
+    private int order;
 
     @ElementCollection
     private List<Filter> filters;
@@ -32,6 +37,14 @@ public abstract class FieldView extends View {
 
     public void setField(String field) {
         this.field = field;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public List<Filter> getFilters() {
