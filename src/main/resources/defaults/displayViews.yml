@@ -306,6 +306,7 @@
           sort:
             - field: publicationDate
               direction: DESC
+              date: true
             - field: title
               direction: ASC
     - name: Patents
