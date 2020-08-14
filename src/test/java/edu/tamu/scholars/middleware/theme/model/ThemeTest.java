@@ -58,6 +58,7 @@ public class ThemeTest {
         hero.setImageAlt("Hero");
         hero.setWatermarkImageUri("/assets/images/watermark.png");
         hero.setWatermarkText("Watermark");
+        hero.setHelpText("Test");
         hero.setBaseText("This is only a test!");
         hero.setFontColor("#ffffff");
         hero.setLinkColor("#000000");
@@ -82,6 +83,7 @@ public class ThemeTest {
         assertEquals("Hero", theme.getHome().getHeroes().get(0).getImageAlt());
         assertEquals("/assets/images/watermark.png", theme.getHome().getHeroes().get(0).getWatermarkImageUri());
         assertEquals("Watermark", theme.getHome().getHeroes().get(0).getWatermarkText());
+        assertEquals("Test", theme.getHome().getHeroes().get(0).getHelpText());
         assertEquals("This is only a test!", theme.getHome().getHeroes().get(0).getBaseText());
         assertEquals("#ffffff", theme.getHome().getHeroes().get(0).getFontColor());
         assertEquals("#000000", theme.getHome().getHeroes().get(0).getLinkColor());
