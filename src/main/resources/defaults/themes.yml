@@ -9,11 +9,12 @@
         imageAlt: Texas A&M Acedemic Building
         watermarkImageUri: assets/images/vector-world-map.png
         watermarkText: worldwide collaboration
+        helpText: "<a href='https://scholars.library.tamu.edu/howto_scholars/#tutorials'>Tutorials: How To Update</a>"
         baseText: Thank you for visiting Scholars@TAMU. We have worked to
           create the first version of your profile and continue to explore additional
           data sources to enhance your profile. We request your participation to update
           your profile and improve its accuracy. If you have any questions or concerns
-          about your profile page, please contact us at <a href="mailto:scholars@library.tamu.edu">scholars@library.tamu.edu</a>
+          about your profile page, please contact us at <a href='mailto:scholars@library.tamu.edu'>scholars@library.tamu.edu</a>
         fontColor: "#f3f3f3"
         linkColor: "#65a6d1"
         linkHoverColor: "#ffc222"
