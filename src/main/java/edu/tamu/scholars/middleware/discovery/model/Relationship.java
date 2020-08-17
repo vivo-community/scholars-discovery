@@ -28,8 +28,8 @@ public class Relationship extends Common {
     private String title;
 
     @Field("abstract")
-    @Indexed(type = "whole_string", value = "abstract")
     @JsonProperty("abstract")
+    @Indexed(type = "whole_string", value = "abstract", copyTo = "_text_")
     @PropertySource(template = "relationship/abstract", predicate = "http://purl.org/ontology/bibo/abstract")
     private String abstractText;
 
