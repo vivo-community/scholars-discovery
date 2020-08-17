@@ -19,6 +19,9 @@ public class Hero {
     private String watermarkText;
 
     @Column(columnDefinition = "TEXT")
+    private String helpText;
+
+    @Column(columnDefinition = "TEXT")
     private String baseText;
 
     @Column
@@ -67,6 +70,14 @@ public class Hero {
 
     public void setWatermarkText(String watermarkText) {
         this.watermarkText = watermarkText;
+    }
+
+    public String getHelpText() {
+        return helpText;
+    }
+
+    public void setHelpText(String helpText) {
+        this.helpText = helpText;
     }
 
     public String getBaseText() {

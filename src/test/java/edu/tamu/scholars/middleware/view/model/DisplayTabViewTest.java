@@ -19,7 +19,6 @@ public class DisplayTabViewTest {
         assertNotNull(tab.getSections());
         assertEquals(0, tab.getSections().size());
         assertFalse(tab.isHidden());
-
     }
 
     @Test
