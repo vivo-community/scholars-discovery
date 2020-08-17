@@ -79,7 +79,8 @@ graphql:
       enabled: true
 
 logging:
-  file: scholars.log
+  file:
+    name: scholars.log
   level:
     edu:
       tamu:
