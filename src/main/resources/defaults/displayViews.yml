@@ -414,14 +414,12 @@
           lazyReferences:
             - awardsAndHonors
     - name: Teaching
-      lazyReferences:
-        - teachingMaterials
       sections:
         - name: teaching overview
           template: "defaults/displayViews/persons/recentCourses/teachingOverview.html"
           field: teachingOverview
-        - name: recent teaching activities
           order: 1
+        - name: recent teaching activities
           paginated: true
           template: "defaults/displayViews/persons/recentCourses/teachingActivities.html"
           field: teachingActivities
@@ -433,16 +431,19 @@
           paginated: true
           template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
           field: teachingMaterials
+          order: 3
           sort:
             - field: publicationDate
               direction: DESC
               date: true
             - field: title
               direction: ASC
+          lazyReferences:
+            - teachingMaterials
         - name: advisees
           template: "defaults/displayViews/persons/recentCourses/advisees.html"
           field: advisee
-          order: 3
+          order: 4
     - name: Works By Students
       sections:
         - name: chaired theses and dissertations
