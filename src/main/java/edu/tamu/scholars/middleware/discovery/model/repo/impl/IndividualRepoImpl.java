@@ -150,8 +150,8 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
                 Integer rangeGap = Integer.parseInt(facet.getRangeGap());
                 facetOptions.addFacetByRange(new FieldWithNumericRangeParameters(name, rangeStart, rangeEnd, rangeGap)
                     .setHardEnd(false)
-                    .setOther(FacetRangeOther.ALL)
-                    .setInclude(FacetRangeInclude.ALL));
+                    .setOther(FacetRangeOther.BETWEEN)
+                    .setInclude(FacetRangeInclude.LOWER));
                 break;
             default:
                 // NOTE: other possible; method, minCount, missing, and prefix
