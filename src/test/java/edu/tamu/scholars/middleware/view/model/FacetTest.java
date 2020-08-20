@@ -38,6 +38,10 @@ public class FacetTest {
         facet.setCollapsed(false);
         facet.setHidden(true);
 
+        facet.setRangeStart("0");
+        facet.setRangeEnd("1000");
+        facet.setRangeGap("10");
+
         assertEquals("Test", facet.getName());
         assertEquals("test", facet.getField());
         assertEquals(FacetType.DATE_YEAR, facet.getType());
@@ -47,6 +51,10 @@ public class FacetTest {
         assertEquals(2, facet.getPageNumber());
         assertFalse(facet.isCollapsed());
         assertTrue(facet.isHidden());
+
+        assertEquals("0", facet.getRangeStart());
+        assertEquals("1000", facet.getRangeEnd());
+        assertEquals("10", facet.getRangeGap());
     }
 
 }

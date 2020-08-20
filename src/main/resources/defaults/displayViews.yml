@@ -292,6 +292,7 @@
           sort:
             - field: publicationDate
               direction: DESC
+              date: true
             - field: title
               direction: ASC
     - name: News
@@ -1070,6 +1071,7 @@
     - Capstone
     - Webpage
     - Report
+    - TeachingMaterial
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:

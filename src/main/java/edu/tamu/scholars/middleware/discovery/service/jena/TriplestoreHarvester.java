@@ -125,7 +125,7 @@ public class TriplestoreHarvester implements Harvester {
                 List<Object> values = lookupProperty(typeOp, source, model);
                 populate(document, typeOp.getField(), values);
             } catch (Exception e) {
-                logger.error(String.format("Unable to populat document %s: %s", name(), parse(subject)));
+                logger.error(String.format("Unable to populate document %s: %s", name(), parse(subject)));
                 logger.error(String.format("Error: %s", e.getMessage()));
                 if (logger.isDebugEnabled()) {
                     e.printStackTrace();

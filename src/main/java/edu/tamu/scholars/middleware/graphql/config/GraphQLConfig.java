@@ -212,6 +212,9 @@ public class GraphQLConfig {
                 fields.add(new InputField("pageNumber", "Facet page number", new TypedElement(GenericTypeReflector.annotate(int.class)), GenericTypeReflector.annotate(int.class), 1));
                 fields.add(new InputField("type", "Facet type", new TypedElement(GenericTypeReflector.annotate(FacetType.class)), GenericTypeReflector.annotate(FacetType.class), FacetType.STRING));
                 fields.add(new InputField("exclusionTag", "Tag (in conjunction with Filter)", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("rangeStart", "Facet range start", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("rangeEnd", "Facet range end", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
+                fields.add(new InputField("rangeGap", "Facet range gap", new TypedElement(GenericTypeReflector.annotate(String.class)), GenericTypeReflector.annotate(String.class), null));
                 return fields;
             }
 
