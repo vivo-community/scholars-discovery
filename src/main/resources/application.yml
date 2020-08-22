@@ -94,9 +94,8 @@ logging:
 server:
   compression:
     enabled: true
-    compression:
-      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
-      min-response-size: 1024
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
   connection-timeout: 900000
   max-http-header-size: 16384
   port: 9000
