@@ -2,17 +2,21 @@ package edu.tamu.scholars.middleware.discovery.response;
 
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findPath;
 
+import java.lang.reflect.ParameterizedType;
 import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
+import org.springframework.data.solr.core.query.result.FacetFieldEntry;
 import org.springframework.data.solr.core.query.result.FacetPage;
 
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
@@ -38,34 +42,43 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
     public static <T> List<Facet> buildFacets(FacetPage<T> facetPage, List<FacetArg> facetArguments) {
         List<Facet> facets = new ArrayList<Facet>();
 
-        facetPage.getFacetResultPages().forEach(facetFieldEntryPage -> {
-            if (!facetFieldEntryPage.getContent().isEmpty()) {
-                String field = facetFieldEntryPage.getContent().get(0).getField().getName();
-                Optional<FacetArg> facetArgument = facetArguments.stream().filter(fa -> fa.getField().equals(field)).findAny();
-                if (facetArgument.isPresent()) {
+        facetArguments.forEach(facetArgument -> {
+            String field = facetArgument.getField();
 
-                    // @formatter:off
-                    List<FacetEntry> entries = facetFieldEntryPage.getContent().parallelStream()
-                        .map(entry -> new FacetEntry(entry.getValue(), entry.getValueCount()))
-                        .collect(Collectors.toMap(FacetEntry::getValueKey, fe -> fe, FacetEntry::merge)).values().parallelStream()
-                        .sorted(FacetEntryComparator.of(facetArgument.get().getSort()))
-                        .collect(Collectors.toList());
-                    // @formatter:on
+            Page<FacetFieldEntry> facetFieldEntryPage;
+            
+            switch(facetArgument.getType()) {
+                case NUMBER_RANGE:
+                    facetFieldEntryPage = facetPage.getRangeFacetResultPage(field);
+                    break;
+                default:
+                    facetFieldEntryPage = facetPage.getFacetResultPage(field);
+                    break;
+            }
 
-                    int pageSize = facetArgument.get().getPageSize();
-                    int pageNumber = facetArgument.get().getPageNumber();
-                    int offset = pageSize * (pageNumber - 1);
+            if (Objects.nonNull(facetFieldEntryPage) && !facetFieldEntryPage.getContent().isEmpty()) {
 
-                    long totalElements = entries.size();
-                    int totalPages = (int) Math.ceil((double) entries.size() / (double) pageSize);
+                // @formatter:off
+                List<FacetEntry> entries = facetFieldEntryPage.getContent().parallelStream()
+                    .map(entry -> new FacetEntry(entry.getValue(), entry.getValueCount()))
+                    .collect(Collectors.toMap(FacetEntry::getValueKey, fe -> fe, FacetEntry::merge)).values().parallelStream()
+                    .sorted(FacetEntryComparator.of(facetArgument.getSort()))
+                    .collect(Collectors.toList());
+                // @formatter:on
 
-                    PageInfo pageInfo = PageInfo.from(pageSize, totalElements, totalPages, pageNumber);
+                int pageSize = facetArgument.getPageSize();
+                int pageNumber = facetArgument.getPageNumber();
+                int offset = pageSize * (pageNumber - 1);
 
-                    int start = offset;
-                    int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
+                long totalElements = entries.size();
+                int totalPages = (int) Math.ceil((double) entries.size() / (double) pageSize);
 
-                    facets.add(new Facet(findPath(facetArgument.get().getField()), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
-                }
+                PageInfo pageInfo = PageInfo.from(pageSize, totalElements, totalPages, pageNumber);
+
+                int start = offset;
+                int end = offset + pageSize > entries.size() ? entries.size() : offset + pageSize;
+
+                facets.add(new Facet(findPath(facetArgument.getField()), DiscoveryPage.from(entries.subList(start, end), pageInfo)));
             }
         });
         return facets;

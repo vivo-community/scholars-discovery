@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -24,6 +25,7 @@ public class DisplayTabView extends View {
     @Column(nullable = false)
     private boolean hidden;
 
+    @OrderBy("order")
     @JoinColumn(name = "display_tab_view_id")
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

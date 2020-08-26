@@ -32,6 +32,7 @@ public class ExportFieldViewTest {
 
         exportField.setName("Test");
         exportField.setField("publications");
+        exportField.setOrder(1);
 
         Filter filter = new Filter();
         filter.setField("type");
@@ -56,6 +57,7 @@ public class ExportFieldViewTest {
 
         assertEquals("Test", exportField.getName());
         assertEquals("publications", exportField.getField());
+        assertEquals(1, exportField.getOrder());
 
         assertEquals(1, exportField.getFilters().size());
         assertEquals("type", exportField.getFilters().get(0).getField());

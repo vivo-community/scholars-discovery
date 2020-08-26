@@ -10,6 +10,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -43,6 +44,7 @@ public class DisplaySectionView extends FieldView {
     @ElementCollection
     private List<String> lazyReferences;
 
+    @OrderBy("order")
     @JoinColumn(name = "display_tab_section_id")
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)

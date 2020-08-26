@@ -39,6 +39,9 @@ public class ArgumentUtility {
     private final static String FACET_PAGE_NUMBER_FORMAT = "%s.pageNumber";
     private final static String FACET_TYPE_FORMAT = "%s.type";
     private final static String FACET_EXCLUDE_TAG_FORMAT = "%s.exclusionTag";
+    private final static String FACET_RANGE_START_TAG_FORMAT = "%s.rangeStart";
+    private final static String FACET_RANGE_END_TAG_FORMAT = "%s.rangeEnd";
+    private final static String FACET_RANGE_GAP_TAG_FORMAT = "%s.rangeGap";
 
     private final static String FILTER_VALUE_FORMAT = "%s.filter";
     private final static String FILTER_OPKEY_FORMAT = "%s.opKey";
@@ -86,8 +89,26 @@ public class ArgumentUtility {
                 .map(request::getParameterValues)
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
-                .findAny();               
-            return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag);
+                .findAny();
+            Optional<String> rangeStart = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FACET_RANGE_START_TAG_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();
+            Optional<String> rangeEnd = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FACET_RANGE_END_TAG_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();
+            Optional<String> rangeGap = perameterNames.stream()
+                .filter(paramName -> paramName.equals(String.format(FACET_RANGE_GAP_TAG_FORMAT, field)))
+                .map(request::getParameterValues)
+                .map(Arrays::asList)
+                .flatMap(list -> list.stream())
+                .findAny();
+            return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag, rangeStart, rangeEnd, rangeGap);
         }).collect(Collectors.toList());
         // @formatter:on
     }

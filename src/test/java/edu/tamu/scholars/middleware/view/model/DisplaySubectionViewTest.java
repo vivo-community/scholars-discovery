@@ -33,6 +33,8 @@ public class DisplaySubectionViewTest {
         subsection.setName("Test");
         subsection.setField("publications");
 
+        subsection.setOrder(1);
+
         Filter filter = new Filter();
         filter.setField("type");
         filter.setValue("Test");
@@ -58,6 +60,7 @@ public class DisplaySubectionViewTest {
 
         assertEquals("Test", subsection.getName());
         assertEquals("publications", subsection.getField());
+        assertEquals(1, subsection.getOrder());
 
         assertEquals(1, subsection.getFilters().size());
         assertEquals("type", subsection.getFilters().get(0).getField());

@@ -270,24 +270,26 @@
       hidden: false
     - name: Altmetric Score Range
       field: altmetricScore
-      type: RANGE_SLIDER
+      type: NUMBER_RANGE
       sort: INDEX
       direction: DESC
       pageSize: 10
       collapsed: true
       hidden: false
-      rangeMin: 0
-      rangeMax: 1000
+      rangeStart: 0
+      rangeEnd: 2000
+      rangeGap: 100
     - name: Citation Count Range
       field: citationCount
-      type: RANGE_SLIDER
+      type: NUMBER_RANGE
       sort: INDEX
       direction: DESC
       pageSize: 10
       collapsed: true
       hidden: false
-      rangeMin: 0
-      rangeMax: 10000
+      rangeStart: 0
+      rangeEnd: 20000
+      rangeGap: 100
   filters:
     - field: class
       value: Document

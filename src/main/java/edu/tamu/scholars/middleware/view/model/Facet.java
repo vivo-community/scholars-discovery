@@ -56,10 +56,13 @@ public class Facet {
     private boolean hidden;
 
     @Column(nullable = true)
-    private int rangeMin;
+    private String rangeStart;
 
     @Column(nullable = true)
-    private int rangeMax;
+    private String rangeEnd;
+
+    @Column(nullable = true)
+    private String rangeGap;
 
     public Facet() {
         opKey = OpKey.EQUALS;
@@ -152,20 +155,28 @@ public class Facet {
         this.hidden = hidden;
     }
 
-    public int getRangeMin() {
-        return rangeMin;
+    public String getRangeStart() {
+        return rangeStart;
     }
 
-    public void setRangeMin(int rangeMin) {
-        this.rangeMin = rangeMin;
+    public void setRangeStart(String rangeStart) {
+        this.rangeStart = rangeStart;
     }
 
-    public int getRangeMax() {
-        return rangeMax;
+    public String getRangeEnd() {
+        return rangeEnd;
     }
 
-    public void setRangeMax(int rangeMax) {
-        this.rangeMax = rangeMax;
+    public void setRangeEnd(String rangeEnd) {
+        this.rangeEnd = rangeEnd;
+    }
+
+    public String getRangeGap() {
+        return rangeGap;
+    }
+
+    public void setRangeGap(String rangeGap) {
+        this.rangeGap = rangeGap;
     }
 
 }

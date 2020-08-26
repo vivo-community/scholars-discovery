@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.solr.common.params.FacetParams.FacetRangeInclude;
+import org.apache.solr.common.params.FacetParams.FacetRangeOther;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.data.solr.core.query.FacetOptions.FieldWithFacetParameters;
+import org.springframework.data.solr.core.query.FacetOptions.FieldWithNumericRangeParameters;
 import org.springframework.data.solr.core.query.HighlightOptions;
 import org.springframework.data.solr.core.query.Query.Operator;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
@@ -139,9 +142,22 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
         FacetOptions facetOptions = new FacetOptions();
 
         facets.forEach(facet -> {
-            FieldWithFacetParameters fieldWithFacetParameters = new FieldWithFacetParameters(facet.getCommand());
-            // NOTE: other possible; method, minCount, missing, and prefix
-            facetOptions.addFacetOnField(fieldWithFacetParameters);
+            String name = facet.getCommand();
+            switch (facet.getType()) {
+            case NUMBER_RANGE:
+                Integer rangeStart = Integer.parseInt(facet.getRangeStart());
+                Integer rangeEnd = Integer.parseInt(facet.getRangeEnd());
+                Integer rangeGap = Integer.parseInt(facet.getRangeGap());
+                facetOptions.addFacetByRange(new FieldWithNumericRangeParameters(name, rangeStart, rangeEnd, rangeGap)
+                    .setHardEnd(false)
+                    .setOther(FacetRangeOther.BETWEEN)
+                    .setInclude(FacetRangeInclude.LOWER));
+                break;
+            default:
+                // NOTE: other possible; method, minCount, missing, and prefix
+                facetOptions.addFacetOnField(new FieldWithFacetParameters(name));
+                break;
+            }
         });
 
         if (facetOptions.hasFacets()) {

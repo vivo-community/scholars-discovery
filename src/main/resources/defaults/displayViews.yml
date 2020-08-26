@@ -29,6 +29,7 @@
     fieldViews:
       - name: Recent Publications
         field: publications
+        order: 1
         limit: 5
         sort:
           - field: title
@@ -59,56 +60,70 @@
         - name: HR job title
           template: "defaults/displayViews/persons/overview/hrJobTitle.html"
           field: hrJobTitle
+          order: 1
     - name: About
       sections:
         - name: overview
           template: "defaults/displayViews/persons/about/overview.html"
           field: overview
+          order: 1
         - name: geographic focus
           template: "defaults/displayViews/persons/overview/geographicFocus.html"
           field: geographicFocus
+          order: 2
     - name: Affiliation
       sections:
         - name: head of
           template: "defaults/displayViews/persons/affiliation/headOf.html"
           field: headOf
+          order: 1
         - name: member of
           template: "defaults/displayViews/persons/affiliation/memberOf.html"
           field: memberOf
+          order: 2
         - name: has collaborator
           template: "defaults/displayViews/persons/affiliation/hasCollaborator.html"
           field: hasCollaborator
+          order: 3
         - name: clinical activities
           template: "defaults/displayViews/persons/affiliation/clinicalActivities.html"
           field: clinicalActivities
+          order: 4
         - name: attended event
           template: "defaults/displayViews/persons/affiliation/attendedEvent.html"
           field: attendedEvents
+          order: 5
     - name: Academic Background
       sections:
         - name: education and training
           template: "defaults/displayViews/persons/academicBackground/educationAndTraining.html"
           field: educationAndTraining
+          order: 1
         - name: credentials
           template: "defaults/displayViews/persons/academicBackground/credentials.html"
           field: credentials
+          order: 2
         - name: credential eligibility attained
           template: "defaults/displayViews/persons/academicBackground/credentialEligibilityAttained.html"
           field: credentialEligibilityAttained
+          order: 3
         - name: advisee of
           template: "defaults/displayViews/persons/academicBackground/adviseeOf.html"
           field: adviseeOf
+          order: 4
     - name: Publications
       sections:
         - name: selected publications
           shared: true
           template: "defaults/displayViews/persons/publications/selectedPublications.html"
           field: publications
+          order: 1
           lazyReferences:
             - publications
           subsections:
             - name: Academic Articles
               field: publications
+              order: 1
               filters:
                 - field: type
                   value: AcademicArticle
@@ -121,6 +136,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Books
               field: publications
+              order: 2
               filters:
                 - field: type
                   value: Book
@@ -133,6 +149,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/book.html"
             - name: Chapters
               field: publications
+              order: 3
               filters:
                 - field: type
                   value: Chapter
@@ -145,6 +162,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/chapter.html"
             - name: Conference Papers
               field: publications
+              order: 4
               filters:
                 - field: type
                   value: ConferencePaper
@@ -157,6 +175,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Institutional Repository Documents
               field: publications
+              order: 5
               filters:
                 - field: type
                   value: GreyLiterature
@@ -169,6 +188,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Theses
               field: publications
+              order: 6
               filters:
                 - field: type
                   value: Thesis
@@ -181,6 +201,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Working Papers
               field: publications
+              order: 7
               filters:
                 - field: type
                   value: WorkingPaper
@@ -193,6 +214,7 @@
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
             - name: Internet Publications
               field: publications
+              order: 8
               filters:
                 - field: type
                   value: Webpage
@@ -202,9 +224,10 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/internetPublication.html"
             - name: Reports
               field: publications
+              order: 9
               filters:
                 - field: type
                   value: Report
@@ -218,12 +241,15 @@
         - name: collection or series editor for
           template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
           field: collectionOrSeriesEditorFor
+          order: 2
         - name: editor of
           template: "defaults/displayViews/persons/publications/editorOf.html"
           field: editorOf
+          order: 3
           subsections:
             - name: Books
               field: editorOf
+              order: 1
               filters:
                 - field: type
                   value: Book
@@ -234,19 +260,23 @@
         - name: presentations
           template: "defaults/displayViews/persons/publications/presentations.html"
           field: presentations
+          order: 4
         - name: featured in
           template: "defaults/displayViews/persons/publications/featuredIn.html"
           field: featuredIn
+          order: 5
           lazyReferences:
             - featuredIn
         - name: assignee for patent
           template: "defaults/displayViews/persons/publications/assigneeForPatent.html"
           field: assigneeForPatent
+          order: 6
           lazyReferences:
             - assigneeForPatent
         - name: translator of
           template: "defaults/displayViews/persons/publications/translatorOf.html"
           field: translatorOf
+          order: 7
           lazyReferences:
             - translatorOf
     - name: Software
@@ -255,12 +285,14 @@
           paginated: true
           template: "defaults/displayViews/persons/software/software.html"
           field: publications
+          order: 1
           filters:
             - field: type
               value: ERO_0000071
           sort:
             - field: publicationDate
               direction: DESC
+              date: true
             - field: title
               direction: ASC
     - name: News
@@ -269,11 +301,13 @@
           paginated: true
           template: "defaults/displayViews/persons/inTheNews/inTheNews.html"
           field: inTheNews
+          order: 2
           lazyReferences:
             - inTheNews
           sort:
             - field: publicationDate
               direction: DESC
+              date: true
             - field: title
               direction: ASC
     - name: Patents
@@ -282,11 +316,13 @@
           shared: true
           template: "defaults/displayViews/persons/publications/patents.html"
           field: publications
+          order: 3
           lazyReferences:
             - publications
           subsections:
             - name: Patents
               field: publications
+              order: 1
               filters:
                 - field: type
                   value: Patent
@@ -302,12 +338,15 @@
         - name: research overview
           template: "defaults/displayViews/persons/grantsAwards/researchOverview.html"
           field: researchOverview
+          order: 1
         - name: researcher on
           template: "defaults/displayViews/persons/grantsAwards/researcherOn.html"
           field: researcherOn
+          order: 2
           subsections:
             - name: Principal Investigator
               field: researcherOn
+              order: 1
               filters:
                 - field: role
                   value: PrincipalInvestigatorRole
@@ -318,6 +357,7 @@
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Co-Principal Investigator
               field: researcherOn
+              order: 2
               filters:
                 - field: role
                   value: CoPrincipalInvestigatorRole
@@ -328,6 +368,7 @@
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Investigator
               field: researcherOn
+              order: 3
               filters:
                 - field: role
                   value: InvestigatorRole
@@ -338,6 +379,7 @@
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Researcher
               field: researcherOn
+              order: 4
               filters:
                 - field: role
                   value: ResearcherRole
@@ -348,6 +390,7 @@
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
             - name: Collaborator
               field: researcherOn
+              order: 5
               filters:
                 - field: role
                   value: CollaboratorRole
@@ -359,31 +402,49 @@
         - name: other research activities
           template: "defaults/displayViews/persons/grantsAwards/otherResearchActivities.html"
           field: otherResearchActivities
+          order: 3
         - name: awards and honors
           paginated: true
           template: "defaults/displayViews/persons/grantsAwards/awardsAndHonors.html"
           field: awardsAndHonors
+          order: 4
           sort:
             - field: yearAwarded
               direction: DESC
               date: true
           lazyReferences:
             - awardsAndHonors
-    - name: Recent Courses
+    - name: Teaching
       sections:
         - name: teaching overview
           template: "defaults/displayViews/persons/recentCourses/teachingOverview.html"
           field: teachingOverview
-        - name: teaching activities
+          order: 1
+        - name: recent teaching activities
           paginated: true
           template: "defaults/displayViews/persons/recentCourses/teachingActivities.html"
           field: teachingActivities
+          order: 2
           sort:
             - field: label
               direction: ASC
+        - name: open teaching materials
+          paginated: true
+          template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
+          field: teachingMaterials
+          order: 3
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
+            - field: title
+              direction: ASC
+          lazyReferences:
+            - teachingMaterials
         - name: advisees
           template: "defaults/displayViews/persons/recentCourses/advisees.html"
           field: advisee
+          order: 4
     - name: Works By Students
       sections:
         - name: chaired theses and dissertations
@@ -391,6 +452,7 @@
           paginated: true
           template: "defaults/displayViews/persons/worksByStudents/chairedThesesAndDissertations.html"
           field: etdChairOf
+          order: 1
           sort:
             - field: publicationDate
               direction: DESC
@@ -400,6 +462,7 @@
           paginated: true
           template: "defaults/displayViews/persons/worksByStudents/advisedCapstone.html"
           field: capstoneAdvisedOf
+          order: 2
           sort:
             - field: publicationDate
               direction: DESC
@@ -409,89 +472,116 @@
         - name: outreach overview
           template: "defaults/displayViews/persons/service/outreachOverview.html"
           field: outreachOverview
+          order: 1
         - name: reviewer of
           template: "defaults/displayViews/persons/service/reviewerOf.html"
           field: reviewerOf
+          order: 2
         - name: contact or provider for service
           template: "defaults/displayViews/persons/service/contactOrProviderForService.html"
           field: contactOrProvidorForService
+          order: 3
         - name: organizer of event
           template: "defaults/displayViews/persons/service/organizerOfEvent.html"
           field: organizerOfEvent
+          order: 4
         - name: professional service activities
           template: "defaults/displayViews/persons/service/professionalServiceActivities.html"
           field: professionalServiceActivities
+          order: 5
         - name: outreach and community service activities
           template: "defaults/displayViews/persons/service/outreachAndCommunityServiceActivities.html"
           field: outreachAndCommunityServiceActivities
+          order: 6
         - name: performs technique
           template: "defaults/displayViews/persons/service/performsTechnique.html"
           field: performsTechnique
+          order: 7
         - name: has expertise in technique
           template: "defaults/displayViews/persons/service/hasExpertiseInTechnique.html"
           field: hasExpertiseInTechnique
+          order: 8
     - name: Identity
       hidden: true
       sections:
         - name: ISNI
           template: "defaults/displayViews/persons/identity/isni.html"
           field: isni
+          order: 1
         - name: NETID
           template: "defaults/displayViews/persons/identity/netid.html"
           field: netid
+          order: 2
         - name: ResearcherID
           template: "defaults/displayViews/persons/identity/researcherId.html"
           field: researcherId
+          order: 3
         - name: Twitter
           template: "defaults/displayViews/persons/identity/twitter.html"
           field: twitter
+          order: 4
         - name: UID
           template: "defaults/displayViews/persons/identity/uid.html"
           field: uid
+          order: 5
         - name: UIN
           template: "defaults/displayViews/persons/identity/uin.html"
           field: uin
+          order: 6
         - name: YouTube
           template: "defaults/displayViews/persons/identity/youTube.html"
           field: youtube
+          order: 7
         - name: same as
           template: "defaults/displayViews/persons/identity/sameAs.html"
           field: sameAs
+          order: 8
         - name: ORCID iD
           template: "defaults/displayViews/persons/identity/orcidId.html"
           field: orcidId
+          order: 9
         - name: eRA Commons ID
           template: "defaults/displayViews/persons/identity/eraCommonsId.html"
           field: eraCommonsId
+          order: 10
         - name: ISI Researcher ID
           template: "defaults/displayViews/persons/identity/isiResearcherId.html"
           field: isiResearcherId
+          order: 11
         - name: Scopus ID
           template: "defaults/displayViews/persons/identity/scopusId.html"
           field: scopusId
+          order: 12
         - name: health care provider ID
           template: "defaults/displayViews/persons/identity/healthCareProviderId.html"
           field: healthCareProviderId
+          order: 13
     - name: Contact
       sections:
         - name: Email
           template: "defaults/displayViews/persons/contact/email.html"
           field: email
+          order: 1
         - name: First Name
           template: "defaults/displayViews/persons/contact/firstName.html"
           field: firstName
+          order: 2
         - name: Last Name
           template: "defaults/displayViews/persons/contact/lastName.html"
           field: lastName
+          order: 3
         - name: middle name or initial
           template: "defaults/displayViews/persons/contact/middleNameOrInitial.html"
           field: middleName
+          order: 4
         - name: full name
           template: "defaults/displayViews/persons/contact/fullName.html"
           field: fullName
+          order: 5
         - name: mailing address
           template: "defaults/displayViews/persons/contact/mailingAddress.html"
           field: streetAddress
+          order: 6
           requiredFields:
             - locality
             - region
@@ -500,47 +590,61 @@
         - name: geographic location
           template: "defaults/displayViews/persons/contact/geographicLocation.html"
           field: geographicLocation
+          order: 7
         - name: located in facility
           template: "defaults/displayViews/persons/contact/locatedInFacility.html"
           field: locatedInFacility
+          order: 8
         - name: fax
           template: "defaults/displayViews/persons/contact/fax.html"
           field: fax
+          order: 9
     - name: Other
       sections:
         - name: bearer of
           template: "defaults/displayViews/persons/other/bearerOf.html"
           field: bearerOf
+          order: 1
         - name: has collaborator
           template: "defaults/displayViews/persons/other/hasCollaborator.html"
           field: hasCollaborator
+          order: 2
         - name: has contact info
           template: "defaults/displayViews/persons/other/hasContactInfo.html"
           field: hasContactInfo
+          order: 3
         - name: has output
           template: "defaults/displayViews/persons/other/hasOutput.html"
           field: hasOutput
+          order: 4
         - name: is specified output of
           template: "defaults/displayViews/persons/other/isSpecifiedOutputOf.html"
           field: isSpecifiedOutputOf
+          order: 5
         - name: output of
           template: "defaults/displayViews/persons/other/outputOf.html"
           field: outputOf
+          order: 6
         - name: participates in
           template: "defaults/displayViews/persons/other/participatesIn.html"
           field: participatesIn
+          order: 7
         - name: patient id
           template: "defaults/displayViews/persons/other/patientId.html"
           field: patientId
+          order: 8
         - name: realized in
           template: "defaults/displayViews/persons/other/realizedIn.html"
           field: realizedIn
+          order: 9
         - name: related by
           template: "defaults/displayViews/persons/other/relatedBy.html"
           field: relatedBy
+          order: 10
         - name: relates
           template: "defaults/displayViews/persons/other/relates.html"
           field: relates
+          order: 11
 
 - name: Organizations
   types:
@@ -577,6 +681,7 @@
           paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/awardsGrant.html"
           field: awardsGrant
+          order: 1
           sort:
             - field: date
               direction: DESC
@@ -585,6 +690,7 @@
           paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/administersGrant.html"
           field: administersGrant
+          order: 2
           sort:
             - field: date
               direction: DESC
@@ -593,6 +699,7 @@
           paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/subcontractsGrant.html"
           field: subcontractsGrant
+          order: 3
           sort:
             - field: date
               direction: DESC
@@ -601,6 +708,7 @@
           paginated: true
           template: "defaults/displayViews/organizations/grantsAwards/performsHumanStudy.html"
           field: performsHumanStudy
+          order: 4
           sort:
             - field: date
               direction: DESC
@@ -610,22 +718,27 @@
         - name: offers degree
           template: "defaults/displayViews/organizations/overview/offersDegree.html"
           field: degrees
+          order: 1
         - name: abbreviation
           template: "defaults/displayViews/organizations/overview/abbreviation.html"
           field: abbreviation
+          order: 2
         - name: date/time interval
           template: "defaults/displayViews/organizations/overview/dateTimeInterval.html"
           field: dateTimeInterval
+          order: 3
         - name: sponsors award or honor
           paginated: true
           template: "defaults/displayViews/organizations/overview/sponsorsAwardOrHonor.html"
           field: sponsorsAwardOrHonor
+          order: 4
           lazyReferences:
             - sponsorsAwardOrHonor
         - name: award or honor given
           paginated: true
           template: "defaults/displayViews/organizations/overview/awardOrHonorGiven.html"
           field: awardOrHonorGiven
+          order: 5
           sort:
             - field: yearAwarded
               direction: DESC
@@ -635,22 +748,27 @@
         - name: awards and honors received
           template: "defaults/displayViews/organizations/overview/awardsAndHonorsReceived.html"
           field: awardsAndHonorsReceived
+          order: 6
           lazyReferences:
             - awardsAndHonorsReceived
         - name: keywords
           template: "defaults/displayViews/organizations/overview/keywords.html"
           field: keywords
+          order: 7
         - name: geographic focus
           template: "defaults/displayViews/organizations/overview/geographicFocus.html"
           field: geographicFocus
+          order: 8
     - name: Affiliation
       sections:
         - name: organization for training
           template: "defaults/displayViews/organizations/affiliation/organizationForTraining.html"
           field: organizationForTraining
+          order: 1
           subsections:
             - name: Organization For Training
               field: organizationForTraining
+              order: 1
               sort:
                 - field: endDate
                   direction: DESC
@@ -660,9 +778,11 @@
         - name: people
           template: "defaults/displayViews/organizations/affiliation/people.html"
           field: people
+          order: 2
           subsections:
             - name: People
               field: people
+              order: 1
               sort:
                 - field: label
                   direction: ASC
@@ -670,40 +790,51 @@
         - name: has sub-organization
           template: "defaults/displayViews/organizations/affiliation/hasSubOrganization.html"
           field: hasSubOrganizations
+          order: 3
         - name: organization within
           template: "defaults/displayViews/organizations/affiliation/organizationWithin.html"
           field: organizationWithin
+          order: 4
         - name: lead organization of
           template: "defaults/displayViews/organizations/affiliation/leadOrganizationOf.html"
           field: leadOrganizationOf
+          order: 5
         - name: has collaborating organization or group
           template: "defaults/displayViews/organizations/affiliation/hasCollaboratingOrganizationOrGroup.html"
           field: hasCollaboratingOrganizationOrGroup
+          order: 6
         - name: has affiliated organization
           template: "defaults/displayViews/organizations/affiliation/hasAffiliatedOrganization.html"
           field: hasAffiliatedOrganizations
+          order: 7
         - name: member of
           template: "defaults/displayViews/organizations/affiliation/memberOf.html"
           field: memberOf
+          order: 8
         - name: clinical activities
           template: "defaults/displayViews/organizations/affiliation/clinicalActivities.html"
           field: clinicalActivities
+          order: 9
         - name: convener of event
           template: "defaults/displayViews/organizations/affiliation/convenerOfEvent.html"
           field: convenerOfEvent
+          order: 10
         - name: attended event
           template: "defaults/displayViews/organizations/affiliation/attendedEvent.html"
           field: attendedEvents
+          order: 11
     - name: Publications
       sections:
         - name: selected publications
           template: "defaults/displayViews/organizations/publications/selectedPublications.html"
           field: publications
+          order: 1
           lazyReferences:
             - publications
           subsections:
             - name: Academic Articles
               field: publications
+              order: 1
               filters:
                 - field: type
                   value: AcademicArticle
@@ -716,6 +847,7 @@
               template: "defaults/displayViews/organizations/publications/selectedPublications/default.html"
             - name: Books
               field: publications
+              order: 2
               filters:
                 - field: type
                   value: Book
@@ -728,6 +860,7 @@
               template: "defaults/displayViews/organizations/publications/selectedPublications/book.html"
             - name: Chapters
               field: publications
+              order: 3
               filters:
                 - field: type
                   value: Chapter
@@ -741,11 +874,13 @@
         - name: publisher of
           template: "defaults/displayViews/organizations/publications/publisherOf.html"
           field: publisherOf
+          order: 2
           lazyReferences:
             - publisherOf
           subsections:
             - name: Academic Articles
               field: publisherOf
+              order: 1
               filters:
                 - field: type
                   value: AcademicArticle
@@ -758,6 +893,7 @@
               template: "defaults/displayViews/organizations/publications/publisherOf/default.html"
             - name: Books
               field: publisherOf
+              order: 2
               filters:
                 - field: type
                   value: Book
@@ -770,6 +906,7 @@
               template: "defaults/displayViews/organizations/publications/publisherOf/book.html"
             - name: Chapters
               field: publisherOf
+              order: 3
               filters:
                 - field: type
                   value: Chapter
@@ -783,19 +920,23 @@
         - name: presentations
           template: "defaults/displayViews/organizations/publications/presentations.html"
           field: presentations
+          order: 3
         - name: featured in
           template: "defaults/displayViews/organizations/publications/featuredIn.html"
           field: featuredIn
+          order: 4
           lazyReferences:
             - featuredIn
         - name: assignee for patent
           template: "defaults/displayViews/organizations/publications/assigneeForPatent.html"
           field: assigneeForPatent
+          order: 5
           lazyReferences:
             - assigneeForPatent
         - name: translator of
           template: "defaults/displayViews/organizations/publications/translatorOf.html"
           field: translatorOf
+          order: 6
           lazyReferences:
             - translatorOf
     - name: Service
@@ -803,90 +944,117 @@
         - name: contract or provider for service
           template: "defaults/displayViews/organizations/service/contractOrProviderForService.html"
           field: contractOrProviderForService
+          order: 1
         - name: outreach and community service activities
           template: "defaults/displayViews/organizations/service/outreachAndCommunityServiceActivities.html"
           field: outreachAndCommunityServiceActivities
+          order: 2
         - name: has equipment
           template: "defaults/displayViews/organizations/service/hasEquipment.html"
           field: hasEquipment
+          order: 3
         - name: offers course
           template: "defaults/displayViews/organizations/service/offersCourse.html"
           field: courses
+          order: 4
     - name: Identity
       sections:
         - name: OrgID
           template: "defaults/displayViews/organizations/identity/orgID.html"
           field: orgId
+          order: 1
         - name: same as
           template: "defaults/displayViews/organizations/identity/sameAs.html"
           field: sameAs
+          order: 2
     - name: Contact
       sections:
         - name: phone
           template: "defaults/displayViews/organizations/contact/phone.html"
           field: phone
+          order: 1
         - name: fax
           template: "defaults/displayViews/organizations/contact/fax.html"
           field: fax
+          order: 2
         - name: email address
           template: "defaults/displayViews/organizations/contact/emailAddress.html"
           field: emailAddress
+          order: 3
         - name: mailing address
           template: "defaults/displayViews/organizations/contact/mailingAddress.html"
           field: mailingAddress
+          order: 4
         - name: geographic location
           template: "defaults/displayViews/organizations/contact/geographicLocation.html"
           field: geographicLocation
+          order: 5
         - name: located in facility
           template: "defaults/displayViews/organizations/contact/locatedInFacility.html"
           field: locatedAtFacilities
+          order: 6
         - name: predecessor organization
           template: "defaults/displayViews/organizations/contact/predecessorOrganization.html"
           field: predecessorOrganizations
+          order: 7
         - name: successor organization
           template: "defaults/displayViews/organizations/contact/successorOrganization.html"
           field: successorOrganizations
+          order: 8
         - name: governing authority for
           template: "defaults/displayViews/organizations/contact/governingAuthorityFor.html"
           field: governingAuthorityFor
+          order: 9
     - name: Other
       sections:
         - name: bearer of
           template: "defaults/displayViews/organizations/other/bearerOf.html"
           field: bearerOf
+          order: 1
         - name: has collaborator
           template: "defaults/displayViews/organizations/other/hasCollaborator.html"
           field: hasCollaborator
+          order: 2
         - name: has contact info
           template: "defaults/displayViews/organizations/other/hasContactInfo.html"
           field: hasContactInfo
+          order: 3
         - name: has part
           template: "defaults/displayViews/organizations/other/hasPart.html"
           field: hasPart
+          order: 4
         - name: is specific output of
           template: "defaults/displayViews/organizations/other/isSpecificOutputOf.html"
           field: isSpecificOutputOf
+          order: 5
         - name: located in
           template: "defaults/displayViews/organizations/other/locatedIn.html"
           field: locatedIn
+          order: 6
         - name: output of
           template: "defaults/displayViews/organizations/other/outputOf.html"
           field: outputOf
+          order: 7
         - name: part of
           template: "defaults/displayViews/organizations/other/partOf.html"
           field: partOf
+          order: 8
         - name: participates in
           template: "defaults/displayViews/organizations/other/participatesIn.html"
           field: participatesIn
+          order: 9
         - name: related by
           template: "defaults/displayViews/organizations/other/relatedBy.html"
           field: relatedBy
+          order: 10
         - name: relates
           template: "defaults/displayViews/organizations/other/relates.html"
           field: relates
+          order: 11
         - name: uses
           template: "defaults/displayViews/organizations/other/uses.html"
           field: uses
+          order: 12
 
 - name: Documents
   types:
@@ -903,6 +1071,7 @@
     - Capstone
     - Webpage
     - Report
+    - TeachingMaterial
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
   metaTemplates:
@@ -917,205 +1086,267 @@
         - name: abstract
           template: "defaults/displayViews/documents/overview/abstract.html"
           field: abstract
+          order: 1
         - name: authors
           template: "defaults/displayViews/documents/overview/authors.html"
           field: authors
+          order: 2
         - name: author list (cited authors)
           template: "defaults/displayViews/documents/overview/authorList.html"
           field: authorList
+          order: 3
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
           field: editors
+          order: 4
         - name: editor list (cited editors)
           template: "defaults/displayViews/documents/overview/editorList.html"
           field: editorList
+          order: 5
         - name: etd chair
           template: "defaults/displayViews/documents/overview/etdChair.html"
           field: etdChairedBy
+          order: 6
           lazyReferences:
             - etdChairedBy
         - name: capstone (non-thesis) advisor
           template: "defaults/displayViews/documents/overview/advisor.html"
           field: advisedBy
+          order: 7
           lazyReferences:
             - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators
+          order: 8
         - name: status
           template: "defaults/displayViews/documents/overview/status.html"
           field: status
+          order: 9
         - name: publication date
           template: "defaults/displayViews/documents/overview/publicationDate.html"
           field: publicationDate
+          order: 10
         - name: publisher
           template: "defaults/displayViews/documents/overview/publisher.html"
           field: publisher
+          order: 11
         - name: has subject area
           template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
           field: subjectAreas
+          order: 12
         - name: has restriction
           template: "defaults/displayViews/documents/overview/hasRestriction.html"
           field: restrictions
+          order: 13
         - name: has document part
           template: "defaults/displayViews/documents/overview/hasDocumentPart.html"
           field: documentParts
+          order: 14
         - name: features
           template: "defaults/displayViews/documents/overview/features.html"
           field: features
+          order: 15
         - name: published in
           template: "defaults/displayViews/documents/overview/publishedIn.html"
           field: publicationVenue
+          order: 16
           lazyReferences:
             - publicationVenue
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
+          order: 17
         - name: documentation for project or resource
           template: "defaults/displayViews/documents/overview/documentationForProjectOrResource.html"
           field: documentationForProjectOrResource
+          order: 18
         - name: output of process or event
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
+          order: 19
         - name: presented at event
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
+          order: 20
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
+          order: 21
         - name: altmetric score
           template: "defaults/displayViews/documents/overview/altmetricScore.html"
           field: altmetricScore
+          order: 22
         - name: citation count
           template: "defaults/displayViews/documents/overview/citationCount.html"
           field: citationCount
+          order: 23
         - name: news outlet
           template: "defaults/displayViews/documents/overview/newsOutlet.html"
           field: newsOutlet
+          order: 24
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
           template: "defaults/displayViews/documents/identity/eanInternationalUniformCodeCouncil.html"
           field: eanucc13
+          order: 1
         - name: NIH Manuscript Submission System ID
           template: "defaults/displayViews/documents/identity/nihManuscriptSubmissionSystemId.html"
           field: nihmsid
+          order: 2
         - name: PubMed Central ID
           template: "defaults/displayViews/documents/identity/pubMedCentralId.html"
           field: pmcid
+          order: 3
         - name: identifier
           template: "defaults/displayViews/documents/identity/identifier.html"
           field: identifier
+          order: 4
         - name: same as
           template: "defaults/displayViews/documents/identity/sameAs.html"
           field: sameAs
+          order: 5
         - name: Digital Object Identifier (DOI)
           template: "defaults/displayViews/documents/identity/digitalObjectIdentifier.html"
           field: doi
+          order: 6
         - name: URI
           template: "defaults/displayViews/documents/identity/uri.html"
           field: uri
+          order: 7
         - name: Online Computer Library Center (OCLC) number
           template: "defaults/displayViews/documents/identity/onlineComputerLibraryCenter.html"
           field: oclcnum
+          order: 8
         - name: PubMed ID
           template: "defaults/displayViews/documents/identity/pubMedId.html"
           field: pmid
+          order: 9
         - name: International Standard Book Number (ISBN) 10
           template: "defaults/displayViews/documents/identity/isbn10.html"
           field: isbn10
+          order: 10
         - name: International Standard Book Number (ISBN) 13
           template: "defaults/displayViews/documents/identity/isbn13.html"
           field: isbn13
+          order: 11
     - name: Related Documents
       sections:
         - name: cited by
           template: "defaults/displayViews/documents/relatedDocuments/citedBy.html"
           field: citedBy
+          order: 1
         - name: cites
           template: "defaults/displayViews/documents/relatedDocuments/cites.html"
           field: cites
+          order: 2
         - name: cites as data source
           template: "defaults/displayViews/documents/relatedDocuments/citesAsDataSource.html"
           field: citesAsDataSource
+          order: 3
         - name: has translation
           template: "defaults/displayViews/documents/relatedDocuments/hasTranslation.html"
           field: translations
+          order: 4
         - name: translation of
           template: "defaults/displayViews/documents/relatedDocuments/translationOf.html"
           field: translationOf
+          order: 5
     - name: Additional Document Info
       sections:
         - name: has global citation frequency
           template: "defaults/displayViews/documents/additionalDocumentInfo/hasGlobalCitationFrequency.html"
           field: hasGlobalCitationFrequency
+          order: 1
         - name: number of pages
           template: "defaults/displayViews/documents/additionalDocumentInfo/numberOfPages.html"
           field: numberOfPages
+          order: 2
         - name: start page
           template: "defaults/displayViews/documents/additionalDocumentInfo/startPage.html"
           field: pageStart
+          order: 3
         - name: end page
           template: "defaults/displayViews/documents/additionalDocumentInfo/endPage.html"
           field: pageEnd
+          order: 4
         - name: volume
           template: "defaults/displayViews/documents/additionalDocumentInfo/volume.html"
           field: volume
+          order: 5
         - name: issue
           template: "defaults/displayViews/documents/additionalDocumentInfo/issue.html"
           field: issue
+          order: 6
         - name: assignees
           template: "defaults/displayViews/documents/additionalDocumentInfo/assignees.html"
           field: assignees
+          order: 7
         - name: reproduced in
           template: "defaults/displayViews/documents/additionalDocumentInfo/reproducedIn.html"
           field: reproducedIn
+          order: 8
         - name: reproduces
           template: "defaults/displayViews/documents/additionalDocumentInfo/reproduces.html"
           field: reproduces
+          order: 9
     - name: Other
       sections:
         - name: is about
           template: "defaults/displayViews/documents/other/isAbout.html"
           field: isAbout
+          order: 1
         - name: is specified output of
           template: "defaults/displayViews/documents/other/isSpecifiedOutputOf.html"
           field: specifiedOutputOf
+          order: 2
         - name: is template
           template: "defaults/displayViews/documents/other/isTemplate.html"
           field: isTemplate
+          order: 3
         - name: mentions
           template: "defaults/displayViews/documents/other/mentions.html"
           field: mentions
+          order: 4
           lazyReferences:
             - mentions
         - name: output of
           template: "defaults/displayViews/documents/other/outputOf.html"
           field: outputOf
+          order: 5
         - name: participates in
           template: "defaults/displayViews/documents/other/participatesIn.html"
           field: participatesIn
+          order: 6
         - name: related by
           template: "defaults/displayViews/documents/other/relatedBy.html"
           field: relatedBy
+          order: 7
         - name: supported by
           template: "defaults/displayViews/documents/other/supportedBy.html"
           field: supportedBy
+          order: 8
         - name: date/time value
           template: "defaults/displayViews/documents/other/dateTimeValue.html"
           field: dateTimeValue
+          order: 9
         - name: tags
           template: "defaults/displayViews/documents/other/tags.html"
           field: tags
+          order: 10
         - name: key
           template: "defaults/displayViews/documents/other/key.html"
           field: key
+          order: 11
         - name: note
           template: "defaults/displayViews/documents/other/note.html"
           field: note
+          order: 12
         - name: URL
           template: "defaults/displayViews/documents/other/url.html"
           field: url
+          order: 13
 
 - name: Relationships
   types:
@@ -1132,131 +1363,169 @@
         - name: description
           template: "defaults/displayViews/relationships/overview/description.html"
           field: description
+          order: 1
         - name: receipt of
           template: "defaults/displayViews/relationships/overview/receiptOf.html"
           field: receiptOf
+          order: 2
         - name: award or honor for
           template: "defaults/displayViews/relationships/overview/awardOrHonorFor.html"
           field: awardOrHonorFor
+          order: 3
         - name: date/time interval
           template: "defaults/displayViews/relationships/overview/dateTimeInterval.html"
           field: dateTimeIntervalStart
+          order: 4
           requiredFields:
             - dateTimeIntervalEnd
         - name: year awarded
           template: "defaults/displayViews/relationships/overview/yearAwarded.html"
           field: yearAwarded
+          order: 5
         - name: abstract
           template: "defaults/displayViews/relationships/overview/abstract.html"
           field: abstract
+          order: 6
         - name: has subject area
           template: "defaults/displayViews/relationships/overview/hasSubjectArea.html"
           field: subjectAreas
+          order: 7
         - name: awarded by
           template: "defaults/displayViews/relationships/overview/awardedBy.html"
           field: awardedBy
+          order: 8
         - name: awarded by (preferred label)
           template: "defaults/displayViews/relationships/overview/awardedByPreferredLabel.html"
           field: awardedByPreferredLabel
+          order: 9
         - name: award conferred by
           template: "defaults/displayViews/relationships/overview/awardConferredBy.html"
           field: awardConferredBy
+          order: 10
         - name: award conferred by (preferred label)
           template: "defaults/displayViews/relationships/overview/awardConferredByPreferredLabel.html"
           field: awardConferredByPreferredLabel
+          order: 11
         - name: administered by
           template: "defaults/displayViews/relationships/overview/administeredBy.html"
           field: administeredBy
+          order: 12
         - name: subcontracted through
           template: "defaults/displayViews/relationships/overview/subcontractedThrough.html"
           field: grantSubcontractedThrough
+          order: 13
         - name: geographic focus
           template: "defaults/displayViews/relationships/overview/geographicFocus.html"
           field: geographicFocus
+          order: 14
         - name: has sub grant
           template: "defaults/displayViews/relationships/overview/hasSubGrant.html"
           field: subGrant
+          order: 15
         - name: sub grant of
           template: "defaults/displayViews/relationships/overview/subGrantOf.html"
           field: subGrantOf
+          order: 16
         - name: provides funding for
           template: "defaults/displayViews/relationships/overview/providesFundingFor.html"
           field: providesFundingFor
+          order: 17
         - name: total award amount
           template: "defaults/displayViews/relationships/overview/totalAwardAmount.html"
           field: totalAwardAmount
+          order: 18
         - name: direct costs
           template: "defaults/displayViews/relationships/overview/directCosts.html"
           field: directCosts
+          order: 19
         - name: sponsor award ID
           template: "defaults/displayViews/relationships/overview/sponsorAwardId.html"
           field: sponsorAwardId
+          order: 20
         - name: local award ID
           template: "defaults/displayViews/relationships/overview/localAwardId.html"
           field: localAwardId
+          order: 21
     - name: Affiliation
       sections:
         - name: contributor
           template: "defaults/displayViews/relationships/affiliation/contributor.html"
           field: contributors
+          order: 1
     - name: Publications
       sections:
         - name: supported publications or other works
           template: "defaults/displayViews/relationships/publications/supportedPublicationsOrOtherWorks.html"
           field: supportedPublicationOrOtherWork
+          order: 1
     - name: Identity
       sections:
         - name: same as
           template: "defaults/displayViews/relationships/identity/sameAs.html"
           field: sameAs
+          order: 1
     - name: Other
       sections:
         - name: assigned by
           template: "defaults/displayViews/relationships/other/assignedBy.html"
           field: assignedBy
+          order: 1
         - name: inheres in
           template: "defaults/displayViews/relationships/other/inheresIn.html"
           field: inheresIn
+          order: 2
         - name: is specified output of
           template: "defaults/displayViews/relationships/other/isSpecifiedOutputOf.html"
           field: specifiedOutputOf
+          order: 3
         - name: output of
           template: "defaults/displayViews/relationships/other/outputOf.html"
           field: outputOf
+          order: 4
         - name: participates in
           template: "defaults/displayViews/relationships/other/participatesIn.html"
           field: participatesIn
+          order: 5
         - name: relates
           template: "defaults/displayViews/relationships/other/relates.html"
           field: relates
+          order: 6
     - name: Identity
       sections:
         - name: same as
           template: "defaults/displayViews/relationships/identity/sameAs.html"
           field: sameAs
+          order: 1
     - name: Other
       sections:
         - name: assigned by
           template: "defaults/displayViews/relationships/other/assignedBy.html"
           field: assignedBy
+          order: 1
         - name: inheres in
           template: "defaults/displayViews/relationships/other/inheresIn.html"
           field: inheresIn
+          order: 2
         - name: is specified output of
           template: "defaults/displayViews/relationships/other/isSpecifiedOutputOf.html"
           field: specifiedOutputOf
+          order: 3
         - name: output of
           template: "defaults/displayViews/relationships/other/outputOf.html"
           field: outputOf
+          order: 4
         - name: participates in
           template: "defaults/displayViews/relationships/other/participatesIn.html"
           field: participatesIn
+          order: 5
         - name: relates
           template: "defaults/displayViews/relationships/other/relates.html"
           field: relates
+          order: 6
         - name: date/time value
           template: "defaults/displayViews/relationships/other/dateTimeValue.html"
           field: dateTimeValue
+          order: 7
 
 - name: Processes
   types:
@@ -1272,82 +1541,105 @@
         - name: description
           template: "defaults/displayViews/processes/overview/description.html"
           field: description
+          order: 1
         - name: offered by
           template: "defaults/displayViews/processes/overview/offeredBy.html"
           field: offeredBy
+          order: 2
         - name: date/time interval
           template: "defaults/displayViews/processes/overview/dateTimeInterval.html"
           field: dateTimeIntervalStart
+          order: 3
           requiredFields:
             - dateTimeIntervalEnd
         - name: occurs within event
           template: "defaults/displayViews/processes/overview/occursWithinEvent.html"
           field: occursWithinEvent
+          order: 4
         - name: includes event
           template: "defaults/displayViews/processes/overview/includesEvent.html"
           field: includesEvent
+          order: 5
         - name: in event series
           template: "defaults/displayViews/processes/overview/inEventSeries.html"
           field: inEventSeries
+          order: 6
         - name: participant
           template: "defaults/displayViews/processes/overview/participants.html"
           field: participants
+          order: 7
         - name: has subject area
           template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
           field: subjectAreas
+          order: 8
         - name: has prerequisite
           template: "defaults/displayViews/processes/overview/hasPrerequisite.html"
           field: hasPrerequisite
+          order: 9
         - name: prerequisite for
           template: "defaults/displayViews/processes/overview/prerequisiteFor.html"
           field: prerequisiteFor
+          order: 10
         - name: credits
           template: "defaults/displayViews/processes/overview/credits.html"
           field: credits
+          order: 11
         - name: geographic focus
           template: "defaults/displayViews/processes/overview/geographicFocus.html"
           field: geographicFocus
+          order: 12
     - name: Publications
       sections:
         - name: output publications or other works
           template: "defaults/displayViews/processes/publications/outputPublicationsOrOtherWorks.html"
           field: outputPublicationOrOtherWork
+          order: 1
         - name: related documents
           template: "defaults/displayViews/processes/publications/relatedDocuments.html"
           field: relatedDocument
+          order: 2
     - name: Identity
       sections:
         - name: same as
           template: "defaults/displayViews/processes/identity/sameAs.html"
           field: sameAs
+          order: 1
     - name: Contact
       sections:
         - name: contact information
           template: "defaults/displayViews/processes/contact/contactInformation.html"
           field: contactInformation
+          order: 1
         - name: held in facility
           template: "defaults/displayViews/processes/contact/heldInFacility.html"
           field: heldInFacility
+          order: 2
         - name: held in geographic location
           template: "defaults/displayViews/processes/contact/heldInGeographicLocation.html"
           field: heldInGeographicLocation
+          order: 3
     - name: Other
       sections:
         - name: has input
           template: "defaults/displayViews/processes/other/hasInput.html"
           field: hasInput
+          order: 1
         - name: has output
           template: "defaults/displayViews/processes/other/hasOutput.html"
           field: hasOutput
+          order: 2
         - name: has participant
           template: "defaults/displayViews/processes/other/hasParticipant.html"
           field: hasParticipant
+          order: 3
         - name: located in
           template: "defaults/displayViews/processes/other/locatedIn.html"
           field: locatedIn
+          order: 4
         - name: realizes
           template: "defaults/displayViews/processes/other/realizes.html"
           field: realizes
+          order: 5
 
 - name: Collections
   types:
@@ -1363,12 +1655,15 @@
         - name: abstract
           template: "defaults/displayViews/collections/overview/abstract.html"
           field: abstract
+          order: 1
         - name: abbreviation
           template: "defaults/displayViews/collections/overview/abbreviation.html"
           field: abbreviation
+          order: 2
         - name: publication venue for
           template: "defaults/displayViews/collections/overview/publicationVenueFor.html"
           field: publicationVenueFor
+          order: 3
           paginated: true
           lazyReferences:
             - publicationVenueFor
@@ -1378,85 +1673,108 @@
         - name: authors
           template: "defaults/displayViews/collections/overview/authors.html"
           field: authors
+          order: 4
           paginated: true
           lazyReferences:
             - authors
         - name: editors
           template: "defaults/displayViews/collections/overview/editors.html"
           field: editors
+          order: 5
           paginated: true
           lazyReferences:
             - editors
         - name: translator
           template: "defaults/displayViews/collections/overview/translator.html"
           field: translators
+          order: 6
           paginated: true
           lazyReferences:
             - translators
         - name: publication date
           template: "defaults/displayViews/collections/overview/publicationDate.html"
           field: publicationDate
+          order: 7
         - name: publisher
           template: "defaults/displayViews/collections/overview/publisher.html"
           field: publisher
+          order: 8
         - name: has subject area
           template: "defaults/displayViews/collections/overview/hasSubjectArea.html"
           field: subjectAreas
+          order: 9
         - name: features
           template: "defaults/displayViews/collections/overview/features.html"
           field: features
+          order: 10
         - name: geographic focus
           template: "defaults/displayViews/collections/overview/geographicFocus.html"
           field: geographicFocus
+          order: 11
         - name: output of process or event
           template: "defaults/displayViews/collections/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
+          order: 12
         - name: keywords
           template: "defaults/displayViews/collections/overview/keywords.html"
           field: keywords
+          order: 13
     - name: Identity
       sections:
         - name: International Standard Serial Number (ISSN)
           template: "defaults/displayViews/collections/identity/issn.html"
           field: issn
+          order: 1
         - name: Electronic International Standard Serial Number (EISSN)
           template: "defaults/displayViews/collections/identity/eissn.html"
           field: eissn
+          order: 2
         - name: Digital Object Identifier (DOI)
           template: "defaults/displayViews/collections/identity/doi.html"
           field: doi
+          order: 3
         - name: Online Computer Library Center (OCLC) number
           template: "defaults/displayViews/collections/identity/oclcnumber.html"
           field: oclcnumber
+          order: 4
     - name: Other
       sections:
         - name: is about
           template: "defaults/displayViews/collections/other/isAbout.html"
           field: isAbout
+          order: 1
         - name: is specified output of
           template: "defaults/displayViews/collections/other/isSpecifiedOutputOf.html"
           field: specifiedOutputOf
+          order: 2
         - name: is template
           template: "defaults/displayViews/collections/other/isTemplate.html"
           field: isTemplate
+          order: 3
         - name: mentions
           template: "defaults/displayViews/collections/other/mentions.html"
           field: mention
+          order: 4
         - name: output of
           template: "defaults/displayViews/collections/other/outputOf.html"
           field: outputOf
+          order: 5
         - name: participates in
           template: "defaults/displayViews/collections/other/participatesIn.html"
           field: participatesIn
+          order: 6
         - name: related by
           template: "defaults/displayViews/collections/other/relatedBy.html"
           field: relatedBy
+          order: 7
         - name: supported by
           template: "defaults/displayViews/collections/other/supportedBy.html"
           field: supportedBy
+          order: 8
         - name: date/time value
           template: "defaults/displayViews/collections/other/dateTimeValue.html"
           field: dateTimeValue
+          order: 9
 
 - name: Concepts
   types:
@@ -1474,52 +1792,66 @@
         - name: research area of
           template: "defaults/displayViews/concepts/overview/researchAreaOf.html"
           field: researchAreaOf
+          order: 1
           lazyReferences:
             - researchAreaOf
         - name: award conferred by
           template: "defaults/displayViews/concepts/overview/awardConferredBy.html"
           field: awardConferredBy
+          order: 2
         - name: award conferred by (preferred label)
           template: "defaults/displayViews/concepts/overview/awardConferredByPreferredLabel.html"
           field: awardConferredByPreferredLabel
+          order: 3
         - name: year awarded
           template: "defaults/displayViews/concepts/overview/yearAwarded.html"
           field: yearAwarded
+          order: 4
         - name: broader concept
           template: "defaults/displayViews/concepts/overview/broaderConcept.html"
           field: broaderConcepts
+          order: 5
         - name: narrower concept
           template: "defaults/displayViews/concepts/overview/narrowerConcept.html"
           field: narrowerConcepts
+          order: 6
         - name: related concept
           template: "defaults/displayViews/concepts/overview/relatedConcept.html"
           field: relatedConcepts
+          order: 7
         - name: receipts
           paginated: true
           template: "defaults/displayViews/concepts/overview/receipts.html"
           field: receipts
+          order: 8
           sort:
             - field: recipientName
               direction: ASC
         - name: idea of
           template: "defaults/displayViews/concepts/overview/futureResearchIdeaOf.html"
           field: futureResearchIdeaOf
+          order: 9
           requiredFields:
             - futureResearchIdeaOf
         - name: creation date
           template: "defaults/displayViews/concepts/overview/createdDate.html"
           field: createdDate
+          order: 10
         - name: description
           template: "defaults/displayViews/concepts/overview/description.html"
           field: description
+          order: 11
         - name: keywords
           template: "defaults/displayViews/concepts/overview/keywords.html"
           field: keywords
+          order: 12
         - name: geographic focus
           template: "defaults/displayViews/concepts/overview/geographicFocus.html"
           field: geographicFocus
+          order: 13
     - name: Identity
       sections:
         - name: same as
           template: "defaults/displayViews/concepts/identity/sameAs.html"
           field: sameAs
+          order: 1

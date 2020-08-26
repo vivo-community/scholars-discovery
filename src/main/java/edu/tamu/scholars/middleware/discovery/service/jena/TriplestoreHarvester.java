@@ -39,7 +39,7 @@ import reactor.core.publisher.Flux;
 
 public class TriplestoreHarvester implements Harvester {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(TriplestoreHarvester.class);
 
     private static final String COLLECTION_SPARQL_TEMPLATE = "collection";
 
@@ -119,13 +119,13 @@ public class TriplestoreHarvester implements Harvester {
 
     private void lookupProperties(AbstractIndexDocument document, String subject) {
         propertySourceTypeOps.parallelStream().forEach(typeOp -> {
-            PropertySource source = typeOp.getPropertySource();
-            Model model = queryForModel(source, subject);
-            List<Object> values = lookupProperty(typeOp, source, model);
             try {
+                PropertySource source = typeOp.getPropertySource();
+                Model model = queryForModel(source, subject);
+                List<Object> values = lookupProperty(typeOp, source, model);
                 populate(document, typeOp.getField(), values);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                logger.error(String.format("Unable to populat document %s: %s", name(), parse(subject)));
+            } catch (Exception e) {
+                logger.error(String.format("Unable to populate document %s: %s", name(), parse(subject)));
                 logger.error(String.format("Error: %s", e.getMessage()));
                 if (logger.isDebugEnabled()) {
                     e.printStackTrace();

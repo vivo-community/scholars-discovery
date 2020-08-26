@@ -23,6 +23,7 @@ public class HeroTest {
         hero.setImageAlt("Hero");
         hero.setWatermarkImageUri("/assets/images/watermark.png");
         hero.setWatermarkText("Watermark");
+        hero.setHelpText("Test");
         hero.setBaseText("This is only a test!");
         hero.setFontColor("#ffffff");
         hero.setLinkColor("#000000");
@@ -33,6 +34,7 @@ public class HeroTest {
         assertEquals("Hero", hero.getImageAlt());
         assertEquals("/assets/images/watermark.png", hero.getWatermarkImageUri());
         assertEquals("Watermark", hero.getWatermarkText());
+        assertEquals("Test", hero.getHelpText());
         assertEquals("This is only a test!", hero.getBaseText());
         assertEquals("#ffffff", hero.getFontColor());
         assertEquals("#000000", hero.getLinkColor());

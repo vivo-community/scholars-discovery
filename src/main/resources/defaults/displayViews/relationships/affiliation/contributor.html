@@ -1,8 +1,9 @@
 <div class="mb-2">
-  <ul class="list-unstyled ml-2 mr-2 mb-0">
+  <ul class="ml-2 mr-2 mb-0">
     {{#each contributors}}
-    <span><a href="display/{{id}}">{{label}}</a></span>
-    <span class="badge badge-light">{{formalize role}}</span>
+    <li>
+      <span><a href="display/{{id}}">{{label}}</a></span>
+      <span class="badge badge-light">{{formalize role}}</span>
     </li>
     {{/each}}
   </ul>
