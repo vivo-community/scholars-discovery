@@ -7,6 +7,10 @@
     <a href="display/{{id}}"><u>{{{title}}}</u>.</a>
   </span>
 
+  {{#if note}}
+  <span> - {{note}}</span>
+  {{/if}}
+
   {{#if publicationVenue}}
   <span><em>{{publicationVenue.label}}</em>. </span>
   {{/if}}

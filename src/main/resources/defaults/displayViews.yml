@@ -224,7 +224,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/internetPublication.html"
             - name: Reports
               field: publications
               order: 9
