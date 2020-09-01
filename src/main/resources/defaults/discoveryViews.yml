@@ -417,6 +417,10 @@
       value: 2
     - field: awardedBy
       value: 2
+    - field: contributors
+      value: 2
+    - field: abstract
+      value: 2
   sort:
     - field: score
       direction: DESC
