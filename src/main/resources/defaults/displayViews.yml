@@ -429,6 +429,7 @@
             - field: label
               direction: ASC
         - name: open teaching materials
+          shared: true
           paginated: true
           template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
           field: teachingMaterials
