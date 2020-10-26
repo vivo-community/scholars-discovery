@@ -1178,6 +1178,8 @@
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
           order: 20
+          lazyReferences:
+            - presentedAt
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
