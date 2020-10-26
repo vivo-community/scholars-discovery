@@ -197,6 +197,7 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
 
         if (ArrayUtils.isNotEmpty(highlight.getFields())) {
             HighlightOptions highlightOptions = new HighlightOptions();
+            highlightOptions.setFragsize(0);
             highlightOptions.addField(highlight.getFields());
             if (StringUtils.isNotBlank(highlight.getPrefix())) {
                 highlightOptions.setSimplePrefix(highlight.getPrefix());
