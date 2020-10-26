@@ -420,7 +420,7 @@
     - field: contributors
       value: 2
     - field: abstract
-      value: 2
+      value: 4
   sort:
     - field: score
       direction: DESC
