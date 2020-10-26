@@ -958,6 +958,14 @@
           template: "defaults/displayViews/organizations/service/offersCourse.html"
           field: courses
           order: 4
+          subsections:
+            - name: Courses
+              field: courses
+              order: 1
+              sort:
+                - field: label
+                  direction: ASC
+              template: "defaults/displayViews/organizations/service/offersCourse/default.html"
     - name: Identity
       sections:
         - name: OrgID
