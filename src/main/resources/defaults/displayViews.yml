@@ -1579,7 +1579,7 @@
           order: 7
           paginated: true
           sort:
-            - field: label
+            - field: name
               direction: ASC
           lazyReferences:
             - participants
