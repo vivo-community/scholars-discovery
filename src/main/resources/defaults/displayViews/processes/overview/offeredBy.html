@@ -1,7 +1,7 @@
 <ul>
   {{#each offeredBy}}
   <li>
-    <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+    <span><a href="display/{{id}}">{{name}}</a> <span class="badge badge-light">{{type}}</span></span>
   </li>
   {{/each}}
 </ul>

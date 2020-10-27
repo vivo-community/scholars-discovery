@@ -1553,6 +1553,8 @@
           template: "defaults/displayViews/processes/overview/offeredBy.html"
           field: offeredBy
           order: 2
+          lazyReferences:
+            - offeredBy
         - name: date/time interval
           template: "defaults/displayViews/processes/overview/dateTimeInterval.html"
           field: dateTimeIntervalStart
@@ -1579,6 +1581,8 @@
           sort:
             - field: label
               direction: ASC
+          lazyReferences:
+            - participants
         - name: has subject area
           template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
           field: subjectAreas
