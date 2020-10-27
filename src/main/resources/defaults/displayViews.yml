@@ -958,14 +958,10 @@
           template: "defaults/displayViews/organizations/service/offersCourse.html"
           field: courses
           order: 4
-          subsections:
-            - name: Courses
-              field: courses
-              order: 1
-              sort:
-                - field: label
-                  direction: ASC
-              template: "defaults/displayViews/organizations/service/offersCourse/default.html"
+          paginated: true
+          sort:
+            - field: label
+              direction: ASC
     - name: Identity
       sections:
         - name: OrgID
@@ -1579,6 +1575,10 @@
           template: "defaults/displayViews/processes/overview/participants.html"
           field: participants
           order: 7
+          paginated: true
+          sort:
+            - field: label
+              direction: ASC
         - name: has subject area
           template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
           field: subjectAreas
@@ -1607,8 +1607,10 @@
           order: 1
         - name: related documents
           template: "defaults/displayViews/processes/publications/relatedDocuments.html"
-          field: relatedDocument
+          field: relatedDocuments
           order: 2
+          lazyReferences:
+            - relatedDocuments
     - name: Identity
       sections:
         - name: same as
