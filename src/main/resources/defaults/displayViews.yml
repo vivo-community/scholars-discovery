@@ -1579,10 +1579,8 @@
           order: 7
           paginated: true
           sort:
-            - field: name
+            - field: label
               direction: ASC
-          lazyReferences:
-            - participants
         - name: has subject area
           template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
           field: subjectAreas

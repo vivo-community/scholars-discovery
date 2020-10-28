@@ -6,8 +6,9 @@ CONSTRUCT {
     ?participant rdfs:label ?labelWithId .
 } WHERE {
     <{{uri}}> obo:BFO_0000055 ?participant .
+    ?participant a obo:BFO_0000017 .
+    ?participant rdfs:label ?label .
     ?participant obo:RO_0000052 ?person .
     ?person a foaf:Person .
-    ?participant rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?person), "(^.*/)", "::") ) AS ?labelWithId ) .
 }
