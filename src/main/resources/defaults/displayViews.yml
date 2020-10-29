@@ -1170,7 +1170,7 @@
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
           order: 19
-        - name: presented at event
+        - name: open educational resource for
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
           order: 20
@@ -1607,7 +1607,7 @@
           template: "defaults/displayViews/processes/publications/outputPublicationsOrOtherWorks.html"
           field: outputPublicationOrOtherWork
           order: 1
-        - name: related documents
+        - name: open educational resource
           template: "defaults/displayViews/processes/publications/relatedDocuments.html"
           field: relatedDocuments
           order: 2
