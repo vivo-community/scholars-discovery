@@ -1,1 +1,7 @@
-<span>Work In Progress</span>
+<ul class="list-unstyled">
+  {{#each presentedAt}}
+  <li>
+    <span><a href="display/{{id}}">{{title}}</a> <span class="badge badge-light">{{type}}</span></span>
+  </li>
+  {{/each}}
+</ul>

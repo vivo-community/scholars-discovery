@@ -429,6 +429,7 @@
             - field: label
               direction: ASC
         - name: open teaching materials
+          shared: true
           paginated: true
           template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
           field: teachingMaterials
@@ -957,6 +958,10 @@
           template: "defaults/displayViews/organizations/service/offersCourse.html"
           field: courses
           order: 4
+          paginated: true
+          sort:
+            - field: label
+              direction: ASC
     - name: Identity
       sections:
         - name: OrgID
@@ -1165,10 +1170,12 @@
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
           order: 19
-        - name: presented at event
+        - name: open educational resource for
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
           order: 20
+          lazyReferences:
+            - presentedAt
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
@@ -1546,6 +1553,8 @@
           template: "defaults/displayViews/processes/overview/offeredBy.html"
           field: offeredBy
           order: 2
+          lazyReferences:
+            - offeredBy
         - name: date/time interval
           template: "defaults/displayViews/processes/overview/dateTimeInterval.html"
           field: dateTimeIntervalStart
@@ -1568,6 +1577,10 @@
           template: "defaults/displayViews/processes/overview/participants.html"
           field: participants
           order: 7
+          paginated: true
+          sort:
+            - field: label
+              direction: ASC
         - name: has subject area
           template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
           field: subjectAreas
@@ -1594,10 +1607,12 @@
           template: "defaults/displayViews/processes/publications/outputPublicationsOrOtherWorks.html"
           field: outputPublicationOrOtherWork
           order: 1
-        - name: related documents
+        - name: open educational resource
           template: "defaults/displayViews/processes/publications/relatedDocuments.html"
-          field: relatedDocument
+          field: relatedDocuments
           order: 2
+          lazyReferences:
+            - relatedDocuments
     - name: Identity
       sections:
         - name: same as

@@ -1,8 +1,1 @@
-<ul>
-  {{#each participants}}
-  <li>
-    <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
-    <span>{{role}}</span>
-  </li>
-  {{/each}}
-</ul>
+<span><a href="display/{{id}}">{{label}}</a> <span class="badge badge-light">{{role}}</span></span>

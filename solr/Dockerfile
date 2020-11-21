@@ -1,4 +1,4 @@
-FROM solr:7.7.2-slim
+FROM solr:7.7.3-slim
 
 RUN chmod -R ugo+w /opt/solr/server/solr/
 RUN chmod -R ugo+w /opt/solr/server/logs/
