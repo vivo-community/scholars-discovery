@@ -172,6 +172,7 @@ public class TriplestoreHarvester implements Harvester {
             Statement statement = statements.next();
             String object = statement.getObject().toString();
             String value = source.parse() ? parse(object) : object;
+            value = value.replace("\\\"", "\"");
             if (value.contains("^^")) {
                 value = value.substring(0, value.indexOf("^^"));
             }
