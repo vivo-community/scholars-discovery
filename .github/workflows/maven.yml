@@ -38,3 +38,4 @@ jobs:
         BRANCH: gh-pages
         FOLDER: target/generated-docs
         CLEAN: true
+        SINGLE_COMMIT: true
