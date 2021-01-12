@@ -31,7 +31,7 @@ jobs:
       run: mvn clean test jacoco:report coveralls:report -DrepoToken="$COVERALLS_REPO_TOKEN"
 
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/master'
+      if: github.event.pull_request.base.ref == 'master'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
