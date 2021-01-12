@@ -10,6 +10,10 @@ Existing frontend applications include:
 1. [VIVO Scholars Angular](https://github.com/vivo-community/scholars-angular)
 2. [VIVO Scholars React](https://github.com/vivo-community/scholars-react)
 
+# API
+
+[Scholars Middleware REST Service API Documentation](https://tamulib.github.io/scholars-discovery/)
+
 # Background
 
 Scholars Discovery project was initiated by [Scholars@TAMU](https://scholars.library.tamu.edu/) project team at Texas A&M University (TAMU) Libraries. In support of the Libraries’ goal of enabling and contextualizing the discovery of scholars and their expertise across disciplines, the Scholars’ team at TAMU Office of Scholarly Communications (OSC) proposed the Scholars version 2 project, which focuses on deploying (1) new public facing layer (Read-only), (2) faceted search engine, (3) Data reuse options, and (4) search engine optimization. Digital Initiative (DI) at TAMU Libraries collaborated with the OSC to design and implement the current system architecture including Scholars Discovery and VIVO Scholars Angular. In a later stage, Scholars Discovery project was adopted by VIVO Community’s [VIVO Scholar Task Force](https://wiki.duraspace.org/display/VIVO/VIVO+Scholar+Task+Force).
