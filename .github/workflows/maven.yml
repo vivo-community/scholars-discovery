@@ -27,6 +27,12 @@ jobs:
 
     - name: Tests with Coveralls coverage report
       env:
-        COVERALLS_BUILD_NUMBER: scholars-discovery-${{ github.action }}-${{ github.run_number }}
-        COVERALLS_REPO_TOKEN: ${{ secrets.coveralls_repo_token }}
-      run: mvn clean test jacoco:report coveralls:report -DserviceName="github-actions" -DserviceBuildNumber="$COVERALLS_BUILD_NUMBER" -DrepoToken="$COVERALLS_REPO_TOKEN"
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: mvn clean test jacoco:report coveralls:report -DrepoToken="$COVERALLS_REPO_TOKEN"
+
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/master'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
