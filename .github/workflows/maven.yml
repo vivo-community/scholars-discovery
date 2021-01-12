@@ -36,7 +36,7 @@ jobs:
         coverage-format: raw
 
     - name: Deploy to GitHub pages
-      if: github.event.pull_request.base.ref == 'tamu-master'
+      if: github.event.push.base.ref == 'tamu-master'
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
