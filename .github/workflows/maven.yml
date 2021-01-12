@@ -24,3 +24,6 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B -V package -DskipTests=true -Dmaven.javadoc.skip=true
+
+    - name: Tests with Coveralls coverage report
+      run: mvn clean test jacoco:report coveralls:report
