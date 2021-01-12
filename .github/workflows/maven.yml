@@ -32,8 +32,9 @@ jobs:
 
     - name: Deploy to GitHub pages
       if: github.event.pull_request.base.ref == 'tamu-master'
-      uses: peaceiris/actions-gh-pages@v3
+      uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: ./target/generated-docs
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: target/generated-docs
+        CLEAN: true
