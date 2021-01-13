@@ -1,7 +1,7 @@
 ![Java CI with Maven](https://github.com/TAMULib/scholars-discovery/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/TAMULib/scholars-discovery/badge.svg)](https://coveralls.io/github/TAMULib/scholars-discovery)
 
-# [scholars-discovery](https://vivo-community.github.io/scholars-discovery/)
+# scholars-discovery
 
 VIVO Scholars Discovery is a middleware project that pulls [VIVO](https://duraspace.org/vivo/) content into its own search index (Solr) and then exposes that content via a RESTful service endpoint.
 
