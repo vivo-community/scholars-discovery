@@ -1,4 +1,4 @@
-![Java CI with Maven](https://github.com/TAMULib/scholars-discovery/workflows/Java%20CI%20with%20Maven/badge.svg)
+[![Java CI with Maven](https://github.com/TAMULib/scholars-discovery/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/TAMULib/scholars-discovery/actions?query=workflow%3A%22Java+CI+with+Maven%22)
 [![Coverage Status](https://coveralls.io/repos/github/TAMULib/scholars-discovery/badge.svg)](https://coveralls.io/github/TAMULib/scholars-discovery)
 
 # scholars-discovery
