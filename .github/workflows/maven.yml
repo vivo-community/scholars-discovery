@@ -20,6 +20,7 @@ jobs:
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2-
 
     - name: Tests with Coveralls coverage report
       run: mvn clean test jacoco:report coveralls:report -DdryRun=true
