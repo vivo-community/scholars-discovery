@@ -266,6 +266,10 @@ public class Person extends Common {
     @PropertySource(template = "person/selectedPublicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> selectedPublicationVenue;
 
+    @Indexed(type = "nested_whole_strings")
+    @PropertySource(template = "person/selectedPublicationTag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
+    private List<String> selectedPublicationTag;
+
     @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "collectionOrSeriesEditorForType", key = "type"), @Reference(value = "collectionOrSeriesEditorForRole", key = "role"), @Reference(value = "collectionOrSeriesEditorForStartDate", key = "startDate"), @Reference(value = "collectionOrSeriesEditorForEndDate", key = "endDate") })
     @PropertySource(template = "person/collectionOrSeriesEditorFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -1143,6 +1147,14 @@ public class Person extends Common {
 
     public void setSelectedPublicationVenue(List<String> selectedPublicationVenue) {
         this.selectedPublicationVenue = selectedPublicationVenue;
+    }
+
+    public List<String> getSelectedPublicationTag() {
+        return selectedPublicationTag;
+    }
+
+    public void setSelectedPublicationTag(List<String> selectedPublicationTag) {
+        this.selectedPublicationTag = selectedPublicationTag;
     }
 
     public List<String> getCollectionOrSeriesEditorFor() {
