@@ -1202,7 +1202,7 @@
           template: "defaults/displayViews/documents/identity/nihManuscriptSubmissionSystemId.html"
           field: nihmsid
           order: 2
-        - name: PubMed Central ID
+        - name: PubMed ID
           template: "defaults/displayViews/documents/identity/pubMedCentralId.html"
           field: pmcid
           order: 3
