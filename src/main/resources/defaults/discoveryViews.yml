@@ -43,7 +43,7 @@
       collapsed: true
       hidden: false
     - name: UN Sustainable Development Goals
-      field: tags
+      field: selectedPublicationTag
       type: STRING
       sort: COUNT
       direction: DESC
