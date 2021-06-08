@@ -1338,7 +1338,7 @@
           template: "defaults/displayViews/documents/other/dateTimeValue.html"
           field: dateTimeValue
           order: 9
-        - name: tags
+        - name: UN Sustainable Development Goals
           template: "defaults/displayViews/documents/other/tags.html"
           field: tags
           order: 10
