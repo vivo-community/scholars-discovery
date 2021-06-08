@@ -17,5 +17,5 @@ CONSTRUCT {
     ?organization rdfs:label ?label .
     ?organization vitro:mostSpecificType ?mostSpecificType .
     BIND( CONCAT( STR(?label), REPLACE(STR(?author), "(^.*/)", "::"), REPLACE(STR(?organization), "(^.*/)", "::") ) AS ?labelWithId ) .
-    FILTER(lang(?label) = '' && (?mostSpecificType = vivo:AcademicDepartment || ?mostSpecificType = vivo:Institute || ?mostSpecificType = vivo:Library || ?mostSpecificType = vivo:Center || ?mostSpecificType = vivo:Laboratory))
+    FILTER(lang(?label) = '' && (?mostSpecificType = vivo:AcademicDepartment || ?mostSpecificType = vivo:College || ?mostSpecificType = vivo:Institute || ?mostSpecificType = vivo:Library || ?mostSpecificType = vivo:Center || ?mostSpecificType = vivo:Laboratory))
 }
