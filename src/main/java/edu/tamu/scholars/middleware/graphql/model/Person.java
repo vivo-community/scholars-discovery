@@ -153,8 +153,6 @@ public class Person extends AbstractNestedDocument {
 
   private List<String> keywords;
 
-  private List<String> selectedPublicationTag;
-
   private String researchOverview;
 
   private List<String> principalInvestigatorOn;
@@ -611,14 +609,6 @@ public class Person extends AbstractNestedDocument {
 
   public void setKeywords(List<String> keywords) {
     this.keywords = keywords;
-  }
-
-  public List<String> getSelectedPublicationTag() {
-    return selectedPublicationTag;
-  }
-
-  public void setSelectedPublicationTag(List<String> selectedPublicationTag) {
-    this.selectedPublicationTag = selectedPublicationTag;
   }
 
   public String getResearchOverview() {

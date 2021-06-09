@@ -246,7 +246,7 @@ public class Person extends Common {
     private List<String> adviseeOfEndDate;
 
     @Indexed(type = "nested_whole_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue") })
+    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue"), @Reference(value = "selectedPublicationTag", key = "tags") })
     @PropertySource(template = "person/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
