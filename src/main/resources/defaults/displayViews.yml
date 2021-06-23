@@ -1092,106 +1092,110 @@
           template: "defaults/displayViews/documents/overview/abstract.html"
           field: abstract
           order: 1
+        - name: book title
+          template: "defaults/displayViews/documents/overview/bookTitle.html"
+          field: bookTitle
+          order: 2
         - name: authors
           template: "defaults/displayViews/documents/overview/authors.html"
           field: authors
-          order: 2
+          order: 3
         - name: author list (cited authors)
           template: "defaults/displayViews/documents/overview/authorList.html"
           field: authorList
-          order: 3
+          order: 4
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
           field: editors
-          order: 4
+          order: 5
         - name: editor list (cited editors)
           template: "defaults/displayViews/documents/overview/editorList.html"
           field: editorList
-          order: 5
+          order: 6
         - name: etd chair
           template: "defaults/displayViews/documents/overview/etdChair.html"
           field: etdChairedBy
-          order: 6
+          order: 7
           lazyReferences:
             - etdChairedBy
         - name: capstone (non-thesis) advisor
           template: "defaults/displayViews/documents/overview/advisor.html"
           field: advisedBy
-          order: 7
+          order: 8
           lazyReferences:
             - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators
-          order: 8
+          order: 9
         - name: status
           template: "defaults/displayViews/documents/overview/status.html"
           field: status
-          order: 9
+          order: 10
         - name: publication date
           template: "defaults/displayViews/documents/overview/publicationDate.html"
           field: publicationDate
-          order: 10
+          order: 11
         - name: publisher
           template: "defaults/displayViews/documents/overview/publisher.html"
           field: publisher
-          order: 11
+          order: 12
         - name: has subject area
           template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
           field: subjectAreas
-          order: 12
+          order: 13
         - name: has restriction
           template: "defaults/displayViews/documents/overview/hasRestriction.html"
           field: restrictions
-          order: 13
+          order: 14
         - name: has document part
           template: "defaults/displayViews/documents/overview/hasDocumentPart.html"
           field: documentParts
-          order: 14
+          order: 15
         - name: features
           template: "defaults/displayViews/documents/overview/features.html"
           field: features
-          order: 15
+          order: 16
         - name: published in
           template: "defaults/displayViews/documents/overview/publishedIn.html"
           field: publicationVenue
-          order: 16
+          order: 17
           lazyReferences:
             - publicationVenue
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
-          order: 17
+          order: 18
         - name: documentation for project or resource
           template: "defaults/displayViews/documents/overview/documentationForProjectOrResource.html"
           field: documentationForProjectOrResource
-          order: 18
+          order: 19
         - name: output of process or event
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
-          order: 19
+          order: 20
         - name: open educational resource for
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
-          order: 20
+          order: 21
           lazyReferences:
             - presentedAt
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
-          order: 21
+          order: 22
         - name: altmetric score
           template: "defaults/displayViews/documents/overview/altmetricScore.html"
           field: altmetricScore
-          order: 22
+          order: 23
         - name: citation count
           template: "defaults/displayViews/documents/overview/citationCount.html"
           field: citationCount
-          order: 23
+          order: 24
         - name: news outlet
           template: "defaults/displayViews/documents/overview/newsOutlet.html"
           field: newsOutlet
-          order: 24
+          order: 25
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
@@ -1202,7 +1206,7 @@
           template: "defaults/displayViews/documents/identity/nihManuscriptSubmissionSystemId.html"
           field: nihmsid
           order: 2
-        - name: PubMed Central ID
+        - name: PubMed ID
           template: "defaults/displayViews/documents/identity/pubMedCentralId.html"
           field: pmcid
           order: 3
@@ -1338,7 +1342,7 @@
           template: "defaults/displayViews/documents/other/dateTimeValue.html"
           field: dateTimeValue
           order: 9
-        - name: tags
+        - name: UN Sustainable Development Goals
           template: "defaults/displayViews/documents/other/tags.html"
           field: tags
           order: 10

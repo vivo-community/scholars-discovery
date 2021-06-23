@@ -37,6 +37,14 @@
       pageSize: 10
       collapsed: true
       hidden: false
+    - name: UN Sustainable Development Goals
+      field: selectedPublicationTag
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
   filters:
     - field: class
       value: Person
@@ -185,6 +193,14 @@
       hidden: false
     - name: Author Organization
       field: authorOrganization
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
+    - name: UN Sustainable Development Goals
+      field: tags
       type: STRING
       sort: COUNT
       direction: DESC

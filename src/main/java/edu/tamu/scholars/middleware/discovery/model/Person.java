@@ -246,7 +246,7 @@ public class Person extends Common {
     private List<String> adviseeOfEndDate;
 
     @Indexed(type = "nested_whole_strings", copyTo = "_text_")
-    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue") })
+    @NestedObject(properties = { @Reference(value = "selectedPublicationType", key = "type"), @Reference(value = "selectedPublicationDate", key = "publicationDate"), @Reference(value = "selectedPublicationPublisher", key = "publisher"), @Reference(value = "selectedPublicationVenue", key = "venue"), @Reference(value = "selectedPublicationTag", key = "tags") })
     @PropertySource(template = "person/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 
@@ -265,6 +265,10 @@ public class Person extends Common {
     @Indexed(type = "nested_whole_strings")
     @PropertySource(template = "person/selectedPublicationVenue", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private List<String> selectedPublicationVenue;
+
+    @Indexed(type = "nested_whole_strings")
+    @PropertySource(template = "person/selectedPublicationTag", predicate = "http://purl.obolibrary.org/obo/ARG_0000015")
+    private List<String> selectedPublicationTag;
 
     @Indexed(type = "nested_whole_strings", searchable = false)
     @NestedObject(properties = { @Reference(value = "collectionOrSeriesEditorForType", key = "type"), @Reference(value = "collectionOrSeriesEditorForRole", key = "role"), @Reference(value = "collectionOrSeriesEditorForStartDate", key = "startDate"), @Reference(value = "collectionOrSeriesEditorForEndDate", key = "endDate") })
@@ -1143,6 +1147,14 @@ public class Person extends Common {
 
     public void setSelectedPublicationVenue(List<String> selectedPublicationVenue) {
         this.selectedPublicationVenue = selectedPublicationVenue;
+    }
+
+    public List<String> getSelectedPublicationTag() {
+        return selectedPublicationTag;
+    }
+
+    public void setSelectedPublicationTag(List<String> selectedPublicationTag) {
+        this.selectedPublicationTag = selectedPublicationTag;
     }
 
     public List<String> getCollectionOrSeriesEditorFor() {

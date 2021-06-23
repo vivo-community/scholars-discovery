@@ -42,6 +42,14 @@
       pageSize: 10
       collapsed: true
       hidden: false
+    - name: UN Sustainable Development Goals
+      field: selectedPublicationTag
+      type: STRING
+      sort: COUNT
+      direction: DESC
+      pageSize: 10
+      collapsed: true
+      hidden: false
     - name: Published In
       field: selectedPublicationVenue
       type: STRING
@@ -260,7 +268,7 @@
       pageSize: 10
       collapsed: true
       hidden: false
-    - name: Research Tag
+    - name: UN Sustainable Development Goals
       field: tags
       type: STRING
       sort: COUNT
