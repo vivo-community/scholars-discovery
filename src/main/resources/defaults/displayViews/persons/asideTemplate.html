@@ -107,20 +107,6 @@
   </div>
   {{/if}}
 
-  {{#if researchAreas}}
-  <div class="d-none d-lg-block">
-    <hr />
-    <div class="mt-1">
-      <span class="label">Research Areas:</span>
-    </div>
-    <div class="ml-1">
-      {{#each researchAreas}}
-      <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
-      {{/each}}
-    </div>
-  </div>
-  {{/if}}
-
   {{#hasTags publications}}
   <div class="d-none d-lg-block">
     <hr />
@@ -136,6 +122,20 @@
     </div>
   </div>
   {{/hasTags}}
+
+  {{#if researchAreas}}
+  <div class="d-none d-lg-block">
+    <hr />
+    <div class="mt-1">
+      <span class="label">Research Areas:</span>
+    </div>
+    <div class="ml-1">
+      {{#each researchAreas}}
+      <span><a href="display/{{id}}">{{label}}{{#if @last }}{{else}}, {{/if}}</a></span>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
 
 </div>
 <style>
