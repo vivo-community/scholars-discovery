@@ -142,7 +142,7 @@ public class Organization extends Common {
     private List<String> attendedEvents;
 
     @NestedObject
-    @Indexed(type = "nested_whole_strings")
+    @Indexed(type = "nested_tokenized_strings", copyTo = "_text_")
     @PropertySource(template = "organization/publication", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publications;
 

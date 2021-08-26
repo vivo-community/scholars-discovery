@@ -220,12 +220,10 @@
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
@@ -234,12 +232,10 @@
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
@@ -271,13 +267,11 @@
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
@@ -287,13 +281,11 @@
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(.*?)(::.*)$" replacement="$1"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
@@ -412,6 +404,7 @@
         <filter class="solr.FlattenGraphFilterFactory"/>
         -->
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.EnglishMinimalStemFilterFactory"/>
         <filter class="solr.WordDelimiterGraphFilterFactory" preserveOriginal="1"/>
         <filter class="solr.FlattenGraphFilterFactory"/> <!-- required on index analyzers after graph filters -->
       </analyzer>
@@ -420,6 +413,7 @@
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <!-- <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/> -->
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.EnglishMinimalStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
