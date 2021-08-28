@@ -197,6 +197,7 @@
 
   </div>
 
+  {{#if researcherOn.length }}
   <div class="section">
     <div class="label">Current Grant Funding</div>
       {{#eachCurrentFunding researcherOn}}
@@ -221,7 +222,9 @@
       </div>
       {{/eachCurrentFunding}}
   </div>
+  {{/if}}
 
+  {{#if awardsAndHonors.length }}
   <div class="section">
     <div class="label">Awards And Honors</div>
       {{#eachSorted awardsAndHonors "yearAwarded" "DESC" true}}
@@ -244,6 +247,7 @@
       </div>
       {{/eachSorted}}
   </div>
+  {{/if}}
 
   <div class="source">
     <span class="label">Source: </span>

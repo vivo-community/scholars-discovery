@@ -178,17 +178,20 @@ public class DocxExporter implements Exporter {
     }
 
     private void fetchLazyReferences(ObjectNode node, List<String> lazyReferences) {
-        lazyReferences.forEach(lazyReference -> {
-            JsonNode reference = node.get(lazyReference);
-            List<String> ids = new ArrayList<String>();
-            if (reference.isArray()) {
-                ids = StreamSupport.stream(reference.spliterator(), false).map(rn -> rn.get("id").asText()).collect(Collectors.toList());
-            } else {
-                ids.add(reference.get("id").asText());
-            }
-            ArrayNode references = node.putArray(lazyReference);
-            references.addAll((ArrayNode) mapper.valueToTree(fetchLazyReference(ids)));
-        });
+        lazyReferences
+            .stream()
+            .filter(lr -> node.hasNonNull(lr))
+            .forEach(lazyReference -> {
+                JsonNode reference = node.get(lazyReference);
+                List<String> ids = new ArrayList<String>();
+                if (reference.isArray()) {
+                    ids = StreamSupport.stream(reference.spliterator(), false).map(rn -> rn.get("id").asText()).collect(Collectors.toList());
+                } else {
+                    ids.add(reference.get("id").asText());
+                }
+                ArrayNode references = node.putArray(lazyReference);
+                references.addAll((ArrayNode) mapper.valueToTree(fetchLazyReference(ids)));
+            });
     }
 
     private List<AbstractIndexDocument> fetchLazyReference(List<String> ids) {

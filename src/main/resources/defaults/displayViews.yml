@@ -52,12 +52,7 @@
     requiredFields:
       - firstName
       - lastName
-      - overview
-      - email
       - publications
-      - educationAndTraining
-      - researcherOn
-      - awardsAndHonors
     lazyReferences:
       - publications
       - awardsAndHonors
