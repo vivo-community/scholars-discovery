@@ -104,8 +104,9 @@ Handlebars.registerHelper('hasCurrentFunding', function (resources, options) {
 });
 
 Handlebars.registerHelper('eachCurrentFunding', function (resources, options) {
+    resources = filterCurrentFunding(resources);
     let out = '';
-    for (const i in filterCurrentFunding(resources)) {
+    for (const i in resources) {
         if (resources.hasOwnProperty(i)) {
             out += options.fn(resources[i]);
         }
