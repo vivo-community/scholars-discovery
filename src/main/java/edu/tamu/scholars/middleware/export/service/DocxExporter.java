@@ -107,8 +107,7 @@ public class DocxExporter implements Exporter {
     }
 
     @Override
-    public StreamingResponseBody streamIndividual(Individual document) {
-
+    public StreamingResponseBody streamIndividual(Individual document, String name) {
         final List<String> type = document.getType();
 
         Optional<DisplayView> displayView = displayViewRepo.findByTypesIn(type);
@@ -117,10 +116,14 @@ public class DocxExporter implements Exporter {
             throw new ExportException(String.format("Could not find a display view for types: %s", String.join(", ", type)));
         }
 
-        Optional<ExportView> exportView = Optional.ofNullable(displayView.get().getExportView());
+        Optional<ExportView> exportView = displayView.get()
+            .getExportViews()
+            .stream()
+            .filter(ev -> ev.getName().equalsIgnoreCase(name))
+            .findAny();
 
         if (!exportView.isPresent()) {
-            throw new ExportException(String.format("% display view does not have an export view", displayView.get().getName()));
+            throw new ExportException(String.format("%s display view does not have an export view named %s", displayView.get().getName(), name));
         }
 
         return outputStream -> {
@@ -156,7 +159,7 @@ public class DocxExporter implements Exporter {
         final ObjectNode node = mapper.valueToTree(document);
         node.put("vivoUrl", vivoUrl);
         node.put("uiUrl", uiUrl);
-        checkRequireFields(node, view.getRequiredFields());
+        checkRequiredFields(node, view.getRequiredFields());
         fetchLazyReferences(node, view.getLazyReferences());
         view.getFieldViews().forEach(fieldView -> {
             filter(node, fieldView);
@@ -166,7 +169,7 @@ public class DocxExporter implements Exporter {
         return node;
     }
 
-    private void checkRequireFields(ObjectNode node, List<String> requiredFields) {
+    private void checkRequiredFields(ObjectNode node, List<String> requiredFields) {
         for (String field : requiredFields) {
             if (!node.hasNonNull(field)) {
                 throw new ExportException(String.format("Required field %s not found", field));

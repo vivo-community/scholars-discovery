@@ -1,6 +1,9 @@
 package edu.tamu.scholars.middleware.export.controller;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -59,15 +62,19 @@ public class IndividualExportController implements RepresentationModelProcessor<
     // @formatter:off
     public ResponseEntity<StreamingResponseBody> export(
         @PathVariable String id,
-        @RequestParam(value = "type", required = false, defaultValue = "docx") String type
+        @RequestParam(value = "type", required = false, defaultValue = "docx") String type,
+        @RequestParam(value = "name", required = true) String name
     ) throws UnknownExporterTypeException, IllegalArgumentException, IllegalAccessException {
-        // TODO: throw not found exception if not found
-        Individual document = repo.findById(id).get();
-        Exporter exporter = exporterRegistry.getExporter(type);
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(id))
-            .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
-            .body(exporter.streamIndividual(document));
+        Optional<Individual> individual = repo.findById(id);
+        if (individual.isPresent()) {
+            Individual document = individual.get();
+            Exporter exporter = exporterRegistry.getExporter(type);
+            return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition(id))
+                .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
+                .body(exporter.streamIndividual(document, name));
+        }
+        throw new EntityNotFoundException(String.format("Individual with id %s not found", id));
     }
     // @formatter:on
 
@@ -79,7 +86,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
                 WebMvcLinkBuilder.linkTo(
                   WebMvcLinkBuilder
                     .methodOn(this.getClass())
-                    .export(resource.getContent().getId(), "docx")
+                    .export(resource.getContent().getId(), "docx", "Export Name")
                 ).withRel("export")
             );
             // @formatter:on

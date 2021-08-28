@@ -6,6 +6,17 @@ Handlebars.registerHelper('toYear', function (value) {
     return value;
 });
 
+Handlebars.registerHelper('toFormalRole', function (value) {
+    if (value) {
+        switch (value) {
+            case "PrincipalInvestigatorRole": return "Principal Investigator (PI)";
+            case "CoPrincipalInvestigatorRole": return "Co-Principal Investigator (Co-PI)";
+            case "InvestigatorRole": return "Investigator";
+        }
+    }
+    return value;
+});
+
 Handlebars.registerHelper('parseAuthorList', function (value) {
     if (value) {
         value = value.toString();
@@ -18,4 +29,78 @@ Handlebars.registerHelper('parseAuthorList', function (value) {
         return value;
     }
     return value;
+});
+
+Handlebars.registerHelper('eachSplit', function (value, delimeter, options) {
+    let out = '';
+    if (value) {
+        value = value.toString();
+        const parts = value.split(delimeter);
+        for (const i in parts) {
+            if (parts.hasOwnProperty(i)) {
+                out += options.fn(parts[i].trim());
+            }
+        }
+    }
+    return out;
+});
+
+Handlebars.registerHelper('eachSorted', function (resources, field, direction, isDate, options) {
+    direction = (direction && direction.toLowerCase() === 'asc') ? [1, -1] : [-1, 1];
+    resources = JSON.parse(resources).sort(function (r1, r2) {
+        const v1 = isDate ? new Date(r1[field]) : r1[field];
+        const v2 = isDate ? new Date(r2[field]) : r2[field];
+        if (v1 > v2) {
+            return direction[0];
+        }
+        if (v1 < v2) {
+            return direction[1];
+        }
+        return 0;
+    });
+    let out = '';
+    for (const i in resources) {
+        if (resources.hasOwnProperty(i)) {
+            out += options.fn(resources[i]);
+        }
+    }
+    return out;
+});
+
+Handlebars.registerHelper('eachCurrentFunding', function (resources, options) {
+    resources = JSON.parse(resources).sort(function (r1, r2) {
+        const v1 = r1['label'];
+        const v2 = r2['label'];
+        if (v1 > v2) {
+            return 1;
+        }
+        if (v1 < v2) {
+            return -1;
+        }
+        return 0;
+    });
+    resources = resources.sort(function (r1, r2) {
+        const v1 = new Date(r1['startDate']);
+        const v2 = new Date(r2['startDate']);
+        if (v1 > v2) {
+            return -1;
+        }
+        if (v1 < v2) {
+            return 1;
+        }
+        return 0;
+    });
+    const now = new Date();
+    let out = '';
+    for (const i in resources) {
+        if (resources.hasOwnProperty(i)) {
+            const r = resources[i];
+            const startDate = new Date(r['startDate']);
+            const endDate = new Date(r['endDate']);
+            if (startDate <= now && endDate >= now) {
+                out += options.fn(r);
+            }
+        }
+    }
+    return out;
 });

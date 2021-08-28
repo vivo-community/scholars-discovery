@@ -37,7 +37,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import edu.tamu.scholars.middleware.discovery.AbstractSolrDocumentIntegrationTest;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
-import edu.tamu.scholars.middleware.view.model.ExportFieldView;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 @SpringBootTest
@@ -47,10 +46,10 @@ import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 public abstract class AbstractSolrDocumentExportControllerTest<D extends AbstractIndexDocument> extends AbstractSolrDocumentIntegrationTest<D> {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @MockBean
-    private DisplayViewRepo displayViewRepo;
+    DisplayViewRepo displayViewRepo;
 
     @Test
     public void testSearchSolrDocumentsExport() throws Exception {
@@ -95,13 +94,16 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
     public void testSinglePageExport() throws Exception {
         // @formatter:off
         DisplayView mockDisplayView = getMockDisplayView();
-        mockDisplayView.getExportView().setLazyReferences(new ArrayList<String>());
-        mockDisplayView.getExportView().setFieldViews(new ArrayList<ExportFieldView>());
+        mockDisplayView.getExportViews().forEach(exportView -> {
+            exportView.setLazyReferences(new ArrayList<>());
+            exportView.setFieldViews(new ArrayList<>());
+        });
         Mockito.when(displayViewRepo.findByTypesIn(Mockito.<List<String>>any()))
             .thenReturn(Optional.of(mockDisplayView));
         String id = mockDocuments.get(0).getId();
         MvcResult result = mockMvc.perform(get("/individual/{id}/export", id)
-            .param("type", "docx"))
+            .param("type", "docx")
+            .param("name", "Test"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         mockMvc.perform(asyncDispatch(result))
@@ -114,7 +116,8 @@ public abstract class AbstractSolrDocumentExportControllerTest<D extends Abstrac
                         parameterWithName("id").description("The individual id")
                     ),
                     requestParameters(
-                        parameterWithName("type").description("The single page export format type")
+                        parameterWithName("type").description("The individual export format type"),
+                        parameterWithName("name").description("The individual export view name")
                     )
                 )
             )

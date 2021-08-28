@@ -261,7 +261,7 @@ public class ViewTestUtility {
 
         displayView.setTabs(tabs);
 
-        displayView.setExportView(getMockExportView());
+        displayView.setExportViews(getMockExportViews());
 
         return displayView;
     }
@@ -345,23 +345,24 @@ public class ViewTestUtility {
         return tab;
     }
 
-    public static ExportView getMockExportView() {
-        ExportView export = new ExportView();
+    public static List<ExportView> getMockExportViews() {
+        List<ExportView> expoerViews = new ArrayList<>();
+        ExportView exportView = new ExportView();
 
-        export.setName("Test");
+        exportView.setName("Test");
 
-        export.setContentTemplate("<html><body><span>Hello, Content!</span></body></html>");
-        export.setHeaderTemplate("<html><body><span>Hello, Header!</span></body></html>");
+        exportView.setContentTemplate("<html><body><span>Hello, Content!</span></body></html>");
+        exportView.setHeaderTemplate("<html><body><span>Hello, Header!</span></body></html>");
 
         List<String> requiredFields = new ArrayList<String>();
         requiredFields.add("type");
 
-        export.setRequiredFields(requiredFields);
+        exportView.setRequiredFields(requiredFields);
 
         List<String> lazyReferences = new ArrayList<String>();
         lazyReferences.add("publications");
 
-        export.setLazyReferences(lazyReferences);
+        exportView.setLazyReferences(lazyReferences);
 
         List<ExportFieldView> fieldViews = new ArrayList<ExportFieldView>();
 
@@ -394,9 +395,11 @@ public class ViewTestUtility {
 
         fieldViews.add(exportField);
 
-        export.setFieldViews(fieldViews);
+        exportView.setFieldViews(fieldViews);
 
-        return export;
+        expoerViews.add(exportView);
+
+        return expoerViews;
     }
 
 }
