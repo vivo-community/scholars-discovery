@@ -67,7 +67,7 @@ Handlebars.registerHelper('eachSorted', function (resources, field, direction, i
     return out;
 });
 
-Handlebars.registerHelper('eachCurrentFunding', function (resources, options) {
+function filterCurrentFunding(resources) {
     resources = JSON.parse(resources).sort(function (r1, r2) {
         const v1 = r1['label'];
         const v2 = r2['label'];
@@ -79,7 +79,8 @@ Handlebars.registerHelper('eachCurrentFunding', function (resources, options) {
         }
         return 0;
     });
-    resources = resources.sort(function (r1, r2) {
+    const now = new Date();
+    return resources.sort(function (r1, r2) {
         const v1 = new Date(r1['startDate']);
         const v2 = new Date(r2['startDate']);
         if (v1 > v2) {
@@ -89,17 +90,24 @@ Handlebars.registerHelper('eachCurrentFunding', function (resources, options) {
             return 1;
         }
         return 0;
+    }).filter(function (r) {
+        const startDate = new Date(r['startDate']);
+        const endDate = new Date(r['endDate']);
+        return startDate <= now && endDate >= now;
     });
-    const now = new Date();
+}
+
+Handlebars.registerHelper('hasCurrentFunding', function (resources, options) {
+    return filterCurrentFunding(resources).length > 0
+        ? options.fn(this)
+        : options.inverse(this);
+});
+
+Handlebars.registerHelper('eachCurrentFunding', function (resources, options) {
     let out = '';
-    for (const i in resources) {
+    for (const i in filterCurrentFunding(resources)) {
         if (resources.hasOwnProperty(i)) {
-            const r = resources[i];
-            const startDate = new Date(r['startDate']);
-            const endDate = new Date(r['endDate']);
-            if (startDate <= now && endDate >= now) {
-                out += options.fn(r);
-            }
+            out += options.fn(resources[i]);
         }
     }
     return out;

@@ -86,6 +86,7 @@
     </tr>
   </table>
 
+  {{#if positions.length }}
   <div class="section">
     <div class="label">Positions</div>
     <ul>
@@ -102,11 +103,14 @@
       {{/each}}
     </ul>
   </div>
+  {{/if}}
 
+  {{#if overview }}
   <div class="section">
     <div class="label">Overview</div>
     <div class="overview">{{{overview}}}</div>
   </div>
+  {{/if}}
 
   <div class="section">
     <div class="label">Education and Training</div>
@@ -126,6 +130,7 @@
     </ul>
   </div>
 
+  {{#if publications.length }}
   <div class="section">
     <div class="label">10 Most Recent Publications</div>
 
@@ -194,10 +199,10 @@
       </div>
       {{/each}}
     </div>
-
   </div>
+  {{/if}}
 
-  {{#if researcherOn.length }}
+  {{#hasCurrentFunding researcherOn}}
   <div class="section">
     <div class="label">Current Grant Funding</div>
       {{#eachCurrentFunding researcherOn}}
@@ -222,7 +227,7 @@
       </div>
       {{/eachCurrentFunding}}
   </div>
-  {{/if}}
+  {{/hasCurrentFunding}}
 
   {{#if awardsAndHonors.length }}
   <div class="section">
