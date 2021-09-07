@@ -46,19 +46,21 @@ Handlebars.registerHelper('eachSplit', function (value, delimeter, options) {
 });
 
 Handlebars.registerHelper('eachSorted', function (resources, field, direction, isDate, options) {
-    direction = (direction && direction.toLowerCase() === 'asc') ? [1, -1] : [-1, 1];
-    resources = JSON.parse(resources).sort(function (r1, r2) {
-        const v1 = isDate ? new Date(r1[field]) : r1[field];
-        const v2 = isDate ? new Date(r2[field]) : r2[field];
-        if (v1 > v2) {
-            return direction[0];
-        }
-        if (v1 < v2) {
-            return direction[1];
-        }
-        return 0;
-    });
     let out = '';
+    if (resources) {
+        direction = (direction && direction.toLowerCase() === 'asc') ? [1, -1] : [-1, 1];
+        resources = JSON.parse(resources).sort(function (r1, r2) {
+            const v1 = isDate ? new Date(r1[field]) : r1[field];
+            const v2 = isDate ? new Date(r2[field]) : r2[field];
+            if (v1 > v2) {
+                return direction[0];
+            }
+            if (v1 < v2) {
+                return direction[1];
+            }
+            return 0;
+        });
+    }
     for (const i in resources) {
         if (resources.hasOwnProperty(i)) {
             out += options.fn(resources[i]);
@@ -68,6 +70,9 @@ Handlebars.registerHelper('eachSorted', function (resources, field, direction, i
 });
 
 function filterCurrentFunding(resources) {
+    if (!resources) {
+        return [];
+    }
     resources = JSON.parse(resources).sort(function (r1, r2) {
         const v1 = r1['label'];
         const v2 = r2['label'];
