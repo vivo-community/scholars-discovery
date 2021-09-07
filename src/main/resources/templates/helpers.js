@@ -60,10 +60,10 @@ Handlebars.registerHelper('eachSorted', function (resources, field, direction, i
             }
             return 0;
         });
-    }
-    for (const i in resources) {
-        if (resources.hasOwnProperty(i)) {
-            out += options.fn(resources[i]);
+        for (const i in resources) {
+            if (resources.hasOwnProperty(i)) {
+                out += options.fn(resources[i]);
+            }
         }
     }
     return out;
