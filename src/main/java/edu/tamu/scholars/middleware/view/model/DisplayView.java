@@ -15,7 +15,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -48,9 +47,9 @@ public class DisplayView extends View {
     private Side asideLocation;
 
     @JoinColumn(name = "export_view_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private ExportView exportView;
+    private List<ExportView> exportViews;
 
     @ElementCollection
     @MapKeyColumn(name = "name")
@@ -69,10 +68,11 @@ public class DisplayView extends View {
 
     public DisplayView() {
         super();
-        types = new ArrayList<String>();
-        metaTemplates = new HashMap<String, String>();
-        embedTemplates = new HashMap<String, String>();
-        tabs = new ArrayList<DisplayTabView>();
+        types = new ArrayList<>();
+        exportViews = new ArrayList<>();
+        metaTemplates = new HashMap<>();
+        embedTemplates = new HashMap<>();
+        tabs = new ArrayList<>();
         asideLocation = Side.RIGHT;
     }
 
@@ -124,12 +124,12 @@ public class DisplayView extends View {
         this.asideLocation = asideLocation;
     }
 
-    public ExportView getExportView() {
-        return exportView;
+    public List<ExportView> getExportViews() {
+        return exportViews;
     }
 
-    public void setExportView(ExportView exportView) {
-        this.exportView = exportView;
+    public void setExportViews(List<ExportView> exportViews) {
+        this.exportViews = exportViews;
     }
 
     public Map<String, String> getMetaTemplates() {

@@ -15,6 +15,7 @@ import edu.tamu.scholars.middleware.view.model.DisplaySubsectionView;
 import edu.tamu.scholars.middleware.view.model.DisplaySectionView;
 import edu.tamu.scholars.middleware.view.model.DisplayTabView;
 import edu.tamu.scholars.middleware.view.model.DisplayView;
+import edu.tamu.scholars.middleware.view.model.ExportView;
 import edu.tamu.scholars.middleware.view.model.repo.DisplayViewRepo;
 
 @Service
@@ -77,19 +78,20 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
                     }
                 }
             }
-            if (view.getExportView() != null) {
-                if (view.getExportView().getContentTemplate() != null && view.getExportView().getContentTemplate().length() > 0) {
+
+            for (ExportView exportView : view.getExportViews()) {
+                if (exportView.getContentTemplate() != null && exportView.getContentTemplate().length() > 0) {
                     try {
-                        view.getExportView().setContentTemplate(getTemplate(view.getExportView().getContentTemplate()));
+                        exportView.setContentTemplate(getTemplate(exportView.getContentTemplate()));
                     } catch (IOException e) {
-                        logger.warn(String.format(IO_EXCEPTION_MESSAGE, view.getExportView().getContentTemplate()));
+                        logger.warn(String.format(IO_EXCEPTION_MESSAGE, exportView.getContentTemplate()));
                     }
                 }
-                if (view.getExportView().getHeaderTemplate() != null && view.getExportView().getHeaderTemplate().length() > 0) {
+                if (exportView.getHeaderTemplate() != null && exportView.getHeaderTemplate().length() > 0) {
                     try {
-                        view.getExportView().setHeaderTemplate(getTemplate(view.getExportView().getHeaderTemplate()));
+                        exportView.setHeaderTemplate(getTemplate(exportView.getHeaderTemplate()));
                     } catch (IOException e) {
-                        logger.warn(String.format(IO_EXCEPTION_MESSAGE, view.getExportView().getHeaderTemplate()));
+                        logger.warn(String.format(IO_EXCEPTION_MESSAGE, exportView.getHeaderTemplate()));
                     }
                 }
             }

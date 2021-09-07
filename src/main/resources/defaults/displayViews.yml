@@ -16,10 +16,10 @@
   leftScanTemplate: "defaults/displayViews/persons/leftScanTemplate.html"
   asideTemplate: "defaults/displayViews/persons/asideTemplate.html"
   asideLocation: RIGHT
-  exportView:
-    name: Individual Word Document
-    contentTemplate: "defaults/displayViews/persons/exportContentTemplate.html"
-    headerTemplate: "defaults/displayViews/persons/exportHeaderTemplate.html"
+  exportViews:
+  - name: Single Page Bio
+    contentTemplate: "defaults/displayViews/persons/singlePageBioContentTemplate.html"
+    headerTemplate: "defaults/displayViews/persons/singlePageBioHeaderTemplate.html"
     requiredFields:
       - firstName
       - lastName
@@ -31,6 +31,36 @@
         field: publications
         order: 1
         limit: 5
+        sort:
+          - field: title
+            direction: ASC
+          - field: publicationDate
+            direction: DESC
+            date: true
+        filters:
+          - field: type
+            value: AcademicArticle
+          - field: type
+            value: Book
+          - field: type
+            value: Chapter
+          - field: type
+            value: ConferencePaper
+  - name: Full Bio
+    contentTemplate: "defaults/displayViews/persons/fullBioContentTemplate.html"
+    headerTemplate: "defaults/displayViews/persons/fullBioHeaderTemplate.html"
+    requiredFields:
+      - firstName
+      - lastName
+      - publications
+    lazyReferences:
+      - publications
+      - awardsAndHonors
+    fieldViews:
+      - name: Recent Publications
+        field: publications
+        order: 1
+        limit: 10
         sort:
           - field: title
             direction: ASC

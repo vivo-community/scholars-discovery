@@ -31,7 +31,10 @@
 
   <div>
     <div class="text-nowrap">
-      <a href="{{serviceUrl}}/individual/{{id}}/export"><i class="fa fa-user"><span class="d-none">export individual record</span></i><span class="info">Single Page Bio</span></a>
+      <a href="{{serviceUrl}}/individual/{{id}}/export?type=docx&name=Single Page Bio"><i class="fa fa-user"><span class="d-none">export single page bio</span></i><span class="info">Single Page Bio</span></a>
+    </div>
+    <div class="text-nowrap">
+      <a href="{{serviceUrl}}/individual/{{id}}/export?type=docx&name=Full Bio"><i class="fa fa-user-plus"><span class="d-none">export full bio</span></i><span class="info">Full Bio</span></a>
     </div>
     {{#if email}}
     <div class="text-nowrap">
@@ -141,6 +144,7 @@
 <style>
   .aside .info,
   .aside .fa-user,
+  .aside .fa-user-plus,
   .aside .fa-envelope-o,
   .aside .fa-phone {
     font-size: 16px;

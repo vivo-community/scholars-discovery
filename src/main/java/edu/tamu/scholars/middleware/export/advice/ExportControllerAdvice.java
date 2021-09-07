@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.export.advice;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +19,12 @@ public class ExportControllerAdvice {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UnknownExporterTypeException.class)
     public @ResponseBody String handleUnknownExporterTypeException(UnknownExporterTypeException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public @ResponseBody String handleEntityNotFoundException(EntityNotFoundException exception) {
         return exception.getMessage();
     }
 

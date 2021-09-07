@@ -2,7 +2,7 @@
   <ul class="list-unstyled ml-2 mr-2 mb-0">
     {{#eachSorted educationAndTraining "endDate" "DESC" true }}
     <li class="mb-2">
-      {{#if name}}
+      {{#if abbreviation}}
       <span class="mr-1">{{abbreviation}} in {{field}}, </span>
       {{/if}}
       <span class="mr-1"><a href="display/{{organization.id}}">{{organization.label}}{{#if info}}, {{/if}}</a></span>

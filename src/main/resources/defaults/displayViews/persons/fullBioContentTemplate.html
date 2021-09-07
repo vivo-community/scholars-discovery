@@ -1,0 +1,264 @@
+<html>
+
+<head>
+  <style>
+    body {
+      font-family: "Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif";
+      font-size: 14.5px;
+      line-height: 90%;
+      margin-bottom: 0px;
+    }
+
+    .top {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .image {
+      width: 125px;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 21px;
+    }
+
+    .email {
+      margin-top: 5px;
+    }
+
+    .address {
+      margin-top: 5px;
+    }
+
+    .overview {
+      margin-top: 15px;
+    }
+
+    .publications {
+      margin-top: 10px;
+    }
+
+    .section {
+      margin-bottom: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .source {
+      margin-top: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <table class="top">
+    <tr>
+      <td>
+        <div align="left" class="info">
+          <div class="title">{{firstName}} {{lastName}}</div>
+          <div class="email"><a href="mailto:{{email}}">{{email}}</a></div>
+          <div class="address">
+            {{#eachSplit streetAddress ";"}}
+            <span>{{.}}</span><br />
+            {{/eachSplit}}
+            <span>{{locality}}, {{region}} {{postalCode}}</span>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div align="right" class="image">
+          {{#if image}}
+          <img src="{{image}}" height="125" width="125" alt="{{name}}" />
+          {{else}}
+          <img src="{{uiUrl}}/assets/images/default-avatar.png" height="125" width="125" alt="default avatar" />
+          {{/if}}
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  {{#if positions.length }}
+  <div class="section">
+    <div class="label">Positions</div>
+    <ul>
+      {{#each positions}}
+      <li>
+        <span>{{label}}{{#if organizations.length }}, {{/if}}</span>
+        {{#each organizations}}
+        <span>{{label}}{{#if @last }}{{else}}, {{/if}}</span>
+        {{#each parent}}
+        <span>{{label}}{{#if @last }}{{else}}, {{/if}}</span>
+        {{/each}}
+        {{/each}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+
+  {{#if overview }}
+  <div class="section">
+    <div class="label">Overview</div>
+    <div class="overview">{{{overview}}}</div>
+  </div>
+  {{/if}}
+
+  <div class="section">
+    <div class="label">Education and Training</div>
+    <ul>
+      {{#eachSorted educationAndTraining "endDate" "DESC" true}}
+      <li>
+        {{#if abbreviation}}
+        <span>{{abbreviation}} in {{field}}, </span>
+        {{/if}}
+        <span>{{organization.label}}{{#if info}}, {{/if}}</span>
+        {{#if info}}
+        <span>{{info}}</span>
+        {{/if}}
+        <span>{{toYear endDate}}</span>
+      </li>
+      {{/eachSorted}}
+    </ul>
+  </div>
+
+  {{#if publications.length }}
+  <div class="section">
+    <div class="label">10 Most Recent Publications</div>
+
+    <div class="publications">
+      {{#each publications}}
+      <div>
+        <span>{{parseAuthorList authorList}}</span>
+        <span>({{toYear publicationDate}}).</span>
+        <span><u>{{{title}}}</u>.</span>
+
+        {{#if publicationVenue}}
+        <span><em>{{publicationVenue.label}}</em>. </span>
+        {{/if}}
+
+        {{#if bookTitle}}
+
+        {{#if editorList}}
+        <span>{{editorList}} (Eds.),</span>
+        {{/if}}
+        <span>{{bookTitle}}.</span>
+
+        {{#if pageStart}}
+        {{#if pageEnd}}
+        <span>(pp. {{pageStart}}-{{pageEnd}}).</span>
+        {{else}}
+        <span>(pp. {{pageStart}}).</span>
+        {{/if}}
+        {{else}}
+        {{#if pageEnd}}
+        <span>(pp. {{pageEnd}}).</span>
+        {{/if}}
+        {{/if}}
+
+        {{else}}
+
+        {{#if volume}}
+        {{#if issue}}
+        <span>{{volume}}({{issue}}), </span>
+        {{else}}
+        <span>{{volume}}, </span>
+        {{/if}}
+        {{else}}
+        {{#if issue}}
+        <span>({{issue}}), </span>
+        {{/if}}
+        {{/if}}
+
+        {{#if pageStart}}
+        {{#if pageEnd}}
+        <span>{{pageStart}}-{{pageEnd}}.</span>
+        {{else}}
+        <span>{{pageStart}}.</span>
+        {{/if}}
+        {{else}}
+        {{#if pageEnd}}
+        <span>{{pageEnd}}.</span>
+        {{/if}}
+        {{/if}}
+
+        {{/if}}
+
+        {{#if publisher}}
+        <span>{{publisher.label}}.</span>
+        {{/if}}
+
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{#hasCurrentFunding researcherOn}}
+  <div class="section">
+    <div class="label">Current Grant Funding</div>
+      {{#eachCurrentFunding researcherOn}}
+      <div>
+        {{#if awardedBy.preferredLabel}}
+        <span>{{label}}, {{awardedBy.preferredLabel}}</span>
+        {{else}}
+        <span>{{label}}, {{awardedBy.label}}</span>
+        {{/if}}
+        <span> {{toFormalRole role}} </span>
+        {{#if startDate}}
+        {{#if endDate}}
+        <span>({{toYear startDate}} - {{toYear endDate}})</span>
+        {{else}}
+        <span>({{toYear startDate}})</span>
+        {{/if}}
+        {{else}}
+        {{#if endDate}}
+        <span>({{toYear endDate}})</span>
+        {{/if}}
+        {{/if}}
+      </div>
+      {{/eachCurrentFunding}}
+  </div>
+  {{/hasCurrentFunding}}
+
+  {{#if awardsAndHonors.length }}
+  <div class="section">
+    <div class="label">Awards And Honors</div>
+      {{#eachSorted awardsAndHonors "yearAwarded" "DESC" true}}
+      <div>
+        {{#each receiptOf}}
+        <span>{{label}}</span>
+        {{/each}}
+
+        {{#each awardConferredBy}}
+        <span> conferred by {{label}}</span>
+        {{/each}}
+
+        {{#if description}}
+        <span> - {{description}}</span>
+        {{/if}}
+
+        {{#if yearAwarded}}
+        <span>{{toYear yearAwarded}}</span>
+        {{/if}}
+      </div>
+      {{/eachSorted}}
+  </div>
+  {{/if}}
+
+  <div class="source">
+    <span class="label">Source: </span>
+    <span>{{firstName}} {{lastName}}'s profile <a href="{{uiUrl}}/display/{{id}}">{{uiUrl}}/display/{{id}}</a></span>
+  </div>
+
+</body>
+
+</html>
