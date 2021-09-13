@@ -46,9 +46,9 @@
             value: Chapter
           - field: type
             value: ConferencePaper
-  - name: Full Bio
-    contentTemplate: "defaults/displayViews/persons/fullBioContentTemplate.html"
-    headerTemplate: "defaults/displayViews/persons/fullBioHeaderTemplate.html"
+  - name: Profile Summary
+    contentTemplate: "defaults/displayViews/persons/profileSummaryContentTemplate.html"
+    headerTemplate: "defaults/displayViews/persons/profileSummaryHeaderTemplate.html"
     requiredFields:
       - firstName
       - lastName
