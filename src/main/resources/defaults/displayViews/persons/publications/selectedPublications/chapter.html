@@ -18,15 +18,19 @@
   <span>{{bookTitle}}.</span>
   {{/if}}
 
+  {{#if number}}
+  <span>{{number}}.</span>
+  {{else}}
   {{#if pageStart}}
   {{#if pageEnd}}
-  <span>(pp. {{pageStart}}-{{pageEnd}}).</span>
+  <span>{{pageStart}}-{{pageEnd}}.</span>
   {{else}}
-  <span>(pp. {{pageStart}}).</span>
+  <span>{{pageStart}}.</span>
   {{/if}}
   {{else}}
   {{#if pageEnd}}
-  <span>(pp. {{pageEnd}}).</span>
+  <span>{{pageEnd}}.</span>
+  {{/if}}
   {{/if}}
   {{/if}}
 

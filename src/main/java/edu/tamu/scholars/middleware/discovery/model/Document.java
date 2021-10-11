@@ -243,6 +243,10 @@ public class Document extends Common {
     private String pageEnd;
 
     @Indexed(type = "whole_string", searchable = false)
+    @PropertySource(template = "document/number", predicate = "http://purl.org/ontology/bibo/number")
+    private String number;
+
+    @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "document/volume", predicate = "http://purl.org/ontology/bibo/volume")
     private String volume;
 
@@ -747,6 +751,14 @@ public class Document extends Common {
 
     public void setPageEnd(String pageEnd) {
         this.pageEnd = pageEnd;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getVolume() {

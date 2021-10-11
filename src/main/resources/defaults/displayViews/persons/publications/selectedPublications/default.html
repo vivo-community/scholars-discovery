@@ -23,6 +23,9 @@
   {{/if}}
   {{/if}}
 
+  {{#if number}}
+  <span>{{number}}.</span>
+  {{else}}
   {{#if pageStart}}
   {{#if pageEnd}}
   <span>{{pageStart}}-{{pageEnd}}.</span>
@@ -32,6 +35,7 @@
   {{else}}
   {{#if pageEnd}}
   <span>{{pageEnd}}.</span>
+  {{/if}}
   {{/if}}
   {{/if}}
 

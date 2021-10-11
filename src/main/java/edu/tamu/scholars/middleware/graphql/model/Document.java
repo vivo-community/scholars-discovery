@@ -178,6 +178,8 @@ public class Document extends AbstractNestedDocument {
 
   private String pageEnd;
 
+  private String number;
+
   private String volume;
 
   private String issue;
@@ -708,6 +710,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setPageEnd(String pageEnd) {
     this.pageEnd = pageEnd;
+  }
+
+  public String getNumber() {
+    return number;
+  }
+
+  public void setNumber(String number) {
+    this.number = number;
   }
 
   public String getVolume() {
