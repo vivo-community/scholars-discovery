@@ -1312,26 +1312,30 @@
           template: "defaults/displayViews/documents/additionalDocumentInfo/endPage.html"
           field: pageEnd
           order: 4
+        - name: number
+          template: "defaults/displayViews/documents/additionalDocumentInfo/number.html"
+          field: number
+          order: 5
         - name: volume
           template: "defaults/displayViews/documents/additionalDocumentInfo/volume.html"
           field: volume
-          order: 5
+          order: 6
         - name: issue
           template: "defaults/displayViews/documents/additionalDocumentInfo/issue.html"
           field: issue
-          order: 6
+          order: 7
         - name: assignees
           template: "defaults/displayViews/documents/additionalDocumentInfo/assignees.html"
           field: assignees
-          order: 7
+          order: 8
         - name: reproduced in
           template: "defaults/displayViews/documents/additionalDocumentInfo/reproducedIn.html"
           field: reproducedIn
-          order: 8
+          order: 9
         - name: reproduces
           template: "defaults/displayViews/documents/additionalDocumentInfo/reproduces.html"
           field: reproduces
-          order: 9
+          order: 10
     - name: Other
       sections:
         - name: is about
