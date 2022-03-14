@@ -203,7 +203,7 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
-            - name: Institutional Repository Documents
+            - name: Repository Documents / Preprints
               field: publications
               order: 5
               filters:
