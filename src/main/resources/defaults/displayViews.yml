@@ -1186,46 +1186,40 @@
           template: "defaults/displayViews/documents/overview/features.html"
           field: features
           order: 16
-        - name: published in
-          template: "defaults/displayViews/documents/overview/publishedIn.html"
-          field: publicationVenue
-          order: 17
-          lazyReferences:
-            - publicationVenue
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
-          order: 18
+          order: 17
         - name: documentation for project or resource
           template: "defaults/displayViews/documents/overview/documentationForProjectOrResource.html"
           field: documentationForProjectOrResource
-          order: 19
+          order: 18
         - name: output of process or event
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
-          order: 20
+          order: 19
         - name: open educational resource for
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
-          order: 21
+          order: 20
           lazyReferences:
             - presentedAt
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
-          order: 22
+          order: 21
         - name: altmetric score
           template: "defaults/displayViews/documents/overview/altmetricScore.html"
           field: altmetricScore
-          order: 23
+          order: 22
         - name: citation count
           template: "defaults/displayViews/documents/overview/citationCount.html"
           field: citationCount
-          order: 24
+          order: 23
         - name: news outlet
           template: "defaults/displayViews/documents/overview/newsOutlet.html"
           field: newsOutlet
-          order: 25
+          order: 24
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
