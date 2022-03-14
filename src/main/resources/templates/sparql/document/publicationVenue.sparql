@@ -1,4 +1,5 @@
 PREFIX vivo: <http://vivoweb.org/ontology/core#>
+PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -7,6 +8,8 @@ CONSTRUCT {
 } WHERE {
     <{{uri}}> a obo:IAO_0000030 .
     <{{uri}}> vivo:hasPublicationVenue ?publicationVenue .
+    <{{uri}}> vitro:mostSpecificType ?mostSpecificType .
     ?publicationVenue rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?publicationVenue), "(^.*/)", "::") ) AS ?labelWithId ) .
+    FILTER ( ?mostSpecificType != vivo:ConferencePaper ) .
 }
