@@ -1106,6 +1106,7 @@
     - Capstone
     - Webpage
     - Report
+    - Review
     - TeachingMaterial
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
