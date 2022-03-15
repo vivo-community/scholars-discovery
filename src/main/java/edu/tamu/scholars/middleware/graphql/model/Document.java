@@ -126,6 +126,10 @@ public class Document extends AbstractNestedDocument {
 
   private String abbreviation;
 
+  private String publicationOutlet;
+
+  private String nameOfConference;
+
   private String status;
 
   private String publicationDate;
@@ -502,6 +506,22 @@ public class Document extends AbstractNestedDocument {
 
   public void setAbbreviation(String abbreviation) {
     this.abbreviation = abbreviation;
+  }
+
+  public String getPublicationOutlet() {
+    return publicationOutlet;
+  }
+
+  public void setPublicationOutlet(String publicationOutlet) {
+    this.publicationOutlet = publicationOutlet;
+  }
+
+  public String getNameOfConference() {
+    return nameOfConference;
+  }
+
+  public void setNameOfConference(String nameOfConference) {
+    this.nameOfConference = nameOfConference;
   }
 
   public String getStatus() {

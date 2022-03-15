@@ -48,6 +48,14 @@ public class Document extends Common {
     @PropertySource(template = "document/hasPublicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String hasPublicationVenueFor;
 
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "document/publicationOutlet", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private String publicationOutlet;
+
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "document/nameOfConference", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    private String nameOfConference;
+
     @Indexed(type = "nested_whole_strings")
     @NestedObject(properties = { @Reference(value = "authorOrganization", key = "organizations") })
     @PropertySource(template = "document/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -399,6 +407,22 @@ public class Document extends Common {
 
     public void setHasPublicationVenueFor(String hasPublicationVenueFor) {
         this.hasPublicationVenueFor = hasPublicationVenueFor;
+    }
+
+    public String getPublicationOutlet() {
+        return publicationOutlet;
+    }
+
+    public void setPublicationOutlet(String publicationOutlet) {
+        this.publicationOutlet = publicationOutlet;
+    }
+
+    public String getNameOfConference() {
+        return nameOfConference;
+    }
+
+    public void setNameOfConference(String nameOfConference) {
+        this.nameOfConference = nameOfConference;
     }
 
     public List<String> getAuthors() {
