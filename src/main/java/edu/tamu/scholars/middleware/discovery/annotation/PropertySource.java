@@ -23,4 +23,6 @@ public @interface PropertySource {
 
     boolean relative() default false;
 
+    boolean ordered() default false;
+
 }
