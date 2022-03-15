@@ -200,6 +200,8 @@ public class Document extends AbstractNestedDocument {
 
   private String url;
 
+  private List<String> completeAuthorList;
+
   private List<String> authorList;
 
   private List<String> editorList;
@@ -798,6 +800,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public List<String> getCompleteAuthorList() {
+    return completeAuthorList;
+  }
+
+  public void setCompleteAuthorList(List<String> completeAuthorList) {
+    this.completeAuthorList = completeAuthorList;
   }
 
   public List<String> getAuthorList() {

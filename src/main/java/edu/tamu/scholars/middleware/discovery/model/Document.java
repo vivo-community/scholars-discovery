@@ -933,6 +933,14 @@ public class Document extends Common {
         this.advisedBy = advisedBy;
     }
 
+    public List<String> getCompleteAuthorList() {
+        return completeAuthorList;
+    }
+
+    public void setCompleteAuthorList(List<String> completeAuthorList) {
+        this.completeAuthorList =completeAuthorList;
+    }
+
     public List<String> getAuthorList() {
         return authorList;
     }
