@@ -163,7 +163,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/academicArticles.html"
             - name: Books
               field: publications
               order: 2
