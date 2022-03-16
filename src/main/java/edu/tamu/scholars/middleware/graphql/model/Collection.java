@@ -1,7 +1,6 @@
 package edu.tamu.scholars.middleware.graphql.model;
 
 import edu.tamu.scholars.middleware.graphql.model.collection.PublicationVenueFor;
-import edu.tamu.scholars.middleware.graphql.model.collection.Author;
 import edu.tamu.scholars.middleware.graphql.model.collection.Editor;
 import edu.tamu.scholars.middleware.graphql.model.collection.Translator;
 import edu.tamu.scholars.middleware.graphql.model.collection.Publisher;
@@ -38,8 +37,6 @@ public class Collection extends AbstractNestedDocument {
   private static final long serialVersionUID = -1196367868L;
 
   private List<PublicationVenueFor> publicationVenueFor;
-
-  private List<Author> authors;
 
   private List<Editor> editors;
 
@@ -109,14 +106,6 @@ public class Collection extends AbstractNestedDocument {
 
   public void setPublicationVenueFor(List<PublicationVenueFor> publicationVenueFor) {
     this.publicationVenueFor = publicationVenueFor;
-  }
-
-  public List<Author> getAuthors() {
-    return authors;
-  }
-
-  public void setAuthors(List<Author> authors) {
-    this.authors = authors;
   }
 
   public List<Editor> getEditors() {
