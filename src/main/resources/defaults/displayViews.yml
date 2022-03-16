@@ -1137,6 +1137,7 @@
         - name: complete author list
           template: "defaults/displayViews/documents/overview/completeAuthorList.html"
           field: completeAuthorList
+          paginated: true
           order: 5
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
