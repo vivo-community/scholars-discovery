@@ -1,0 +1,8 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    <{{uri}}> tamu:completeAuthorList ?orderedCompleteAuthorList .
+} WHERE {
+    <{{uri}}> tamu:completeAuthorList ?completeAuthorList .
+    BIND( REPLACE(STR(?completeAuthorList), "^\\s*\\[(\\d+)\\]\\s*-\\s*(.+)$", "$1;;$2") as ?orderedCompleteAuthorList ) .
+}

@@ -3,10 +3,13 @@ package edu.tamu.scholars.middleware.discovery.serializer;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ORDERED_DELIMITER;
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypeByName;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,7 @@ import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProper
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import edu.tamu.scholars.middleware.discovery.comparator.OrderedComparator;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 
 public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
@@ -59,6 +63,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
         jsonGenerator.writeObjectField(nameTransformer.transform(CLASS), document.getClazz());
         for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
+            PropertySource propertySource = field.getAnnotation(PropertySource.class);
             JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
             String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
             Object value = content.get(name);
@@ -70,6 +75,10 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
+
+                            if (propertySource.ordered()) {
+                                values = sortWithoutPrefix(value);
+                            }
 
                             // @formatter:off
                             ArrayNode array = values.parallelStream()
@@ -91,13 +100,17 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                     }
                 } else {
                     if (!value.toString().contains(NESTED_DELIMITER)) {
+
+                        @SuppressWarnings("unchecked")
+                        List<String> values = (List<String>) value;
+
                         if (List.class.isAssignableFrom(field.getType())) {
-                            jsonGenerator.writeObjectField(name, value);
+                            if (propertySource.ordered()) {
+                                values = sortWithoutPrefix(value);
+                            }
+
+                            jsonGenerator.writeObjectField(name, values);
                         } else {
-
-                            @SuppressWarnings("unchecked")
-                            List<String> values = (List<String>) value;
-
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
                         }
                     }
@@ -185,6 +198,26 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             }
         }
         return true;
+    }
+
+    private List<String> sortWithoutPrefix(Object values) {
+
+        @SuppressWarnings("unchecked")
+        List<String> unsorted = (List<String>) values;
+        List<String> sorted = new ArrayList<>();
+
+        Collections.sort(unsorted, new OrderedComparator());
+        for (String value : unsorted) {
+            String[] property = value.split(ORDERED_DELIMITER, 2);
+
+            if (property.length == 2) {
+                sorted.add(property[1]);
+            } else {
+                sorted.add(value);
+            }
+        }
+
+        return sorted;
     }
 
     private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {

@@ -1157,98 +1157,103 @@
           template: "defaults/displayViews/documents/overview/authorList.html"
           field: authorList
           order: 6
+        - name: complete author list
+          template: "defaults/displayViews/documents/overview/completeAuthorList.html"
+          field: completeAuthorList
+          paginated: true
+          order: 7
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
           field: editors
-          order: 7
+          order: 8
         - name: editor list (cited editors)
           template: "defaults/displayViews/documents/overview/editorList.html"
           field: editorList
-          order: 8
+          order: 9
         - name: etd chair
           template: "defaults/displayViews/documents/overview/etdChair.html"
           field: etdChairedBy
-          order: 9
+          order: 10
           lazyReferences:
             - etdChairedBy
         - name: capstone (non-thesis) advisor
           template: "defaults/displayViews/documents/overview/advisor.html"
           field: advisedBy
-          order: 10
+          order: 11
           lazyReferences:
             - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators
-          order: 11
+          order: 12
         - name: status
           template: "defaults/displayViews/documents/overview/status.html"
           field: status
-          order: 12
+          order: 13
         - name: publication date
           template: "defaults/displayViews/documents/overview/publicationDate.html"
           field: publicationDate
-          order: 13
+          order: 14
         - name: publisher
           template: "defaults/displayViews/documents/overview/publisher.html"
           field: publisher
-          order: 14
+          order: 15
         - name: has subject area
           template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
           field: subjectAreas
-          order: 15
+          order: 16
         - name: has restriction
           template: "defaults/displayViews/documents/overview/hasRestriction.html"
           field: restrictions
-          order: 16
+          order: 17
         - name: has document part
           template: "defaults/displayViews/documents/overview/hasDocumentPart.html"
           field: documentParts
-          order: 17
+          order: 18
         - name: features
           template: "defaults/displayViews/documents/overview/features.html"
           field: features
-          order: 18
+          order: 19
         - name: published in
           template: "defaults/displayViews/documents/overview/publishedIn.html"
           field: publicationVenue
-          order: 19
+          order: 20
           lazyReferences:
             - publicationVenue
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
-          order: 20
+          order: 21
         - name: documentation for project or resource
           template: "defaults/displayViews/documents/overview/documentationForProjectOrResource.html"
           field: documentationForProjectOrResource
-          order: 21
+          order: 22
         - name: output of process or event
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
-          order: 22
+          order: 23
         - name: open educational resource for
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
-          order: 23
+          order: 24
           lazyReferences:
             - presentedAt
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
-          order: 24
+          order: 25
         - name: altmetric score
           template: "defaults/displayViews/documents/overview/altmetricScore.html"
           field: altmetricScore
-          order: 25
+          order: 26
         - name: citation count
           template: "defaults/displayViews/documents/overview/citationCount.html"
           field: citationCount
-          order: 26
+          order: 27
         - name: news outlet
           template: "defaults/displayViews/documents/overview/newsOutlet.html"
           field: newsOutlet
-          order: 27
+          order: 28
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13
