@@ -44,11 +44,6 @@ public class Collection extends Common {
 
     @NestedObject
     @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
-    private List<String> authors;
-
-    @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
@@ -164,14 +159,6 @@ public class Collection extends Common {
 
     public void setPublicationVenueFor(List<String> publicationVenueFor) {
         this.publicationVenueFor = publicationVenueFor;
-    }
-
-    public List<String> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
     }
 
     public List<String> getEditors() {
