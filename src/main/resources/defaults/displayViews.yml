@@ -268,6 +268,20 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+        - name: open teaching materials
+          shared: true
+          paginated: true
+          template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
+          field: teachingMaterials
+          order: 3
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
+            - field: title
+              direction: ASC
+          lazyReferences:
+            - teachingMaterials
         - name: collection or series editor for
           template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
           field: collectionOrSeriesEditorFor
