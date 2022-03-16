@@ -100,22 +100,17 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                     }
                 } else {
                     if (!value.toString().contains(NESTED_DELIMITER)) {
+
+                        @SuppressWarnings("unchecked")
+                        List<String> values = (List<String>) value;
+
                         if (List.class.isAssignableFrom(field.getType())) {
-                            if (propertySource.ordered()) {
-                                jsonGenerator.writeObjectField(name, sortWithoutPrefix(value));
-                            }
-                            else {
-                                jsonGenerator.writeObjectField(name, value);
-                            }
-                        } else {
-
-                            @SuppressWarnings("unchecked")
-                            List<String> values = (List<String>) value;
-
                             if (propertySource.ordered()) {
                                 values = sortWithoutPrefix(value);
                             }
 
+                            jsonGenerator.writeObjectField(name, values);
+                        } else {
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
                         }
                     }
