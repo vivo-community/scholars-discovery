@@ -203,7 +203,7 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/conferencePapers.html"
-            - name: Institutional Repository Documents
+            - name: Repository Documents / Preprints
               field: publications
               order: 5
               filters:
@@ -268,6 +268,20 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+        - name: open teaching materials
+          shared: true
+          paginated: true
+          template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
+          field: teachingMaterials
+          order: 3
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
+            - field: title
+              direction: ASC
+          lazyReferences:
+            - teachingMaterials
         - name: collection or series editor for
           template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
           field: collectionOrSeriesEditorFor
@@ -1106,6 +1120,7 @@
     - Capstone
     - Webpage
     - Report
+    - Review
     - TeachingMaterial
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"

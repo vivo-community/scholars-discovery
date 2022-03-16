@@ -10,6 +10,7 @@ USER root
 
 RUN chown -R solr:solr /opt/solr/server/solr/configsets/scholars-discovery
 RUN chmod -R 755 /opt/solr/server/solr/configsets/scholars-discovery
+RUN chmod -R ugo+rx /setup.sh
 
 USER solr
 
