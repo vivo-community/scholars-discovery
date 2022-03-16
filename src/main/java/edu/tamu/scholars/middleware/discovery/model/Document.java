@@ -49,11 +49,11 @@ public class Document extends Common {
     private String hasPublicationVenueFor;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
-    @PropertySource(template = "document/publicationOutlet", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    @PropertySource(template = "document/publicationOutlet", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#publishedProceedings", unique = true)
     private String publicationOutlet;
 
     @Indexed(type = "whole_string", copyTo = "_text_")
-    @PropertySource(template = "document/nameOfConference", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    @PropertySource(template = "document/nameOfConference", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#nameOfConference", unique = true)
     private String nameOfConference;
 
     @Indexed(type = "nested_whole_strings")
