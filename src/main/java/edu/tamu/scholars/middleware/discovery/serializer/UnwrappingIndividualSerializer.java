@@ -68,29 +68,6 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
             Object value = content.get(name);
             if (value != null) {
-                if (propertySource.ordered()) {
-                    if (List.class.isAssignableFrom(field.getType())) {
-
-                        @SuppressWarnings("unchecked")
-                        List<String> values = (List<String>) value;
-                        List<String> sortedNoPrefix = new ArrayList<>();
-
-                        Collections.sort(values, new OrderedComparator());
-                        for (String v : values) {
-                            String[] property = v.split(ORDERED_DELIMITER, 2);
-                            if (property.length == 2) {
-                                sortedNoPrefix.add(property[1]);
-                            }
-                            else {
-                                sortedNoPrefix.add(v);
-                            }
-                        }
-
-                        jsonGenerator.writeObjectField(name, sortedNoPrefix);
-                        continue;
-                    }
-                }
-
                 NestedObject nestedObject = field.getAnnotation(NestedObject.class);
                 if (nestedObject != null) {
                     if (nestedObject.root()) {
@@ -98,6 +75,10 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
+
+                            if (propertySource.ordered()) {
+                                values = sortWithoutPrefix(value);
+                            }
 
                             // @formatter:off
                             ArrayNode array = values.parallelStream()
@@ -120,11 +101,20 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                 } else {
                     if (!value.toString().contains(NESTED_DELIMITER)) {
                         if (List.class.isAssignableFrom(field.getType())) {
-                            jsonGenerator.writeObjectField(name, value);
+                            if (propertySource.ordered()) {
+                                jsonGenerator.writeObjectField(name, sortWithoutPrefix(value));
+                            }
+                            else {
+                                jsonGenerator.writeObjectField(name, value);
+                            }
                         } else {
 
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
+
+                            if (propertySource.ordered()) {
+                                values = sortWithoutPrefix(value);
+                            }
 
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
                         }
@@ -213,6 +203,26 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             }
         }
         return true;
+    }
+
+    private List<String> sortWithoutPrefix(Object values) {
+
+        @SuppressWarnings("unchecked")
+        List<String> unsorted = (List<String>) values;
+        List<String> sorted = new ArrayList<>();
+
+        Collections.sort(unsorted, new OrderedComparator());
+        for (String value : unsorted) {
+            String[] property = value.split(ORDERED_DELIMITER, 2);
+
+            if (property.length == 2) {
+                sorted.add(property[1]);
+            } else {
+                sorted.add(value);
+            }
+        }
+
+        return sorted;
     }
 
     private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {
