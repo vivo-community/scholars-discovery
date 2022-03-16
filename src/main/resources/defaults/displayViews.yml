@@ -202,7 +202,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/conferencePapers.html"
             - name: Institutional Repository Documents
               field: publications
               order: 5
