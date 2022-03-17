@@ -26,6 +26,8 @@
         value: "#65a6d1"
       - key: "--hero-link-color-hover"
         value: "#ffc222"
+      - key: "--hero-search-info-color"
+        value: "#fce300"
   header:
     navbar:
       brandText: Texas A&M University Libraries
