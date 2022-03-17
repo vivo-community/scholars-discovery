@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,7 +78,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                             List<String> values = (List<String>) value;
 
                             if (propertySource.ordered()) {
-                                values = sortWithoutPrefix(value);
+                                values = distinctSortWithoutPrefix(value);
                             }
 
                             // @formatter:off
@@ -106,7 +107,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                         if (List.class.isAssignableFrom(field.getType())) {
                             if (propertySource.ordered()) {
-                                values = sortWithoutPrefix(value);
+                                values = distinctSortWithoutPrefix(value);
                             }
 
                             jsonGenerator.writeObjectField(name, values);
@@ -200,11 +201,11 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
         return true;
     }
 
-    private List<String> sortWithoutPrefix(Object values) {
+    private List<String> distinctSortWithoutPrefix(Object values) {
 
         @SuppressWarnings("unchecked")
         List<String> unsorted = (List<String>) values;
-        List<String> sorted = new ArrayList<>();
+        Set<String> sorted = new HashSet<>();
 
         Collections.sort(unsorted, new OrderedComparator());
         for (String value : unsorted) {
@@ -217,7 +218,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             }
         }
 
-        return sorted;
+        return new ArrayList<String>(sorted);
     }
 
     private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {
