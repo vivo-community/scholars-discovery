@@ -9,9 +9,8 @@ import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.ge
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,8 +19,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -35,11 +32,12 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.NameTransformer;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
-import edu.tamu.scholars.middleware.discovery.comparator.OrderedComparator;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 
 public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
@@ -205,20 +203,27 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
         @SuppressWarnings("unchecked")
         List<String> unsorted = (List<String>) values;
-        Set<String> sorted = new HashSet<>();
+        Map<Integer, String> sorted = new HashMap<>();
 
-        Collections.sort(unsorted, new OrderedComparator());
-        for (String value : unsorted) {
-            String[] property = value.split(ORDERED_DELIMITER, 2);
+        unsorted.stream()
+            .forEach(rawValue -> {
+                final String[] parts = rawValue.split(ORDERED_DELIMITER, 2);
+                Integer order = null;
+                String value = null;
+                try {
+                    order = Integer.valueOf(parts[0]);
+                } catch (NumberFormatException e) {
+                    order = Integer.MAX_VALUE;
+                }
 
-            if (property.length == 2) {
-                sorted.add(property[1]);
-            } else {
-                sorted.add(value);
-            }
-        }
+                if (parts.length > 1) {
+                    value = parts[1];
+                }
 
-        return new ArrayList<String>(sorted);
+                sorted.put(order, value);
+            });
+
+        return new ArrayList<>(sorted.values());
     }
 
     private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {
