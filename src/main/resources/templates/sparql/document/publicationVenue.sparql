@@ -11,5 +11,4 @@ CONSTRUCT {
     <{{uri}}> vitro:mostSpecificType ?mostSpecificType .
     ?publicationVenue rdfs:label ?label .
     BIND( CONCAT( STR(?label), REPLACE(STR(?publicationVenue), "(^.*/)", "::") ) AS ?labelWithId ) .
-    FILTER ( ?mostSpecificType != vivo:ConferencePaper ) .
 }
