@@ -268,6 +268,19 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+            - name: Reviews
+              field: publications
+              order: 10
+              filters:
+                - field: type
+                  value: Review
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
         - name: open teaching materials
           shared: true
           paginated: true
