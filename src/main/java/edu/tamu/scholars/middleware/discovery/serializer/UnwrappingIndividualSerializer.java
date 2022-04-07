@@ -3,11 +3,14 @@ package edu.tamu.scholars.middleware.discovery.serializer;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ORDERED_DELIMITER;
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypeByName;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,8 +19,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -30,6 +31,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.NameTransformer;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
@@ -59,6 +62,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
         jsonGenerator.writeObjectField(nameTransformer.transform(CLASS), document.getClazz());
         for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
+            PropertySource propertySource = field.getAnnotation(PropertySource.class);
             JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
             String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
             Object value = content.get(name);
@@ -70,6 +74,10 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
+
+                            if (propertySource.ordered()) {
+                                values = distinctSortWithoutPrefix(value);
+                            }
 
                             // @formatter:off
                             ArrayNode array = values.parallelStream()
@@ -91,13 +99,17 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                     }
                 } else {
                     if (!value.toString().contains(NESTED_DELIMITER)) {
+
+                        @SuppressWarnings("unchecked")
+                        List<String> values = (List<String>) value;
+
                         if (List.class.isAssignableFrom(field.getType())) {
-                            jsonGenerator.writeObjectField(name, value);
+                            if (propertySource.ordered()) {
+                                values = distinctSortWithoutPrefix(value);
+                            }
+
+                            jsonGenerator.writeObjectField(name, values);
                         } else {
-
-                            @SuppressWarnings("unchecked")
-                            List<String> values = (List<String>) value;
-
                             jsonGenerator.writeObjectField(nameTransformer.transform(name), values.get(0));
                         }
                     }
@@ -185,6 +197,33 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
             }
         }
         return true;
+    }
+
+    private List<String> distinctSortWithoutPrefix(Object values) {
+
+        @SuppressWarnings("unchecked")
+        List<String> unsorted = (List<String>) values;
+        Map<Integer, String> sorted = new HashMap<>();
+
+        unsorted.stream()
+            .forEach(rawValue -> {
+                final String[] parts = rawValue.split(ORDERED_DELIMITER, 2);
+                Integer order = null;
+                String value = null;
+                try {
+                    order = Integer.valueOf(parts[0]);
+                } catch (NumberFormatException e) {
+                    order = Integer.MAX_VALUE;
+                }
+
+                if (parts.length > 1) {
+                    value = parts[1];
+                }
+
+                sorted.put(order, value);
+            });
+
+        return new ArrayList<>(sorted.values());
     }
 
     private class JsonNodeArrayNodeCollector implements Collector<JsonNode, ArrayNode, ArrayNode> {

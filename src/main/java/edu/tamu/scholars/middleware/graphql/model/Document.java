@@ -126,6 +126,10 @@ public class Document extends AbstractNestedDocument {
 
   private String abbreviation;
 
+  private String publicationOutlet;
+
+  private String nameOfConference;
+
   private String status;
 
   private String publicationDate;
@@ -199,6 +203,8 @@ public class Document extends AbstractNestedDocument {
   private String key;
 
   private String url;
+
+  private List<String> completeAuthorList;
 
   private List<String> authorList;
 
@@ -504,6 +510,22 @@ public class Document extends AbstractNestedDocument {
     this.abbreviation = abbreviation;
   }
 
+  public String getPublicationOutlet() {
+    return publicationOutlet;
+  }
+
+  public void setPublicationOutlet(String publicationOutlet) {
+    this.publicationOutlet = publicationOutlet;
+  }
+
+  public String getNameOfConference() {
+    return nameOfConference;
+  }
+
+  public void setNameOfConference(String nameOfConference) {
+    this.nameOfConference = nameOfConference;
+  }
+
   public String getStatus() {
     return status;
   }
@@ -798,6 +820,14 @@ public class Document extends AbstractNestedDocument {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public List<String> getCompleteAuthorList() {
+    return completeAuthorList;
+  }
+
+  public void setCompleteAuthorList(List<String> completeAuthorList) {
+    this.completeAuthorList = completeAuthorList;
   }
 
   public List<String> getAuthorList() {

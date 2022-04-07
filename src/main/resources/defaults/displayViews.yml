@@ -163,7 +163,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/academicArticles.html"
             - name: Books
               field: publications
               order: 2
@@ -202,8 +202,8 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
-            - name: Institutional Repository Documents
+              template: "defaults/displayViews/persons/publications/selectedPublications/conferencePapers.html"
+            - name: Repository Documents / Preprints
               field: publications
               order: 5
               filters:
@@ -268,6 +268,33 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+            - name: Reviews
+              field: publications
+              order: 10
+              filters:
+                - field: type
+                  value: Review
+              sort:
+                - field: publicationDate
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+        - name: open teaching materials
+          shared: true
+          paginated: true
+          template: "defaults/displayViews/persons/recentCourses/teachingMaterials.html"
+          field: teachingMaterials
+          order: 3
+          sort:
+            - field: publicationDate
+              direction: DESC
+              date: true
+            - field: title
+              direction: ASC
+          lazyReferences:
+            - teachingMaterials
         - name: collection or series editor for
           template: "defaults/displayViews/persons/publications/collectionOrSeriesEditorFor.html"
           field: collectionOrSeriesEditorFor
@@ -1106,6 +1133,7 @@
     - Capstone
     - Webpage
     - Report
+    - Review
     - TeachingMaterial
   mainContentTemplate: "defaults/displayViews/documents/mainContentTemplate.html"
   rightScanTemplate: "defaults/displayViews/documents/rightScanTemplate.html"
@@ -1122,110 +1150,112 @@
           template: "defaults/displayViews/documents/overview/abstract.html"
           field: abstract
           order: 1
+        - name: name of conference
+          template: "defaults/displayViews/documents/overview/nameOfConference.html"
+          field: nameOfConference
+          order: 2
         - name: book title
           template: "defaults/displayViews/documents/overview/bookTitle.html"
           field: bookTitle
-          order: 2
+          order: 3
         - name: authors
           template: "defaults/displayViews/documents/overview/authors.html"
           field: authors
-          order: 3
+          order: 4
+        - name: publication outlet
+          template: "defaults/displayViews/documents/overview/publicationOutlet.html"
+          field: publicationOutlet
+          order: 5
         - name: author list (cited authors)
           template: "defaults/displayViews/documents/overview/authorList.html"
           field: authorList
-          order: 4
+          order: 6
         - name: editors
           template: "defaults/displayViews/documents/overview/editors.html"
           field: editors
-          order: 5
+          order: 7
         - name: editor list (cited editors)
           template: "defaults/displayViews/documents/overview/editorList.html"
           field: editorList
-          order: 6
+          order: 8
         - name: etd chair
           template: "defaults/displayViews/documents/overview/etdChair.html"
           field: etdChairedBy
-          order: 7
+          order: 9
           lazyReferences:
             - etdChairedBy
         - name: capstone (non-thesis) advisor
           template: "defaults/displayViews/documents/overview/advisor.html"
           field: advisedBy
-          order: 8
+          order: 10
           lazyReferences:
             - advisedBy
         - name: translator
           template: "defaults/displayViews/documents/overview/translator.html"
           field: translators
-          order: 9
+          order: 11
         - name: status
           template: "defaults/displayViews/documents/overview/status.html"
           field: status
-          order: 10
+          order: 12
         - name: publication date
           template: "defaults/displayViews/documents/overview/publicationDate.html"
           field: publicationDate
-          order: 11
+          order: 13
         - name: publisher
           template: "defaults/displayViews/documents/overview/publisher.html"
           field: publisher
-          order: 12
+          order: 14
         - name: has subject area
           template: "defaults/displayViews/documents/overview/hasSubjectArea.html"
           field: subjectAreas
-          order: 13
+          order: 15
         - name: has restriction
           template: "defaults/displayViews/documents/overview/hasRestriction.html"
           field: restrictions
-          order: 14
+          order: 16
         - name: has document part
           template: "defaults/displayViews/documents/overview/hasDocumentPart.html"
           field: documentParts
-          order: 15
+          order: 17
         - name: features
           template: "defaults/displayViews/documents/overview/features.html"
           field: features
-          order: 16
-        - name: published in
-          template: "defaults/displayViews/documents/overview/publishedIn.html"
-          field: publicationVenue
-          order: 17
-          lazyReferences:
-            - publicationVenue
+          order: 18
         - name: geographic focus
           template: "defaults/displayViews/documents/overview/geographicFocus.html"
           field: geographicFocus
-          order: 18
+          order: 19
         - name: documentation for project or resource
           template: "defaults/displayViews/documents/overview/documentationForProjectOrResource.html"
           field: documentationForProjectOrResource
-          order: 19
+          order: 20
         - name: output of process or event
           template: "defaults/displayViews/documents/overview/outputOfProcessOrEvent.html"
           field: outputOfProcessOrEvent
-          order: 20
+          order: 21
         - name: open educational resource for
           template: "defaults/displayViews/documents/overview/presentedAtEvent.html"
           field: presentedAt
-          order: 21
+          order: 22
           lazyReferences:
             - presentedAt
         - name: keywords
           template: "defaults/displayViews/documents/overview/keywords.html"
           field: keywords
-          order: 22
+          order: 23
         - name: altmetric score
           template: "defaults/displayViews/documents/overview/altmetricScore.html"
           field: altmetricScore
-          order: 23
+          order: 24
         - name: citation count
           template: "defaults/displayViews/documents/overview/citationCount.html"
           field: citationCount
-          order: 24
+          order: 25
         - name: news outlet
           template: "defaults/displayViews/documents/overview/newsOutlet.html"
           field: newsOutlet
-          order: 25
+          order: 26
     - name: Identity
       sections:
         - name: EAN International-Uniform Code Council (EAN-UCC) 13

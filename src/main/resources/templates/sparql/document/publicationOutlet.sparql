@@ -1,0 +1,7 @@
+PREFIX tamu: <http://vivo.library.tamu.edu/ontology/TAMU#>
+
+CONSTRUCT {
+    <{{uri}}> tamu:publishedProceedings ?publishedProceedings .
+} WHERE {
+    <{{uri}}> tamu:publishedProceedings ?publishedProceedings .
+}

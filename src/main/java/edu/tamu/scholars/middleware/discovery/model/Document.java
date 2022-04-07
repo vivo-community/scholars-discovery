@@ -48,6 +48,14 @@ public class Document extends Common {
     @PropertySource(template = "document/hasPublicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String hasPublicationVenueFor;
 
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "document/publicationOutlet", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#publishedProceedings", unique = true)
+    private String publicationOutlet;
+
+    @Indexed(type = "whole_string", copyTo = "_text_")
+    @PropertySource(template = "document/nameOfConference", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#nameOfConference", unique = true)
+    private String nameOfConference;
+
     @Indexed(type = "nested_whole_strings")
     @NestedObject(properties = { @Reference(value = "authorOrganization", key = "organizations") })
     @PropertySource(template = "document/author", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -341,6 +349,10 @@ public class Document extends Common {
     @PropertySource(template = "document/advisedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> advisedBy;
 
+    @Indexed(type = "ordered_whole_strings")
+    @PropertySource(template = "document/completeAuthorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#completeAuthorList", ordered = true)
+    private List<String> completeAuthorList;
+
     @Indexed(type = "whole_strings")
     @PropertySource(template = "document/authorList", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#fullAuthorList")
     private List<String> authorList;
@@ -399,6 +411,22 @@ public class Document extends Common {
 
     public void setHasPublicationVenueFor(String hasPublicationVenueFor) {
         this.hasPublicationVenueFor = hasPublicationVenueFor;
+    }
+
+    public String getPublicationOutlet() {
+        return publicationOutlet;
+    }
+
+    public void setPublicationOutlet(String publicationOutlet) {
+        this.publicationOutlet = publicationOutlet;
+    }
+
+    public String getNameOfConference() {
+        return nameOfConference;
+    }
+
+    public void setNameOfConference(String nameOfConference) {
+        this.nameOfConference = nameOfConference;
     }
 
     public List<String> getAuthors() {
@@ -927,6 +955,14 @@ public class Document extends Common {
 
     public void setAdvisedBy(List<String> advisedBy) {
         this.advisedBy = advisedBy;
+    }
+
+    public List<String> getCompleteAuthorList() {
+        return completeAuthorList;
+    }
+
+    public void setCompleteAuthorList(List<String> completeAuthorList) {
+        this.completeAuthorList =completeAuthorList;
     }
 
     public List<String> getAuthorList() {
