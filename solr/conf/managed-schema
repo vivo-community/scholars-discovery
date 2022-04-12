@@ -258,14 +258,6 @@
       </analyzer>
     </fieldType>
 
-    <!-- Scholars ordered (nestable) whole strings type -->
-    <fieldType name="ordered_whole_strings" class="solr.TextField" omitNorms="true" termVectors="false" termPositions="false" termOffsets="false" sortMissingLast="true" multiValued="true">
-      <analyzer>
-        <charFilter class="solr.PatternReplaceFilterFactory" pattern="^(\d+);;(.*?)(::.*)$" replacement="$2"/>
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-      </analyzer>
-    </fieldType>
-
     <!-- Scholars dynamic nested facet field -->
     <dynamicField name="*_nested_facets" type="nested_whole_strings" indexed="true" stored="true" multiValued="true"/>
 
