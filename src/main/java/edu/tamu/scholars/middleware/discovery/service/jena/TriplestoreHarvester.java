@@ -184,7 +184,13 @@ public class TriplestoreHarvester implements Harvester {
                     logger.debug(String.format("%s has duplicate value %s", typeOp.getField().getName(), value));
                 }
             } else {
-                values.add(typeOp.type(value));
+                if (source.split()) {
+                    for (String v : value.split("\\|\\|")) {
+                        values.add(typeOp.type(v));
+                    }
+                } else {
+                    values.add(typeOp.type(value));
+                }
             }
         }
         return values;
