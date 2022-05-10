@@ -180,7 +180,7 @@ public abstract class AbstractNestedDocumentService<ND extends AbstractNestedDoc
         }).collect(Collectors.toList());
 
         Pageable resultsPaging = facetPage.getPageable();
-        SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, new Long(facetPage.getTotalElements()), null);
+        SolrResultPage<ND> results = new SolrResultPage<ND>(content, resultsPaging, Long.valueOf(facetPage.getTotalElements()), null);
 
         // only process facets if selected in GraphQL query
         if (facetsSelected) {

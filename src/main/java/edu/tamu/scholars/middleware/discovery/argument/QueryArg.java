@@ -21,7 +21,7 @@ public class QueryArg {
 
     private final String fields;
 
-    public QueryArg(String expression, String defaultField, String minimumShouldMatch, String queryField, String boostQuery, String fields) {
+    QueryArg(String expression, String defaultField, String minimumShouldMatch, String queryField, String boostQuery, String fields) {
         this.expression = expression;
         this.defaultField = DiscoveryUtility.processFields(defaultField);
         this.minimumShouldMatch = minimumShouldMatch;

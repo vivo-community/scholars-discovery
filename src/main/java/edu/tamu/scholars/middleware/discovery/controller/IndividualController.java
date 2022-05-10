@@ -17,9 +17,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.tamu.scholars.middleware.discovery.DiscoveryConstants;
@@ -35,7 +35,6 @@ import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 
 @RepositoryRestController
-@RequestMapping("/individual")
 public class IndividualController implements RepresentationModelProcessor<RepositorySearchesResource> {
 
     @Autowired
@@ -47,7 +46,7 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
     @Autowired
     private DiscoveryPagedResourcesAssembler<Individual> discoveryPagedResourcesAssembler;
 
-    @GetMapping("/search/advanced")
+    @GetMapping("/individual/search/advanced")
     // @formatter:off
     public ResponseEntity<PagedModel<IndividualResource>> search(
         QueryArg query,
@@ -61,12 +60,7 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
         return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, highlight, page), assembler));
     }
 
-    @GetMapping("/search/count")
-    public ResponseEntity<Count> count(@RequestParam(value = "query", required = false, defaultValue = "*:*") String query, List<FilterArg> filters) {
-        return ResponseEntity.ok(new Count(repo.count(query, filters)));
-    }
-
-    @GetMapping("/search/recentlyUpdated")
+    @GetMapping("/individual/search/recentlyUpdated")
     public ResponseEntity<CollectionModel<IndividualResource>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit, List<FilterArg> filters) {
         return ResponseEntity.ok(assembler.toCollectionModel(repo.findMostRecentlyUpdate(limit, filters)));
     }
@@ -90,10 +84,14 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
                 PageRequest.of(0, 10)
             )).withRel("advanced").withTitle("Advanced Search"));
 
-            resource.add(linkTo(methodOn(IndividualController.class).count(
-                DiscoveryConstants.DEFAULT_QUERY,
-                new ArrayList<FilterArg>()
-            )).withRel("count").withTitle("Count Query"));
+            resource.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder
+                .methodOn(IndividualCountController.class)
+                .count(
+                    DiscoveryConstants.DEFAULT_QUERY,
+                    new ArrayList<FilterArg>()
+                )
+            ).withRel("count").withTitle("Count Query"));
 
             resource.add(linkTo(methodOn(IndividualController.class).recentlyUpdated(
                 10,
@@ -101,20 +99,6 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
             )).withRel("recentlyUpdated").withTitle("Recently Updated Query"));
         }
         return resource;
-    }
-
-    class Count {
-
-        private final long value;
-
-        public Count(long value) {
-            this.value = value;
-        }
-
-        public long getValue() {
-            return value;
-        }
-
     }
 
 }

@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import edu.tamu.scholars.middleware.config.model.MailConfig;
-
 @ExtendWith(SpringExtension.class)
 public class MailConfigTest {
 

@@ -55,7 +55,11 @@ public class CsvExporter implements Exporter {
         return outputStream -> {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             String[] headers = getColumnHeaders(export);
-            try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.DEFAULT.withHeader(headers))) {
+            CSVFormat format = CSVFormat.Builder
+                .create()
+                .setHeader(headers)
+                .build();
+            try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, format)) {
                 while (cursor.hasNext()) {
                     Individual document = cursor.next();
                     List<String> properties = export.stream().map(e -> e.getField()).collect(Collectors.toList());

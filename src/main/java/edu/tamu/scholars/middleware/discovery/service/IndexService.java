@@ -52,7 +52,7 @@ public class IndexService {
     @PostConstruct
     public void indexOnStartup() {
         if (indexOnStartup) {
-            threadPoolTaskScheduler.execute(new Runnable() {
+            threadPoolTaskScheduler.scheduleWithFixedDelay(new Runnable() {
 
                 @Override
                 public void run() {

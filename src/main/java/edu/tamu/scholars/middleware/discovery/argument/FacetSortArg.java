@@ -9,7 +9,7 @@ public class FacetSortArg {
 
     private final Sort.Direction direction;
 
-    public FacetSortArg(String name, String direction) {
+    FacetSortArg(String name, String direction) {
         this.property = FacetSort.valueOf(name.toUpperCase());
         this.direction = Sort.Direction.valueOf(direction.toUpperCase());
     }

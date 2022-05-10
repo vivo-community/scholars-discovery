@@ -80,7 +80,7 @@ graphql:
 
 logging:
   file:
-    name: scholars.log
+    name: logs/scholars.log
   level:
     edu:
       tamu:
@@ -96,11 +96,12 @@ server:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
-  connection-timeout: 900000
   max-http-header-size: 16384
   port: 9000
   servlet:
     context-path:
+  tomcat:
+    connection-timeout: 900000
 
 spring:
   data:
@@ -115,25 +116,20 @@ spring:
     # NOTE: this does not work yet, https://jira.spring.io/browse/DATAREST-1290
     web:
       pageable:
-        oneIndexedParameters: true
+        one-indexed-parameters: true
   main:
     allow-bean-definition-overriding: false
+    allow-circular-references: true
   messages:
     basename: i18n/messages
     cache-duration: 15
     encoding: UTF-8
-  devtools:
-    add-properties: false
-    restart:
-      enabled: false
-      exclude: target
   h2:
     console:
       enabled: false
       path: /h2console
   datasource:
-    driverClassName: org.h2.Driver
-    platform: h2
+    driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     # url: jdbc:h2:./h2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: scholars
@@ -169,6 +165,9 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: always
+  sql:
+    init:
+      platform: h2
 
 management:
   endpoints:

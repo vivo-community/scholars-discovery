@@ -14,7 +14,7 @@ public class HighlightArg {
 
     private final String postfix;
 
-    public HighlightArg(String[] fields, String prefix, String postfix) {
+    HighlightArg(String[] fields, String prefix, String postfix) {
         this.fields = DiscoveryUtility.processFields(fields);
         this.prefix = prefix;
         this.postfix = postfix;

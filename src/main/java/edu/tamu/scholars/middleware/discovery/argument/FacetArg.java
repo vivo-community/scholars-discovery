@@ -28,7 +28,7 @@ public class FacetArg {
 
     private final String rangeGap;
 
-    public FacetArg(String field, String sort, int pageSize, int pageNumber, String type, String exclusionTag, String rangeStart, String rangeEnd, String rangeGap) {
+    FacetArg(String field, String sort, int pageSize, int pageNumber, String type, String exclusionTag, String rangeStart, String rangeEnd, String rangeGap) {
         this.field = DiscoveryUtility.findProperty(field);
         this.sort = FacetSortArg.of(sort);
         this.pageSize = pageSize;

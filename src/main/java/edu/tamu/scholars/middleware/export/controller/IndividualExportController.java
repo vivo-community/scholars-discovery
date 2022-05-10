@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -31,7 +30,6 @@ import edu.tamu.scholars.middleware.export.service.Exporter;
 import edu.tamu.scholars.middleware.export.service.ExporterRegistry;
 
 @RepositoryRestController
-@RequestMapping("/individual")
 public class IndividualExportController implements RepresentationModelProcessor<IndividualResource> {
 
     @Autowired
@@ -40,7 +38,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
     @Autowired
     private ExporterRegistry exporterRegistry;
 
-    @GetMapping("/search/export")
+    @GetMapping("/individual/search/export")
     // @formatter:off
     public ResponseEntity<StreamingResponseBody> export(
         @RequestParam(value = "type", required = false, defaultValue = "csv") String type,
@@ -58,7 +56,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
     }
     // @formatter:on
 
-    @GetMapping("/{id}/export")
+    @GetMapping("/individual/{id}/export")
     // @formatter:off
     public ResponseEntity<StreamingResponseBody> export(
         @PathVariable String id,

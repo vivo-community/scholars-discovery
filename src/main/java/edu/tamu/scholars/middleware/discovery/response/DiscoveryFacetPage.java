@@ -2,14 +2,12 @@ package edu.tamu.scholars.middleware.discovery.response;
 
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.findPath;
 
-import java.lang.reflect.ParameterizedType;
 import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.math.NumberUtils;

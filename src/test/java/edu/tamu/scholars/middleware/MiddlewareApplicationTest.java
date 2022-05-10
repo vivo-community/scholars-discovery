@@ -9,11 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.auth.config.AuthConfig;
 import edu.tamu.scholars.middleware.auth.config.PasswordConfig;
@@ -28,7 +26,6 @@ import edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester;
 import edu.tamu.scholars.middleware.discovery.service.solr.SolrIndexer;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class MiddlewareApplicationTest {
 
     @Value("${spring.profiles.active}")

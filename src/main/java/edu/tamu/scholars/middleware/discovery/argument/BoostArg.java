@@ -10,7 +10,7 @@ public class BoostArg {
 
     private final float value;
 
-    public BoostArg(String field, float value) {
+    BoostArg(String field, float value) {
         this.field = DiscoveryUtility.findProperty(field);
         this.value = value;
     }

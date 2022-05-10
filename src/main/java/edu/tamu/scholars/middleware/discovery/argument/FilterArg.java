@@ -18,7 +18,7 @@ public class FilterArg {
 
     private final String tag;
 
-    public FilterArg(String field, String value, OpKey opKey, String tag) {
+    FilterArg(String field, String value, OpKey opKey, String tag) {
         this.field = DiscoveryUtility.findProperty(field);
         this.value = value;
         this.opKey = opKey;
