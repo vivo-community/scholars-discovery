@@ -44,7 +44,7 @@ public class TemplateService {
 
     @PostConstruct
     public void init() throws IOException, Exception {
-        InputStream helpers = resourceService.getResource("classpath:templates/helpers.js");
+        InputStream helpers = resourceService.getResource("templates/helpers.js");
         handlebars.registerHelpers("helpers.js", helpers);
     }
 
@@ -57,7 +57,7 @@ public class TemplateService {
     }
 
     public String templateSparql(String name, String uri) {
-        String path = String.format("classpath:templates/sparql/%s.sparql", name);
+        String path = String.format("templates/sparql/%s.sparql", name);
         Map<String, String> data = new HashMap<String, String>();
         data.put("uri", uri);
         Context context = Context.newBuilder(data).build();
@@ -69,7 +69,7 @@ public class TemplateService {
     }
 
     public String templateConfirmRegistrationMessage(Registration registration, String key) {
-        String path = "classpath:templates/emails/confirm-registration.html";
+        String path = "templates/emails/confirm-registration.html";
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("registration", registration);
         data.put("link", String.format("%s?key=%s", uiUrl, key));
