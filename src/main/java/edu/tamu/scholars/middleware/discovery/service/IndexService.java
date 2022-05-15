@@ -2,6 +2,7 @@ package edu.tamu.scholars.middleware.discovery.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,14 +53,14 @@ public class IndexService {
     @PostConstruct
     public void indexOnStartup() {
         if (indexOnStartup) {
-            threadPoolTaskScheduler.scheduleWithFixedDelay(new Runnable() {
+            threadPoolTaskScheduler.schedule(new Runnable() {
 
                 @Override
                 public void run() {
                     index();
                 }
 
-            }, indexOnStartupDelay);
+            }, new Date(System.currentTimeMillis() + indexOnStartupDelay));
         }
     }
 
