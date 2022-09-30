@@ -697,6 +697,10 @@ public class Person extends Common {
     @PropertySource(template = "person/featuredProfileDisplay", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#FeaturedProfileDisplay")
     private String featuredProfileDisplay;
 
+    @Indexed(type = "whole_string")
+    @PropertySource(template = "person/publicationToInterfolio", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#PublicationToInterfolio")
+    private String publicationToInterfolio;
+
     public Person() {
 
     }
@@ -1963,6 +1967,14 @@ public class Person extends Common {
 
     public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
         this.featuredProfileDisplay = featuredProfileDisplay;
+    }
+
+    public String getPublicationToInterfolio() {
+        return publicationToInterfolio;
+    }
+
+    public void setPublicationToInterfolio(String publicationToInterfolio) {
+        this.publicationToInterfolio = publicationToInterfolio;
     }
 
 }

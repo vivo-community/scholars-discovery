@@ -215,6 +215,8 @@ public class Person extends AbstractNestedDocument {
 
   private String featuredProfileDisplay;
 
+  private String publicationToInterfolio;
+
   private List<String> type;
 
   private String image;
@@ -857,6 +859,14 @@ public class Person extends AbstractNestedDocument {
 
   public void setFeaturedProfileDisplay(String featuredProfileDisplay) {
     this.featuredProfileDisplay = featuredProfileDisplay;
+  }
+
+  public String getPublicationToInterfolio() {
+    return publicationToInterfolio;
+  }
+
+  public void setPublicationToInterfolio(String publicationToInterfolio) {
+    this.publicationToInterfolio = publicationToInterfolio;
   }
 
   public List<String> getType() {
