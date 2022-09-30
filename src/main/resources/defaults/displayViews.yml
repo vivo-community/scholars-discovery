@@ -23,7 +23,6 @@
     requiredFields:
       - firstName
       - lastName
-      - publications
     lazyReferences:
       - publications
     fieldViews:

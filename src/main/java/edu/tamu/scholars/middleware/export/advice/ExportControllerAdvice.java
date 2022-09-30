@@ -2,6 +2,8 @@ package edu.tamu.scholars.middleware.export.advice;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,8 @@ import edu.tamu.scholars.middleware.export.exception.UnsupportedExporterTypeExce
 
 @ControllerAdvice
 public class ExportControllerAdvice {
+
+    private final static Logger logger = LoggerFactory.getLogger(ExportControllerAdvice.class);
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UnknownExporterTypeException.class)
@@ -43,6 +47,7 @@ public class ExportControllerAdvice {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = ExportException.class)
     public @ResponseBody String handleExportException(ExportException exception) {
+        logger.error("Failed to export", exception);
         return exception.getMessage();
     }
 

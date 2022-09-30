@@ -207,26 +207,29 @@ public class DocxExporter implements Exporter {
     private void sort(ObjectNode node, ExportFieldView fieldView) {
         String field = fieldView.getField();
         fieldView.getSort().forEach(sort -> {
-            List<JsonNode> sorted = StreamSupport.stream(node.get(field).spliterator(), false).sorted((sn1, sn2) -> {
-                JsonNode jn1 = sn1.get(sort.getField());
-                JsonNode jn2 = sn2.get(sort.getField());
-                String n1 = jn1 != null ? jn1.asText() : "";
-                String n2 = jn2 != null ? jn2.asText() : "";
-                try {
-                    ZonedDateTime ld1 = DateFormatUtility.parse(n1);
-                    ZonedDateTime ld2 = DateFormatUtility.parse(n2);
-                    return sort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
-                } catch (ParseException pe) {
-                    if (NumberUtils.isParsable(n1) && NumberUtils.isParsable(n2)) {
-                        Double d1 = Double.parseDouble(n1);
-                        Double d2 = Double.parseDouble(n2);
-                        return sort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
-                    } else {
-                        return sort.getDirection().equals(Direction.ASC) ? n1.compareTo(n2) : n2.compareTo(n1);
-                    }
-                }
+            List<JsonNode> sorted = node.has(field)
+                ? StreamSupport.stream(node.get(field).spliterator(), false)
+                    .sorted((sn1, sn2) -> {
+                        JsonNode jn1 = sn1.get(sort.getField());
+                        JsonNode jn2 = sn2.get(sort.getField());
+                        String n1 = jn1 != null ? jn1.asText() : "";
+                        String n2 = jn2 != null ? jn2.asText() : "";
+                        try {
+                            ZonedDateTime ld1 = DateFormatUtility.parse(n1);
+                            ZonedDateTime ld2 = DateFormatUtility.parse(n2);
+                            return sort.getDirection().equals(Direction.ASC) ? ld1.compareTo(ld2) : ld2.compareTo(ld1);
+                        } catch (ParseException pe) {
+                            if (NumberUtils.isParsable(n1) && NumberUtils.isParsable(n2)) {
+                                Double d1 = Double.parseDouble(n1);
+                                Double d2 = Double.parseDouble(n2);
+                                return sort.getDirection().equals(Direction.ASC) ? d1.compareTo(d2) : d2.compareTo(d1);
+                            } else {
+                                return sort.getDirection().equals(Direction.ASC) ? n1.compareTo(n2) : n2.compareTo(n1);
+                            }
+                        }
 
-            }).collect(Collectors.toList());
+                    }).collect(Collectors.toList())
+                : new ArrayList<>();
             ArrayNode references = node.putArray(field);
             references.addAll(sorted);
         });
@@ -234,21 +237,28 @@ public class DocxExporter implements Exporter {
 
     private void limit(ObjectNode node, ExportFieldView fieldView) {
         String field = fieldView.getField();
-        List<JsonNode> limited = StreamSupport.stream(node.get(field).spliterator(), false).limit(fieldView.getLimit()).collect(Collectors.toList());
+        List<JsonNode> limited = node.has(field)
+            ? StreamSupport.stream(node.get(field).spliterator(), false)
+                .limit(fieldView.getLimit())
+                    .collect(Collectors.toList())
+            : new ArrayList<>();
         ArrayNode references = node.putArray(field);
         references.addAll(limited);
     }
 
     private void filter(ObjectNode node, ExportFieldView fieldView) {
         String field = fieldView.getField();
-        List<JsonNode> filtered = StreamSupport.stream(node.get(field).spliterator(), false).filter((n) -> {
-            for (Filter filter : fieldView.getFilters()) {
-                if (StreamSupport.stream(n.get(filter.getField()).spliterator(), false).anyMatch((fn) -> fn.asText().equals(filter.getValue()))) {
-                    return true;
-                }
-            }
-            return false;
-        }).collect(Collectors.toList());
+        List<JsonNode> filtered = node.has(field)
+            ? StreamSupport.stream(node.get(field).spliterator(), false).filter((n) -> {
+                    for (Filter filter : fieldView.getFilters()) {
+                        if (StreamSupport.stream(n.get(filter.getField()).spliterator(), false)
+                                .anyMatch((fn) -> fn.asText().equals(filter.getValue()))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }).collect(Collectors.toList())
+            : new ArrayList<>();
         ArrayNode references = node.putArray(field);
         references.addAll(filtered);
     }
