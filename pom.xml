@@ -32,10 +32,6 @@
       <id>tamu-releases</id>
       <url>https://artifacts.library.tamu.edu/repository/maven-releases/</url>
     </repository>
-    <repository>
-      <id>maven-restlet</id>
-      <url>https://maven.restlet.talend.com</url>
-    </repository>
   </repositories>
 
   <dependencies>
@@ -135,31 +131,6 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.squareup</groupId>
-      <artifactId>javapoet</artifactId>
-      <version>1.13.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.leangen.graphql</groupId>
-      <artifactId>graphql-spqr-spring-boot-starter</artifactId>
-      <version>0.0.4</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.leangen.graphql</groupId>
-      <artifactId>spqr</artifactId>
-      <version>0.10.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4-runtime</artifactId>
-      <version>4.10.1</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -365,47 +336,10 @@
   <build>
 
     <plugins>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <!-- add additional exclusions for code importing generated classes -->
-          <!--
-          <excludes>
-            <exclude>edu/tamu/scholars/middleware/discovery/model/doa/*</exclude>
-            <exclude>edu/tamu/scholars/middleware/discovery/model/generated/*</exclude>
-            <exclude>edu/tamu/scholars/middleware/discovery/model/generated/**/*</exclude>
-          </excludes>
-          -->
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <!-- deletes all generated nested documents before generation -->
-              <mainClass>edu.tamu.scholars.middleware.graphql.generator.NestedDocumentGenerator</mainClass>
-              <arguments>
-                <argument>src/main/java</argument>
-                <argument>edu.tamu.scholars.middleware.graphql.model</argument>
-                <argument>src/main/resources/graphql/composites.yml</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -489,34 +423,6 @@
 
     </plugins>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <versionRange>[1.6.0,)</versionRange>
-                    <goals>
-                      <goal>java</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
 
 </project>

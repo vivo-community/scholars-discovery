@@ -20,9 +20,7 @@ import edu.tamu.scholars.middleware.discovery.DiscoveryConstants;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
-import io.leangen.graphql.annotations.types.GraphQLType;
 
-@GraphQLType(name = "FacetAndHighlightPage")
 public class DiscoveryFacetAndHighlightPage<T> extends DiscoveryFacetPage<T> {
 
     private final static Pattern REFERENCE_PATTERN = Pattern.compile("^(.*?)::([\\w\\-\\:]*)(.*)$");
@@ -76,7 +74,6 @@ public class DiscoveryFacetAndHighlightPage<T> extends DiscoveryFacetPage<T> {
         return highlights;
     }
 
-    @GraphQLType(name = "Highlight")
     public static class Highlight {
 
         private final String id;

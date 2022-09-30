@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import io.leangen.graphql.annotations.types.GraphQLType;
-
-@GraphQLType(name = "Page")
 public class DiscoveryPage<T> implements Iterable<T> {
 
     private final List<T> content;
@@ -35,7 +32,6 @@ public class DiscoveryPage<T> implements Iterable<T> {
         return page;
     }
 
-    @GraphQLType(name = "PageInfo")
     public static class PageInfo {
 
         private final int size;

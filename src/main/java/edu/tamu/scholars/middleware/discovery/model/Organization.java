@@ -13,9 +13,7 @@ import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 
-@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 @CollectionSource(name = "organizations", predicate = "http://xmlns.com/foaf/0.1/Organization")

@@ -9,9 +9,6 @@ import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 
-import io.leangen.graphql.annotations.types.GraphQLInterface;
-
-@GraphQLInterface(name = "AbstractIndexDocument", implementationAutoDiscovery = true)
 public abstract class AbstractIndexDocument {
 
     @Id

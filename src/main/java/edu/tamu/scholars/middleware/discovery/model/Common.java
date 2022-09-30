@@ -7,9 +7,7 @@ import org.springframework.data.solr.core.mapping.Indexed;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
 import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
-import io.leangen.graphql.annotations.GraphQLIgnore;
 
-@GraphQLIgnore
 public class Common extends AbstractIndexDocument {
 
     @Indexed(type = "whole_strings")

@@ -12,9 +12,6 @@ import org.springframework.data.solr.core.mapping.Dynamic;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import io.leangen.graphql.annotations.GraphQLIgnore;
-
-@GraphQLIgnore
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
 public class Individual extends Common {

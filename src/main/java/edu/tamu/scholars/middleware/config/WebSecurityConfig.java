@@ -149,8 +149,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasRole("ADMIN")
 
                 .antMatchers(POST,
-                    "/registration",
-                    "/graphql")
+                    "/registration")
                     .permitAll()
 
                 .antMatchers(POST,

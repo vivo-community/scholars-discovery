@@ -20,9 +20,7 @@ import org.springframework.data.solr.core.query.result.FacetPage;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetSortArg;
 import edu.tamu.scholars.middleware.utility.DateFormatUtility;
-import io.leangen.graphql.annotations.types.GraphQLType;
 
-@GraphQLType(name = "FacetPage")
 public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
     private final List<Facet> facets;
@@ -120,7 +118,6 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
         return facets;
     }
 
-    @GraphQLType(name = "Facet")
     public static class Facet {
 
         private final String field;
@@ -142,7 +139,6 @@ public class DiscoveryFacetPage<T> extends DiscoveryPage<T> {
 
     }
 
-    @GraphQLType(name = "FacetEntry")
     public static class FacetEntry {
 
         private final String value;
