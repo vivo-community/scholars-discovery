@@ -10,10 +10,6 @@ import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 
 public class Common extends AbstractIndexDocument {
 
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "common/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
     @Indexed(type = "whole_string", searchable = false)
     @PropertySource(template = "common/image", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/public#directDownloadUrl", relative = true)
     private String image;
@@ -44,14 +40,6 @@ public class Common extends AbstractIndexDocument {
     @Indexed(type = "pdate")
     @PropertySource(template = "common/modTime", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#modTime")
     private String modTime;
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
 
     public String getImage() {
         return image;

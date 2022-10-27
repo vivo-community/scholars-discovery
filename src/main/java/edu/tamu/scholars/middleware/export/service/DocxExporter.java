@@ -159,7 +159,6 @@ public class DocxExporter implements Exporter {
         final ObjectNode node = mapper.valueToTree(document);
         node.put("vivoUrl", vivoUrl);
         node.put("uiUrl", uiUrl);
-        checkRequiredFields(node, view.getRequiredFields());
         fetchLazyReferences(node, view.getLazyReferences());
         view.getFieldViews().forEach(fieldView -> {
             filter(node, fieldView);
@@ -167,14 +166,6 @@ public class DocxExporter implements Exporter {
             limit(node, fieldView);
         });
         return node;
-    }
-
-    private void checkRequiredFields(ObjectNode node, List<String> requiredFields) {
-        for (String field : requiredFields) {
-            if (!node.hasNonNull(field)) {
-                throw new ExportException(String.format("Required field %s not found", field));
-            }
-        }
     }
 
     private void fetchLazyReferences(ObjectNode node, List<String> lazyReferences) {

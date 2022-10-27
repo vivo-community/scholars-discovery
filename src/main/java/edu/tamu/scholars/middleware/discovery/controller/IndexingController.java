@@ -13,13 +13,17 @@ import edu.tamu.scholars.middleware.discovery.service.IndexService;
 @RequestMapping("/index")
 public class IndexingController {
 
-  @Autowired
-  private IndexService indexService;
+    @Autowired
+    private IndexService indexService;
 
-  @GetMapping("/isIndexing")
-  public ResponseEntity<Boolean>  isIndexing() {
-    Boolean isIndexing = indexService.isIndexing();
-    return isIndexing ? ResponseEntity.status(HttpStatus.TOO_EARLY).body(isIndexing) : ResponseEntity.ok(isIndexing);
-  }
-  
+    @GetMapping("/isIndexing")
+    public ResponseEntity<Boolean> isIndexing() {
+        Boolean isIndexing = indexService.isIndexing();
+
+        return isIndexing
+            ? ResponseEntity.status(HttpStatus.TOO_EARLY)
+                .body(isIndexing)
+            : ResponseEntity.ok(isIndexing);
+    }
+
 }

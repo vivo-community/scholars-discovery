@@ -30,9 +30,6 @@ public class ExportView extends View {
     private String headerTemplate;
 
     @ElementCollection
-    private List<String> requiredFields;
-
-    @ElementCollection
     private List<String> lazyReferences;
 
     @OrderBy("order")
@@ -43,7 +40,6 @@ public class ExportView extends View {
 
     public ExportView() {
         super();
-        requiredFields = new ArrayList<String>();
         lazyReferences = new ArrayList<String>();
         fieldViews = new ArrayList<ExportFieldView>();
     }
@@ -62,14 +58,6 @@ public class ExportView extends View {
 
     public void setHeaderTemplate(String headerTemplate) {
         this.headerTemplate = headerTemplate;
-    }
-
-    public List<String> getRequiredFields() {
-        return requiredFields;
-    }
-
-    public void setRequiredFields(List<String> requiredFields) {
-        this.requiredFields = requiredFields;
     }
 
     public List<String> getLazyReferences() {

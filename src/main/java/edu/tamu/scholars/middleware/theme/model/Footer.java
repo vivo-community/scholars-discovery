@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 
@@ -17,6 +18,9 @@ public class Footer {
     @ElementCollection
     @CollectionTable(name = "theme_footer_variables")
     private List<Style> variables;
+
+    @Column
+    private String copyright;
 
     public Footer() {
         super();
@@ -40,4 +44,11 @@ public class Footer {
         this.variables = variables;
     }
 
+    public String getCopyright() {
+        return copyright;
+    }
+
+    public void setCopyright(String copyright) {
+        this.copyright = copyright;
+    }
 }

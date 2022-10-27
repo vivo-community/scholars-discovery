@@ -118,7 +118,6 @@
   templates:
     default: "defaults/discoveryViews/researchOverview/default.html"
   styles: []
-  defaultSearchField: overview
   highlightFields:
     - overview
   fields:

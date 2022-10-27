@@ -354,11 +354,6 @@ public class ViewTestUtility {
         exportView.setContentTemplate("<html><body><span>Hello, Content!</span></body></html>");
         exportView.setHeaderTemplate("<html><body><span>Hello, Header!</span></body></html>");
 
-        List<String> requiredFields = new ArrayList<String>();
-        requiredFields.add("type");
-
-        exportView.setRequiredFields(requiredFields);
-
         List<String> lazyReferences = new ArrayList<String>();
         lazyReferences.add("publications");
 

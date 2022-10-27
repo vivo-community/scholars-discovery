@@ -14,7 +14,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 
 @JsonInclude(NON_EMPTY)
 @SolrDocument(collection = "scholars-discovery")
-public class Individual extends Common {
+public class Individual extends AbstractIndexDocument {
 
     @Dynamic
     @Field("*")

@@ -19,7 +19,6 @@ public class ExportViewTest {
     public void testDefaultConstructor() {
         ExportView export = new ExportView();
         assertNotNull(export);
-        assertEquals(0, export.getRequiredFields().size());
         assertEquals(0, export.getLazyReferences().size());
         assertEquals(0, export.getFieldViews().size());
     }
@@ -36,13 +35,6 @@ public class ExportViewTest {
 
         export.setHeaderTemplate("<html><body><span>Hello, Header!</span></body></html>");
         assertEquals("<html><body><span>Hello, Header!</span></body></html>", export.getHeaderTemplate());
-
-        List<String> requiredFields = new ArrayList<String>();
-        requiredFields.add("type");
-
-        export.setRequiredFields(requiredFields);
-        assertEquals(1, export.getRequiredFields().size());
-        assertEquals("type", export.getRequiredFields().get(0));
 
         List<String> lazyReferences = new ArrayList<String>();
         lazyReferences.add("publications");
