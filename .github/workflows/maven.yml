@@ -29,11 +29,10 @@ jobs:
         coverage-format: raw
 
     - name: Deploy to GitHub pages
-      if: github.event.push.base.ref == 'tamu-main'
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+      if: github.ref == 'refs/heads/tamu-main'
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: target/generated-docs
-        CLEAN: true
-        SINGLE_COMMIT: true
+        folder: target/generated-docs
+        branch: gh-pages
+        clean: true
+        single-commit: true
