@@ -34,7 +34,7 @@ RUN chown -R ${USER_ID}:${USER_ID} ${SOURCE_DIR}
 USER $USER_NAME
 
 # Build.
-RUN mvn package -DskipTests=true
+RUN mvn package
 
 # Switch to Normal JRE Stage.
 FROM openjdk:11-jre-slim
