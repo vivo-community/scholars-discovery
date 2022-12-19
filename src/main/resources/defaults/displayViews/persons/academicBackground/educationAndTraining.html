@@ -9,7 +9,9 @@
       {{#if info}}
       <span class="mr-1">{{info}}</span>
       {{/if}}
+      {{#when isDateSuppressed '==' 'display_education_year'}}
       <span class="badge badge-light">{{toYear endDate}}</span>
+      {{/when}}
     </li>
     {{/eachSorted}}
   </ul>
