@@ -11,7 +11,6 @@ import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -263,19 +262,18 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     }
 
     private List<SimpleFilterQuery> buildFilterQueries(List<FilterArg> filters) {
-        List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
-        Map<String, List<FilterArg>> filtersGrouped = filters.stream().collect(Collectors.groupingBy(w -> w.getField()));
-        filtersGrouped.forEach((field, filterList) -> {
+        final List<SimpleFilterQuery> results = new ArrayList<SimpleFilterQuery>();
+        filters.stream().collect(Collectors.groupingBy(w -> w.getField())).forEach((field, filterList) -> {
             FilterArg firstOne = filterList.get(0);
-            Criteria crit = new CriteriaBuilder(firstOne).buildCriteria();
-            // the rest (of that field) are Or'd
+            Criteria criteria = new CriteriaBuilder(firstOne).buildCriteria();
+            // the rest (of that field) are AND'd
+            // NOTE: a solution for supporting Intersection or Union could be to add another filter value delimiter to allow to specify AND/OR
             if (filterList.size() > 1) {
                 for (FilterArg arg : filterList.subList(1, filterList.size())) {
-                    Criteria orCriteria = new CriteriaBuilder(arg).skipTag(true).buildCriteria();
-                    crit = crit.or(orCriteria);
+                    criteria = criteria.and(new CriteriaBuilder(arg).skipTag(true).buildCriteria());
                 }
             }
-            SimpleFilterQuery result = new SimpleFilterQuery(crit);
+            SimpleFilterQuery result = new SimpleFilterQuery(criteria);
             results.add(result);
         });
         return results;
