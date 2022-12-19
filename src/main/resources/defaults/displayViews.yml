@@ -220,7 +220,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/thesis.html"
             - name: Working Papers
               field: publications
               order: 7
@@ -259,7 +259,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/report.html"
             - name: Reviews
               field: publications
               order: 10
