@@ -91,7 +91,7 @@ public class Organization extends Common {
     private List<String> peopleType;
 
     @Indexed(type = "nested_whole_strings")
-    @PropertySource(template = "organization/peopleTitle", predicate = "http://vivoweb.org/ontology/core#hrJobTitle")
+    @PropertySource(template = "organization/peopleTitle", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> peopleTitle;
 
     @NestedObject
