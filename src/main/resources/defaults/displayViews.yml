@@ -335,6 +335,8 @@
           template: "defaults/displayViews/persons/software/software.html"
           field: publications
           order: 1
+          lazyReferences:
+            - publications
           filters:
             - field: type
               value: ERO_0000071
