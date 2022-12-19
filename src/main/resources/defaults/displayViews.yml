@@ -822,10 +822,10 @@
               field: organizationForTraining
               order: 1
               sort:
+                - field: trainee.label
+                  direction: ASC
                 - field: endDate
                   direction: DESC
-                - field: label
-                  direction: ASC
               template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
         - name: people
           template: "defaults/displayViews/organizations/affiliation/people.html"
