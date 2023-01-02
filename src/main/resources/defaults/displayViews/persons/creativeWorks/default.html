@@ -1,0 +1,32 @@
+<div>
+  <span>{{authorList}} </span>
+  {{#if participants}}
+  {{#if participants.length}}
+  <span>({{participants.0.role}}). </span>
+  {{/if}}
+  {{/if}}
+  {{#if dateTimeIntervalStart}}
+  <span>({{toYear dateTimeIntervalStart}}{{#if dateTimeIntervalEnd}} - {{toYear dateTimeIntervalEnd}}{{/if}}).</span>
+  {{/if}}
+  <span>
+    <a href="display/{{id}}"><i>{{{title}}}</i>.</a>
+  </span>
+
+  {{#if venue}}
+  <span>{{venue}}{{#if location}}, {{location}}{{/if}}.</span>
+  {{else}}
+  {{#if location}}
+  <span>{{location}}.</span>
+  {{/if}}
+  {{/if}}
+
+  {{#if note}}
+  <span> - {{note}}</span>
+  {{/if}}
+
+</div>
+<div>
+  {{#if url}}
+  <span class="mr-1"><a href="{{url}}" target="_blank"><img src="assets/images/online-source-badge.png" width="100" alt="online source badge" /></a></span>
+  {{/if}}
+</div>

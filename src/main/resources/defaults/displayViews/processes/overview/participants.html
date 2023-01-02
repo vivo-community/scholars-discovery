@@ -1,1 +1,16 @@
-<span><a href="display/{{id}}">{{label}}</a> <span class="badge badge-light">{{role}}</span></span>
+<span>
+  <a href="display/{{id}}">{{label}}</a> <span class="badge badge-light">{{role}}</span> 
+  {{#if startDate}}
+  {{#if endDate}}
+  <span>{{toYear startDate}}</span>
+  <span>-</span>
+  <span>{{toYear endDate}}</span>
+  {{else}}
+  <span>{{toYear startDate}}</span>
+  {{/if}}
+  {{else}}
+  {{#if endDate}}
+  <span>{{toYear endDate}}</span>
+  {{/if}}
+  {{/if}}
+</span>
