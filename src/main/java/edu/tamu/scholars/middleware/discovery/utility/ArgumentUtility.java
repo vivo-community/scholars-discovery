@@ -43,6 +43,7 @@ public class ArgumentUtility {
     private final static String FACET_RANGE_END_TAG_FORMAT = "%s.rangeEnd";
     private final static String FACET_RANGE_GAP_TAG_FORMAT = "%s.rangeGap";
 
+    private final static String FILTER_VALUE_DELIMITER = ";;";
     private final static String FILTER_VALUE_FORMAT = "%s.filter";
     private final static String FILTER_OPKEY_FORMAT = "%s.opKey";
     private final static String FILTER_TAG_FORMAT = "%s.tag";
@@ -146,7 +147,7 @@ public class ArgumentUtility {
                 .map(Arrays::asList)
                 .flatMap(list -> list.stream())
                 .findAny();
-            return Arrays.asList(values.split(",")).stream()
+            return Arrays.asList(values.split(FILTER_VALUE_DELIMITER)).stream()
                 .map(value -> FilterArg.of(field, Optional.of(value), opKey, tag))
                 .collect(Collectors.toList());
         }).flatMap(list -> list.stream())
