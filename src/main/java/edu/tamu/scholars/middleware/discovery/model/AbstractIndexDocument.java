@@ -15,7 +15,7 @@ import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 public abstract class AbstractIndexDocument {
 
     @Id
-    @Indexed(required = true)
+    @Indexed(required = true, readonly = true)
     private String id;
 
     @Indexed(type = "whole_strings")
@@ -27,7 +27,7 @@ public abstract class AbstractIndexDocument {
     @Indexed(type = "string", value = "class", required = true)
     private String clazz = this.getClass().getSimpleName();
 
-    @Indexed
+    @Indexed(type = "strings")
     private Set<String> syncIds = new HashSet<String>();
 
     public String getId() {
