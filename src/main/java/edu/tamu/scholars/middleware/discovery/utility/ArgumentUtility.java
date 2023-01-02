@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,54 +62,45 @@ public class ArgumentUtility {
             .flatMap(list -> list.stream())
             .collect(Collectors.toList());
         return fields.stream().map(field -> {
-            Optional<String> sort = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_SORT_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> pageSize = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_PAGE_SIZE_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> pageNumber = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_PAGE_NUMBER_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> type = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_TYPE_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> exclusionTag = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_EXCLUDE_TAG_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> rangeStart = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_RANGE_START_TAG_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> rangeEnd = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_RANGE_END_TAG_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> rangeGap = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FACET_RANGE_GAP_TAG_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
+            final String sortFacet = String.format(FACET_SORT_FORMAT, field);
+            final String pageSizeFacet = String.format(FACET_PAGE_SIZE_FORMAT, field);
+            final String pageNumberFacet = String.format(FACET_PAGE_NUMBER_FORMAT, field);
+            final String typeFacet = String.format(FACET_TYPE_FORMAT, field);
+            final String excludeTagFacet = String.format(FACET_EXCLUDE_TAG_FORMAT, field);
+            final String rangeStartTagFacet = String.format(FACET_RANGE_START_TAG_FORMAT, field);
+            final String rangeEndTagFacet = String.format(FACET_RANGE_END_TAG_FORMAT, field);
+            final String rangeGapTagFacet = String.format(FACET_RANGE_GAP_TAG_FORMAT, field);
+            Optional<String> sort = Optional.empty(),
+                pageSize = Optional.empty(),
+                pageNumber = Optional.empty(),
+                type = Optional.empty(),
+                exclusionTag = Optional.empty(),
+                rangeStart = Optional.empty(),
+                rangeEnd = Optional.empty(),
+                rangeGap = Optional.empty();
+            for (String paramName : parameterNames) {
+                String[] parameterValues = request.getParameterValues(paramName);
+                if (Objects.nonNull(parameterValues)) {
+                    Optional<String> value = Optional.of(parameterValues[0]);
+                    if (paramName.equals(sortFacet)) {
+                        sort = value;
+                    } else if (paramName.equals(pageSizeFacet)) {
+                        pageSize = value;
+                    } else if (paramName.equals(pageNumberFacet)) {
+                        pageNumber = value;
+                    } else if (paramName.equals(typeFacet)) {
+                        type = value;
+                    } else if (paramName.equals(excludeTagFacet)) {
+                        exclusionTag = value;
+                    } else if (paramName.equals(rangeStartTagFacet)) {
+                        rangeStart = value;
+                    } else if (paramName.equals(rangeEndTagFacet)) {
+                        rangeEnd = value;
+                    } else if (paramName.equals(rangeGapTagFacet)) {
+                        rangeGap = value;
+                    }
+                }
+            }
             return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag, rangeStart, rangeEnd, rangeGap);
         }).collect(Collectors.toList());
         // @formatter:on
@@ -127,31 +119,29 @@ public class ArgumentUtility {
             .flatMap(list -> list.stream())
             .collect(Collectors.toList());
         List<FilterArg> filters = new ArrayList<FilterArg>();
-        filters = fields.stream().map(field -> {
-            String values = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FILTER_VALUE_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny()
-                .orElseGet(() -> StringUtils.EMPTY);
-            Optional<String> opKey = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FILTER_OPKEY_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            Optional<String> tag = parameterNames.stream()
-                .filter(paramName -> paramName.equals(String.format(FILTER_TAG_FORMAT, field)))
-                .map(request::getParameterValues)
-                .map(Arrays::asList)
-                .flatMap(list -> list.stream())
-                .findAny();
-            return Arrays.asList(values.split(FILTER_VALUE_DELIMITER)).stream()
-                .map(value -> FilterArg.of(field, Optional.of(value), opKey, tag))
-                .collect(Collectors.toList());
-        }).flatMap(list -> list.stream())
-            .collect(Collectors.toList());
+        fields.stream().forEach(field -> {
+            final String valueFilter = String.format(FILTER_VALUE_FORMAT, field);
+            final String opKeyFilter = String.format(FILTER_OPKEY_FORMAT, field);
+            final String tagFilter = String.format(FILTER_TAG_FORMAT, field);
+            String values = StringUtils.EMPTY;
+            Optional<String> opKey = Optional.empty(),
+                tag = Optional.empty();
+            for (String paramName : parameterNames) {
+                String[] parameterValues = request.getParameterValues(paramName);
+                if (Objects.nonNull(parameterValues)) {
+                    if (paramName.equals(valueFilter)) {
+                        values = parameterValues[0];
+                    } else if (paramName.equals(opKeyFilter)) {
+                        opKey = Optional.ofNullable(parameterValues[0]);
+                    } else if (paramName.equals(tagFilter)) {
+                        tag = Optional.ofNullable(parameterValues[0]);
+                    } 
+                }
+            }
+            for (String value : values.split(FILTER_VALUE_DELIMITER)) {
+                filters.add(FilterArg.of(field, Optional.of(value), opKey, tag));
+            }
+        });
         // @formatter:on
         return filters;
     }
@@ -161,7 +151,7 @@ public class ArgumentUtility {
         return Collections.list(request.getParameterNames()).stream()
             .filter(paramName -> paramName.equals(BOOST_QUERY_PARAM_KEY))
             .map(request::getParameterValues)
-            .map(Arrays::asList)
+            .map(Arrays::asList) 
             .flatMap(list -> list.stream())
             .map(BoostArg::of)
             .collect(Collectors.toList());

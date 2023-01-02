@@ -4,16 +4,20 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
+    strategy:
+      matrix:
+        runs-on: [ubuntu-latest, macos-latest, windows-latest]
+        java-version: [11, 17]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup JDK 11
+    - name: Setup Java
       uses: actions/setup-java@v3
       with:
-        java-version: 11
+        java-version: ${{ matrix.java-version }}
         distribution: 'adopt'
         architecture: x64
         cache: 'maven'
@@ -29,7 +33,7 @@ jobs:
         coverage-format: raw
 
     - name: Deploy to GitHub pages
-      if: github.ref == 'refs/heads/tamu-main'
+      if: ${{ github.ref == 'refs/heads/tamu-main' && matrix.runs-on == 'windows-latest' &&  matrix.java-version == '17' }}
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: target/generated-docs

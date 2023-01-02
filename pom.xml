@@ -13,11 +13,20 @@
 
   <groupId>edu.tamu.scholars</groupId>
   <artifactId>middleware</artifactId>
-  <version>1.2.0-SNAPSHOT</version>
+  <version>1.3.0-SNAPSHOT</version>
 
   <name>middleware</name>
 
   <description>VIVO Scholars Middleware</description>
+
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>https://raw.githubusercontent.com/TAMULib/scholars-discovery/tamu-main/LICENSE</url>
+      <distribution>repo</distribution>
+      <comments>A good faith academic license</comments>
+    </license>
+  </licenses>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
