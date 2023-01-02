@@ -5,6 +5,9 @@
   mainContentTemplate: "defaults/displayViews/defaults/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/defaults/meta/title.txt"
+    og:type: "defaults/displayViews/defaults/meta/type.txt"
+    og:url: "defaults/displayViews/defaults/meta/url.txt"
+    og:title: "defaults/displayViews/defaults/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
 
@@ -73,6 +76,11 @@
     description: "defaults/displayViews/persons/meta/description.txt"
     keywords: "defaults/displayViews/persons/meta/keywords.txt"
     position: "defaults/displayViews/persons/meta/position.txt"
+    og:type: "defaults/displayViews/persons/meta/type.txt"
+    og:url: "defaults/displayViews/persons/meta/url.txt"
+    og:title: "defaults/displayViews/persons/meta/title.txt"
+    og:description: "defaults/displayViews/persons/meta/description.txt"
+    og:image: "defaults/displayViews/persons/meta/image.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -823,6 +831,10 @@
     title: "defaults/displayViews/organizations/meta/title.txt"
     description: "defaults/displayViews/organizations/meta/description.txt"
     keywords: "defaults/displayViews/organizations/meta/keywords.txt"
+    og:type: "defaults/displayViews/organizations/meta/type.txt"
+    og:url: "defaults/displayViews/organizations/meta/url.txt"
+    og:title: "defaults/displayViews/organizations/meta/title.txt"
+    og:description: "defaults/displayViews/organizations/meta/description.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1234,6 +1246,10 @@
     title: "defaults/displayViews/documents/meta/title.txt"
     description: "defaults/displayViews/documents/meta/description.txt"
     keywords: "defaults/displayViews/documents/meta/keywords.txt"
+    og:type: "defaults/displayViews/documents/meta/type.txt"
+    og:url: "defaults/displayViews/documents/meta/url.txt"
+    og:title: "defaults/displayViews/documents/meta/title.txt"
+    og:description: "defaults/displayViews/documents/meta/description.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1523,6 +1539,9 @@
   mainContentTemplate: "defaults/displayViews/relationships/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/relationships/meta/title.txt"
+    og:type: "defaults/displayViews/relationships/meta/type.txt"
+    og:url: "defaults/displayViews/relationships/meta/url.txt"
+    og:title: "defaults/displayViews/relationships/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1702,6 +1721,9 @@
   mainContentTemplate: "defaults/displayViews/processes/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/processes/meta/title.txt"
+    og:type: "defaults/displayViews/processes/meta/type.txt"
+    og:url: "defaults/displayViews/processes/meta/url.txt"
+    og:title: "defaults/displayViews/processes/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1854,6 +1876,9 @@
   mainContentTemplate: "defaults/displayViews/collections/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/collections/meta/title.txt"
+    og:type: "defaults/displayViews/collections/meta/type.txt"
+    og:url: "defaults/displayViews/collections/meta/url.txt"
+    og:title: "defaults/displayViews/collections/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1991,6 +2016,9 @@
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"
+    og:type: "defaults/displayViews/concepts/meta/type.txt"
+    og:url: "defaults/displayViews/concepts/meta/url.txt"
+    og:title: "defaults/displayViews/concepts/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:

@@ -1,0 +1,1 @@
+{{#if image}}{{image}}{{else}}{{uiUrl}}assets/images/default-avatar.png{{/if}}
