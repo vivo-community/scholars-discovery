@@ -110,4 +110,3 @@ The [HAL(Hypertext Application Language)](https://docs.spring.io/spring-data/res
    - Registered parsers on `@PostConstruct` of `IndividualRepoImpl`
 
    > Waiting on https://jira.spring.io/browse/DATASOLR-153
-
