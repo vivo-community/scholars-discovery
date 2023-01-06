@@ -1,10 +1,5 @@
 <div>
   <span>{{authorList}} </span>
-  {{#if participants}}
-  {{#if participants.length}}
-  <span>({{participants.0.role}}). </span>
-  {{/if}}
-  {{/if}}
   {{#if dateTimeIntervalStart}}
   <span>({{toYear dateTimeIntervalStart}}{{#if dateTimeIntervalEnd}} - {{toYear dateTimeIntervalEnd}}{{/if}}).</span>
   {{/if}}
