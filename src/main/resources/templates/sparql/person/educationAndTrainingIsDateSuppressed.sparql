@@ -1,0 +1,11 @@
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX vivo: <http://vivoweb.org/ontology/core#>
+
+CONSTRUCT {
+    ?dateTimeInterval vivo:supplementalInformation ?isDateSuppressedWithId .
+} WHERE {
+    <{{uri}}> obo:RO_0000056 ?training .
+    ?training vivo:dateTimeInterval ?dateTimeInterval .
+    ?dateTimeInterval vivo:supplementalInformation ?isDateSuppressed .
+    BIND( CONCAT( STR(?isDateSuppressed), REPLACE(STR(?training), "(^.*/)", "::") ) AS ?isDateSuppressedWithId ) .
+}

@@ -7,8 +7,8 @@ VIVO Scholars Discovery is a middleware project that pulls [VIVO](https://durasp
 
 Various frontend applications are available (or can be built) to display the content as read-only websites.
 Existing frontend applications include:
+
 1. [VIVO Scholars Angular](https://github.com/vivo-community/scholars-angular)
-2. [VIVO Scholars React](https://github.com/vivo-community/scholars-react)
 
 # API
 
@@ -94,13 +94,13 @@ With the above installation instructions, the following service endpoints can be
 2. [REST API (9000/individual)](http://localhost:9000/individual)
 3. [REST API Docs (9000/api)](http://localhost:9000/api)
 
-The [HAL(Hypertext Application Language)](https://www.baeldung.com/spring-rest-hal) explorer can be used to browse scholars-discovery resources.
+The [HAL(Hypertext Application Language)](https://docs.spring.io/spring-data/rest/docs/current/reference/html/#tools.hal-explorer) explorer can be used to browse scholars-discovery resources.
 
 ## Workarounds Waiting Dependency Patches
 
 1. `spring-data-solr` dependency from TAMU Maven repository.
    - Added `tamu-releases` repository in pom.xml
-   - Added dependency `4.1.6.TAMU.RELEASE` version of `spring-data-solr` in pom.xml
+   - Added dependency `4.3.15.TAMU` version of `spring-data-solr` in pom.xml
    - Excluded `spring-data-solr` from `spring-boot-starter-data-solr` dependency
 
    > Waiting on https://jira.spring.io/browse/DATASOLR-572
@@ -110,4 +110,3 @@ The [HAL(Hypertext Application Language)](https://www.baeldung.com/spring-rest-h
    - Registered parsers on `@PostConstruct` of `IndividualRepoImpl`
 
    > Waiting on https://jira.spring.io/browse/DATASOLR-153
-

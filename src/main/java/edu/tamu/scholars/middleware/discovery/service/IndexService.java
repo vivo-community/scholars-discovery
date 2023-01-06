@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.PostConstruct;
 
@@ -23,10 +24,14 @@ public class IndexService {
 
     private final static Logger logger = LoggerFactory.getLogger(IndexService.class);
 
+    private final static AtomicBoolean initialized = new AtomicBoolean(false);
+
     private final static AtomicBoolean indexing = new AtomicBoolean(false);
 
+    public static final List<String> CREATED_FIELDS = new CopyOnWriteArrayList<String>();
+
     @Value("${middleware.index.onStartup:false}")
-    public boolean indexOnStartup;
+    private boolean indexOnStartup;
 
     @Value("${middleware.index.onStartupDelay:10000}")
     private int indexOnStartupDelay;
@@ -66,6 +71,13 @@ public class IndexService {
 
     @Scheduled(cron = "${middleware.index.cron}", zone = "${middleware.index.zone}")
     public void index() {
+        if (initialized.compareAndSet(false, true)) {
+            logger.info("Initializing index fields...");
+            indexers.stream().forEach(indexer -> {
+                logger.info(String.format("Initializing %s fields.", indexer.type().getSimpleName()));
+                indexer.init();
+            });
+        }
         if (indexing.compareAndSet(false, true)) {
             triplestore.init();
             Instant start = Instant.now();

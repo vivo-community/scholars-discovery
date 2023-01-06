@@ -189,7 +189,7 @@
     - columnHeader: Individual
       valuePath: individual
 
-- name: Publications
+- name: Scholarly Works
   layout: LIST
   templates:
     default: "defaults/discoveryViews/publications/default.html"
@@ -299,7 +299,8 @@
       rangeGap: 100
   filters:
     - field: class
-      value: Document
+      value: Document OR type:creativeWork
+      opKey: EXPRESSION
   boosts:
     - field: title
       value: 2
@@ -416,9 +417,8 @@
       hidden: false
   filters:
     - field: class
-      value: Relationship
-    - field: type
-      value: Grant
+      value: Relationship AND type:Grant
+      opKey: EXPRESSION
   boosts:
     - field: title
       value: 2
@@ -499,9 +499,8 @@
       hidden: false
   filters:
     - field: class
-      value: Concept
-    - field: type
-      value: Award
+      value: Concept AND type:Award
+      opKey: EXPRESSION
   boosts:
     - field: name
       value: 2
@@ -561,9 +560,8 @@
       hidden: false
   filters:
     - field: class
-      value: Process
-    - field: type
-      value: Course
+      value: Process AND type:Course
+      opKey: EXPRESSION
   boosts:
     - field: title
       value: 2
@@ -613,9 +611,8 @@
       hidden: false
   filters:
     - field: class
-      value: Concept
-    - field: type
-      value: Concept
+      value: Concept AND type:Concept
+      opKey: EXPRESSION
   boosts:
     - field: name
       value: 2
@@ -673,9 +670,8 @@
       hidden: false
   filters:
     - field: class
-      value: Concept
-    - field: type
-      value: FutureResearchIdea
+      value: Concept AND type:FutureResearchIdea
+      opKey: EXPRESSION
   boosts:
     - field: name
       value: 2

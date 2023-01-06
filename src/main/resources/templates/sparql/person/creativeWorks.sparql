@@ -1,0 +1,11 @@
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ 
+CONSTRUCT {
+    ?creativeWork rdfs:label ?labelWithId .
+} WHERE {
+    <{{uri}}> obo:RO_0000053 ?artist .
+    ?artist obo:BFO_0000054 ?creativeWork .
+    ?creativeWork rdfs:label ?label .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?creativeWork), "(^.*/)", "::") ) AS ?labelWithId ) .
+}

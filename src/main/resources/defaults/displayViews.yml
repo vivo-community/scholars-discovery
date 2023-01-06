@@ -5,6 +5,9 @@
   mainContentTemplate: "defaults/displayViews/defaults/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/defaults/meta/title.txt"
+    og:type: "defaults/displayViews/defaults/meta/type.txt"
+    og:url: "defaults/displayViews/defaults/meta/url.txt"
+    og:title: "defaults/displayViews/defaults/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
 
@@ -73,6 +76,11 @@
     description: "defaults/displayViews/persons/meta/description.txt"
     keywords: "defaults/displayViews/persons/meta/keywords.txt"
     position: "defaults/displayViews/persons/meta/position.txt"
+    og:type: "defaults/displayViews/persons/meta/type.txt"
+    og:url: "defaults/displayViews/persons/meta/url.txt"
+    og:title: "defaults/displayViews/persons/meta/title.txt"
+    og:description: "defaults/displayViews/persons/meta/description.txt"
+    og:image: "defaults/displayViews/persons/meta/image.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -133,7 +141,7 @@
           template: "defaults/displayViews/persons/academicBackground/adviseeOf.html"
           field: adviseeOf
           order: 4
-    - name: Publications
+    - name: Scholarly Works
       sections:
         - name: selected publications
           shared: true
@@ -220,7 +228,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/thesis.html"
             - name: Working Papers
               field: publications
               order: 7
@@ -259,7 +267,7 @@
                   date: true
                 - field: title
                   direction: ASC
-              template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+              template: "defaults/displayViews/persons/publications/selectedPublications/report.html"
             - name: Reviews
               field: publications
               order: 10
@@ -273,6 +281,105 @@
                 - field: title
                   direction: ASC
               template: "defaults/displayViews/persons/publications/selectedPublications/default.html"
+        - name: creative works
+          shared: true
+          template: "defaults/displayViews/persons/creativeWorks/creativeWorks.html"
+          field: creativeWorks
+          order: 1
+          lazyReferences:
+            - creativeWorks
+          subsections:
+            - name: Exhibitions
+              field: creativeWorks
+              order: 1
+              filters:
+                - field: subtype
+                  value: Exhibition
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
+            - name: Performances
+              field: creativeWorks
+              order: 2
+              filters:
+                - field: subtype
+                  value: Performance
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
+            - name: Paintings
+              field: creativeWorks
+              order: 3
+              filters:
+                - field: subtype
+                  value: Painting
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
+            - name: Photographs
+              field: creativeWorks
+              order: 4
+              filters:
+                - field: subtype
+                  value: Photograph
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
+            - name: Sculptures
+              field: creativeWorks
+              order: 5
+              filters:
+                - field: subtype
+                  value: Sculpture
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
+            - name: Albums
+              field: creativeWorks
+              order: 6
+              filters:
+                - field: subtype
+                  value: Album
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
+            - name: Tracks
+              field: creativeWorks
+              order: 7
+              filters:
+                - field: subtype
+                  value: Track
+              sort:
+                - field: dateTimeIntervalStart
+                  direction: DESC
+                  date: true
+                - field: title
+                  direction: ASC
+              template: "defaults/displayViews/persons/creativeWorks/default.html"
         - name: open teaching materials
           shared: true
           paginated: true
@@ -335,6 +442,8 @@
           template: "defaults/displayViews/persons/software/software.html"
           field: publications
           order: 1
+          lazyReferences:
+            - publications
           filters:
             - field: type
               value: ERO_0000071
@@ -722,6 +831,10 @@
     title: "defaults/displayViews/organizations/meta/title.txt"
     description: "defaults/displayViews/organizations/meta/description.txt"
     keywords: "defaults/displayViews/organizations/meta/keywords.txt"
+    og:type: "defaults/displayViews/organizations/meta/type.txt"
+    og:url: "defaults/displayViews/organizations/meta/url.txt"
+    og:title: "defaults/displayViews/organizations/meta/title.txt"
+    og:description: "defaults/displayViews/organizations/meta/description.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -820,10 +933,10 @@
               field: organizationForTraining
               order: 1
               sort:
+                - field: trainee.label
+                  direction: ASC
                 - field: endDate
                   direction: DESC
-                - field: label
-                  direction: ASC
               template: "defaults/displayViews/organizations/affiliation/organizationForTraining/default.html"
         - name: people
           template: "defaults/displayViews/organizations/affiliation/people.html"
@@ -1133,6 +1246,10 @@
     title: "defaults/displayViews/documents/meta/title.txt"
     description: "defaults/displayViews/documents/meta/description.txt"
     keywords: "defaults/displayViews/documents/meta/keywords.txt"
+    og:type: "defaults/displayViews/documents/meta/type.txt"
+    og:url: "defaults/displayViews/documents/meta/url.txt"
+    og:title: "defaults/displayViews/documents/meta/title.txt"
+    og:description: "defaults/displayViews/documents/meta/description.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1422,6 +1539,9 @@
   mainContentTemplate: "defaults/displayViews/relationships/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/relationships/meta/title.txt"
+    og:type: "defaults/displayViews/relationships/meta/type.txt"
+    og:url: "defaults/displayViews/relationships/meta/url.txt"
+    og:title: "defaults/displayViews/relationships/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1597,46 +1717,80 @@
 - name: Processes
   types:
     - Course
+    - creativeWork
   mainContentTemplate: "defaults/displayViews/processes/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/processes/meta/title.txt"
+    og:type: "defaults/displayViews/processes/meta/type.txt"
+    og:url: "defaults/displayViews/processes/meta/url.txt"
+    og:title: "defaults/displayViews/processes/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
     - name: Overview
       sections:
+        - name: abstract
+          template: "defaults/displayViews/processes/overview/abstract.html"
+          field: abstract
+          order: 1
+        - name: authors
+          template: "defaults/displayViews/processes/overview/authors.html"
+          field: authors
+          order: 2
+        - name: author list (cited authors)
+          template: "defaults/displayViews/processes/overview/authorList.html"
+          field: authorList
+          order: 3
         - name: description
           template: "defaults/displayViews/processes/overview/description.html"
           field: description
-          order: 1
-        - name: offered by
-          template: "defaults/displayViews/processes/overview/offeredBy.html"
-          field: offeredBy
-          order: 2
-          lazyReferences:
-            - offeredBy
+          order: 4
         - name: date/time interval
           template: "defaults/displayViews/processes/overview/dateTimeInterval.html"
           field: dateTimeIntervalStart
-          order: 3
-          requiredFields:
-            - dateTimeIntervalEnd
+          order: 5
+        - name: type
+          template: "defaults/displayViews/processes/overview/type.html"
+          field: subtype
+          order: 6
+        - name: venue
+          template: "defaults/displayViews/processes/overview/venue.html"
+          field: venue
+          order: 7
+        - name: location
+          template: "defaults/displayViews/processes/overview/location.html"
+          field: location
+          order: 8
+        - name: URL
+          template: "defaults/displayViews/processes/overview/url.html"
+          field: url
+          order: 9
+        - name: Note
+          template: "defaults/displayViews/processes/overview/note.html"
+          field: note
+          order: 10
+        - name: offered by
+          template: "defaults/displayViews/processes/overview/offeredBy.html"
+          field: offeredBy
+          order: 11
+          lazyReferences:
+            - offeredBy
         - name: occurs within event
           template: "defaults/displayViews/processes/overview/occursWithinEvent.html"
           field: occursWithinEvent
-          order: 4
+          order: 12
         - name: includes event
           template: "defaults/displayViews/processes/overview/includesEvent.html"
           field: includesEvent
-          order: 5
+          order: 13
         - name: in event series
           template: "defaults/displayViews/processes/overview/inEventSeries.html"
           field: inEventSeries
-          order: 6
+          order: 14
         - name: participant
           template: "defaults/displayViews/processes/overview/participants.html"
           field: participants
-          order: 7
+          order: 15
           paginated: true
           sort:
             - field: label
@@ -1644,23 +1798,23 @@
         - name: has subject area
           template: "defaults/displayViews/processes/overview/hasSubjectArea.html"
           field: subjectAreas
-          order: 8
+          order: 16
         - name: has prerequisite
           template: "defaults/displayViews/processes/overview/hasPrerequisite.html"
           field: hasPrerequisite
-          order: 9
+          order: 17
         - name: prerequisite for
           template: "defaults/displayViews/processes/overview/prerequisiteFor.html"
           field: prerequisiteFor
-          order: 10
+          order: 18
         - name: credits
           template: "defaults/displayViews/processes/overview/credits.html"
           field: credits
-          order: 11
+          order: 19
         - name: geographic focus
           template: "defaults/displayViews/processes/overview/geographicFocus.html"
           field: geographicFocus
-          order: 12
+          order: 20
     - name: Publications
       sections:
         - name: output publications or other works
@@ -1722,6 +1876,9 @@
   mainContentTemplate: "defaults/displayViews/collections/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/collections/meta/title.txt"
+    og:type: "defaults/displayViews/collections/meta/type.txt"
+    og:url: "defaults/displayViews/collections/meta/url.txt"
+    og:title: "defaults/displayViews/collections/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
@@ -1859,6 +2016,9 @@
   mainContentTemplate: "defaults/displayViews/concepts/mainContentTemplate.html"
   metaTemplates:
     title: "defaults/displayViews/concepts/meta/title.txt"
+    og:type: "defaults/displayViews/concepts/meta/type.txt"
+    og:url: "defaults/displayViews/concepts/meta/url.txt"
+    og:title: "defaults/displayViews/concepts/meta/title.txt"
   embedTemplates:
     default: "defaults/displayViews/defaults/embed/default.html"
   tabs:
