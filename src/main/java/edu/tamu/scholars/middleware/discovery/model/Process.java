@@ -100,9 +100,13 @@ public class Process extends Common {
     private List<String> inEventSeries;
 
     @Indexed(type = "nested_tokenized_strings", copyTo = { "_text_", "participants_nested_facets" })
-    @NestedObject(properties = { @Reference(value = "participantRole", key = "role"), @Reference(value = "participantDateTimeIntervalStart", key = "startDate"), @Reference(value = "participantDateTimeIntervalEnd", key = "endDate") })
+    @NestedObject(properties = { @Reference(value = "participantId", key = "personId"), @Reference(value = "participantRole", key = "role"), @Reference(value = "participantDateTimeIntervalStart", key = "startDate"), @Reference(value = "participantDateTimeIntervalEnd", key = "endDate") })
     @PropertySource(template = "process/participant", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participants;
+
+    @Indexed(type = "nested_whole_strings", searchable = false)
+    @PropertySource(template = "process/participantId", predicate = "http://purl.obolibrary.org/obo/RO_0000052", parse = true)
+    private List<String> participantId;
 
     @Indexed(type = "nested_whole_strings", searchable = false)
     @PropertySource(template = "process/participantRole", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
@@ -315,6 +319,14 @@ public class Process extends Common {
 
     public void setParticipants(List<String> participants) {
         this.participants = participants;
+    }
+
+    public List<String> getParticipantId() {
+        return participantId;
+    }
+
+    public void setParticipantId(List<String> participantId) {
+        this.participantId = participantId;
     }
 
     public List<String> getParticipantRole() {

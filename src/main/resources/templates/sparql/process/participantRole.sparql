@@ -10,5 +10,5 @@ CONSTRUCT {
     ?participant rdfs:label ?label .
     ?participant obo:RO_0000052 ?person .
     ?person a foaf:Person .
-    BIND( CONCAT( STR(?label), REPLACE(STR(?person), "(^.*/)", "::") ) AS ?labelWithId ) .
+    BIND( CONCAT( STR(?label), REPLACE(STR(?participant), "(^.*/)", "::") ) AS ?labelWithId ) .
 }

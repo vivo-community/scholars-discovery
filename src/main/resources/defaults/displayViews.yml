@@ -557,15 +557,11 @@
                   direction: DESC
                   date: true
               template: "defaults/displayViews/persons/grantsAwards/researcherOn/default.html"
-        - name: other research activities
-          template: "defaults/displayViews/persons/grantsAwards/otherResearchActivities.html"
-          field: otherResearchActivities
-          order: 3
         - name: awards and honors
           paginated: true
           template: "defaults/displayViews/persons/grantsAwards/awardsAndHonors.html"
           field: awardsAndHonors
-          order: 4
+          order: 3
           sort:
             - field: yearAwarded
               direction: DESC
