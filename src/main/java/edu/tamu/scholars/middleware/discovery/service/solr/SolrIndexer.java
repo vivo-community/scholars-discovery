@@ -8,19 +8,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.request.schema.SchemaRequest;
-import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.service.Indexer;
@@ -72,7 +69,7 @@ public class SolrIndexer implements Indexer {
                     SchemaRequest.AddField addFieldRequest = new SchemaRequest.AddField(fieldAttributes);
                     addFieldRequest.process(solrClient, collection);
                 } catch (Exception e) {
-                    logger.error("Failed to add field", e);
+                    logger.debug("Failed to add field", e);
                 }
 
                 if (indexed.copyTo().length > 0) {
@@ -80,7 +77,7 @@ public class SolrIndexer implements Indexer {
                         SchemaRequest.AddCopyField addCopyFieldRequest = new SchemaRequest.AddCopyField(name, Arrays.asList(indexed.copyTo()));
                         addCopyFieldRequest.process(solrClient, collection);
                     } catch (Exception e) {
-                        logger.error("Failed to add copy field", e);
+                        logger.debug("Failed to add copy field", e);
                     }
                 }
             }

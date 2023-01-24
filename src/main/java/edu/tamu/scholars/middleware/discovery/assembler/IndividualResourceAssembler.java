@@ -8,7 +8,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import edu.tamu.scholars.middleware.discovery.controller.IndividualController;
+import edu.tamu.scholars.middleware.discovery.controller.IndividualSearchController;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 
@@ -19,7 +19,7 @@ public class IndividualResourceAssembler extends RepresentationModelAssemblerSup
     private RepositoryEntityLinks repositoryEntityLinks;
 
     public IndividualResourceAssembler() {
-        super(IndividualController.class, IndividualResource.class);
+        super(IndividualSearchController.class, IndividualResource.class);
     }
 
     @Override

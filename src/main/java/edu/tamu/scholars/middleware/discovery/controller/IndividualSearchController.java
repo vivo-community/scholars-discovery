@@ -35,7 +35,7 @@ import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
 import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 
 @RepositoryRestController
-public class IndividualController implements RepresentationModelProcessor<RepositorySearchesResource> {
+public class IndividualSearchController implements RepresentationModelProcessor<RepositorySearchesResource> {
 
     @Autowired
     private IndividualRepo repo;
@@ -56,9 +56,9 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
         HighlightArg highlight,
         @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page
     ) {
-    // @formatter:on
         return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, highlight, page), assembler));
     }
+    // @formatter:on
 
     @GetMapping("/individual/search/recentlyUpdated")
     public ResponseEntity<CollectionModel<IndividualResource>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit, List<FilterArg> filters) {
@@ -68,7 +68,7 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
     @Override
     public RepositorySearchesResource process(RepositorySearchesResource resource) {
         if (Individual.class.equals(resource.getDomainType())) {
-            resource.add(linkTo(methodOn(IndividualController.class).search(
+            resource.add(linkTo(methodOn(IndividualSearchController.class).search(
                 QueryArg.of(
                     Optional.of(DiscoveryConstants.DEFAULT_QUERY),
                     Optional.empty(),
@@ -93,7 +93,7 @@ public class IndividualController implements RepresentationModelProcessor<Reposi
                 )
             ).withRel("count").withTitle("Count Query"));
 
-            resource.add(linkTo(methodOn(IndividualController.class).recentlyUpdated(
+            resource.add(linkTo(methodOn(IndividualSearchController.class).recentlyUpdated(
                 10,
                 new ArrayList<FilterArg>()
             )).withRel("recentlyUpdated").withTitle("Recently Updated Query"));

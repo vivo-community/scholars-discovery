@@ -1,17 +1,23 @@
 package edu.tamu.scholars.middleware.discovery.model.repo.impl;
 
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.*;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PARENTHESES_TEMPLATE;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.REQUEST_PARAM_DELIMETER;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.TYPE;
 import static org.springframework.data.solr.core.query.Criteria.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,8 +25,14 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.FacetParams.FacetRangeInclude;
 import org.apache.solr.common.params.FacetParams.FacetRangeOther;
+import org.apache.solr.common.params.SolrParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -47,6 +59,9 @@ import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
+import edu.tamu.scholars.middleware.discovery.dto.DataNetwork;
+import edu.tamu.scholars.middleware.discovery.dto.DataNetworkDescriptor;
+import edu.tamu.scholars.middleware.discovery.dto.DirectedData;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetAndHighlightQuery;
@@ -57,6 +72,8 @@ import edu.tamu.scholars.middleware.model.OpKey;
 import io.micrometer.core.instrument.util.StringUtils;
 
 public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
+    
+    private static final Logger logger = LoggerFactory.getLogger(IndividualRepoImpl.class);
 
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\[(.*?) TO (.*?)\\]$");
 
@@ -69,12 +86,104 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
     @Autowired
     private SolrTemplate solrTemplate;
 
+    @Autowired
+    private SolrClient solrClient;
+
     @PostConstruct
     public void setup() {
         // https://jira.spring.io/browse/DATASOLR-153
         // https://github.com/spring-projects/spring-data-solr/pull/113
         solrTemplate.registerQueryParser(CustomSimpleFacetQuery.class, new CustomSimpleFacetQueryParser(new SimpleSolrMappingContext()));
         solrTemplate.registerQueryParser(CustomSimpleFacetAndHighlightQuery.class, new CustomSimpleFacetAndHighlightQueryParser(new SimpleSolrMappingContext()));
+    }
+
+    @Override
+    public DataNetwork getDataNetwork(DataNetworkDescriptor dataNetworkDescriptor) {
+        final String id = dataNetworkDescriptor.getId();
+        final DataNetwork dataNetwork = DataNetwork.to(id);
+
+        try {
+            final SolrParams queryParams = dataNetworkDescriptor.getSolrParams();
+
+            final QueryResponse response = solrClient.query(collection(), queryParams);
+
+            final SolrDocumentList documents = response.getResults();
+
+            final String dateField = dataNetworkDescriptor.getDateField();
+
+            for (org.apache.solr.common.SolrDocument document : documents) {
+                if (document.containsKey(dateField)) {
+                    Date publicationDate = ((Date) document.getFieldValue(dateField));
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(publicationDate);
+                    dataNetwork.countYear(String.valueOf(calendar.get(Calendar.YEAR)));
+                }
+                List<String> values = getValues(document, dataNetworkDescriptor.getDataFields());
+
+                for (String value : values) {
+                    dataNetwork.index(value);
+
+                    if (!value.endsWith(id)) {
+                        dataNetwork.countLink(value);
+                    }
+                }
+
+                for (List<String> combination : findCombinations(values)) {
+                    String v0 = combination.get(0);
+                    String v1 = combination.get(1);
+
+                    String[] v0Parts = v0.split(NESTED_DELIMITER);
+                    String[] v1Parts = v1.split(NESTED_DELIMITER);
+
+                    // continue if either missing id
+                    if (v0Parts.length <= 1 || v1Parts.length <= 1) {
+                        continue;
+                    }
+
+                    // prefer id as source
+                    if (v1Parts[1].equals(id)) {
+                        dataNetwork.map(DirectedData.of(v1Parts[1], v0Parts[1]));
+                    } else {
+                        dataNetwork.map(DirectedData.of(v0Parts[1], v1Parts[1]));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Failed to build data network!", e);
+        }
+
+        return dataNetwork;
+    }
+
+    private List<String> getValues(org.apache.solr.common.SolrDocument document, List<String> dataFields) {
+        return dataFields.stream()
+            .filter(v -> document.containsKey(v))
+            .flatMap(v -> document.getFieldValues(v).stream())
+            .map(v -> (String) v)
+            .collect(Collectors.toList());
+    }
+
+    private Set<List<String>> findCombinations(List<String> array) {
+        Set<List<String>> subarrays = new HashSet<>();
+        findCombinations(array, 0, 2, subarrays, new ArrayList<>());
+        return subarrays;
+    }
+
+    private void findCombinations(List<String> array, int i, int k, Set<List<String>> subarrays, List<String> out) {
+        if (array.size() == 0 || k > array.size()) {
+            return;
+        }
+
+        if (k == 0) {
+            subarrays.add(new ArrayList<>(out));
+            return;
+        }
+
+        for (int j = i; j < array.size(); j++) {
+            out.add(array.get(j));
+            findCombinations(array, j + 1, k - 1, subarrays, out);
+            out.remove(out.size() - 1);
+        }
     }
 
     @Override
