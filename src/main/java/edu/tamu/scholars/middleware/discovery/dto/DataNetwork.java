@@ -2,6 +2,7 @@ package edu.tamu.scholars.middleware.discovery.dto;
 
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -19,14 +20,14 @@ public class DataNetwork {
 
     private final Map<String, Integer> yearCounts;
 
-    private final Map<DirectedData, Integer> data;
+    private final List<DirectedData> data;
 
     private DataNetwork(String id) {
         this.id = id;
         lookup = new HashMap<>();
         linkCounts = new HashMap<>();
         yearCounts = new HashMap<>();
-        data = new HashMap<>();
+        data = new ArrayList<>();
     }
 
     public String getId() {
@@ -50,9 +51,8 @@ public class DataNetwork {
     }
 
     public List<DirectedData> getData() {
-        return data.entrySet().stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .map(entry -> entry.getKey().total(entry.getValue()))
+        return data.stream()
+            .sorted(Comparator.comparingInt(DirectedData::getCount).reversed())
             .collect(Collectors.toList());
     }
 
@@ -76,9 +76,31 @@ public class DataNetwork {
         yearCounts.put(year, ++count);
     }
 
-    public void map(DirectedData data) {
-        Integer count = this.data.containsKey(data) ? this.data.get(data) : 0;
-        this.data.put(data, ++count);
+    public synchronized void map(String id, String source, String target) {
+        if (source.equals(target)) {
+            return;
+        }
+
+        String[] sParts = source.split(NESTED_DELIMITER);
+        String[] tParts = target.split(NESTED_DELIMITER);
+
+        if (sParts.length <= 1 || tParts.length <= 1) {
+            return;
+        }
+
+        String sId = sParts[1];
+        String tId = tParts[1];
+
+        for (DirectedData dd : this.data) {
+            // count either direction
+            if ((dd.getSource().equals(sId) && dd.getTarget().equals(tId)) ||
+                (dd.getSource().equals(tId) && dd.getTarget().equals(sId))) {
+                dd.add(id);
+                return;
+            }
+        }
+        // add new connection
+        this.data.add(DirectedData.of(id, sId, tId));
     }
 
     public static DataNetwork to(String id) {

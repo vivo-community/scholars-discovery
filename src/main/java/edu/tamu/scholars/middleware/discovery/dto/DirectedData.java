@@ -1,8 +1,11 @@
 package edu.tamu.scholars.middleware.discovery.dto;
 
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DirectedData {
+
+    private final Set<String> ids;
 
     private final String source;
 
@@ -10,10 +13,16 @@ public class DirectedData {
 
     private Integer count;
 
-    public DirectedData(String source, String target) {
+    private DirectedData(String id, String source, String target) {
+        this.ids = new HashSet<>();
+        this.ids.add(id);
         this.source = source;
         this.target = target;
         this.count = 1;
+    }
+
+    public Set<String> getIds() {
+        return ids;
     }
 
     public String getSource() {
@@ -28,35 +37,15 @@ public class DirectedData {
         return count;
     }
 
-    public static DirectedData of(String source, String target) {
-        return new DirectedData(source, target);
+    public void add(String id) {
+        // count unique connection for id
+        if (this.ids.add(id)) {
+            count++;
+        }
     }
 
-    public DirectedData total(Integer count) {
-        this.count = count;
-
-        return this;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(source, target);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        DirectedData other = (DirectedData) obj;
-
-        return Objects.equals(source, other.source) && Objects.equals(target, other.target);
+    public static DirectedData of(String id, String source, String target) {
+        return new DirectedData(id, source, target);
     }
 
 }

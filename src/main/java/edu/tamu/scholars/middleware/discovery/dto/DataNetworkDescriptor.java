@@ -1,5 +1,8 @@
 package edu.tamu.scholars.middleware.discovery.dto;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +52,7 @@ public class DataNetworkDescriptor {
     public String getFieldList() {
         List<String> fields = new ArrayList<>(getDataFields());
         fields.add(dateField);
+        fields.add(ID);
         return String.join(",", fields);
     }
 
@@ -58,7 +62,7 @@ public class DataNetworkDescriptor {
 
     public SolrParams getSolrParams() {
         final Map<String, String> queryParamMap = new HashMap<>();
-        queryParamMap.put("q", "*:*");
+        queryParamMap.put("q", DEFAULT_QUERY);
         queryParamMap.put("rows", String.valueOf(Integer.MAX_VALUE));
         queryParamMap.put("sort", getSort());
         queryParamMap.put("fl", getFieldList());

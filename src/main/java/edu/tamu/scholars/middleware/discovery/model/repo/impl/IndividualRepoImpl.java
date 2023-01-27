@@ -4,7 +4,6 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.CLASS;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.MOD_TIME;
-import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_DELIMITER;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.PARENTHESES_TEMPLATE;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.REQUEST_PARAM_DELIMETER;
 import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.TYPE;
@@ -14,10 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -61,7 +58,6 @@ import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.dto.DataNetwork;
 import edu.tamu.scholars.middleware.discovery.dto.DataNetworkDescriptor;
-import edu.tamu.scholars.middleware.discovery.dto.DirectedData;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.custom.SolrDocumentRepoCustom;
 import edu.tamu.scholars.middleware.discovery.query.CustomSimpleFacetAndHighlightQuery;
@@ -120,31 +116,21 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
                 }
                 List<String> values = getValues(document, dataNetworkDescriptor.getDataFields());
 
-                for (String value : values) {
-                    dataNetwork.index(value);
+                String iid = (String) document.getFieldValue(ID);
 
-                    if (!value.endsWith(id)) {
-                        dataNetwork.countLink(value);
+                for (String v1 : values) {
+                    dataNetwork.index(v1);
+
+                    if (!v1.endsWith(id)) {
+                        dataNetwork.countLink(v1);
                     }
-                }
-
-                for (List<String> combination : findCombinations(values)) {
-                    String v0 = combination.get(0);
-                    String v1 = combination.get(1);
-
-                    String[] v0Parts = v0.split(NESTED_DELIMITER);
-                    String[] v1Parts = v1.split(NESTED_DELIMITER);
-
-                    // continue if either missing id
-                    if (v0Parts.length <= 1 || v1Parts.length <= 1) {
-                        continue;
-                    }
-
-                    // prefer id as source
-                    if (v1Parts[1].equals(id)) {
-                        dataNetwork.map(DirectedData.of(v1Parts[1], v0Parts[1]));
-                    } else {
-                        dataNetwork.map(DirectedData.of(v0Parts[1], v1Parts[1]));
+                    for (String v2 : values) {
+                        // prefer id as source
+                        if (v2.endsWith(id)) {
+                            dataNetwork.map(iid, v2, v1);
+                        } else {
+                            dataNetwork.map(iid, v1, v2);
+                        }
                     }
                 }
             }
@@ -161,29 +147,6 @@ public class IndividualRepoImpl implements SolrDocumentRepoCustom<Individual> {
             .flatMap(v -> document.getFieldValues(v).stream())
             .map(v -> (String) v)
             .collect(Collectors.toList());
-    }
-
-    private Set<List<String>> findCombinations(List<String> array) {
-        Set<List<String>> subarrays = new HashSet<>();
-        findCombinations(array, 0, 2, subarrays, new ArrayList<>());
-        return subarrays;
-    }
-
-    private void findCombinations(List<String> array, int i, int k, Set<List<String>> subarrays, List<String> out) {
-        if (array.size() == 0 || k > array.size()) {
-            return;
-        }
-
-        if (k == 0) {
-            subarrays.add(new ArrayList<>(out));
-            return;
-        }
-
-        for (int j = i; j < array.size(); j++) {
-            out.add(array.get(j));
-            findCombinations(array, j + 1, k - 1, subarrays, out);
-            out.remove(out.size() - 1);
-        }
     }
 
     @Override
