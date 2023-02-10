@@ -45,7 +45,6 @@ public class HttpService {
 
     @PostConstruct
     protected void init() throws URISyntaxException {
-        // @formatter:off
         RequestConfig config = RequestConfig.custom()
             .setConnectTimeout(httpConfig.getTimeout())
             .setConnectionRequestTimeout(httpConfig.getRequestTimeout())
@@ -59,7 +58,6 @@ public class HttpService {
             .setConnectionTimeToLive(httpConfig.getTimeToLive(), TimeUnit.MILLISECONDS)
             .setDefaultRequestConfig(config)
             .build();
-        // @formatter:on
     }
 
     @PreDestroy

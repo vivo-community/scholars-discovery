@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 import edu.tamu.scholars.middleware.config.model.IndexerConfig;
 import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
+import edu.tamu.scholars.middleware.discovery.component.Indexer;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
-import edu.tamu.scholars.middleware.discovery.service.Indexer;
 
 @Configuration
 public class IndexingConfig {

@@ -25,9 +25,7 @@ public class ThemeDefaults extends AbstractDefaults<Theme, ThemeRepo> {
 
     @Override
     public List<Theme> read(InputStream is) throws IOException {
-        // @formatter:off
         return mapper.readValue(is, new TypeReference<List<Theme>>() {});
-        // @formatter:on
     }
 
 }

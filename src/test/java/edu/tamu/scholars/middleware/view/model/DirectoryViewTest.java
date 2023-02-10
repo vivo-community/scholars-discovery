@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.model.OpKey;
@@ -54,7 +53,7 @@ public class DirectoryViewTest {
         assertEquals("Name", directoryView.getFacets().get(0).getName());
         assertEquals("name", directoryView.getFacets().get(0).getField());
         assertEquals(FacetType.STRING, directoryView.getFacets().get(0).getType());
-        assertEquals(FacetOptions.FacetSort.COUNT, directoryView.getFacets().get(0).getSort());
+        assertEquals(FacetSort.COUNT, directoryView.getFacets().get(0).getSort());
         assertEquals(Sort.Direction.DESC, directoryView.getFacets().get(0).getDirection());
         assertEquals(20, directoryView.getFacets().get(0).getPageSize());
         assertEquals(1, directoryView.getFacets().get(0).getPageNumber());

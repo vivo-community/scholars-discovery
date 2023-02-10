@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -31,7 +30,7 @@ public class FacetTest {
         facet.setName("Test");
         facet.setField("test");
         facet.setType(FacetType.DATE_YEAR);
-        facet.setSort(FacetOptions.FacetSort.INDEX);
+        facet.setSort(FacetSort.INDEX);
         facet.setDirection(Sort.Direction.ASC);
         facet.setPageSize(5);
         facet.setPageNumber(2);
@@ -45,7 +44,7 @@ public class FacetTest {
         assertEquals("Test", facet.getName());
         assertEquals("test", facet.getField());
         assertEquals(FacetType.DATE_YEAR, facet.getType());
-        assertEquals(FacetOptions.FacetSort.INDEX, facet.getSort());
+        assertEquals(FacetSort.INDEX, facet.getSort());
         assertEquals(Sort.Direction.ASC, facet.getDirection());
         assertEquals(5, facet.getPageSize());
         assertEquals(2, facet.getPageNumber());

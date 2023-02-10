@@ -9,12 +9,10 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.auth.UserIntegrationTest;
 import edu.tamu.scholars.middleware.auth.model.Role;
@@ -22,7 +20,6 @@ import edu.tamu.scholars.middleware.auth.model.User;
 import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
 public class UserRepoTest extends UserIntegrationTest {
 
     @TestConfiguration

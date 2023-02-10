@@ -11,13 +11,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 public class DateFormatUtility {
 
-    // @formatter:off
     private static final String[] datePatterns = {
         "yyyy",
         "E MMM dd HH:mm:ss z yyyy",
         "yyyy-MM-dd'T'HH:mm:ss'Z'"
     };
-    // @formatter:on
 
     public static ZonedDateTime parse(String value) throws ParseException {
         Locale locale = LocaleContextHolder.getLocale();

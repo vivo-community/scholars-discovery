@@ -26,6 +26,7 @@ WORKDIR $SOURCE_DIR
 # Copy files over.
 COPY ./pom.xml ./pom.xml
 COPY ./src ./src
+COPY ./solr ./solr
 
 # Assign file permissions.
 RUN chown -R ${USER_ID}:${USER_ID} ${SOURCE_DIR}

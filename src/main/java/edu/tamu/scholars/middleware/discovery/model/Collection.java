@@ -1,126 +1,148 @@
 package edu.tamu.scholars.middleware.discovery.model;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.COLLECTION;
 
 import java.util.List;
+
+import org.apache.solr.client.solrj.beans.Field;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.apache.solr.client.solrj.beans.Field;
-import org.springframework.data.solr.core.mapping.Indexed;
-import org.springframework.data.solr.core.mapping.SolrDocument;
-
 import edu.tamu.scholars.middleware.discovery.annotation.CollectionSource;
+import edu.tamu.scholars.middleware.discovery.annotation.CollectionTarget;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import edu.tamu.scholars.middleware.discovery.annotation.FieldSource;
+import edu.tamu.scholars.middleware.discovery.annotation.FieldType;
 
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "scholars-discovery")
+@CollectionTarget(name = COLLECTION)
 @CollectionSource(name = "collections", predicate = "http://purl.org/ontology/bibo/Collection")
 public class Collection extends Common {
 
-    @Indexed(type = "tokenized_string", copyTo = { "_text_", "name_sort" })
-    @PropertySource(template = "collection/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @Field
+    @FieldType(type = "tokenized_string", copyTo = { "_text_", "name_sort" })
+    @FieldSource(template = "collection/name", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private String name;
 
     @Field("abstract")
     @JsonProperty("abstract")
-    @Indexed(type = "tokenized_string", value = "abstract", copyTo = "_text_")
-    @PropertySource(template = "collection/abstract", predicate = "http://purl.org/ontology/bibo/abstract")
+    @FieldType(type = "tokenized_string", value = "abstract", copyTo = "_text_")
+    @FieldSource(template = "collection/abstract", predicate = "http://purl.org/ontology/bibo/abstract")
     private String abstractText;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/abbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
+    @Field
+    @FieldType(type = "whole_string")
+    @FieldSource(template = "collection/abbreviation", predicate = "http://vivoweb.org/ontology/core#abbreviation")
     private String abbreviation;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/publicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/publicationVenueFor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> publicationVenueFor;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/editor", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> editors;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/translator", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> translators;
 
-    @Indexed(type = "pdate", searchable = false)
-    @PropertySource(template = "collection/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
+    @Field
+    @FieldType(type = "pdate", searchable = false)
+    @FieldSource(template = "collection/publicationDate", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String publicationDate;
 
-    @Indexed(type = "nested_whole_string")
+    @Field
+    @FieldType(type = "nested_whole_string")
     @NestedObject(properties = { @Reference(value = "publisherType", key = "type") })
-    @PropertySource(template = "collection/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
+    @FieldSource(template = "collection/publisher", predicate = "http://www.w3.org/2000/01/rdf-schema#label", unique = true)
     private String publisher;
 
-    @Indexed(type = "nested_whole_string")
-    @PropertySource(template = "collection/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    @Field
+    @FieldType(type = "nested_whole_string")
+    @FieldSource(template = "collection/publisherType", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
     private String publisherType;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/hasSubjectArea", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> subjectAreas;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/feature", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> features;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/outputOfProcessOrEvent", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> outputOfProcessOrEvent;
 
-    @Indexed(type = "whole_strings", copyTo = "_text_")
-    @PropertySource(template = "collection/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
+    @Field
+    @FieldType(type = "whole_strings", copyTo = "_text_")
+    @FieldSource(template = "collection/keyword", predicate = "http://vivoweb.org/ontology/core#freetextKeyword")
     private List<String> keywords;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/issn", predicate = "http://purl.org/ontology/bibo/issn")
+    @Field
+    @FieldType(type = "whole_string")
+    @FieldSource(template = "collection/issn", predicate = "http://purl.org/ontology/bibo/issn")
     private String issn;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/eissn", predicate = "http://purl.org/ontology/bibo/eissn")
+    @Field
+    @FieldType(type = "whole_string")
+    @FieldSource(template = "collection/eissn", predicate = "http://purl.org/ontology/bibo/eissn")
     private String eissn;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/doi", predicate = "http://purl.org/ontology/bibo/doi")
+    @Field
+    @FieldType(type = "whole_string")
+    @FieldSource(template = "collection/doi", predicate = "http://purl.org/ontology/bibo/doi")
     private String doi;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "collection/oclcnum", predicate = "http://purl.org/ontology/bibo/oclcnum")
+    @Field
+    @FieldType(type = "whole_string")
+    @FieldSource(template = "collection/oclcnum", predicate = "http://purl.org/ontology/bibo/oclcnum")
     private String oclcnum;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/isAbout", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> isAbout;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/specifiedOutputOf", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> specifiedOutputOf;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/mention", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> mentions;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/participatesIn", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> participatesIn;
 
+    @Field
     @NestedObject
-    @Indexed(type = "nested_whole_strings", searchable = false)
-    @PropertySource(template = "collection/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
+    @FieldType(type = "nested_whole_strings", searchable = false)
+    @FieldSource(template = "collection/supportedBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> supportedBy;
 
     public Collection() {

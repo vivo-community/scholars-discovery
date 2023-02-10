@@ -1,7 +1,7 @@
 package edu.tamu.scholars.middleware.config.model;
 
-import edu.tamu.scholars.middleware.discovery.service.Harvester;
-import edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester;
+import edu.tamu.scholars.middleware.discovery.component.Harvester;
+import edu.tamu.scholars.middleware.discovery.component.jena.TriplestoreHarvester;
 
 public class HarvesterConfig extends IndexDocumentTypesConfig {
     

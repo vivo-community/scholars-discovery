@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.discovery.controller;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.ID;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -17,12 +19,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import edu.tamu.scholars.middleware.discovery.DiscoveryConstants;
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
 import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
@@ -46,31 +46,60 @@ public class IndividualSearchController implements RepresentationModelProcessor<
     @Autowired
     private DiscoveryPagedResourcesAssembler<Individual> discoveryPagedResourcesAssembler;
 
+    @GetMapping("/individual/search/findByIdIn")
+    public ResponseEntity<CollectionModel<IndividualResource>> findByIdIn(@RequestParam(required = true) List<String> ids) {
+        return ResponseEntity.ok(assembler.toCollectionModel(repo.findByIdIn(ids)));
+    }
+
+    @GetMapping("/individual/search/findByType")
+    public ResponseEntity<CollectionModel<IndividualResource>> findByType(@RequestParam(required = true) String type) {
+        return ResponseEntity.ok(assembler.toCollectionModel(repo.findByType(type)));
+    }
+
+    @GetMapping("/individual/search/recentlyUpdated")
+    public ResponseEntity<CollectionModel<IndividualResource>> recentlyUpdated(
+        @RequestParam(value = "limit", defaultValue = "10") int limit,
+        List<FilterArg> filters
+    ) {
+        return ResponseEntity.ok(assembler.toCollectionModel(repo.findMostRecentlyUpdate(limit, filters)));
+    }
+
     @GetMapping("/individual/search/advanced")
-    // @formatter:off
     public ResponseEntity<PagedModel<IndividualResource>> search(
         QueryArg query,
         List<FacetArg> facets,
         List<FilterArg> filters,
         List<BoostArg> boosts,
         HighlightArg highlight,
-        @PageableDefault(page = 0, size = 10, sort = "id", direction = ASC) Pageable page
+        @PageableDefault(page = 0, size = 10, sort = ID, direction = ASC) Pageable page
     ) {
         return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, highlight, page), assembler));
-    }
-    // @formatter:on
-
-    @GetMapping("/individual/search/recentlyUpdated")
-    public ResponseEntity<CollectionModel<IndividualResource>> recentlyUpdated(@RequestParam(value = "limit", defaultValue = "10") int limit, List<FilterArg> filters) {
-        return ResponseEntity.ok(assembler.toCollectionModel(repo.findMostRecentlyUpdate(limit, filters)));
     }
 
     @Override
     public RepositorySearchesResource process(RepositorySearchesResource resource) {
         if (Individual.class.equals(resource.getDomainType())) {
-            resource.add(linkTo(methodOn(IndividualSearchController.class).search(
+            resource.add(linkTo(methodOn(IndividualSearchCountController.class).count(
+                DEFAULT_QUERY,
+                new ArrayList<FilterArg>()
+            )).withRel("count").withTitle("Count query"));
+
+            resource.add(linkTo(methodOn(this.getClass()).findByIdIn(
+                new ArrayList<String>()
+            )).withRel("findByIdIn").withTitle("Search by ids"));
+
+            resource.add(linkTo(methodOn(this.getClass()).findByType(
+                "Person"
+            )).withRel("findByType").withTitle("Search by type"));
+
+            resource.add(linkTo(methodOn(this.getClass()).recentlyUpdated(
+                10,
+                new ArrayList<FilterArg>()
+            )).withRel("recentlyUpdated").withTitle("Recently updated query"));
+
+            resource.add(linkTo(methodOn(this.getClass()).search(
                 QueryArg.of(
-                    Optional.of(DiscoveryConstants.DEFAULT_QUERY),
+                    Optional.of(DEFAULT_QUERY),
                     Optional.empty(),
                     Optional.empty(),
                     Optional.empty(),
@@ -82,23 +111,23 @@ public class IndividualSearchController implements RepresentationModelProcessor<
                 new ArrayList<BoostArg>(),
                 HighlightArg.of(new String[] {}, Optional.empty(), Optional.empty()),
                 PageRequest.of(0, 10)
-            )).withRel("advanced").withTitle("Advanced Search"));
-
-            resource.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder
-                .methodOn(IndividualCountController.class)
-                .count(
-                    DiscoveryConstants.DEFAULT_QUERY,
-                    new ArrayList<FilterArg>()
-                )
-            ).withRel("count").withTitle("Count Query"));
-
-            resource.add(linkTo(methodOn(IndividualSearchController.class).recentlyUpdated(
-                10,
-                new ArrayList<FilterArg>()
-            )).withRel("recentlyUpdated").withTitle("Recently Updated Query"));
+            )).withRel("advanced").withTitle("Advanced search"));
         }
         return resource;
+    }
+
+    class Count {
+
+        private final long value;
+
+        public Count(long value) {
+            this.value = value;
+        }
+
+        public long getValue() {
+            return value;
+        }
+
     }
 
 }

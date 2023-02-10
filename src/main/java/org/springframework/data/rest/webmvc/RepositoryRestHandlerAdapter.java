@@ -55,7 +55,7 @@ public class RepositoryRestHandlerAdapter extends RequestMappingHandlerAdapter {
 	 */
 	public RepositoryRestHandlerAdapter(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		this.argumentResolvers = new ArrayList<>(argumentResolvers);
-		// MODIFIED: custom arugement resolvers
+		// MODIFIED: custom argument resolvers
 		this.argumentResolvers.add(new QueryArgumentResolver());
 		this.argumentResolvers.add(new FilterArgumentResolver());
 		this.argumentResolvers.add(new FacetArgumentResolver());

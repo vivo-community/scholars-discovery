@@ -14,7 +14,6 @@ public class ArgumentUtility {
     private final static String EXPORT_QUERY_PARAM_KEY = "export";
 
     public static List<ExportArg> getExportArguments(HttpServletRequest request) {
-        // @formatter:off
         return Collections.list(request.getParameterNames()).stream()
             .filter(paramName -> paramName.equals(EXPORT_QUERY_PARAM_KEY))
             .map(request::getParameterValues)
@@ -22,7 +21,6 @@ public class ArgumentUtility {
             .flatMap(list -> list.stream())
             .map(ExportArg::of)
             .collect(Collectors.toList());
-        // @formatter:on
     }
 
 }

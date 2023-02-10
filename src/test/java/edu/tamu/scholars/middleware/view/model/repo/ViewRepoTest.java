@@ -7,15 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.view.ViewIntegrationTest;
 import edu.tamu.scholars.middleware.view.model.View;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
 public abstract class ViewRepoTest<V extends View, R extends ViewRepo<V>> extends ViewIntegrationTest<V, R> {
 
     @Test

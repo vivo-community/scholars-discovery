@@ -1,5 +1,7 @@
 package edu.tamu.scholars.middleware.messaging.handler;
 
+import java.util.Objects;
+
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -10,7 +12,10 @@ public class CustomStompSubProtocolErrorHandler extends StompSubProtocolErrorHan
 
     @Override
     protected Message<byte[]> handleInternal(StompHeaderAccessor errorHeaderAccessor, byte[] errorPayload, @Nullable Throwable cause, @Nullable StompHeaderAccessor clientHeaderAccessor) {
-        errorHeaderAccessor.setDestination(clientHeaderAccessor.getDestination());
+    	if (Objects.nonNull(clientHeaderAccessor)) {
+    		errorHeaderAccessor.setDestination(clientHeaderAccessor.getDestination());
+    	}
+
         return MessageBuilder.createMessage(errorPayload, errorHeaderAccessor.getMessageHeaders());
     }
 

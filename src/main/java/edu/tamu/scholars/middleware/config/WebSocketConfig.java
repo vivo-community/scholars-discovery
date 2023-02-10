@@ -32,7 +32,6 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
 
     @Override
     protected void configureStompEndpoints(StompEndpointRegistry registry) {
-        // @formatter:off
         registry.setErrorHandler(new CustomStompSubProtocolErrorHandler());
         registry
             .addEndpoint("/connect")
@@ -57,7 +56,6 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
 
                 }
             );
-        // @formatter:on
     }
 
     @Override
