@@ -631,7 +631,6 @@ public class IndividualRepoImpl implements IndexDocumentRepo<Individual> {
 
                         // NOTE: if date field, must be ISO format for Solr to recognize
                         // https://lucene.apache.org/solr/7_5_0/solr-core/org/apache/solr/schema/DatePointField.html
-                        
                     } else {
                         filterQuery
                             .append("\"")

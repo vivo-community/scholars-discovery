@@ -14,7 +14,6 @@ import edu.tamu.scholars.middleware.discovery.argument.FilterArg;
 import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
-import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryFacetAndHighlightPage;
 import edu.tamu.scholars.middleware.discovery.response.DiscoveryNetwork;
 
@@ -30,7 +29,7 @@ public interface IndexDocumentRepoCustom<D extends AbstractIndexDocument> {
 
     public DiscoveryFacetAndHighlightPage<D> search(QueryArg query, List<FacetArg> facets, List<FilterArg> filters, List<BoostArg> boosts, HighlightArg highlight, Pageable page);
 
-    public CompletableFuture<Iterator<Individual>> export(QueryArg query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort);
+    public CompletableFuture<Iterator<D>> export(QueryArg query, List<FilterArg> filters, List<BoostArg> boosts, Sort sort);
 
     public DiscoveryNetwork network(DiscoveryNetworkDescriptor dataNetworkDescriptor);
 
