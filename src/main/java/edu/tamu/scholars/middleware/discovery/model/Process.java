@@ -65,6 +65,10 @@ public class Process extends Common {
     private String dateTimeIntervalEnd;
 
     @Indexed(type = "whole_string")
+    @PropertySource(template = "process/dateTimePrecision", predicate = "http://vivoweb.org/ontology/core#dateTimePrecision")
+    private String dateTimePrecision;
+
+    @Indexed(type = "whole_string")
     @PropertySource(template = "process/subtype", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#subtype")
     private String subtype;
 
@@ -247,6 +251,14 @@ public class Process extends Common {
 
     public void setDateTimeIntervalEnd(String dateTimeIntervalEnd) {
         this.dateTimeIntervalEnd = dateTimeIntervalEnd;
+    }
+
+    public String getDateTimePrecision() {
+        return dateTimePrecision;
+    }
+
+    public void setDateTimePrecision(String dateTimePrecision) {
+        this.dateTimePrecision = dateTimePrecision;
     }
 
     public String getSubtype() {
