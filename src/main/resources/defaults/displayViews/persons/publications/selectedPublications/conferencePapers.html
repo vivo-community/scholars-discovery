@@ -7,8 +7,8 @@
     <a href="display/{{id}}"><u>{{{title}}}</u>.</a>
   </span>
 
-  {{#if publicationOutlet}}
-  <span><em>{{{publicationOutlet}}}</em>{{#if nameOfConference}}, {{else}}. {{/if}}</span>
+  {{#if publicationVenue}}
+  <span><em>{{{publicationVenue.label}}}</em>{{#if nameOfConference}}, {{else}}. {{/if}}</span>
   {{/if}}
 
   {{#if nameOfConference}}
