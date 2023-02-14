@@ -51,7 +51,6 @@ public class ArgumentUtility {
 
     public static List<FacetArg> getFacetArguments(HttpServletRequest request) {
         List<String> parameterNames = Collections.list(request.getParameterNames());
-        // @formatter:off
         List<String> fields = parameterNames.stream()
             .filter(paramName -> paramName.equals(FACET_QUERY_PARAM_KEY))
             .map(request::getParameterValues)
@@ -103,12 +102,10 @@ public class ArgumentUtility {
             }
             return FacetArg.of(field, sort, pageSize, pageNumber, type, exclusionTag, rangeStart, rangeEnd, rangeGap);
         }).collect(Collectors.toList());
-        // @formatter:on
     }
 
     public static List<FilterArg> getFilterArguments(HttpServletRequest request) {
         List<String> parameterNames = Collections.list(request.getParameterNames());
-        // @formatter:off
         List<String> fields = parameterNames.stream()
             .filter(paramName -> paramName.equals(FILTER_QUERY_PARAM_KEY))
             .map(request::getParameterValues)
@@ -142,12 +139,10 @@ public class ArgumentUtility {
                 filters.add(FilterArg.of(field, Optional.of(value), opKey, tag));
             }
         });
-        // @formatter:on
         return filters;
     }
 
     public static List<BoostArg> getBoostArguments(HttpServletRequest request) {
-        // @formatter:off
         return Collections.list(request.getParameterNames()).stream()
             .filter(paramName -> paramName.equals(BOOST_QUERY_PARAM_KEY))
             .map(request::getParameterValues)
@@ -155,7 +150,6 @@ public class ArgumentUtility {
             .flatMap(list -> list.stream())
             .map(BoostArg::of)
             .collect(Collectors.toList());
-        // @formatter:on
     }
 
     public static HighlightArg getHightlightArgument(HttpServletRequest request) {

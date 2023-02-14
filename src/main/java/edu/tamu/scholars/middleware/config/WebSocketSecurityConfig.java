@@ -21,7 +21,6 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 
     @Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-        // @formatter:off
         messages
             .expressionHandler(messageSecurityExpressionHandler)
 
@@ -51,7 +50,6 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
                 .denyAll()
             .anyMessage()
                 .denyAll();
-        // @formatter:on
     }
 
     @Override

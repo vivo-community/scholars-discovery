@@ -1,34 +1,43 @@
 package edu.tamu.scholars.middleware.discovery.model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.apache.solr.client.solrj.beans.Field;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.solr.core.mapping.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
+import edu.tamu.scholars.middleware.discovery.annotation.FieldSource;
+import edu.tamu.scholars.middleware.discovery.annotation.FieldType;
 
+@MappedSuperclass
 public abstract class AbstractIndexDocument {
 
     @Id
-    @Indexed(required = true, readonly = true)
+    @Field
+    @FieldType(required = true, readonly = true)
     private String id;
 
-    @Indexed(type = "whole_strings")
-    @PropertySource(template = "common/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
-    private List<String> type;
-
-    @Field("class")
+    @Transient
     @JsonProperty("class")
-    @Indexed(type = "string", value = "class", required = true)
+    @Field("class")
+    @FieldType(type = "string", value = "class", required = true)
     private String clazz = this.getClass().getSimpleName();
 
-    @Indexed(type = "strings")
-    private Set<String> syncIds = new HashSet<String>();
+    @Transient
+    @Field
+    @FieldType(type = "whole_strings")
+    @FieldSource(template = "common/type", predicate = "http://vitro.mannlib.cornell.edu/ns/vitro/0.7#mostSpecificType", parse = true)
+    private List<String> type;
+
+    @Transient
+    @Field
+    @FieldType(type = "strings")
+    private List<String> syncIds = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -36,14 +45,6 @@ public abstract class AbstractIndexDocument {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
     }
 
     public String getClazz() {
@@ -54,11 +55,19 @@ public abstract class AbstractIndexDocument {
         this.clazz = clazz;
     }
 
-    public Set<String> getSyncIds() {
+    public List<String> getType() {
+        return type;
+    }
+
+    public void setType(List<String> type) {
+        this.type = type;
+    }
+
+    public List<String> getSyncIds() {
         return syncIds;
     }
 
-    public void setSyncIds(Set<String> syncIds) {
+    public void setSyncIds(List<String> syncIds) {
         this.syncIds = syncIds;
     }
 

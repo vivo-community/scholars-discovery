@@ -30,8 +30,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jena.version>3.17.0</jena.version>
     <log4j2.version>2.17.1</log4j2.version>
+    <jena.version>3.17.0</jena.version>
+    <solr.version>9.1.1</solr.version>
   </properties>
 
   <packaging>jar</packaging>
@@ -73,22 +74,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-solr</artifactId>
-      <version>4.3.15.TAMU</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-solr</artifactId>
-      <version>2.4.13</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.data</groupId>
-          <artifactId>spring-data-solr</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -176,13 +161,7 @@
     <dependency>
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
-      <version>2.7.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.dropwizard.metrics</groupId>
-      <artifactId>metrics-core</artifactId>
-      <version>4.2.13</version><!-- $NO-MVN-MAN-VER$ -->
+      <version>2.7.0</version><!-- $NO-MVN-MAN-VER$ -->
     </dependency>
 
     <dependency>
@@ -329,6 +308,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+      <version>3.1.1</version>
       <scope>test</scope>
     </dependency>
 

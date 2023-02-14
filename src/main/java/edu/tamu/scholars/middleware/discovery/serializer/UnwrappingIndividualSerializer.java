@@ -7,6 +7,7 @@ import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.ge
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,8 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -29,12 +32,10 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.NameTransformer;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-
+import edu.tamu.scholars.middleware.discovery.annotation.FieldSource;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedMultiValuedProperty;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject;
 import edu.tamu.scholars.middleware.discovery.annotation.NestedObject.Reference;
-import edu.tamu.scholars.middleware.discovery.annotation.PropertySource;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 
 public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
@@ -55,10 +56,10 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
     @Override
     public void serialize(Individual document, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         Class<?> type = getDiscoveryDocumentTypeByName(document.getClazz());
-        Map<String, List<String>> content = document.getContent();
+        Map<String, Collection<Object>> content = document.getContent();
         jsonGenerator.writeObjectField(nameTransformer.transform(ID), document.getId());
         jsonGenerator.writeObjectField(nameTransformer.transform(CLASS), document.getClazz());
-        for (Field field : FieldUtils.getFieldsListWithAnnotation(type, PropertySource.class)) {
+        for (Field field : FieldUtils.getFieldsListWithAnnotation(type, FieldSource.class)) {
             JsonProperty jsonProperty = field.getAnnotation(JsonProperty.class);
             String name = nameTransformer.transform(jsonProperty != null ? jsonProperty.value() : field.getName());
             Object value = content.get(name);
@@ -71,13 +72,11 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                             @SuppressWarnings("unchecked")
                             List<String> values = (List<String>) value;
 
-                            // @formatter:off
                             ArrayNode array = values.parallelStream()
                                 .map(v -> v.split(NESTED_DELIMITER))
                                 .filter(vParts -> vParts.length > 1)
                                 .map(vParts -> processValue(content, type, field, vParts, 1))
                                 .collect(new JsonNodeArrayNodeCollector());
-                            // @formatter:on
 
                             if (array.size() > 0) {
                                 jsonGenerator.writeObjectField(name, array);
@@ -106,7 +105,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
         }
     }
 
-    private ObjectNode processValue(Map<String, List<String>> content, Class<?> type, Field field, String[] vParts, int index) {
+    private ObjectNode processValue(Map<String, Collection<Object>> content, Class<?> type, Field field, String[] vParts, int index) {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         NestedObject nestedObject = field.getAnnotation(NestedObject.class);
         if (nestedObject != null) {
@@ -117,7 +116,7 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
         return node;
     }
 
-    private void processNestedObject(Map<String, List<String>> content, Class<?> type, NestedObject nestedObject, ObjectNode node, String[] vParts, int depth) {
+    private void processNestedObject(Map<String, Collection<Object>> content, Class<?> type, NestedObject nestedObject, ObjectNode node, String[] vParts, int depth) {
         for (Reference reference : nestedObject.properties()) {
             String ref = reference.value();
             Field nestedField = FieldUtils.getField(type, ref, true);
@@ -135,7 +134,6 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
 
                         ArrayNode array;
 
-                        // @formatter:off
                         if (strip(nestedValues.get(0)).split(NESTED_DELIMITER).length > depth) {
                             array = nestedValues.parallelStream()
                                 .filter(nv -> isProperty(vParts, nv))
@@ -147,7 +145,6 @@ public class UnwrappingIndividualSerializer extends JsonSerializer<Individual> {
                                 .map(nv -> strip(nv).split(NESTED_DELIMITER)[0])
                                 .collect(new StringArrayNodeCollector());
                         }
-                        // @formatter:on
 
                         if (array.size() > 0) {
                             if (multiValued) {

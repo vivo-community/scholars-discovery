@@ -1,7 +1,5 @@
 package edu.tamu.scholars.middleware.discovery.argument;
 
-import java.util.Map;
-
 import edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility;
 
 public class BoostArg {
@@ -21,14 +19,6 @@ public class BoostArg {
 
     public float getValue() {
         return value;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static BoostArg of(Object input) {
-        Map<String, Object> facet = (Map<String, Object>) input;
-        String field = (String) facet.get("field");
-        float value = (float) facet.get("value");
-        return new BoostArg(field, value);
     }
 
     public static BoostArg of(String parameter) {

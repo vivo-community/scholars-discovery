@@ -32,9 +32,7 @@ public class DisplayViewDefaults extends AbstractDefaults<DisplayView, DisplayVi
 
     @Override
     public List<DisplayView> read(InputStream is) throws IOException {
-        // @formatter:off
         List<DisplayView> views = mapper.readValue(is, new TypeReference<List<DisplayView>>() {});
-        // @formatter:on
         for (DisplayView view : views) {
             if (view.getMainContentTemplate() != null && view.getMainContentTemplate().length() > 0) {
                 try {

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.FacetOptions;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -59,7 +58,7 @@ public class DiscoveryViewTest {
         assertEquals("Name", discoveryView.getFacets().get(0).getName());
         assertEquals("name", discoveryView.getFacets().get(0).getField());
         assertEquals(FacetType.STRING, discoveryView.getFacets().get(0).getType());
-        assertEquals(FacetOptions.FacetSort.COUNT, discoveryView.getFacets().get(0).getSort());
+        assertEquals(FacetSort.COUNT, discoveryView.getFacets().get(0).getSort());
         assertEquals(Sort.Direction.DESC, discoveryView.getFacets().get(0).getDirection());
         assertEquals(20, discoveryView.getFacets().get(0).getPageSize());
         assertEquals(1, discoveryView.getFacets().get(0).getPageNumber());

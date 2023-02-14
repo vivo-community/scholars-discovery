@@ -1,7 +1,8 @@
 package edu.tamu.scholars.middleware.discovery.argument;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
+
+import edu.tamu.scholars.middleware.view.model.FacetSort;
 
 public class FacetSortArg {
 

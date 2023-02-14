@@ -2,7 +2,7 @@ FROM solr:9.1
 
 USER root
 
-COPY conf /opt/solr/server/solr/configsets/scholars-discovery/conf
+COPY configsets/scholars-discovery/conf /opt/solr/server/solr/configsets/scholars-discovery/conf
 COPY setup.sh /opt/solr/docker/scripts/setup.sh
 
 RUN chown -R solr:solr /opt/solr/server/solr/configsets/scholars-discovery

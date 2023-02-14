@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.discovery.argument;
 
-import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -78,21 +77,6 @@ public class FacetArg {
 
     public String getCommand() {
         return StringUtils.isEmpty(exclusionTag) ? field : String.format("{!ex=%s}%s", exclusionTag, field);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static FacetArg of(Object input) {
-        Map<String, Object> facet = (Map<String, Object>) input;
-        String field = (String) facet.get("field");
-        String sort = (String) facet.get("sort");
-        int pageSize = (int) facet.get("pageSize");
-        int pageNumber = (int) facet.get("pageNumber");
-        String type = (String) facet.get("type");
-        String exclusionTag = facet.containsKey("exclusionTag") ? (String) facet.get("exclusionTag") : StringUtils.EMPTY;
-        String rangeStart = facet.containsKey("rangeStart") ? (String) facet.get("rangeStart") : "0";
-        String rangeEnd = facet.containsKey("rangeEnd") ? (String) facet.get("rangeEnd") : "100000";
-        String rangeGap = facet.containsKey("rangeGap") ? (String) facet.get("rangeGap") : "100";
-        return new FacetArg(field, sort, pageSize, pageNumber, type, exclusionTag, rangeStart, rangeEnd, rangeGap);
     }
 
     public static FacetArg of(String field, Optional<String> sort, Optional<String> pageSize, Optional<String> pageNumber, Optional<String> type, Optional<String> exclusionTag, Optional<String> rangeStart, Optional<String> rangeEnd, Optional<String> rangeGap) {

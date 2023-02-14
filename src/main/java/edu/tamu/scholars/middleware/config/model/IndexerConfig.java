@@ -1,7 +1,7 @@
 package edu.tamu.scholars.middleware.config.model;
 
-import edu.tamu.scholars.middleware.discovery.service.Indexer;
-import edu.tamu.scholars.middleware.discovery.service.solr.SolrIndexer;
+import edu.tamu.scholars.middleware.discovery.component.Indexer;
+import edu.tamu.scholars.middleware.discovery.component.solr.SolrIndexer;
 
 public class IndexerConfig extends IndexDocumentTypesConfig {
 

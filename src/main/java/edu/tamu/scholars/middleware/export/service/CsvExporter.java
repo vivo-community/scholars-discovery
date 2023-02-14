@@ -4,6 +4,8 @@ import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.NESTED_D
 
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -12,7 +14,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.solr.core.query.result.Cursor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -51,7 +52,7 @@ public class CsvExporter implements Exporter {
     }
 
     @Override
-    public StreamingResponseBody streamSolrResponse(Cursor<Individual> cursor, List<ExportArg> export) {
+    public StreamingResponseBody streamSolrResponse(Iterator<Individual> documents, List<ExportArg> export) {
         return outputStream -> {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             String[] headers = getColumnHeaders(export);
@@ -60,8 +61,8 @@ public class CsvExporter implements Exporter {
                 .setHeader(headers)
                 .build();
             try (CSVPrinter printer = new CSVPrinter(outputStreamWriter, format)) {
-                while (cursor.hasNext()) {
-                    Individual document = cursor.next();
+                while (documents.hasNext()) {
+                    Individual document = documents.next();
                     List<String> properties = export.stream().map(e -> e.getField()).collect(Collectors.toList());
                     List<Object> row = getRow(document, properties);
                     printer.printRecord(row.toArray(new Object[row.size()]));
@@ -71,7 +72,6 @@ public class CsvExporter implements Exporter {
                 e.printStackTrace();
             } finally {
                 outputStreamWriter.close();
-                cursor.close();
             }
         };
     }
@@ -85,7 +85,7 @@ public class CsvExporter implements Exporter {
     }
 
     private List<Object> getRow(Individual document, List<String> properties) throws InvalidValuePathException, IllegalArgumentException, IllegalAccessException {
-        Map<String, List<String>> content = document.getContent();
+        Map<String, Collection<Object>> content = document.getContent();
         List<Object> row = new ArrayList<Object>();
         for (String property : properties) {
             if (property.equals(config.getIndividualKey())) {
@@ -94,18 +94,21 @@ public class CsvExporter implements Exporter {
             }
             String value = StringUtils.EMPTY;
             if (content.containsKey(property)) {
-                List<String> values = content.get(property);
+            	Collection<Object> values = content.get(property);
                 if (values.size() > 0) {
-                    value = String.join(DELIMITER, values.stream().map(this::removeNestedIdentifiers).collect(Collectors.toList()));
+                    value = String.join(DELIMITER, values.stream().map(this::serialize).collect(Collectors.toList()));
                 }
             }
-            row.add(removeNestedIdentifiers(value));
+            row.add(serialize(value));
         }
         return row;
     }
 
-    private String removeNestedIdentifiers(String value) {
-        return value.contains(NESTED_DELIMITER) ? value.substring(0, value.indexOf(NESTED_DELIMITER)) : value;
+    private String serialize(Object obj) {
+        String value = String.valueOf(obj);
+        return value.contains(NESTED_DELIMITER)
+            ? value.substring(0, value.indexOf(NESTED_DELIMITER))
+            : value;
     }
 
 }

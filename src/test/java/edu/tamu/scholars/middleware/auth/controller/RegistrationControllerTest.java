@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +27,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.token.Token;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import edu.tamu.scholars.middleware.auth.RegistrationIntegrationTest;
@@ -39,7 +37,6 @@ import edu.tamu.scholars.middleware.utility.ConstraintDescriptionsHelper;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@ExtendWith(SpringExtension.class)
 public class RegistrationControllerTest extends RegistrationIntegrationTest {
 
     @TestConfiguration
