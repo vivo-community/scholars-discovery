@@ -67,8 +67,7 @@ public abstract class AbstractSolrDocumentControllerTest<D extends AbstractIndex
                             linkWithRel("first").description("First page link for this resource."),
                             linkWithRel("self").description("Canonical link for this resource."),
                             linkWithRel("next").description("Next page link for this resource."),
-                            linkWithRel("last").description("Last page link for this resource."),
-                            linkWithRel("profile").description("The ALPS profile for this resource.")
+                            linkWithRel("last").description("Last page link for this resource.")
                         ),
                         responseFields(
                             subsectionWithPath("_embedded.individual").description(String.format("An array of <<resources-%s, %s resources>>.", "individual", getType().getSimpleName())),

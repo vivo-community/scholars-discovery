@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.RepositorySearchesResource;
 import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
@@ -31,7 +31,7 @@ import edu.tamu.scholars.middleware.export.exception.UnknownExporterTypeExceptio
 import edu.tamu.scholars.middleware.export.service.Exporter;
 import edu.tamu.scholars.middleware.export.service.ExporterRegistry;
 
-@RepositoryRestController
+@RestController
 public class IndividualSearchExportController implements RepresentationModelProcessor<RepositorySearchesResource> {
 
     @Autowired
@@ -53,7 +53,7 @@ public class IndividualSearchExportController implements RepresentationModelProc
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, exporter.contentDisposition("export"))
             .header(HttpHeaders.CONTENT_TYPE, exporter.contentType())
-            .body(exporter.streamSolrResponse(repo.export(query, filters, boosts, sort).get(), export));
+            .body(exporter.streamIndividuals(repo.export(query, filters, boosts, sort), export));
     }
 
     @Override

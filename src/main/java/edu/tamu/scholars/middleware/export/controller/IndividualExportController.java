@@ -8,24 +8,24 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import edu.tamu.scholars.middleware.discovery.assembler.model.IndividualModel;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
-import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 import edu.tamu.scholars.middleware.export.exception.UnknownExporterTypeException;
 import edu.tamu.scholars.middleware.export.service.Exporter;
 import edu.tamu.scholars.middleware.export.service.ExporterRegistry;
 
-@RepositoryRestController
-public class IndividualExportController implements RepresentationModelProcessor<IndividualResource> {
+@RestController
+public class IndividualExportController implements RepresentationModelProcessor<IndividualModel> {
 
     @Autowired
     private IndividualRepo repo;
@@ -52,7 +52,7 @@ public class IndividualExportController implements RepresentationModelProcessor<
     }
 
     @Override
-    public IndividualResource process(IndividualResource resource) {
+    public IndividualModel process(IndividualModel resource) {
         try {
             resource.add(linkTo(methodOn(this.getClass()).export(
                 resource.getContent().getId(),

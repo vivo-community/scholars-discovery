@@ -18,8 +18,6 @@ public class DiscoveryConstants {
 
     public static final String QUERY_DELIMETER = ":";
 
-    public static final String QUERY_TEMPLATE = "%s" + QUERY_DELIMETER + "%s";
-
     public static final String DEFAULT_QUERY = WILDCARD + QUERY_DELIMETER + WILDCARD;
 
     public static final String NESTED_DELIMITER = "::";

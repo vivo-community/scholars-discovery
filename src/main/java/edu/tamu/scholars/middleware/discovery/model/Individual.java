@@ -5,18 +5,15 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
-
 import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.hateoas.server.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@Entity
 @JsonInclude(NON_EMPTY)
+@Relation(collectionRelation = "individual", itemRelation = "individual")
 public class Individual extends AbstractIndexDocument {
 
-    @Transient
     @Field("*")
     private Map<String, Collection<Object>> content;
 

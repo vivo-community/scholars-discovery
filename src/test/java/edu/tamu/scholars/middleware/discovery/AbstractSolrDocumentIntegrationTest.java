@@ -1,5 +1,6 @@
 package edu.tamu.scholars.middleware.discovery;
 
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.DEFAULT_QUERY;
 import static edu.tamu.scholars.middleware.discovery.utility.DiscoveryUtility.getDiscoveryDocumentTypeByName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -78,8 +79,8 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractInde
         solrClient.request(unloadRequest);
     }
 
-    private void createDocuments() throws IOException, SolrServerException {
-         assertEquals(0, repo.count());
+    private void createDocuments() throws SolrServerException, IOException {
+         assertEquals(0, repo.count(DEFAULT_QUERY, Collections.emptyList()));
          DocumentObjectBinder binder = solrClient.getBinder();
          ObjectMapper objectMapper = new ObjectMapper();
          List<File> mockFiles = getMockFiles();
@@ -104,12 +105,13 @@ public abstract class AbstractSolrDocumentIntegrationTest<D extends AbstractInde
          }
          assertTrue(mockDocuments.size() > 0, "No mock documents processed");
          solrClient.commit(getCollection());
-         numberOfDocuments = (int) repo.count();
+         numberOfDocuments = (int) repo.count(DEFAULT_QUERY, Collections.emptyList());
          assertEquals(mockFiles.size(), numberOfDocuments, "Indexed documents count not matching mock documents count");
     }
 
-    private void deleteDocuments() {
-         repo.deleteAll();
+    private void deleteDocuments() throws SolrServerException, IOException {
+        solrClient.deleteByQuery(getCollection(), DEFAULT_QUERY);
+        solrClient.commit(getCollection());
     }
 
     private List<File> getMockFiles() throws IOException {

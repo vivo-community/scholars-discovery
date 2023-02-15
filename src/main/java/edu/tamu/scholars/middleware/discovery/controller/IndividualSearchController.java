@@ -13,7 +13,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.RepositorySearchesResource;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.CollectionModel;
@@ -21,7 +20,9 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import edu.tamu.scholars.middleware.discovery.argument.BoostArg;
 import edu.tamu.scholars.middleware.discovery.argument.FacetArg;
@@ -30,11 +31,12 @@ import edu.tamu.scholars.middleware.discovery.argument.HighlightArg;
 import edu.tamu.scholars.middleware.discovery.argument.QueryArg;
 import edu.tamu.scholars.middleware.discovery.assembler.DiscoveryPagedResourcesAssembler;
 import edu.tamu.scholars.middleware.discovery.assembler.IndividualResourceAssembler;
+import edu.tamu.scholars.middleware.discovery.assembler.model.IndividualModel;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
 import edu.tamu.scholars.middleware.discovery.model.repo.IndividualRepo;
-import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 
-@RepositoryRestController
+@RestController
+@RequestMapping("/individual")
 public class IndividualSearchController implements RepresentationModelProcessor<RepositorySearchesResource> {
 
     @Autowired
@@ -44,28 +46,28 @@ public class IndividualSearchController implements RepresentationModelProcessor<
     private IndividualResourceAssembler assembler;
 
     @Autowired
-    private DiscoveryPagedResourcesAssembler<Individual> discoveryPagedResourcesAssembler;
+    private DiscoveryPagedResourcesAssembler<Individual> pagedAssembler;
 
-    @GetMapping("/individual/search/findByIdIn")
-    public ResponseEntity<CollectionModel<IndividualResource>> findByIdIn(@RequestParam(required = true) List<String> ids) {
+    @GetMapping("/search/findByIdIn")
+    public ResponseEntity<CollectionModel<IndividualModel>> findByIdIn(@RequestParam(required = true) List<String> ids) {
         return ResponseEntity.ok(assembler.toCollectionModel(repo.findByIdIn(ids)));
     }
 
-    @GetMapping("/individual/search/findByType")
-    public ResponseEntity<CollectionModel<IndividualResource>> findByType(@RequestParam(required = true) String type) {
+    @GetMapping("/search/findByType")
+    public ResponseEntity<CollectionModel<IndividualModel>> findByType(@RequestParam(required = true) String type) {
         return ResponseEntity.ok(assembler.toCollectionModel(repo.findByType(type)));
     }
 
-    @GetMapping("/individual/search/recentlyUpdated")
-    public ResponseEntity<CollectionModel<IndividualResource>> recentlyUpdated(
+    @GetMapping("/search/recentlyUpdated")
+    public ResponseEntity<CollectionModel<IndividualModel>> recentlyUpdated(
         @RequestParam(value = "limit", defaultValue = "10") int limit,
         List<FilterArg> filters
     ) {
         return ResponseEntity.ok(assembler.toCollectionModel(repo.findMostRecentlyUpdate(limit, filters)));
     }
 
-    @GetMapping("/individual/search/advanced")
-    public ResponseEntity<PagedModel<IndividualResource>> search(
+    @GetMapping("/search/advanced")
+    public ResponseEntity<PagedModel<IndividualModel>> search(
         QueryArg query,
         List<FacetArg> facets,
         List<FilterArg> filters,
@@ -73,7 +75,7 @@ public class IndividualSearchController implements RepresentationModelProcessor<
         HighlightArg highlight,
         @PageableDefault(page = 0, size = 10, sort = ID, direction = ASC) Pageable page
     ) {
-        return ResponseEntity.ok(discoveryPagedResourcesAssembler.toModel(repo.search(query, facets, filters, boosts, highlight, page), assembler));
+        return ResponseEntity.ok(pagedAssembler.toModel(repo.search(query, facets, filters, boosts, highlight, page), assembler));
     }
 
     @Override
