@@ -1743,7 +1743,7 @@
           order: 4
         - name: date/time interval
           template: "defaults/displayViews/processes/overview/dateTimeInterval.html"
-          field: dateTimeIntervalStart
+          field: dateTimeInterval
           order: 5
         - name: type
           template: "defaults/displayViews/processes/overview/type.html"

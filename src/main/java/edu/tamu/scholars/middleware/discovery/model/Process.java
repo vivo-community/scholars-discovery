@@ -56,17 +56,28 @@ public class Process extends Common {
     @PropertySource(template = "process/offeredBy", predicate = "http://www.w3.org/2000/01/rdf-schema#label")
     private List<String> offeredBy;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "nested_whole_string")
+    @NestedObject(properties = { @Reference(value = "dateTimeIntervalStart", key = "start"), @Reference(value = "dateTimeIntervalEnd", key = "end") })
+    @PropertySource(template = "process/dateTimeInterval", predicate = "http://vivoweb.org/ontology/core#dateTimeInterval")
+    private String dateTimeInterval;
+
+    @Indexed(type = "nested_date")
+    @NestedObject(properties = { @Reference(value = "dateTimePrecisionStart", key = "precision") }, root = false)
     @PropertySource(template = "process/dateTimeIntervalStart", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalStart;
 
-    @Indexed(type = "pdate")
+    @Indexed(type = "nested_date")
+    @NestedObject(properties = { @Reference(value = "dateTimePrecisionEnd", key = "precision") }, root = false)
     @PropertySource(template = "process/dateTimeIntervalEnd", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalEnd;
 
-    @Indexed(type = "whole_string")
-    @PropertySource(template = "process/dateTimePrecision", predicate = "http://vivoweb.org/ontology/core#dateTimePrecision")
-    private String dateTimePrecision;
+    @Indexed(type = "nested_whole_string")
+    @PropertySource(template = "process/dateTimePrecisionStart", predicate = "http://vivoweb.org/ontology/core#dateTimePrecision", parse = true)
+    private String dateTimePrecisionStart;
+
+    @Indexed(type = "nested_whole_strings")
+    @PropertySource(template = "process/dateTimePrecisionEnd", predicate = "http://vivoweb.org/ontology/core#dateTimePrecision", parse = true)
+    private String dateTimePrecisionEnd;
 
     @Indexed(type = "whole_string")
     @PropertySource(template = "process/subtype", predicate = "http://vivo.library.tamu.edu/ontology/TAMU#subtype")
@@ -237,6 +248,14 @@ public class Process extends Common {
         this.offeredBy = offeredBy;
     }
 
+    public String getDateTimeInterval() {
+        return dateTimeInterval;
+    }
+
+    public void setDateTimeInterval(String dateTimeInterval) {
+        this.dateTimeInterval = dateTimeInterval;
+    }
+
     public String getDateTimeIntervalStart() {
         return dateTimeIntervalStart;
     }
@@ -253,12 +272,20 @@ public class Process extends Common {
         this.dateTimeIntervalEnd = dateTimeIntervalEnd;
     }
 
-    public String getDateTimePrecision() {
-        return dateTimePrecision;
+    public String getDateTimePrecisionStart() {
+        return dateTimePrecisionStart;
     }
 
-    public void setDateTimePrecision(String dateTimePrecision) {
-        this.dateTimePrecision = dateTimePrecision;
+    public void setDateTimePrecisionStart(String dateTimePrecisionStart) {
+        this.dateTimePrecisionStart = dateTimePrecisionStart;
+    }
+
+    public String getDateTimePrecisionEnd() {
+        return dateTimePrecisionEnd;
+    }
+
+    public void setDateTimePrecisionEnd(String dateTimePrecisionEnd) {
+        this.dateTimePrecisionEnd = dateTimePrecisionEnd;
     }
 
     public String getSubtype() {

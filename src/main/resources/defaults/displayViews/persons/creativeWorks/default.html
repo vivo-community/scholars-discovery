@@ -1,7 +1,7 @@
 <div>
   <span>{{authorList}} </span>
-  {{#if dateTimeIntervalStart}}
-  <span>({{toYear dateTimeIntervalStart}}{{#if dateTimeIntervalEnd}} - {{toYear dateTimeIntervalEnd}}{{/if}}).</span>
+  {{#if dateTimeInterval}}
+  <span>({{toDefinedPrecision dateTimeInterval}})</span>
   {{/if}}
   <span>
     <a href="display/{{id}}"><i>{{{title}}}</i>.</a>

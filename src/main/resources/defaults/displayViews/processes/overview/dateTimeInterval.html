@@ -1,15 +1,5 @@
 <div>
-  {{#if dateTimeIntervalStart}}
-  {{#if dateTimeIntervalEnd}}
-  <span>{{toYear dateTimeIntervalStart}}</span>
-  <span>-</span>
-  <span>{{toYear dateTimeIntervalEnd}}</span>
-  {{else}}
-  <span>{{toYear dateTimeIntervalStart}}</span>
-  {{/if}}
-  {{else}}
-  {{#if dateTimeIntervalEnd}}
-  <span>{{toYear dateTimeIntervalEnd}}</span>
-  {{/if}}
+  {{#if dateTimeInterval}}
+  <span>{{toDefinedPrecision dateTimeInterval}}</span>
   {{/if}}
 </div>
