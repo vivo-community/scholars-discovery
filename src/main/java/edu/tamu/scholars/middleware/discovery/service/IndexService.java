@@ -4,8 +4,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.PostConstruct;
 
@@ -17,14 +17,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
+import edu.tamu.scholars.middleware.discovery.component.Harvester;
+import edu.tamu.scholars.middleware.discovery.component.Indexer;
 import edu.tamu.scholars.middleware.service.Triplestore;
 
 @Service
 public class IndexService {
 
     private final static Logger logger = LoggerFactory.getLogger(IndexService.class);
-
-    private final static AtomicBoolean initialized = new AtomicBoolean(false);
 
     private final static AtomicBoolean indexing = new AtomicBoolean(false);
 
@@ -56,7 +56,12 @@ public class IndexService {
     }
 
     @PostConstruct
-    public void indexOnStartup() {
+    public void startup() {
+        logger.info("Initializing index fields...");
+        indexers.stream().forEach(indexer -> {
+            logger.info(String.format("Initializing %s fields.", indexer.type().getSimpleName()));
+            indexer.init();
+        });
         if (indexOnStartup) {
             threadPoolTaskScheduler.schedule(new Runnable() {
 
@@ -71,13 +76,6 @@ public class IndexService {
 
     @Scheduled(cron = "${middleware.index.cron}", zone = "${middleware.index.zone}")
     public void index() {
-        if (initialized.compareAndSet(false, true)) {
-            logger.info("Initializing index fields...");
-            indexers.stream().forEach(indexer -> {
-                logger.info(String.format("Initializing %s fields.", indexer.type().getSimpleName()));
-                indexer.init();
-            });
-        }
         if (indexing.compareAndSet(false, true)) {
             triplestore.init();
             Instant start = Instant.now();
@@ -94,6 +92,10 @@ public class IndexService {
                     logger.warn(String.format("No indexer found for %s documents!", harvester.type().getSimpleName()));
                 }
                 logger.info(String.format("Indexing %s documents finished.", harvester.type().getSimpleName()));
+            });
+            indexers.stream().forEach(indexer -> {
+                logger.info(String.format("Optimizing %s index.", indexer.type().getSimpleName()));
+                indexer.optimize();
             });
             logger.info(String.format("Indexing finished. %s seconds.", Duration.between(start, Instant.now()).toMillis() / 1000.0));
             triplestore.destroy();

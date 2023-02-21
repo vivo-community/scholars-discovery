@@ -128,7 +128,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
         if (enableH2Console()) {
             // NOTE: permit all access to h2console
             http
@@ -221,7 +220,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .csrf()
                     .disable();
-       // @formatter:on
     }
 
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler() {

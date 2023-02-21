@@ -82,7 +82,6 @@ public class TemplateService {
     }
 
     private Context buildContext(Object data) {
-        // @formatter:off
         return Context.newBuilder(data).resolver(
             JsonNodeValueResolver.INSTANCE,
             JavaBeanValueResolver.INSTANCE,
@@ -90,7 +89,6 @@ public class TemplateService {
             MapValueResolver.INSTANCE,
             MethodValueResolver.INSTANCE
         ).build();
-        // @formatter:on
     }
 
 }

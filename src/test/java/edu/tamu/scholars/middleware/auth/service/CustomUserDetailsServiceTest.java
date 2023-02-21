@@ -6,19 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.tamu.scholars.middleware.auth.UserIntegrationTest;
 import edu.tamu.scholars.middleware.auth.model.User;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class CustomUserDetailsServiceTest extends UserIntegrationTest {
 
     @Autowired

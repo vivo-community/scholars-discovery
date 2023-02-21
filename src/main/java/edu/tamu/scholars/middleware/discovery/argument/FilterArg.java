@@ -1,6 +1,5 @@
 package edu.tamu.scholars.middleware.discovery.argument;
 
-import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -43,16 +42,6 @@ public class FilterArg {
 
     public String getCommand() {
         return StringUtils.isEmpty(tag) ? field : String.format("{!tag=%s}%s", tag, field);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static FilterArg of(Object input) {
-        Map<String, Object> filter = (Map<String, Object>) input;
-        String field = (String) filter.get("field");
-        String value = (String) filter.get("value");
-        String opKey = (String) filter.get("opKey");
-        String tag = filter.containsKey("tag") ? (String) filter.get("tag") : StringUtils.EMPTY;
-        return new FilterArg(field, value, OpKey.valueOf(opKey), tag);
     }
 
     public static FilterArg of(String field, Optional<String> value, Optional<String> opKey, Optional<String> tag) {

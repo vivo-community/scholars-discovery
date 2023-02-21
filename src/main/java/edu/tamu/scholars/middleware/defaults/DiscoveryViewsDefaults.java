@@ -25,9 +25,7 @@ public class DiscoveryViewsDefaults extends AbstractDefaults<DiscoveryView, Disc
 
     @Override
     public List<DiscoveryView> read(InputStream is) throws IOException {
-        // @formatter:off
         List<DiscoveryView> views = mapper.readValue(is, new TypeReference<List<DiscoveryView>>() {});
-        // @formatter:on
         for (DiscoveryView view : views) {
             loadTemplateMap(view.getTemplates());
         }

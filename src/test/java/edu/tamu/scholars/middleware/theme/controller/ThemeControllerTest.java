@@ -28,13 +28,11 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -51,7 +49,6 @@ import edu.tamu.scholars.middleware.utility.ConstraintDescriptionsHelper;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@ExtendWith(SpringExtension.class)
 public class ThemeControllerTest extends ThemeIntegrationTest {
 
     private static final ConstraintDescriptionsHelper describeTheme = new ConstraintDescriptionsHelper(Theme.class);

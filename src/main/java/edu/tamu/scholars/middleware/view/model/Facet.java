@@ -2,7 +2,6 @@ package edu.tamu.scholars.middleware.view.model;
 
 import static edu.tamu.scholars.middleware.view.model.FacetType.STRING;
 import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.solr.core.query.FacetOptions.FacetSort.COUNT;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.FacetOptions.FacetSort;
 
 import edu.tamu.scholars.middleware.model.OpKey;
 
@@ -67,7 +65,7 @@ public class Facet {
     public Facet() {
         opKey = OpKey.EQUALS;
         type = STRING;
-        sort = COUNT;
+        sort = FacetSort.COUNT;
         direction = DESC;
         pageSize = 10;
         pageNumber = 1;

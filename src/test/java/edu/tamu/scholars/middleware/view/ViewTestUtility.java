@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.solr.core.query.FacetOptions;
 
 import edu.tamu.scholars.middleware.model.OpKey;
 import edu.tamu.scholars.middleware.view.model.Boost;
@@ -20,6 +19,7 @@ import edu.tamu.scholars.middleware.view.model.ExportField;
 import edu.tamu.scholars.middleware.view.model.ExportFieldView;
 import edu.tamu.scholars.middleware.view.model.ExportView;
 import edu.tamu.scholars.middleware.view.model.Facet;
+import edu.tamu.scholars.middleware.view.model.FacetSort;
 import edu.tamu.scholars.middleware.view.model.FacetType;
 import edu.tamu.scholars.middleware.view.model.Filter;
 import edu.tamu.scholars.middleware.view.model.Index;
@@ -61,7 +61,7 @@ public class ViewTestUtility {
         facet.setName("Name");
         facet.setField("name");
         facet.setType(FacetType.STRING);
-        facet.setSort(FacetOptions.FacetSort.COUNT);
+        facet.setSort(FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
         facet.setPageSize(20);
         facet.setPageNumber(1);
@@ -167,7 +167,7 @@ public class ViewTestUtility {
         facet.setName("Name");
         facet.setField("name");
         facet.setType(FacetType.STRING);
-        facet.setSort(FacetOptions.FacetSort.COUNT);
+        facet.setSort(FacetSort.COUNT);
         facet.setDirection(Direction.DESC);
         facet.setPageSize(20);
         facet.setPageNumber(1);

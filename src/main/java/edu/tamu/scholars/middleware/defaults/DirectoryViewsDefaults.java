@@ -25,9 +25,7 @@ public class DirectoryViewsDefaults extends AbstractDefaults<DirectoryView, Dire
 
     @Override
     public List<DirectoryView> read(InputStream is) throws IOException {
-        // @formatter:off
         List<DirectoryView> views = mapper.readValue(is, new TypeReference<List<DirectoryView>>() {});
-        // @formatter:on
         for (DirectoryView view : views) {
             loadTemplateMap(view.getTemplates());
         }

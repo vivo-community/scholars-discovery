@@ -236,7 +236,7 @@
       - label: Accessibility
         uri: https://library.tamu.edu/services/accessibility.html
       - label: Texas CREWS
-        uri: http://www.thecb.state.tx.us/apps/txcrews
+        uri: https://txcrews.org/school-dashboard/61
       - label: Comments
         uri: https://askus.library.tamu.edu/contact/index
     variables:

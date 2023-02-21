@@ -1,28 +1,40 @@
 package edu.tamu.scholars.middleware.config;
 
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.solr.core.SolrTemplate;
-import org.springframework.data.solr.repository.config.EnableSolrRepositories;
-import org.springframework.data.solr.server.support.EmbeddedSolrServerFactoryBean;
+import static edu.tamu.scholars.middleware.discovery.DiscoveryConstants.COLLECTION;
 
-@Configuration
-@Profile("test")
-@EnableSolrRepositories(basePackages = "edu.tamu.scholars.middleware.discovery")
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.core.CoreContainer;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+
+@TestConfiguration
 public class SolrTestConfig {
 
-    @Bean
-    public EmbeddedSolrServer solrServer() throws Exception {
-        EmbeddedSolrServerFactoryBean factory = new EmbeddedSolrServerFactoryBean();
-        factory.setSolrHome("classpath:solr");
-        return factory.getObject();
-    }
+    private final static Path SOLR_HOME = Paths.get("target/solr").toAbsolutePath();
 
     @Bean
-    public SolrTemplate solrTemplate() throws Exception {
-        return new SolrTemplate(solrServer());
+    public SolrClient solrServer() throws Exception {
+        final File solrDir = new File("solr");
+        final File solrHome = SOLR_HOME.toFile();
+
+        if (solrHome.exists()) {
+            FileUtils.deleteDirectory(solrHome);
+        }
+
+        FileUtils.copyDirectory(solrDir, solrHome);
+
+        System.setProperty("solr.solr.home", SOLR_HOME.toString());
+        System.setProperty("solr.install.dir", SOLR_HOME.toString());
+
+        CoreContainer cores = CoreContainer.createAndLoad(SOLR_HOME);
+
+        return new EmbeddedSolrServer(cores, COLLECTION);
     }
 
 }

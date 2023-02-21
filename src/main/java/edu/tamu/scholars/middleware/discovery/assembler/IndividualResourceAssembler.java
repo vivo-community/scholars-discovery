@@ -1,32 +1,41 @@
 package edu.tamu.scholars.middleware.discovery.assembler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
-import org.springframework.hateoas.Link;
+import org.springframework.data.util.StreamUtils;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import edu.tamu.scholars.middleware.discovery.controller.IndividualController;
+import edu.tamu.scholars.middleware.discovery.assembler.model.IndividualCollectionModel;
+import edu.tamu.scholars.middleware.discovery.assembler.model.IndividualModel;
+import edu.tamu.scholars.middleware.discovery.controller.IndividualSearchController;
 import edu.tamu.scholars.middleware.discovery.model.Individual;
-import edu.tamu.scholars.middleware.discovery.resource.IndividualResource;
 
 @Component
-public class IndividualResourceAssembler extends RepresentationModelAssemblerSupport<Individual, IndividualResource> {
-
-    @Autowired
-    private RepositoryEntityLinks repositoryEntityLinks;
+public class IndividualResourceAssembler extends RepresentationModelAssemblerSupport<Individual, IndividualModel> {
 
     public IndividualResourceAssembler() {
-        super(IndividualController.class, IndividualResource.class);
+        super(IndividualSearchController.class, IndividualModel.class);
     }
 
     @Override
-    public IndividualResource toModel(Individual document) {
-        Link selfLink = repositoryEntityLinks.linkToItemResource(document.getClass(), document.getId()).withSelfRel();
-        Link documentLink = repositoryEntityLinks.linkToCollectionResource(document.getClass());
-        return new IndividualResource(document, Arrays.asList(selfLink, documentLink));
+    public IndividualModel toModel(Individual document) {
+        return new IndividualModel(document, Arrays.asList());
+    }
+
+    @Override
+    public CollectionModel<IndividualModel> toCollectionModel(Iterable<? extends Individual> entities) {
+        List<String> ids = new ArrayList<>();
+        List<IndividualModel> content = StreamUtils.createStreamFromIterator(entities.iterator())
+            .peek(entity -> ids.add(entity.getId()))
+            .map(this::toModel)
+            .collect(Collectors.toList());
+
+        return new IndividualCollectionModel(content, Arrays.asList(), null);
     }
 
 }

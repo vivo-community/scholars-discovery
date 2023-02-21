@@ -2,34 +2,30 @@ package edu.tamu.scholars.middleware.discovery.model;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
+
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.hateoas.server.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import org.apache.solr.client.solrj.beans.Field;
-import org.springframework.data.solr.core.mapping.Dynamic;
-import org.springframework.data.solr.core.mapping.Indexed;
-import org.springframework.data.solr.core.mapping.SolrDocument;
-
 @JsonInclude(NON_EMPTY)
-@SolrDocument(collection = "scholars-discovery")
+@Relation(collectionRelation = "individual", itemRelation = "individual")
 public class Individual extends AbstractIndexDocument {
 
-    @Dynamic
     @Field("*")
-    @Indexed(readonly = true, stored = false, searchable = false)
-    private Map<String, List<String>> content;
+    private Map<String, Collection<Object>> content;
 
     public Individual() {
 
     }
 
-    public Map<String, List<String>> getContent() {
+    public Map<String, Collection<Object>> getContent() {
         return content;
     }
 
-    public void setContent(Map<String, List<String>> content) {
+    public void setContent(Map<String, Collection<Object>> content) {
         this.content = content;
     }
 

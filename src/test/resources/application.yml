@@ -36,7 +36,7 @@ middleware:
     username:
     password:
   harvesters:
-  - type: edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester
+  - type: edu.tamu.scholars.middleware.discovery.component.jena.TriplestoreHarvester
     documentTypes:
     - edu.tamu.scholars.middleware.discovery.model.Collection
     - edu.tamu.scholars.middleware.discovery.model.Concept
@@ -46,7 +46,7 @@ middleware:
     - edu.tamu.scholars.middleware.discovery.model.Process
     - edu.tamu.scholars.middleware.discovery.model.Relationship
   indexers:
-  - type: edu.tamu.scholars.middleware.discovery.service.solr.SolrIndexer
+  - type: edu.tamu.scholars.middleware.discovery.component.solr.SolrIndexer
     documentTypes:
     - edu.tamu.scholars.middleware.discovery.model.Collection
     - edu.tamu.scholars.middleware.discovery.model.Concept

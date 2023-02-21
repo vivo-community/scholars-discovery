@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import edu.tamu.scholars.middleware.discovery.component.jena.TriplestoreHarvester;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
 import edu.tamu.scholars.middleware.discovery.model.Collection;
 import edu.tamu.scholars.middleware.discovery.model.Concept;
@@ -18,7 +19,6 @@ import edu.tamu.scholars.middleware.discovery.model.Organization;
 import edu.tamu.scholars.middleware.discovery.model.Person;
 import edu.tamu.scholars.middleware.discovery.model.Process;
 import edu.tamu.scholars.middleware.discovery.model.Relationship;
-import edu.tamu.scholars.middleware.discovery.service.jena.TriplestoreHarvester;
 
 @ExtendWith(SpringExtension.class)
 public class HarvesterConfigTest {

@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 import edu.tamu.scholars.middleware.config.model.HarvesterConfig;
 import edu.tamu.scholars.middleware.config.model.MiddlewareConfig;
+import edu.tamu.scholars.middleware.discovery.component.Harvester;
 import edu.tamu.scholars.middleware.discovery.model.AbstractIndexDocument;
-import edu.tamu.scholars.middleware.discovery.service.Harvester;
 
 @Configuration
 public class HarvestingConfig {
