@@ -64,14 +64,32 @@ public class Process extends Common {
     private List<String> offeredBy;
 
     @Field
-    @FieldType(type = "pdate")
+    @FieldType(type = "nested_whole_string")
+    @NestedObject(properties = { @Reference(value = "dateTimeIntervalStart", key = "start"), @Reference(value = "dateTimeIntervalEnd", key = "end") })
+    @FieldSource(template = "process/dateTimeInterval", predicate = "http://vivoweb.org/ontology/core#dateTimeInterval")
+    private String dateTimeInterval;
+
+    @Field
+    @FieldType(type = "nested_date")
+    @NestedObject(properties = { @Reference(value = "dateTimePrecisionStart", key = "precision") }, root = false)
     @FieldSource(template = "process/dateTimeIntervalStart", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalStart;
 
     @Field
-    @FieldType(type = "pdate")
+    @FieldType(type = "nested_date")
+    @NestedObject(properties = { @Reference(value = "dateTimePrecisionEnd", key = "precision") }, root = false)
     @FieldSource(template = "process/dateTimeIntervalEnd", predicate = "http://vivoweb.org/ontology/core#dateTime")
     private String dateTimeIntervalEnd;
+
+    @Field
+    @FieldType(type = "nested_whole_string")
+    @FieldSource(template = "process/dateTimePrecisionStart", predicate = "http://vivoweb.org/ontology/core#dateTimePrecision", parse = true)
+    private String dateTimePrecisionStart;
+
+    @Field
+    @FieldType(type = "nested_whole_strings")
+    @FieldSource(template = "process/dateTimePrecisionEnd", predicate = "http://vivoweb.org/ontology/core#dateTimePrecision", parse = true)
+    private String dateTimePrecisionEnd;
 
     @Field
     @FieldType(type = "whole_string")
@@ -266,6 +284,14 @@ public class Process extends Common {
         this.offeredBy = offeredBy;
     }
 
+    public String getDateTimeInterval() {
+        return dateTimeInterval;
+    }
+
+    public void setDateTimeInterval(String dateTimeInterval) {
+        this.dateTimeInterval = dateTimeInterval;
+    }
+
     public String getDateTimeIntervalStart() {
         return dateTimeIntervalStart;
     }
@@ -280,6 +306,22 @@ public class Process extends Common {
 
     public void setDateTimeIntervalEnd(String dateTimeIntervalEnd) {
         this.dateTimeIntervalEnd = dateTimeIntervalEnd;
+    }
+
+    public String getDateTimePrecisionStart() {
+        return dateTimePrecisionStart;
+    }
+
+    public void setDateTimePrecisionStart(String dateTimePrecisionStart) {
+        this.dateTimePrecisionStart = dateTimePrecisionStart;
+    }
+
+    public String getDateTimePrecisionEnd() {
+        return dateTimePrecisionEnd;
+    }
+
+    public void setDateTimePrecisionEnd(String dateTimePrecisionEnd) {
+        this.dateTimePrecisionEnd = dateTimePrecisionEnd;
     }
 
     public String getSubtype() {
